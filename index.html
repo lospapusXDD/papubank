@@ -6058,7 +6058,7 @@ window.doLogin = async function() {
         await loadConfig();
 
         const rankKey = getRankKey(currentUser);
-        if (RANKS[rankKey].level >= 3) {
+        if (RANKS[rankKey].level >= 19) {
             document.getElementById('nav-admin-li').style.display = '';
         }
         if (rankKey === 'owner') {
@@ -6127,7 +6127,7 @@ window.doRegister = async function() {
             await loadDashboard();
             await loadConfig();
             const rankKey = getRankKey(currentUser);
-            if (RANKS[rankKey].level >= 3) document.getElementById('nav-admin-li').style.display = '';
+            if (RANKS[rankKey].level >= 19) document.getElementById('nav-admin-li').style.display = '';
             showToast('✅ Cuenta vinculada correctamente! Bienvenido', '#00ff9d');
             return;
         }
@@ -6353,7 +6353,7 @@ async function tryAutoLogin() {
         await loadDashboard();
         await loadConfig();
         const rankKey = getRankKey(currentUser);
-        if (RANKS[rankKey].level >= 3) {
+        if (RANKS[rankKey].level >= 19) {
             document.getElementById('nav-admin-li').style.display = '';
         }
         if (rankKey === 'owner') {
@@ -7127,7 +7127,7 @@ async function loadMintBurnUsers() {
 
 function checkAdminPermission() {
     const rank = getRankKey(currentUser);
-    return RANKS[rank].level >= 3;
+    return RANKS[rank].level >= 19;
 }
 
 window.adminMint = async function() {
