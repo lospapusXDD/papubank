@@ -2573,7 +2573,7 @@ body.loaded { overflow-x:hidden; }
 
 <!-- CANVAS EFECTOS -->
 <canvas id="matrix-bg"></canvas>
-<canvas id="planet-bg" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:0.55;"></canvas>
+<canvas id="planet-bg" style="display:none;"></canvas>
 <div id="visual-settings-btn" title="Personalizar apariencia" onclick="toggleVisualSettings()" style="position:fixed;bottom:24px;right:24px;z-index:9000;width:44px;height:44px;border-radius:50%;background:rgba(0,10,30,0.85);border:1px solid rgba(0,212,255,0.35);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;box-shadow:0 0 18px rgba(0,212,255,0.2);transition:all .3s;" onmouseenter="this.style.borderColor='var(--primary)'" onmouseleave="this.style.borderColor='rgba(0,212,255,0.35)'">🌍</div>
 <div id="visual-settings-panel" style="display:none;position:fixed;bottom:78px;right:24px;z-index:9001;width:280px;background:rgba(0,8,24,0.97);border:1px solid rgba(0,212,255,0.25);border-radius:16px;padding:18px;box-shadow:0 0 40px rgba(0,0,0,0.6);">
   <div style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;color:var(--primary);margin-bottom:14px;">🌍 PERSONALIZACIÓN</div>
@@ -12774,5 +12774,75 @@ window.playBattle=async function(){
 var _origDoLogin_jjk=window.doLogin;
 window.doLogin=async function(){await _origDoLogin_jjk.apply(this,arguments);if(currentUser&&currentUser.jjkRank)syncJJKBonuses();};
 
-</script></body>
+</script>
+<script type="module">
+import { initGlobe } from './globe.js';
+const _VIS_KEY = 'papusbank_vis_v2';
+function _defCfg() { return { color: 'cyan', speed: 3, opacity: 18, visible: true }; }
+window.loadVisualSettings = function() {
+    try { const r = localStorage.getItem(_VIS_KEY); return r ? Object.assign(_defCfg(), JSON.parse(r)) : _defCfg(); } catch(e) { return _defCfg(); }
+};
+window.saveVisualSettings = function(c) {
+    try { localStorage.setItem(_VIS_KEY, JSON.stringify(c)); } catch(e) {}
+};
+window.toggleVisualSettings = function() {
+    const panel = document.getElementById('visual-settings-panel');
+    if (!panel) return;
+    const open = panel.style.display !== 'none';
+    panel.style.display = open ? 'none' : 'block';
+    if (!open) {
+        const c = window.loadVisualSettings();
+        const sp = document.getElementById('vis-speed'), sv = document.getElementById('vis-speed-val');
+        const op = document.getElementById('vis-opacity'), ov = document.getElementById('vis-opacity-val');
+        if (sp) sp.value = c.speed; if (sv) sv.textContent = c.speed;
+        if (op) op.value = c.opacity; if (ov) ov.textContent = c.opacity + '%';
+    }
+};
+let _pg = null;
+window.setPlanetColor = function(key) {
+    const c = window.loadVisualSettings(); c.color = key; window.saveVisualSettings(c);
+    if (_pg) {
+        const pal = {
+            cyan:   { globe:0x081828, wire:0x1a5566, atm:0x00aacc, glow:0x00d4ff },
+            green:  { globe:0x071508, wire:0x1a4422, atm:0x00cc33, glow:0x00ff41 },
+            gold:   { globe:0x1a1200, wire:0x4d3800, atm:0xcc9900, glow:0xffd700 },
+            purple: { globe:0x0d0022, wire:0x3a1166, atm:0xaa22cc, glow:0xd946ef },
+            red:    { globe:0x1a0000, wire:0x550011, atm:0xcc1133, glow:0xff4466 },
+        }[key] || { globe:0x081828, wire:0x1a5566, atm:0x00aacc, glow:0x00d4ff };
+        if (_pg.globe)     _pg.globe.material.color.setHex(pal.globe);
+        if (_pg.wireframe) _pg.wireframe.material.color.setHex(pal.wire);
+        if (_pg.wireframe2) _pg.wireframe2.material.color.setHex(pal.wire);
+        if (_pg.atmosphere?.material?.uniforms?.atmosColor) _pg.atmosphere.material.uniforms.atmosColor.value.setHex(pal.atm);
+        if (_pg.glow?.material?.uniforms?.glowColor) _pg.glow.material.uniforms.glowColor.value.setHex(pal.glow);
+    }
+    if (typeof window.showToast === 'function') window.showToast('🌍 Color: ' + key, '#00d4ff');
+};
+window.setPlanetSpeed = function(val) {
+    const c = window.loadVisualSettings(); c.speed = parseInt(val); window.saveVisualSettings(c);
+    const el = document.getElementById('vis-speed-val'); if (el) el.textContent = val;
+};
+window.setPlanetOpacity = function(val) {
+    const c = window.loadVisualSettings(); c.opacity = parseInt(val); window.saveVisualSettings(c);
+    if (_pg?.renderer) _pg.renderer.domElement.style.opacity = (parseInt(val) / 100).toFixed(2);
+    const el = document.getElementById('vis-opacity-val'); if (el) el.textContent = val + '%';
+};
+window.setPlanetVisible = function(visible) {
+    const c = window.loadVisualSettings(); c.visible = visible; window.saveVisualSettings(c);
+    if (_pg?.renderer) _pg.renderer.domElement.style.opacity = visible ? (c.opacity / 100).toFixed(2) : '0';
+    if (typeof window.showToast === 'function') window.showToast(visible ? '🌍 Globo activado' : '🚫 Globo oculto', '#00d4ff');
+};
+const cont = document.createElement('div');
+cont.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;';
+document.body.appendChild(cont);
+_pg = initGlobe(cont);
+if (_pg?.renderer) {
+    const cfg = window.loadVisualSettings();
+    Object.assign(_pg.renderer.domElement.style, {
+        position:'absolute', top:'0', left:'0', width:'100%', height:'100%'
+    });
+    _pg.renderer.domElement.style.opacity = cfg.visible ? (cfg.opacity/100).toFixed(2) : '0';
+    if (cfg.color !== 'cyan') window.setPlanetColor(cfg.color);
+}
+</script>
+</body>
 </html>
