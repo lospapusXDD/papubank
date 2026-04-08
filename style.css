@@ -1,0 +1,432 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   PapusBank — style.css
+   JJK styles + Profile overhaul
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── JJK RANK BADGE CLASSES ─────────────────────────────────────────────── */
+.rank-itadori{background:rgba(255,107,157,0.12);color:#ff6b9d;border:1px solid rgba(255,107,157,0.3);text-shadow:0 0 8px rgba(255,107,157,0.4);}
+.rank-megumi{background:rgba(59,130,246,0.12);color:#60a5fa;border:1px solid rgba(59,130,246,0.35);text-shadow:0 0 8px rgba(59,130,246,0.4);}
+.rank-yuta{background:rgba(192,132,252,0.15);color:#c084fc;border:1px solid rgba(192,132,252,0.45);text-shadow:0 0 10px rgba(192,132,252,0.55);}
+.rank-todo{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.35);text-shadow:0 0 8px rgba(245,158,11,0.4);}
+.rank-nanami{background:rgba(253,230,138,0.1);color:#fde68a;border:1px solid rgba(253,230,138,0.3);}
+.rank-nobara{background:rgba(249,115,22,0.12);color:#fb923c;border:1px solid rgba(249,115,22,0.3);text-shadow:0 0 8px rgba(249,115,22,0.4);}
+.rank-maki{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.35);text-shadow:0 0 8px rgba(34,197,94,0.4);}
+.rank-meimei{background:rgba(212,175,55,0.12);color:#e9c46a;border:1px solid rgba(212,175,55,0.35);text-shadow:0 0 8px rgba(212,175,55,0.4);}
+.rank-shoko{background:rgba(13,148,136,0.12);color:#2dd4bf;border:1px solid rgba(13,148,136,0.35);}
+.rank-yuki{background:rgba(124,58,237,0.15);color:#a78bfa;border:1px solid rgba(124,58,237,0.4);text-shadow:0 0 10px rgba(124,58,237,0.5);}
+.rank-rika{background:rgba(236,72,153,0.15);color:#f472b6;border:1px solid rgba(236,72,153,0.45);text-shadow:0 0 10px rgba(236,72,153,0.55);box-shadow:0 0 8px rgba(236,72,153,0.12);}
+.rank-sukuna{background:rgba(220,38,38,0.15);color:#f87171;border:1px solid rgba(220,38,38,0.5);text-shadow:0 0 12px rgba(220,38,38,0.6);box-shadow:0 0 14px rgba(220,38,38,0.18);}
+.rank-gojo{background:rgba(0,212,255,0.08);color:#fff;border:1px solid rgba(0,212,255,0.7);text-shadow:0 0 15px rgba(255,255,255,0.8),0 0 30px rgba(0,212,255,0.5);box-shadow:0 0 20px rgba(0,212,255,0.2),inset 0 0 20px rgba(0,212,255,0.04);}
+
+/* ── JJK ANIMATIONS ─────────────────────────────────────────────────────── */
+@keyframes jjkCurseGlow{0%{opacity:.6;transform:scale(1);}50%{opacity:1;transform:scale(1.04);}100%{opacity:.6;transform:scale(1);}}
+@keyframes jjkDomainIn{0%{opacity:0;transform:scale(0.6) rotate(-8deg);}60%{transform:scale(1.06) rotate(2deg);}100%{opacity:1;transform:scale(1) rotate(0deg);}}
+@keyframes jjkFingerPulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.4);}50%{box-shadow:0 0 0 12px rgba(220,38,38,0);}}
+@keyframes jjkGojoInfinity{0%{border-color:rgba(0,212,255,0.3);}25%{border-color:rgba(255,255,255,0.8);}50%{border-color:rgba(0,212,255,0.3);}75%{border-color:rgba(192,132,252,0.6);}100%{border-color:rgba(0,212,255,0.3);}}
+@keyframes jjkSukunaAura{0%,100%{text-shadow:0 0 10px #dc2626,0 0 20px #dc2626;}50%{text-shadow:0 0 20px #ff1493,0 0 40px #dc2626,0 0 60px rgba(220,38,38,0.4);}}
+@keyframes jjkSlotSpin{0%{transform:translateY(0);}100%{transform:translateY(-100%);}}
+@keyframes profileCardIn{0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes profileAvatarPulse{0%,100%{box-shadow:0 0 0 0 var(--profile-aura,rgba(0,212,255,0.4));}50%{box-shadow:0 0 0 14px transparent;}}
+@keyframes profileStatCount{0%{opacity:0;transform:translateY(8px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes holographicShift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+@keyframes scanline{0%{transform:translateY(-100%);}100%{transform:translateY(100vh);}}
+@keyframes badgeUnlock{0%{transform:scale(0) rotate(-20deg);opacity:0;}60%{transform:scale(1.15) rotate(4deg);}100%{transform:scale(1) rotate(0deg);opacity:1;}}
+
+/* ── JJK PAGE THEME ──────────────────────────────────────────────────────── */
+#page-jjk{
+    --jjk-red:#dc2626;--jjk-blue:#60a5fa;--jjk-purple:#c084fc;
+    --jjk-gold:#fbbf24;--jjk-teal:#2dd4bf;--jjk-pink:#f472b6;
+    background:linear-gradient(160deg,rgba(15,5,20,0.98) 0%,rgba(6,14,26,0.99) 50%,rgba(30,10,10,0.98) 100%);
+}
+#page-jjk .page-title{background:linear-gradient(90deg,#dc2626,#f472b6,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#page-jjk .page-sub{color:rgba(220,38,38,0.5);letter-spacing:4px;}
+
+/* ── JJK BANNER ─────────────────────────────────────────────────────────── */
+.jjk-banner{background:linear-gradient(135deg,rgba(30,5,5,0.92),rgba(15,5,30,0.92));border:1px solid rgba(220,38,38,0.25);border-radius:16px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden;backdrop-filter:blur(4px);}
+.jjk-banner::before{content:'呪術廻戦';position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.03;color:#fff;font-weight:900;pointer-events:none;}
+.jjk-banner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(220,38,38,0.4),rgba(192,132,252,0.4),transparent);}
+.jjk-banner-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;letter-spacing:3px;background:linear-gradient(90deg,#dc2626,#f472b6,#c084fc,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.jjk-banner-sub{font-size:11px;color:rgba(192,232,255,0.45);letter-spacing:3px;}
+.jjk-current-rank-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.jjk-grade-badge{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;padding:2px 8px;border-radius:4px;background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);color:#f87171;}
+
+/* ── JJK TABS ───────────────────────────────────────────────────────────── */
+.jjk-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+.jjk-tab{padding:8px 18px;background:rgba(15,5,20,0.8);border:1px solid rgba(220,38,38,0.2);border-radius:8px;color:rgba(248,113,113,0.5);font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1.5px;cursor:pointer;transition:all .2s;}
+.jjk-tab:hover{border-color:rgba(220,38,38,0.5);color:rgba(248,113,113,0.8);background:rgba(220,38,38,0.06);}
+.jjk-tab.active{background:rgba(220,38,38,0.12);border-color:rgba(220,38,38,0.6);color:#f87171;box-shadow:0 0 12px rgba(220,38,38,0.15);}
+.jjk-section{display:none;}
+.jjk-section.active{display:block;animation:profileCardIn .3s ease;}
+
+/* ── JJK RANK GRID ──────────────────────────────────────────────────────── */
+.jjk-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;}
+.jjk-rank-card{background:rgba(10,5,20,0.85);border:1px solid rgba(100,50,50,0.3);border-radius:14px;padding:20px;text-align:center;position:relative;overflow:hidden;cursor:default;transition:all .3s;}
+.jjk-rank-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(220,38,38,0.03));pointer-events:none;}
+.jjk-rank-card:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,0.5);}
+.jjk-rank-card.jjk-locked{opacity:0.55;filter:grayscale(0.3);}
+.jjk-rank-card.jjk-current{border-width:2px;}
+.jjk-rank-card .jjk-current-tag{position:absolute;top:10px;right:10px;font-size:8px;font-family:'Orbitron',sans-serif;letter-spacing:1px;padding:2px 7px;background:rgba(220,38,38,0.2);border:1px solid rgba(220,38,38,0.4);color:#f87171;border-radius:4px;}
+.jjk-char-name{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px;}
+.jjk-char-grade{font-size:10px;letter-spacing:2px;opacity:0.6;margin-bottom:10px;}
+.jjk-char-price{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--gold,#ffd700);margin-bottom:10px;}
+.jjk-char-desc{font-size:10px;color:rgba(192,232,255,0.5);line-height:1.6;margin-bottom:12px;min-height:40px;}
+.jjk-char-perks{font-size:10px;color:rgba(192,232,255,0.4);line-height:1.8;margin-bottom:14px;text-align:left;}
+.jjk-buy-btn{width:100%;padding:9px;border:none;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1.5px;cursor:pointer;transition:all .2s;}
+.jjk-buy-btn.available{background:linear-gradient(135deg,#dc2626,#f87171);color:#fff;}
+.jjk-buy-btn.available:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(220,38,38,0.4);}
+.jjk-buy-btn:disabled{opacity:0.45;cursor:not-allowed;}
+
+/* ── JJK GAMES ──────────────────────────────────────────────────────────── */
+.jjk-games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+.jjk-game-card{background:rgba(10,5,20,0.85);border:1px solid rgba(100,50,100,0.25);border-radius:14px;padding:22px;transition:border-color .2s;position:relative;overflow:hidden;}
+.jjk-game-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);opacity:0;transition:opacity .2s;}
+.jjk-game-card:hover{border-color:rgba(220,38,38,0.4);}
+.jjk-game-card:hover::after{opacity:1;}
+.jjk-game-title{font-family:'Orbitron',sans-serif;font-size:13px;color:#f87171;letter-spacing:2px;margin-bottom:4px;}
+.jjk-game-sub{font-size:10px;color:rgba(192,232,255,0.4);letter-spacing:1.5px;margin-bottom:14px;}
+.jjk-bet-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.jjk-bet-input{flex:1;background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.2);border-radius:8px;padding:8px 12px;color:#c0e8ff;font-size:12px;outline:none;transition:border-color .2s;}
+.jjk-bet-input:focus{border-color:rgba(220,38,38,0.5);box-shadow:0 0 10px rgba(220,38,38,0.1);}
+.jjk-game-btn{padding:9px 18px;background:linear-gradient(135deg,rgba(220,38,38,0.8),rgba(248,113,113,0.6));border:none;border-radius:8px;color:#fff;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.jjk-game-btn:hover{box-shadow:0 4px 16px rgba(220,38,38,0.4);transform:translateY(-1px);}
+.jjk-game-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.jjk-result-box{min-height:48px;border-radius:8px;padding:10px 14px;font-size:11px;text-align:center;line-height:1.7;margin-top:8px;border:1px solid transparent;transition:all .3s;}
+.jjk-result-win{background:rgba(0,255,157,0.08);border-color:rgba(0,255,157,0.25);color:#00ff9d;}
+.jjk-result-lose{background:rgba(220,38,38,0.08);border-color:rgba(220,38,38,0.25);color:#f87171;}
+.jjk-result-neutral{background:rgba(0,212,255,0.06);border-color:rgba(0,212,255,0.2);color:rgba(192,232,255,0.7);}
+
+/* Domain options */
+.domain-options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px;}
+.domain-opt{padding:10px 6px;border-radius:8px;border:1px solid rgba(100,50,100,0.3);cursor:pointer;text-align:center;transition:all .2s;font-size:9px;}
+.domain-opt:hover{transform:scale(1.04);}
+.domain-opt.selected{border-width:2px;box-shadow:0 0 12px currentColor;}
+.domain-opt.d-shrine{background:rgba(220,38,38,0.1);color:#f87171;border-color:rgba(220,38,38,0.3);}
+.domain-opt.d-shadow{background:rgba(59,130,246,0.1);color:#60a5fa;border-color:rgba(59,130,246,0.3);}
+.domain-opt.d-void{background:rgba(0,212,255,0.08);color:#fff;border-color:rgba(0,212,255,0.5);}
+.domain-opt-emoji{font-size:22px;display:block;margin-bottom:4px;}
+.domain-opt-name{font-family:'Orbitron',sans-serif;letter-spacing:1px;font-size:8px;}
+.domain-opt-mult{font-size:10px;font-weight:700;margin-top:2px;}
+
+/* Slots */
+.slot-reels{display:flex;gap:6px;justify-content:center;margin-bottom:12px;overflow:hidden;height:70px;border-radius:10px;background:rgba(0,0,0,0.3);border:1px solid rgba(100,50,100,0.3);}
+.slot-reel{flex:1;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
+.slot-reel-inner{display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .5s cubic-bezier(.4,0,.2,1);}
+.slot-reel-item{font-size:28px;line-height:1;padding:4px;}
+
+/* Finger hunt */
+.finger-boxes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px;}
+.finger-box{aspect-ratio:1;border-radius:8px;background:rgba(220,38,38,0.1);border:2px solid rgba(220,38,38,0.2);display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;transition:all .2s;}
+.finger-box:hover{background:rgba(220,38,38,0.2);border-color:rgba(220,38,38,0.5);transform:scale(1.06);}
+.finger-box.revealed{cursor:default;animation:jjkFingerPulse 1s ease;}
+.finger-box.revealed.correct{background:rgba(0,255,157,0.12);border-color:rgba(0,255,157,0.5);}
+.finger-box.revealed.wrong{background:rgba(220,38,38,0.08);border-color:rgba(220,38,38,0.2);}
+
+/* Curse levels */
+.curse-levels{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px;}
+.curse-lvl-btn{padding:10px 4px;border-radius:8px;background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.25);color:#a78bfa;font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;}
+.curse-lvl-btn:hover{background:rgba(124,58,237,0.2);border-color:rgba(124,58,237,0.5);}
+.curse-lvl-btn.selected{background:rgba(124,58,237,0.25);border-color:#a78bfa;box-shadow:0 0 10px rgba(124,58,237,0.3);}
+
+/* Battle */
+.battle-field{background:rgba(0,0,0,0.3);border-radius:10px;border:1px solid rgba(220,38,38,0.2);padding:14px;margin-bottom:10px;min-height:80px;display:flex;align-items:center;justify-content:space-around;}
+.battle-char{text-align:center;flex:1;}
+.battle-char-emoji{font-size:36px;display:block;margin-bottom:4px;}
+.battle-char-name{font-size:9px;color:rgba(192,232,255,0.5);font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+.battle-vs{font-family:'Orbitron',sans-serif;color:rgba(220,38,38,0.7);font-size:14px;font-weight:900;}
+.battle-hp{height:4px;border-radius:2px;background:rgba(255,255,255,0.1);margin-top:5px;position:relative;overflow:hidden;}
+.battle-hp-fill{height:100%;background:linear-gradient(90deg,#dc2626,#f87171);border-radius:2px;transition:width .4s;}
+
+/* ── JJK PRIVILEGES ─────────────────────────────────────────────────────── */
+.jjk-privilege-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.jjk-priv-card{background:rgba(10,5,20,0.8);border:1px solid rgba(100,50,100,0.25);border-radius:12px;padding:18px;transition:all .2s;}
+.jjk-priv-card:hover{transform:translateY(-2px);}
+.jjk-priv-card.unlocked{border-color:rgba(0,255,157,0.3);background:rgba(0,255,157,0.02);}
+.jjk-priv-card.locked{opacity:0.5;}
+.jjk-priv-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.jjk-priv-emoji{font-size:24px;}
+.jjk-priv-title{font-family:'Orbitron',sans-serif;font-size:11px;color:#f87171;letter-spacing:1.5px;}
+.jjk-priv-req{font-size:9px;color:rgba(192,232,255,0.35);letter-spacing:1px;margin-top:1px;}
+.jjk-priv-desc{font-size:11px;color:rgba(192,232,255,0.55);line-height:1.7;}
+.jjk-priv-status{font-size:9px;margin-top:8px;padding:3px 8px;border-radius:4px;display:inline-block;font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+.jjk-priv-status.on{background:rgba(0,255,157,0.1);color:#00ff9d;border:1px solid rgba(0,255,157,0.25);}
+.jjk-priv-status.off{background:rgba(220,38,38,0.1);color:#f87171;border:1px solid rgba(220,38,38,0.25);}
+
+/* ── JJK STATS BAR ──────────────────────────────────────────────────────── */
+.jjk-stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.jjk-stat-card{background:rgba(10,5,20,0.8);border:1px solid rgba(220,38,38,0.15);border-radius:10px;padding:12px;text-align:center;transition:border-color .2s;}
+.jjk-stat-card:hover{border-color:rgba(220,38,38,0.35);}
+.jjk-stat-label{font-size:9px;color:rgba(220,38,38,0.5);letter-spacing:2px;margin-bottom:4px;font-family:'Orbitron',sans-serif;}
+.jjk-stat-val{font-family:'Orbitron',sans-serif;font-size:15px;color:#f87171;}
+
+/* ── JJK MARKET ─────────────────────────────────────────────────────────── */
+.jjk-market-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:20px;}
+.jjk-market-card{background:rgba(10,5,20,0.82);border:1px solid rgba(100,50,100,0.25);border-radius:12px;padding:16px;text-align:center;transition:all .25s;position:relative;overflow:hidden;}
+.jjk-market-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);}
+.jjk-market-card:hover{border-color:rgba(220,38,38,0.4);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,0.4);}
+.jjk-market-name{font-size:12px;font-weight:700;color:#c0e8ff;margin-bottom:4px;}
+.jjk-market-desc{font-size:10px;color:rgba(192,232,255,0.45);line-height:1.6;margin-bottom:10px;}
+.jjk-market-price{font-family:'Orbitron',sans-serif;font-size:11px;color:#ffd700;margin-bottom:10px;}
+.jjk-market-btn{width:100%;padding:8px;border:none;border-radius:7px;background:linear-gradient(135deg,rgba(220,38,38,0.7),rgba(248,113,113,0.5));color:#fff;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;cursor:pointer;transition:all .2s;}
+.jjk-market-btn:hover{box-shadow:0 4px 14px rgba(220,38,38,0.35);transform:translateY(-1px);}
+.jjk-market-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+/* ── JJK ACHIEVEMENTS ───────────────────────────────────────────────────── */
+.jjk-ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+.jjk-ach-card{background:rgba(10,5,20,0.8);border:1px solid rgba(100,50,100,0.2);border-radius:10px;padding:14px;display:flex;gap:12px;align-items:flex-start;transition:all .2s;}
+.jjk-ach-card:hover{border-color:rgba(220,38,38,0.3);transform:translateY(-2px);}
+.jjk-ach-card.ach-done{border-color:rgba(251,191,36,0.35);background:rgba(251,191,36,0.04);}
+.jjk-ach-card.ach-done{animation:badgeUnlock .5s ease;}
+.jjk-ach-emoji{font-size:28px;flex-shrink:0;}
+.jjk-ach-info{flex:1;}
+.jjk-ach-name{font-size:11px;font-weight:700;color:#c0e8ff;margin-bottom:2px;}
+.jjk-ach-desc{font-size:10px;color:rgba(192,232,255,0.45);line-height:1.5;margin-bottom:4px;}
+.jjk-ach-reward{font-size:10px;color:#ffd700;}
+.jjk-ach-done-tag{font-size:8px;color:#fbbf24;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.25);border-radius:3px;padding:1px 6px;letter-spacing:1px;font-family:'Orbitron',sans-serif;}
+.jjk-secondary-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-size:10px;margin-left:6px;vertical-align:middle;}
+.jjk-fund-tag{font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.3);color:#f87171;font-family:'Orbitron',sans-serif;letter-spacing:1px;margin-left:6px;}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PROFILE — Complete Overhaul
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Profile page theme */
+#page-perfil{background:linear-gradient(160deg,rgba(6,14,26,0.99),rgba(10,20,40,0.99));}
+#page-perfil .page-title{background:linear-gradient(90deg,#00d4ff,#00ffaa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* Profile Header — card-style identity */
+.profile-header{
+    background:linear-gradient(135deg,rgba(10,20,40,0.95),rgba(8,18,34,0.95));
+    border:1px solid rgba(0,212,255,0.2);
+    border-radius:20px;
+    padding:32px;
+    display:flex;
+    align-items:center;
+    gap:28px;
+    margin-bottom:24px;
+    position:relative;
+    overflow:hidden;
+    animation:profileCardIn .4s ease;
+    backdrop-filter:blur(6px);
+}
+.profile-header::before{
+    content:'';position:absolute;top:-60px;right:-60px;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(0,212,255,0.07),transparent 70%);
+    pointer-events:none;
+}
+.profile-header::after{
+    content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(0,212,255,0.3),rgba(0,255,170,0.2),transparent);
+}
+
+/* Scanline effect on header */
+.profile-header .profile-scanline{
+    position:absolute;top:0;left:0;width:100%;height:2px;
+    background:rgba(0,212,255,0.08);animation:scanline 4s linear infinite;
+    pointer-events:none;
+}
+
+/* Avatar — holographic circle */
+.profile-avatar{
+    width:100px;height:100px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 35%,rgba(0,212,255,0.18),rgba(0,0,0,0.4));
+    border:2px solid rgba(0,212,255,0.5);
+    display:flex;align-items:center;justify-content:center;
+    font-size:46px;
+    box-shadow:0 0 0 0 rgba(0,212,255,0.4),0 0 30px rgba(0,212,255,0.15),inset 0 0 20px rgba(0,212,255,0.05);
+    flex-shrink:0;
+    position:relative;
+    animation:profileAvatarPulse 3s ease-in-out infinite;
+    transition:border-color .3s, box-shadow .3s;
+}
+.profile-avatar::before{
+    content:'';position:absolute;inset:-4px;border-radius:50%;
+    border:1px solid rgba(0,212,255,0.15);
+}
+.profile-avatar::after{
+    content:'';position:absolute;inset:-8px;border-radius:50%;
+    border:1px dashed rgba(0,212,255,0.08);
+    animation:jjkGojoInfinity 4s linear infinite;
+}
+.profile-avatar .vip-crown{
+    position:absolute;top:-12px;right:-4px;
+    font-size:22px;
+    filter:drop-shadow(0 0 8px rgba(255,215,0,0.9));
+}
+
+/* Apply rank colors to avatar glow */
+.profile-avatar[data-rank="zeus"]{--profile-aura:rgba(255,215,0,0.5);border-color:rgba(255,215,0,0.6);}
+.profile-avatar[data-rank="hades"]{--profile-aura:rgba(157,78,221,0.5);border-color:rgba(157,78,221,0.6);}
+.profile-avatar[data-rank="poseidon"]{--profile-aura:rgba(0,212,255,0.5);}
+.profile-avatar[data-rank="gojo"]{--profile-aura:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.8);box-shadow:0 0 30px rgba(0,212,255,0.4),0 0 60px rgba(255,255,255,0.1);}
+.profile-avatar[data-rank="sukuna"]{--profile-aura:rgba(220,38,38,0.6);border-color:rgba(220,38,38,0.7);}
+
+/* Profile info text */
+.profile-info{flex:1;}
+.profile-nick{
+    font-family:'Orbitron',sans-serif;
+    font-size:26px;font-weight:900;
+    color:#00d4ff;
+    letter-spacing:3px;
+    margin-bottom:8px;
+    text-shadow:0 0 20px rgba(0,212,255,0.35);
+    transition:color .3s;
+}
+.profile-bio-display{
+    font-size:11px;color:rgba(192,232,255,0.45);
+    font-style:italic;letter-spacing:.5px;
+    margin-bottom:10px;min-height:16px;
+}
+.profile-rank-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.profile-since{font-size:10px;color:rgba(0,212,255,0.3);letter-spacing:1.5px;}
+
+/* Account number block */
+.profile-account-block{text-align:right;min-width:140px;}
+.profile-account-label{font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(0,212,255,0.35);letter-spacing:2px;margin-bottom:4px;}
+.profile-account-num{
+    font-family:'Orbitron',sans-serif;font-size:12px;
+    color:rgba(192,232,255,0.5);letter-spacing:1px;
+    background:rgba(0,212,255,0.04);
+    border:1px solid rgba(0,212,255,0.1);
+    border-radius:6px;padding:4px 10px;
+}
+
+/* JJK rank badge on profile */
+.profile-jjk-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 12px;border-radius:6px;
+    font-size:10px;font-family:'Orbitron',sans-serif;
+    letter-spacing:1px;
+    background:rgba(220,38,38,0.1);
+    border:1px solid rgba(220,38,38,0.25);
+    color:#f87171;
+    margin-left:4px;
+}
+
+/* ── STAT BOXES — redesigned ────────────────────────────────────────────── */
+.profile-stats-row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:12px;
+    margin-bottom:24px;
+}
+.profile-stat-box{
+    background:linear-gradient(135deg,rgba(10,20,40,0.9),rgba(6,14,26,0.9));
+    border:1px solid rgba(0,212,255,0.12);
+    border-radius:14px;
+    padding:18px 14px;
+    text-align:center;
+    transition:all .25s;
+    position:relative;
+    overflow:hidden;
+    animation:profileStatCount .4s ease both;
+}
+.profile-stat-box::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(0,212,255,0.3),transparent);
+    opacity:0;transition:opacity .2s;
+}
+.profile-stat-box:hover{
+    border-color:rgba(0,212,255,0.3);
+    transform:translateY(-4px);
+    box-shadow:0 8px 24px rgba(0,0,0,0.35),0 0 20px rgba(0,212,255,0.06);
+}
+.profile-stat-box:hover::before{opacity:1;}
+.profile-stat-icon{font-size:24px;margin-bottom:10px;display:block;}
+.profile-stat-val{
+    font-family:'Orbitron',sans-serif;
+    font-size:20px;font-weight:700;
+    color:#00d4ff;
+    margin-bottom:6px;
+    line-height:1;
+}
+.profile-stat-val.gold{color:#ffd700;}
+.profile-stat-val.green{color:#00ff9d;}
+.profile-stat-label{
+    font-size:8px;
+    color:rgba(0,212,255,0.35);
+    letter-spacing:2px;
+    font-family:'Orbitron',sans-serif;
+}
+
+/* ── EDIT PROFILE CARD ──────────────────────────────────────────────────── */
+#page-perfil .panel-card{
+    background:linear-gradient(135deg,rgba(10,20,40,0.9),rgba(6,14,26,0.9));
+    border-color:rgba(0,212,255,0.12);
+    transition:border-color .2s;
+}
+#page-perfil .panel-card:hover{border-color:rgba(0,212,255,0.22);}
+#page-perfil .panel-card-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:11px;letter-spacing:3px;
+    color:rgba(0,212,255,0.7);
+    padding-bottom:12px;
+    border-bottom:1px solid rgba(0,212,255,0.1);
+    margin-bottom:16px;
+}
+
+/* Avatar picker — larger buttons */
+#avatar-picker{gap:8px;flex-wrap:wrap;}
+#avatar-picker .btn{font-size:22px;padding:8px 10px;width:46px;height:46px;border-radius:10px;transition:all .2s;}
+#avatar-picker .btn:hover{transform:scale(1.12);border-color:rgba(0,212,255,0.5);}
+#avatar-picker .btn.active-avatar{border-color:#00d4ff;background:rgba(0,212,255,0.12);box-shadow:0 0 12px rgba(0,212,255,0.3);}
+
+/* ── VAULT CARD ─────────────────────────────────────────────────────────── */
+.vault-card{
+    background:linear-gradient(135deg,rgba(6,14,26,0.95),rgba(13,32,64,0.95));
+    border:1px solid rgba(0,212,255,0.15);
+    border-radius:18px;
+    padding:28px 20px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+.vault-card::before{
+    content:'🔐';position:absolute;right:-10px;bottom:-10px;
+    font-size:90px;opacity:0.04;transform:rotate(-15deg);pointer-events:none;
+}
+.vault-icon{font-size:40px;margin-bottom:10px;display:block;filter:drop-shadow(0 0 10px rgba(0,212,255,0.3));}
+.vault-balance{
+    font-family:'Orbitron',sans-serif;font-size:28px;
+    font-weight:900;color:#ffd700;
+    text-shadow:0 0 20px rgba(255,215,0,0.3);
+    margin-bottom:4px;
+}
+.vault-label{font-size:9px;color:rgba(0,212,255,0.4);letter-spacing:3px;margin-bottom:12px;}
+.vault-locked-badge{
+    font-size:10px;color:rgba(192,232,255,0.4);
+    background:rgba(0,212,255,0.05);
+    border:1px solid rgba(0,212,255,0.1);
+    border-radius:6px;padding:4px 12px;
+    display:inline-block;margin-bottom:14px;
+}
+
+/* ── SIDEBAR AVATAR (mejorado) ──────────────────────────────────────────── */
+.sb-avatar{
+    width:36px;height:36px;border-radius:50%;
+    background:rgba(0,212,255,0.08);
+    border:1.5px solid rgba(0,212,255,0.3);
+    display:flex;align-items:center;justify-content:center;
+    font-size:17px;flex-shrink:0;
+    transition:border-color .2s, box-shadow .2s;
+}
+.sb-avatar:hover{border-color:rgba(0,212,255,0.6);box-shadow:0 0 12px rgba(0,212,255,0.2);}
+
+/* ── MOBILE RESPONSIVE ──────────────────────────────────────────────────── */
+@media(max-width:640px){
+    .profile-header{flex-direction:column;text-align:center;padding:24px 16px;gap:16px;}
+    .profile-account-block{text-align:center;}
+    .profile-avatar{width:80px;height:80px;font-size:36px;}
+    .profile-nick{font-size:20px;}
+    .profile-stats-row{grid-template-columns:repeat(2,1fr);}
+    .jjk-rank-grid{grid-template-columns:1fr 1fr;}
+    .jjk-games-grid{grid-template-columns:1fr;}
+    .jjk-stats-bar{grid-template-columns:1fr 1fr 1fr;}
+    .domain-options{grid-template-columns:1fr 1fr 1fr;}
+}
+@media(max-width:380px){
+    .jjk-rank-grid{grid-template-columns:1fr;}
+    .profile-stats-row{grid-template-columns:repeat(2,1fr);}
+}
