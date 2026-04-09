@@ -2746,6 +2746,33 @@ body.loaded { overflow-x:hidden; }
     <div class="page" id="page-leaderboard">
       <div class="page-title">🏆 Ranking de Riqueza</div>
       <div class="page-sub">// ¿QUIÉN TIENE MÁS PAPUS COINS? //</div>
+
+      <!-- ══ BANNER DEL RANKING ══ -->
+      <div id="ranking-banner-wrap" style="margin-bottom:18px;border-radius:14px;overflow:hidden;position:relative;cursor:pointer;box-shadow:0 0 30px rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.15);">
+        <img id="ranking-banner-img" src="" alt="Banner del Ranking"
+          style="width:100%;max-height:160px;object-fit:cover;display:block;transition:opacity .3s;"
+          onerror="this.style.display='none'" />
+        <!-- Botón cambiar banner -->
+        <button onclick="toggleBannerPicker()" title="Cambiar banner"
+          style="position:absolute;bottom:8px;right:8px;background:rgba(6,14,26,0.85);border:1px solid rgba(0,212,255,0.4);color:var(--primary);border-radius:8px;padding:5px 12px;font-size:10px;letter-spacing:1px;font-family:'Orbitron',sans-serif;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s;"
+          onmouseover="this.style.background='rgba(0,212,255,0.15)'" onmouseout="this.style.background='rgba(6,14,26,0.85)'">
+          🖼️ BANNER
+        </button>
+      </div>
+
+      <!-- ══ SELECTOR DE BANNERS ══ -->
+      <div id="banner-picker" style="display:none;margin-bottom:20px;background:rgba(17,34,64,0.7);border:1px solid rgba(0,212,255,0.15);border-radius:14px;padding:16px;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--primary);margin-bottom:12px;text-align:center;">ELIGE TU BANNER</div>
+        <div id="banner-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;">
+          <!-- Las cards de banner se generan por JS -->
+        </div>
+        <div style="text-align:center;margin-top:12px;">
+          <button onclick="setBanner(null)" style="background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.3);color:#ff4466;border-radius:8px;padding:6px 18px;font-size:10px;letter-spacing:1px;font-family:'Orbitron',sans-serif;cursor:pointer;">
+            ✕ QUITAR BANNER
+          </button>
+        </div>
+      </div>
+
       <div class="lb-list" id="lb-list">
         <div class="empty-msg">Cargando ranking...</div>
       </div>
@@ -12553,6 +12580,68 @@ window.playBattle=async function(){
     await updateJJKStats({battleWins:bw,gamesPlayed:gp,maxBet:Math.max(st.maxBet||0,bet)});
     btn.disabled=false;bi.value='';await checkJJKAchievements();
 };
+/* ══ SISTEMA DE BANNERS DEL RANKING ══ */
+(function(){
+  var BANNERS=[
+    {id:'shiroko', label:'Shiroko',   file:'2026-04-09_08-35-30.png'},
+    {id:'disarm',  label:'Disarm',    file:'2026-04-09_08-37-01.png'},
+    {id:'neon',    label:'Neon City', file:'2026-04-09_08-37-06.webp'},
+    {id:'zodiac',  label:'Zodiac',    file:'2026-04-09_08-37-25.webp'},
+    {id:'eyes',    label:'Blue Eyes', file:'b1db1d27-7ecd-4ed0-ba02-106fb1c7dea9.jpeg'},
+    {id:'clouds',  label:'Pixel Sky', file:'b3102e96-5369-4d2f-b3bf-a64d4f48e897.jpeg'},
+  ];
+  var SK='papusbank_ranking_banner_v1';
+  function get(){try{return localStorage.getItem(SK);}catch(e){return null;}}
+  function save(id){try{if(id)localStorage.setItem(SK,id);else localStorage.removeItem(SK);}catch(e){}}
+  window.applyRankingBanner=function(id){
+    var wrap=document.getElementById('ranking-banner-wrap'),img=document.getElementById('ranking-banner-img');
+    if(!wrap||!img)return;
+    if(!id){img.style.display='none';wrap.style.border='none';wrap.style.boxShadow='none';return;}
+    var b=BANNERS.find(function(x){return x.id===id;});
+    if(!b)return;
+    img.src=b.file;img.style.display='block';
+    wrap.style.border='1px solid rgba(0,212,255,0.15)';
+    wrap.style.boxShadow='0 0 30px rgba(0,212,255,0.15)';
+  };
+  window.setBanner=function(id){
+    save(id);window.applyRankingBanner(id);
+    document.getElementById('banner-picker').style.display='none';
+    document.querySelectorAll('.banner-card').forEach(function(c){
+      var act=c.dataset.bid===id;
+      c.style.border=act?'2px solid var(--primary)':'1px solid rgba(0,212,255,0.12)';
+      c.style.boxShadow=act?'0 0 15px rgba(0,212,255,0.3)':'none';
+    });
+    if(typeof window.showToast==='function')window.showToast(id?'🖼️ Banner aplicado!':'🖼️ Banner quitado','#00d4ff');
+  };
+  window.toggleBannerPicker=function(){
+    var picker=document.getElementById('banner-picker');if(!picker)return;
+    var open=picker.style.display!=='none';
+    picker.style.display=open?'none':'block';
+    if(!open)_buildGrid();
+  };
+  function _buildGrid(){
+    var grid=document.getElementById('banner-grid');if(!grid||grid.children.length>0)return;
+    var cur=get();grid.innerHTML='';
+    BANNERS.forEach(function(b){
+      var act=b.id===cur,card=document.createElement('div');
+      card.className='banner-card';card.dataset.bid=b.id;
+      card.style.cssText='border-radius:10px;overflow:hidden;cursor:pointer;transition:all .2s;position:relative;'+(act?'border:2px solid var(--primary);box-shadow:0 0 15px rgba(0,212,255,0.3);':'border:1px solid rgba(0,212,255,0.12);');
+      card.innerHTML='<img src="'+b.file+'" alt="'+b.label+'" style="width:100%;height:70px;object-fit:cover;display:block;"/>'
+        +'<div style="background:rgba(6,14,26,0.85);padding:6px 8px;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1px;color:var(--primary);display:flex;justify-content:space-between;align-items:center;">'
+        +'<span>'+b.label.toUpperCase()+'</span>'+(act?'<span style="color:var(--green)">✔ ACTIVO</span>':'')+'</div>';
+      card.onclick=function(){window.setBanner(b.id);};
+      card.onmouseover=function(){if(b.id!==get())this.style.border='1px solid rgba(0,212,255,0.4)';};
+      card.onmouseout=function(){if(b.id!==get())this.style.border='1px solid rgba(0,212,255,0.12)';};
+      grid.appendChild(card);
+    });
+  }
+  setTimeout(function(){
+    var saved=get();
+    if(saved)window.applyRankingBanner(saved);
+    else{var img=document.getElementById('ranking-banner-img');if(img)img.style.display='none';}
+  },200);
+})();
+
 var _origDoLogin_jjk=window.doLogin;
 window.doLogin=async function(){await _origDoLogin_jjk.apply(this,arguments);if(currentUser&&currentUser.jjkRank)syncJJKBonuses();};
 
