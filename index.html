@@ -6920,8 +6920,10 @@ async function loadLeaderboard() {
             const userRankData = RANKS[userRankKey] || RANKS['mortal_m'];
             const avatar = acc.avatar || (acc.vip ? '💎' : userRankData.emoji);
             
-            var myBannerHTML = '';
+            var myBannerStyle = '';
+            var myItemId = '';
             if (isMine) {
+                myItemId = 'id="my-own-lb-item"';
                 var savedBannerFile = '';
                 try {
                     var bannerId = localStorage.getItem('papusbank_ranking_banner_v1');
@@ -6930,14 +6932,16 @@ async function loadLeaderboard() {
                         if (bb) savedBannerFile = bb.file;
                     }
                 }catch(e){}
-                myBannerHTML = '<img id="my-lb-banner-img" src="' + savedBannerFile + '" style="height:36px;width:108px;object-fit:cover;border-radius:8px;border:1px solid rgba(0,212,255,0.3);box-shadow:0 0 10px rgba(0,212,255,0.1);display:' + (savedBannerFile ? 'block' : 'none') + ';">';
+                if (savedBannerFile) {
+                    myBannerStyle = 'background: linear-gradient(rgba(10,26,46,0.65), rgba(6,14,26,0.92)), url(\\'' + savedBannerFile + '\\') center/cover !important; border-color:var(--primary);';
+                } else {
+                    myBannerStyle = 'border-color:var(--primary);';
+                }
             }
 
-            html += '<div class="lb-item" style="' + (isMine ? 'border-color:var(--primary);' : '') + '">' +
+            html += '<div ' + myItemId + ' class="lb-item" style="' + myBannerStyle + '">' +
                 '<div class="lb-rank ' + rankCls + '">' + medal + '</div>' +
-                '<div style="font-size:26px;display:flex;align-items:center;gap:12px;">' +
-                    '<div>' + avatar + '</div>' + myBannerHTML +
-                '</div>' +
+                '<div style="font-size:26px;">' + avatar + '</div>' +
                 '<div class="lb-info">' +
                     '<div class="lb-name" style="' + (userRankData.level >= 5 ? 'color:' + userRankData.color + ';text-shadow:0 0 8px ' + userRankData.color + '55;' : '') + '">' +
                         escHTML(nick) + (isMine ? ' <span style="color:var(--primary);font-size:10px;">(tú)</span>' : '') +
@@ -12608,13 +12612,15 @@ window.playBattle=async function(){
   function save(id){try{if(id)localStorage.setItem(SK,id);else localStorage.removeItem(SK);}catch(e){}}
   window.BANNERS=BANNERS;
   window.applyRankingBanner=function(id){
-    var img=document.getElementById('my-lb-banner-img');
-    if(!img)return;
-    if(!id){img.style.display='none';return;}
+    var lbItem = document.getElementById('my-own-lb-item');
+    if(!lbItem) return;
+    if(!id) {
+        lbItem.style.cssText = 'border-color:var(--primary);';
+        return;
+    }
     var b=BANNERS.find(function(x){return x.id===id;});
-    if(!b)return;
-    img.src=b.file;
-    img.style.display='block';
+    if(!b) return;
+    lbItem.style.setProperty('background', 'linear-gradient(rgba(10,26,46,0.65), rgba(6,14,26,0.92)), url("' + b.file + '") center/cover', 'important');
   };
   window.setBanner=function(id){
     save(id);window.applyRankingBanner(id);
