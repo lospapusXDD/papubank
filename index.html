@@ -2755,10 +2755,7 @@ body.loaded { overflow-x:hidden; }
           🖼️ CAMBIAR BANNER
         </button>
       </div>
-      <div id="ranking-banner-wrap" style="margin-bottom:18px;border-radius:14px;overflow:hidden;position:relative;box-shadow:0 0 30px rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.15);display:none;">
-        <img id="ranking-banner-img" src="" alt="Banner"
-          style="width:100%;max-height:160px;object-fit:cover;display:block;" />
-      </div>
+      <!-- Banner del ranking movido dentro de los perfiles lb-item -->
 
       <!-- ══ SELECTOR DE BANNERS ══ -->
       <div id="banner-picker" style="display:none;margin-bottom:20px;background:rgba(17,34,64,0.7);border:1px solid rgba(0,212,255,0.15);border-radius:14px;padding:16px;">
@@ -6922,9 +6919,25 @@ async function loadLeaderboard() {
             }
             const userRankData = RANKS[userRankKey] || RANKS['mortal_m'];
             const avatar = acc.avatar || (acc.vip ? '💎' : userRankData.emoji);
+            
+            var myBannerHTML = '';
+            if (isMine) {
+                var savedBannerFile = '';
+                try {
+                    var bannerId = localStorage.getItem('papusbank_ranking_banner_v1');
+                    if (bannerId && window.BANNERS) {
+                        var bb = window.BANNERS.find(function(x){return x.id===bannerId;});
+                        if (bb) savedBannerFile = bb.file;
+                    }
+                }catch(e){}
+                myBannerHTML = '<img id="my-lb-banner-img" src="' + savedBannerFile + '" style="height:36px;width:108px;object-fit:cover;border-radius:8px;border:1px solid rgba(0,212,255,0.3);box-shadow:0 0 10px rgba(0,212,255,0.1);display:' + (savedBannerFile ? 'block' : 'none') + ';">';
+            }
+
             html += '<div class="lb-item" style="' + (isMine ? 'border-color:var(--primary);' : '') + '">' +
                 '<div class="lb-rank ' + rankCls + '">' + medal + '</div>' +
-                '<div style="font-size:26px;">' + avatar + '</div>' +
+                '<div style="font-size:26px;display:flex;align-items:center;gap:12px;">' +
+                    '<div>' + avatar + '</div>' + myBannerHTML +
+                '</div>' +
                 '<div class="lb-info">' +
                     '<div class="lb-name" style="' + (userRankData.level >= 5 ? 'color:' + userRankData.color + ';text-shadow:0 0 8px ' + userRankData.color + '55;' : '') + '">' +
                         escHTML(nick) + (isMine ? ' <span style="color:var(--primary);font-size:10px;">(tú)</span>' : '') +
@@ -12593,14 +12606,15 @@ window.playBattle=async function(){
   var SK='papusbank_ranking_banner_v1';
   function get(){try{return localStorage.getItem(SK);}catch(e){return null;}}
   function save(id){try{if(id)localStorage.setItem(SK,id);else localStorage.removeItem(SK);}catch(e){}}
+  window.BANNERS=BANNERS;
   window.applyRankingBanner=function(id){
-    var wrap=document.getElementById('ranking-banner-wrap'),img=document.getElementById('ranking-banner-img');
-    if(!wrap||!img)return;
-    if(!id){wrap.style.display='none';return;}
+    var img=document.getElementById('my-lb-banner-img');
+    if(!img)return;
+    if(!id){img.style.display='none';return;}
     var b=BANNERS.find(function(x){return x.id===id;});
     if(!b)return;
     img.src=b.file;
-    wrap.style.display='block';
+    img.style.display='block';
   };
   window.setBanner=function(id){
     save(id);window.applyRankingBanner(id);
