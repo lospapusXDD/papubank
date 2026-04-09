@@ -477,54 +477,30 @@ body.loaded { overflow-x:hidden; }
 .tx-amount.system{color:var(--primary);}
 
 /* ═══════════════════════════ LEADERBOARD */
-.lb-list{display:flex;flex-direction:column;gap:12px;}
+.lb-list{display:flex;flex-direction:column;gap:10px;}
 .lb-item {
     background:var(--card-bg);
     border:1px solid var(--border);
-    border-radius:14px;
-    overflow:hidden;
-    transition:all .25s;
+    border-radius:12px;padding:14px 18px;
+    display:flex;align-items:center;gap:14px;
+    transition:all .2s;
 }
-.lb-item:hover{border-color:var(--primary);transform:translateX(4px);box-shadow:0 0 24px rgba(0,212,255,0.08);}
-.lb-item.is-mine{border-color:var(--primary);}
-/* ── Banner ── */
-.lb-banner{
-    width:100%;height:76px;
-    background:linear-gradient(135deg,#081828,#0d2040);
-    background-size:cover;background-position:center;
-    position:relative;display:flex;align-items:flex-end;
-    padding:8px 12px;
+.lb-item:hover{border-color:var(--primary);transform:translateX(4px);}
+.lb-rank{
+    font-family:'Orbitron',sans-serif;
+    font-size:18px;font-weight:900;
+    width:36px;text-align:center;flex-shrink:0;
 }
-.lb-banner::after{
-    content:'';position:absolute;inset:0;
-    background:linear-gradient(to bottom,transparent 40%,rgba(6,14,26,0.72));
-    pointer-events:none;
-}
-.lb-banner-pos{
-    font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;
-    text-shadow:0 2px 12px rgba(0,0,0,0.9);z-index:1;
-    line-height:1;
-}
-.lb-banner-pos.gold{color:var(--gold);filter:drop-shadow(0 0 8px rgba(255,215,0,0.5));}
-.lb-banner-pos.silver{color:#c0c0c0;filter:drop-shadow(0 0 6px rgba(192,192,192,0.4));}
-.lb-banner-pos.bronze{color:#cd7f32;filter:drop-shadow(0 0 6px rgba(205,127,50,0.4));}
-.lb-banner-pos.other{color:rgba(0,212,255,0.7);font-size:16px;}
-/* ── Banner preset picker ── */
-.banner-preset-btn{
-    width:38px;height:26px;border-radius:6px;cursor:pointer;
-    border:2px solid transparent;transition:all .15s;flex-shrink:0;
-}
-.banner-preset-btn:hover,.banner-preset-btn.selected{border-color:var(--primary);transform:scale(1.1);}
-/* ── Body row ── */
-.lb-body{display:flex;align-items:center;gap:14px;padding:12px 16px;}
-.lb-rank{display:none;}
+.lb-rank.gold{color:var(--gold);}
+.lb-rank.silver{color:#c0c0c0;}
+.lb-rank.bronze{color:#cd7f32;}
+.lb-rank.other{color:rgba(0,212,255,0.3);font-size:14px;}
 .lb-info{flex:1;}
 .lb-name{font-weight:700;color:var(--light);font-size:14px;}
 .lb-rank-label{font-size:10px;letter-spacing:1px;margin-top:2px;}
 .lb-balance{
     font-family:'Orbitron',sans-serif;
     font-size:16px;font-weight:700;color:var(--gold);
-    white-space:nowrap;
 }
 
 /* ═══════════════════════════ ADMIN TABLE */
@@ -3219,30 +3195,6 @@ body.loaded { overflow-x:hidden; }
               <button class="btn btn-outline btn-sm" onclick="setAvatar('💎')">💎</button>
             </div>
           </div>
-          <!-- Banner del ranking -->
-          <div class="form-group">
-            <label class="form-label">🖼 BANNER DEL RANKING</label>
-            <div style="font-size:10px;color:rgba(0,212,255,0.4);margin-bottom:8px;">
-              Aparece en la parte superior de tu card en el ranking. Pega una URL de imagen (Imgur, Discord, etc.) o elige un gradiente.
-            </div>
-            <div id="banner-preview" style="width:100%;height:68px;border-radius:10px;margin-bottom:10px;border:1px solid var(--border);background:linear-gradient(135deg,#081828,#0d2040);background-size:cover;background-position:center;transition:all .3s;"></div>
-            <input class="form-input" id="banner-url-input" type="text" placeholder="https://i.imgur.com/... o link de Discord"
-              oninput="previewBanner(this.value)" style="margin-bottom:10px;">
-            <div style="font-size:10px;color:rgba(0,212,255,0.4);letter-spacing:2px;margin-bottom:8px;">GRADIENTES</div>
-            <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;" id="banner-preset-row">
-              <div class="banner-preset-btn" data-css="linear-gradient(135deg,#1a1000,#3d2800,#1a0800)" style="background:linear-gradient(135deg,#1a1000,#3d2800)" title="Dorado" onclick="selectBannerPreset(this)"></div>
-              <div class="banner-preset-btn" data-css="linear-gradient(135deg,#001a2e,#004466,#001a2e)" style="background:linear-gradient(135deg,#001a2e,#004466)" title="Océano" onclick="selectBannerPreset(this)"></div>
-              <div class="banner-preset-btn" data-css="linear-gradient(135deg,#0d0022,#3a0066,#0d0022)" style="background:linear-gradient(135deg,#0d0022,#3a0066)" title="Morado" onclick="selectBannerPreset(this)"></div>
-              <div class="banner-preset-btn" data-css="linear-gradient(135deg,#1a0000,#440011,#1a0000)" style="background:linear-gradient(135deg,#1a0000,#440011)" title="Rojo" onclick="selectBannerPreset(this)"></div>
-              <div class="banner-preset-btn" data-css="linear-gradient(135deg,#001a00,#004400,#001a00)" style="background:linear-gradient(135deg,#001a00,#004400)" title="Verde" onclick="selectBannerPreset(this)"></div>
-              <div class="banner-preset-btn" data-css="linear-gradient(135deg,#0d1a3a,#1a0d3a,#0d2a1a)" style="background:linear-gradient(135deg,#0d1a3a,#1a0d3a,#0d2a1a)" title="Aurora" onclick="selectBannerPreset(this)"></div>
-              <div class="banner-preset-btn" data-css="linear-gradient(90deg,#00001a,#001a33,#001a1a)" style="background:linear-gradient(90deg,#00001a,#001a33,#001a1a)" title="Neon" onclick="selectBannerPreset(this)"></div>
-              <div class="banner-preset-btn" data-css="linear-gradient(135deg,#1a0d00,#331500,#0d0000)" style="background:linear-gradient(135deg,#1a0d00,#331500,#0d0000)" title="Lava" onclick="selectBannerPreset(this)"></div>
-              <div class="banner-preset-btn" data-css="linear-gradient(135deg,#08101a,#0d2040,#060e1a)" style="background:linear-gradient(135deg,#08101a,#0d2040,#060e1a)" title="Oscuro" onclick="selectBannerPreset(this)"></div>
-            </div>
-            <button class="btn btn-primary btn-full" onclick="saveBanner()">💾 Guardar banner</button>
-          </div>
-
           <div class="form-group">
             <label class="form-label">BIO (opcional)</label>
             <input class="form-input" id="profile-bio-input" type="text" maxlength="60" placeholder="algo sobre ti...">
@@ -3322,10 +3274,6 @@ body.loaded { overflow-x:hidden; }
     </div>
 
     <div class="page" id="page-jjk">
-      <!-- Cursed watermark symbols -->
-      <div class="jjk-bg-watermark" id="jjk-bg-watermark"></div>
-      <!-- Domain expansion flash overlay -->
-      <div id="domain-expand-flash"></div>
       <div class="page-title">⚡ Jujutsu Kaisen</div>
       <div class="page-sub">// HECHICEROS DEL CLAN — PODER MALDITO //</div>
       <div class="jjk-banner">
@@ -6947,40 +6895,19 @@ async function loadLeaderboard() {
             }
             const userRankData = RANKS[userRankKey] || RANKS['mortal_m'];
             const avatar = acc.avatar || (acc.vip ? '💎' : userRankData.emoji);
-            // Banner
-            var bannerVal = acc.banner || '';
-            var bannerStyle = '';
-            if (bannerVal.startsWith('http')) {
-                bannerStyle = 'background-image:url(' + bannerVal + ');background-size:cover;background-position:center;';
-            } else if (bannerVal) {
-                bannerStyle = 'background:' + bannerVal + ';';
-            } else {
-                var defBanners = [
-                    'linear-gradient(135deg,#1a1000,#3d2800)',
-                    'linear-gradient(135deg,#0a0a1a,#1a1a2e)',
-                    'linear-gradient(135deg,#061a0d,#0a2e10)',
-                    'linear-gradient(135deg,#001a2e,#002244)',
-                    'linear-gradient(135deg,#1a001a,#2d0044)'
-                ];
-                bannerStyle = 'background:' + defBanners[idx % defBanners.length] + ';';
-            }
-            html += '<div class="lb-item' + (isMine ? ' is-mine' : '') + '">' +
-                '<div class="lb-banner" style="' + bannerStyle + '">' +
-                    '<span class="lb-banner-pos ' + rankCls + '">' + medal + '</span>' +
-                '</div>' +
-                '<div class="lb-body">' +
-                    '<div style="font-size:26px;">' + avatar + '</div>' +
-                    '<div class="lb-info">' +
-                        '<div class="lb-name" style="' + (userRankData.level >= 5 ? 'color:' + userRankData.color + ';text-shadow:0 0 8px ' + userRankData.color + '55;' : '') + '">' +
-                            escHTML(nick) + (isMine ? ' <span style="color:var(--primary);font-size:10px;">(tú)</span>' : '') +
-                        '</div>' +
-                        '<div class="lb-rank-label">' +
-                            '<span class="rank-badge ' + userRankData.cls + '" style="font-size:9px;padding:2px 8px;">' + userRankData.emoji + ' ' + userRankData.label + '</span>' +
-                            ' <span class="tag ' + tier.cls + '">' + tier.label + '</span>' +
-                        '</div>' +
+            html += '<div class="lb-item" style="' + (isMine ? 'border-color:var(--primary);' : '') + '">' +
+                '<div class="lb-rank ' + rankCls + '">' + medal + '</div>' +
+                '<div style="font-size:26px;">' + avatar + '</div>' +
+                '<div class="lb-info">' +
+                    '<div class="lb-name" style="' + (userRankData.level >= 5 ? 'color:' + userRankData.color + ';text-shadow:0 0 8px ' + userRankData.color + '55;' : '') + '">' +
+                        escHTML(nick) + (isMine ? ' <span style="color:var(--primary);font-size:10px;">(tú)</span>' : '') +
                     '</div>' +
-                    '<div class="lb-balance">' + balance.toLocaleString('es') + ' PPC</div>' +
+                    '<div class="lb-rank-label">' +
+                        '<span class="rank-badge ' + userRankData.cls + '" style="font-size:9px;padding:2px 8px;">' + userRankData.emoji + ' ' + userRankData.label + '</span>' +
+                        ' <span class="tag ' + tier.cls + '">' + tier.label + '</span>' +
+                    '</div>' +
                 '</div>' +
+                '<div class="lb-balance">' + balance.toLocaleString('es') + ' PPC</div>' +
                 '</div>';
             idx++;
         });
@@ -9087,22 +9014,6 @@ async function loadProfile() {
 
     const avatarEl = document.getElementById('profile-avatar-emoji');
     if (avatarEl) avatarEl.textContent = bankAccount.avatar || '👤';
-    // Load saved banner into preview
-    var bannerPreview = document.getElementById('banner-preview');
-    if (bannerPreview && bankAccount.banner) {
-        var bv = bankAccount.banner;
-        if (bv.startsWith('http')) {
-            bannerPreview.style.backgroundImage = 'url(' + bv + ')';
-            bannerPreview.style.backgroundSize  = 'cover';
-            bannerPreview.style.backgroundPosition = 'center';
-            bannerPreview.style.background = '';
-        } else {
-            bannerPreview.style.backgroundImage = '';
-            bannerPreview.style.background = bv;
-        }
-        var savedUrlInput = document.getElementById('banner-url-input');
-        if (savedUrlInput && bv.startsWith('http')) savedUrlInput.value = bv;
-    }
 
     if (RANKS[rankKey].level >= 3) await checkBadge('admin_buddy');
 
@@ -9147,51 +9058,6 @@ window.setAvatar = async function(emoji) {
         const el = document.getElementById('profile-avatar-emoji');
         if (el) el.textContent = emoji;
         showToast('✅ Avatar actualizado ' + emoji, '#00ff9d');
-    } catch(e) { showToast('Error: ' + e.message, '#ff4466'); }
-};
-
-window.previewBanner = function(url) {
-    const el = document.getElementById('banner-preview');
-    if (!el) return;
-    if (url && url.startsWith('http')) {
-        el.style.backgroundImage = 'url(' + url + ')';
-        el.style.backgroundSize  = 'cover';
-        el.style.backgroundPosition = 'center';
-        el.style.background = '';
-        document.querySelectorAll('.banner-preset-btn').forEach(function(b){ b.classList.remove('selected'); });
-    }
-};
-
-window.selectBannerPreset = function(el) {
-    if (!el) return;
-    var css = el.dataset.css;
-    var preview = document.getElementById('banner-preview');
-    if (preview) {
-        preview.style.backgroundImage = '';
-        preview.style.background = css;
-    }
-    document.querySelectorAll('.banner-preset-btn').forEach(function(b){ b.classList.remove('selected'); });
-    el.classList.add('selected');
-    var inp = document.getElementById('banner-url-input');
-    if (inp) inp.value = '';
-};
-
-window.saveBanner = async function() {
-    if (!window._db || !currentUser) return;
-    var url  = (document.getElementById('banner-url-input') ? document.getElementById('banner-url-input').value : '').trim();
-    var preview = document.getElementById('banner-preview');
-    var bannerValue = '';
-    if (url && url.startsWith('http')) {
-        bannerValue = url;
-    } else {
-        var sel = document.querySelector('.banner-preset-btn.selected');
-        if (sel) bannerValue = sel.dataset.css;
-        else { showToast('Elige un banner o pega una URL 🖼', '#ffa500'); return; }
-    }
-    try {
-        await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', currentUser.nick), { banner: bannerValue });
-        if (bankAccount) bankAccount.banner = bannerValue;
-        showToast('✅ Banner guardado!', '#00ff9d');
     } catch(e) { showToast('Error: ' + e.message, '#ff4466'); }
 };
 
@@ -12405,7 +12271,7 @@ window.renderJJKRanks = function() {
             btnHTML = '<button class="jjk-buy-btn available" data-jjk-buy="1" data-jjk-key="'+rank.key+'" data-jjk-price="'+rank.price+'">OBTENER — '+rank.price.toLocaleString('es')+' PPC</button>';
         }
         var gradeDot = ['','🟡','🟠','🔴','💀'][rank.gradeTier] || '';
-        return '<div class="jjk-rank-card'+(isCurrent?' jjk-current':!canAfford&&!isCurrent?' jjk-locked':'')+'" data-char="'+rank.key+'"' style="'+(isCurrent?'border-color:'+rank.color+';box-shadow:0 0 20px '+rank.color+'22;':'')+'">'
+        return '<div class="jjk-rank-card'+(isCurrent?' jjk-current':!canAfford&&!isCurrent?' jjk-locked':'')+'" style="'+(isCurrent?'border-color:'+rank.color+';box-shadow:0 0 20px '+rank.color+'22;':'')+'">'
             +(isCurrent?'<div class="jjk-current-tag">ACTIVO</div>':'')
             +'<div style="width:80px;height:80px;margin:0 auto 10px;">'+jjkSVG(rank.key)+'</div>'
             +'<div class="jjk-char-name" style="color:'+rank.color+'">'+rank.label+'</div>'
@@ -12759,145 +12625,6 @@ if (_pg?.renderer) {
     _pg.renderer.domElement.style.opacity = cfg.visible ? (cfg.opacity/100).toFixed(2) : '0';
     if (cfg.color !== 'cyan') window.setPlanetColor(cfg.color);
 }
-
-/* ═══════════════════════ JJK VISUAL ENHANCEMENTS ═══════════════════════ */
-(function(){
-  // ── Cursed watermark background ──────────────────────────────────────────
-  var JJK_SYMBOLS = ['呪','術','廻','戦','領','域','展','開','無','為','転','変','伏'];
-  function initJJKWatermark(){
-    var el = document.getElementById('jjk-bg-watermark');
-    if(!el) return;
-    el.innerHTML='';
-    var count = window.innerWidth<=480 ? 8 : 14;
-    for(var i=0;i<count;i++){
-      var s=document.createElement('span');
-      var size=Math.round(40+Math.random()*80);
-      s.textContent=JJK_SYMBOLS[Math.floor(Math.random()*JJK_SYMBOLS.length)];
-      s.style.cssText='font-size:'+size+'px;left:'+Math.round(Math.random()*90)+'%;top:'+Math.round(10+Math.random()*80)+'%;animation-duration:'+(8+Math.random()*10).toFixed(1)+'s;animation-delay:'+(-Math.random()*6).toFixed(1)+'s;';
-      el.appendChild(s);
-    }
-  }
-  document.addEventListener('DOMContentLoaded', initJJKWatermark);
-  // Re-init when JJK page becomes visible
-  var origShowPage = window.showPage;
-  if(typeof origShowPage==='function'){
-    window.showPage = function(p){
-      origShowPage.apply(this,arguments);
-      if(p==='jjk') setTimeout(initJJKWatermark,50);
-    };
-  }
-
-  // ── Win particles ─────────────────────────────────────────────────────────
-  var JJK_WIN_EMOJIS=['💰','⭐','✨','💫','🔥','💎','🎉','🌟'];
-  var JJK_BIG_WIN_EMOJIS=['💰','💰','⚡','✨','🌟','💎','🎊','🔥'];
-  window.spawnWinParticles=function(big){
-    var emojis=big?JJK_BIG_WIN_EMOJIS:JJK_WIN_EMOJIS;
-    var count=big?12:6;
-    for(var i=0;i<count;i++){
-      (function(idx){
-        setTimeout(function(){
-          var el=document.createElement('div');
-          el.className='win-particle';
-          el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-          var x=window.innerWidth*.2+Math.random()*(window.innerWidth*.6);
-          var y=window.innerHeight*.4+Math.random()*(window.innerHeight*.3);
-          el.style.cssText='left:'+x+'px;top:'+y+'px;animation-duration:'+(0.7+Math.random()*.5)+'s;animation-delay:0s;';
-          document.body.appendChild(el);
-          setTimeout(function(){el.remove();},1100);
-        },idx*60);
-      })(i);
-    }
-  };
-
-  // ── Domain expansion flash ────────────────────────────────────────────────
-  var origSelectDomain=window.selectDomain;
-  if(typeof origSelectDomain==='function'){
-    window.selectDomain=function(el,key){
-      origSelectDomain.apply(this,arguments);
-      var flash=document.getElementById('domain-expand-flash');
-      if(flash){
-        var colors={shrine:'rgba(120,10,10,.85)',shadow:'rgba(10,20,80,.85)',void:'rgba(0,10,40,.88)'};
-        flash.style.background='radial-gradient(circle at 50% 50%,'+( colors[key]||'rgba(0,0,0,.8)')+',rgba(0,0,0,.95))';
-        flash.classList.remove('active');
-        void flash.offsetWidth;
-        flash.classList.add('active');
-        setTimeout(function(){flash.classList.remove('active');},600);
-      }
-    };
-  }
-
-  // ── Patch game results to add particles + big-win class ──────────────────
-  function patchResult(resultId,threshold){
-    var el=document.getElementById(resultId);
-    if(!el) return;
-    var orig=el.className;
-    var obs=new MutationObserver(function(){
-      if(el.classList.contains('jjk-result-win')){
-        var txt=el.textContent||'';
-        var big=txt.indexOf('x4')>-1||txt.indexOf('x5')>-1||txt.indexOf('x8')>-1||txt.indexOf('x12')>-1||txt.indexOf('VICTORIA')>-1||txt.indexOf('x2.5')>-1;
-        if(big) el.classList.add('big-win');
-        else el.classList.remove('big-win');
-        window.spawnWinParticles(big);
-      }
-    });
-    obs.observe(el,{attributes:true,attributeFilter:['class'],childList:true,characterData:true});
-  }
-  // Hook up after DOM is ready (short delay to ensure elements exist)
-  setTimeout(function(){
-    ['domain-result','slot-result','finger-result','curse-result','battle-result'].forEach(function(id){
-      patchResult(id);
-    });
-  },1500);
-
-  // ── Battle character animations ───────────────────────────────────────────
-  var origPlayBattle=window.playBattle;
-  if(typeof origPlayBattle==='function'){
-    window.playBattle=async function(){
-      // Call original
-      await origPlayBattle.apply(this,arguments);
-      // After result, animate emojis
-      setTimeout(function(){
-        var res=document.getElementById('battle-result');
-        if(!res) return;
-        var won=res.classList.contains('jjk-result-win');
-        var pEm=document.getElementById('bp-emoji');
-        var eEm=document.getElementById('be-emoji');
-        var pChar=document.getElementById('battle-player');
-        var eChar=document.getElementById('battle-enemy');
-        if(won){
-          if(pEm) pEm.classList.add('victory');
-          if(eEm) eEm.classList.add('defeat');
-          if(eChar) eChar.classList.add('shaking');
-        } else {
-          if(eEm) eEm.classList.add('victory');
-          if(pEm) pEm.classList.add('defeat');
-          if(pChar) pChar.classList.add('shaking');
-        }
-        setTimeout(function(){
-          [pEm,eEm].forEach(function(e){if(e){e.classList.remove('victory','defeat');}});
-          [pChar,eChar].forEach(function(e){if(e){e.classList.remove('shaking');}});
-        },1200);
-      },200);
-    };
-  }
-
-  // ── Slot win flash ────────────────────────────────────────────────────────
-  var origPlaySlots=window.playSlots;
-  if(typeof origPlaySlots==='function'){
-    window.playSlots=async function(){
-      await origPlaySlots.apply(this,arguments);
-      setTimeout(function(){
-        var res=document.getElementById('slot-result');
-        var reels=document.getElementById('slot-reels');
-        if(res&&res.classList.contains('jjk-result-win')&&reels){
-          reels.classList.add('win-flash');
-          setTimeout(function(){reels.classList.remove('win-flash');},600);
-        }
-      },200);
-    };
-  }
-})();
-
 </script>
 </body>
 </html>
