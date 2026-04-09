@@ -6933,7 +6933,7 @@ async function loadLeaderboard() {
                     }
                 }catch(e){}
                 if (savedBannerFile) {
-                    myBannerStyle = 'background: linear-gradient(rgba(10,26,46,0.65), rgba(6,14,26,0.92)), url(' + savedBannerFile + ') center/cover !important; border-color:var(--primary);';
+                    myBannerStyle = 'background: linear-gradient(90deg, rgba(10,26,46,0.95) 0%, rgba(10,26,46,0.7) 40%, rgba(6,14,26,0.1) 100%), url(' + savedBannerFile + ') center/100% 100% no-repeat !important; border-color:var(--primary);';
                 } else {
                     myBannerStyle = 'border-color:var(--primary);';
                 }
@@ -12620,7 +12620,7 @@ window.playBattle=async function(){
     }
     var b=BANNERS.find(function(x){return x.id===id;});
     if(!b) return;
-    lbItem.style.setProperty('background', 'linear-gradient(rgba(10,26,46,0.65), rgba(6,14,26,0.92)), url("' + b.file + '") center/cover', 'important');
+    lbItem.style.setProperty('background', 'linear-gradient(90deg, rgba(10,26,46,0.95) 0%, rgba(10,26,46,0.7) 40%, rgba(6,14,26,0.1) 100%), url("' + b.file + '") center/100% 100% no-repeat', 'important');
   };
   window.setBanner=function(id){
     save(id);window.applyRankingBanner(id);
