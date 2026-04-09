@@ -12690,9 +12690,9 @@ window.playBattle=async function(){
       c.style.boxShadow=act?'0 0 15px rgba(0,212,255,0.3)':'none';
     });
     // Save to Firebase
-    if(window._db && window.currentUser) {
+    if(window._db && currentUser) {
         try {
-            await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', window.currentUser.nick), { banner: id||null });
+            await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', currentUser.nick), { banner: id||null });
         } catch(e){}
     }
     if(typeof window.showToast==='function')window.showToast(id?'🖼️ Banner aplicado!':'🖼️ Banner quitado','#00d4ff');
