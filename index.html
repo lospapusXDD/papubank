@@ -12645,6 +12645,11 @@ window.playBattle=async function(){
     {id:'zodiac',  label:'Zodiac',    file:'2026-04-09_08-37-25.webp'},
     {id:'eyes',    label:'Blue Eyes', file:'b1db1d27-7ecd-4ed0-ba02-106fb1c7dea9.jpeg'},
     {id:'clouds',  label:'Pixel Sky', file:'b3102e96-5369-4d2f-b3bf-a64d4f48e897.jpeg'},
+    {id:'kny',     label:'Demon Slayer', file:'ban_kny.jpg'},
+    {id:'deku',    label:'Deku Smash',   file:'ban_deku.jpg'},
+    {id:'redeyes', label:'Red Eyes',     file:'ban_redeyes.jpg'},
+    {id:'bluegirl',label:'Blue Girl',   file:'ban_bluegirl.jpg'},
+    {id:'mushoku', label:'Isekai Party', file:'ban_mushoku.jpg'}
   ];
   var AVATARS=[
     {id:'gojo',    file:'avt_gojo.jpg'},
@@ -12658,6 +12663,10 @@ window.playBattle=async function(){
   window.BANNERS=BANNERS;
   window.AVATARS=AVATARS;
   var SK='papusbank_ranking_banner_v1';
+  function get(){
+      if(window.bankAccount && window.bankAccount.banner) return window.bankAccount.banner;
+      try{return localStorage.getItem(SK);}catch(e){return null;}
+  }
   function save(id){try{if(id)localStorage.setItem(SK,id);else localStorage.removeItem(SK);}catch(e){}}
   window.BANNERS=BANNERS;
   window.applyRankingBanner=function(id){
