@@ -3209,14 +3209,13 @@ body.loaded { overflow-x:hidden; }
               <button class="btn btn-outline btn-sm" onclick="setAvatar('💀')">💀</button>
               <button class="btn btn-outline btn-sm" onclick="setAvatar('🔥')">🔥</button>
               <button class="btn btn-outline btn-sm" onclick="setAvatar('👑')">👑</button>
-              <button class="btn btn-outline btn-sm" onclick="setAvatar('⚡')">⚡</button>
-              <button class="btn btn-outline btn-sm" onclick="setAvatar('🎮')">🎮</button>
-              <button class="btn btn-outline btn-sm" onclick="setAvatar('🤖')">🤖</button>
-              <button class="btn btn-outline btn-sm" onclick="setAvatar('🐺')">🐺</button>
-              <button class="btn btn-outline btn-sm" onclick="setAvatar('🦊')">🦊</button>
-              <button class="btn btn-outline btn-sm" onclick="setAvatar('🐉')">🐉</button>
-              <button class="btn btn-outline btn-sm" onclick="setAvatar('🎯')">🎯</button>
-              <button class="btn btn-outline btn-sm" onclick="setAvatar('💎')">💎</button>
+              <button class="btn btn-outline btn-sm span-0" style="width:36px;height:36px;padding:0;overflow:hidden;border-radius:50%;" onclick="setAvatar('gojo')"><img src="deadly-gojo-satoru-fan-art-dld3h1qodm9hrs1l-2364192197.jpg" style="width:100%;height:100%;object-fit:cover;"></button>
+              <button class="btn btn-outline btn-sm span-0" style="width:36px;height:36px;padding:0;overflow:hidden;border-radius:50%;" onclick="setAvatar('lucy')"><img src="elfen-lied-gray-lucy-i1si4ikzlqbu5ru3-3984054519.jpg" style="width:100%;height:100%;object-fit:cover;"></button>
+              <button class="btn btn-outline btn-sm span-0" style="width:36px;height:36px;padding:0;overflow:hidden;border-radius:50%;" onclick="setAvatar('rimuru')"><img src="that-time-i-got-reincarnated-as-a-slime-hd-rimuru-tempest-cute_bWprZ2iUmZqaraWkpJRnaGtorWZtbmU-1130270688.jpg" style="width:100%;height:100%;object-fit:cover;"></button>
+              <button class="btn btn-outline btn-sm span-0" style="width:36px;height:36px;padding:0;overflow:hidden;border-radius:50%;" onclick="setAvatar('llawliet')"><img src="8016-l-death-note-profile-picture-200403401.jpg" style="width:100%;height:100%;object-fit:cover;"></button>
+              <button class="btn btn-outline btn-sm span-0" style="width:36px;height:36px;padding:0;overflow:hidden;border-radius:50%;" onclick="setAvatar('guts')"><img src="3842c04380f19a44634e8825ca685530-3054180956.jpg" style="width:100%;height:100%;object-fit:cover;"></button>
+              <button class="btn btn-outline btn-sm span-0" style="width:36px;height:36px;padding:0;overflow:hidden;border-radius:50%;" onclick="setAvatar('sukuna')"><img src="OIP-808277131.jpg" style="width:100%;height:100%;object-fit:cover;"></button>
+              <button class="btn btn-outline btn-sm span-0" style="width:36px;height:36px;padding:0;overflow:hidden;border-radius:50%;" onclick="setAvatar('roxy')"><img src="6586-mushoku-tensei-pfp-235501744.jpg" style="width:100%;height:100%;object-fit:cover;"></button>
             </div>
           </div>
           <div class="form-group">
@@ -6918,30 +6917,43 @@ async function loadLeaderboard() {
                 userRankKey = (gender === 'f') ? 'mortal_f' : 'mortal_m';
             }
             const userRankData = RANKS[userRankKey] || RANKS['mortal_m'];
-            const avatar = acc.avatar || (acc.vip ? '💎' : userRankData.emoji);
+            
+            var avatarHtml = '';
+            if (window.AVATARS && acc.avatar) {
+                var avtObj = window.AVATARS.find(function(a){return a.id === acc.avatar;});
+                if (avtObj) avatarHtml = '<img src="' + avtObj.file + '" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid rgba(0,212,255,0.4);box-shadow:0 0 8px rgba(0,212,255,0.15);">';
+            }
+            if (!avatarHtml) avatarHtml = acc.avatar || (acc.vip ? '💎' : userRankData.emoji);
             
             var myBannerStyle = '';
             var myItemId = '';
+            var bannerId = acc.banner || null;
+            
             if (isMine) {
                 myItemId = 'id="my-own-lb-item"';
-                var savedBannerFile = '';
-                try {
-                    var bannerId = localStorage.getItem('papusbank_ranking_banner_v1');
-                    if (bannerId && window.BANNERS) {
-                        var bb = window.BANNERS.find(function(x){return x.id===bannerId;});
-                        if (bb) savedBannerFile = bb.file;
-                    }
-                }catch(e){}
-                if (savedBannerFile) {
-                    myBannerStyle = 'background: linear-gradient(90deg, rgba(10,26,46,1) 0%, rgba(10,26,46,0.85) 60%, rgba(6,14,26,0) 100%), url(' + savedBannerFile + ') right center/auto 120% no-repeat !important; border-color:var(--primary);';
-                } else {
-                    myBannerStyle = 'border-color:var(--primary);';
+                if (!bannerId) {
+                    try {
+                        var localBId = localStorage.getItem('papusbank_ranking_banner_v1');
+                        if (localBId) bannerId = localBId;
+                    } catch(e){}
                 }
+            }
+
+            var savedBannerFile = '';
+            if (bannerId && window.BANNERS) {
+                var bb = window.BANNERS.find(function(x){return x.id===bannerId;});
+                if (bb) savedBannerFile = bb.file;
+            }
+
+            if (savedBannerFile) {
+                myBannerStyle = 'background: linear-gradient(90deg, rgba(10,26,46,1) 0%, rgba(10,26,46,0.85) 60%, rgba(6,14,26,0) 100%), url(' + savedBannerFile + ') right center/auto 120% no-repeat !important; border-color:var(--primary);';
+            } else if (isMine) {
+                myBannerStyle = 'border-color:var(--primary);';
             }
 
             html += '<div ' + myItemId + ' class="lb-item" style="' + myBannerStyle + '">' +
                 '<div class="lb-rank ' + rankCls + '">' + medal + '</div>' +
-                '<div style="font-size:26px;">' + avatar + '</div>' +
+                '<div style="font-size:26px;display:flex;align-items:center;justify-content:center;width:36px;height:36px;">' + avatarHtml + '</div>' +
                 '<div class="lb-info">' +
                     '<div class="lb-name" style="' + (userRankData.level >= 5 ? 'color:' + userRankData.color + ';text-shadow:0 0 8px ' + userRankData.color + '55;' : '') + '">' +
                         escHTML(nick) + (isMine ? ' <span style="color:var(--primary);font-size:10px;">(tú)</span>' : '') +
@@ -9057,7 +9069,21 @@ async function loadProfile() {
     }
 
     const avatarEl = document.getElementById('profile-avatar-emoji');
-    if (avatarEl) avatarEl.textContent = bankAccount.avatar || '👤';
+    if (avatarEl) {
+        let aId = bankAccount.avatar || '👤';
+        let found = false;
+        if(window.AVATARS) {
+            let avtObj = window.AVATARS.find(function(a){return a.id === aId;});
+            if (avtObj) {
+                avatarEl.innerHTML = '<img src="' + avtObj.file + '" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);display:block;">';
+                found = true;
+            }
+        }
+        if(!found) {
+            avatarEl.innerHTML = '';
+            avatarEl.textContent = aId;
+        }
+    }
 
     if (RANKS[rankKey].level >= 3) await checkBadge('admin_buddy');
 
@@ -9100,8 +9126,21 @@ window.setAvatar = async function(emoji) {
     try {
         await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', currentUser.nick), { avatar: emoji });
         const el = document.getElementById('profile-avatar-emoji');
-        if (el) el.textContent = emoji;
-        showToast('✅ Avatar actualizado ' + emoji, '#00ff9d');
+        if (el) {
+            let found = false;
+            if (window.AVATARS) {
+                let avtObj = window.AVATARS.find(function(a){return a.id === emoji;});
+                if (avtObj) {
+                    el.innerHTML = '<img src="' + avtObj.file + '" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);display:block;">';
+                    found = true;
+                }
+            }
+            if(!found){
+                el.innerHTML = '';
+                el.textContent = emoji;
+            }
+        }
+        showToast('✅ Avatar actualizado', '#00ff9d');
     } catch(e) { showToast('Error: ' + e.message, '#ff4466'); }
 };
 
@@ -12607,8 +12646,18 @@ window.playBattle=async function(){
     {id:'eyes',    label:'Blue Eyes', file:'b1db1d27-7ecd-4ed0-ba02-106fb1c7dea9.jpeg'},
     {id:'clouds',  label:'Pixel Sky', file:'b3102e96-5369-4d2f-b3bf-a64d4f48e897.jpeg'},
   ];
+  var AVATARS=[
+    {id:'gojo',    file:'deadly-gojo-satoru-fan-art-dld3h1qodm9hrs1l-2364192197.jpg'},
+    {id:'lucy',    file:'elfen-lied-gray-lucy-i1si4ikzlqbu5ru3-3984054519.jpg'},
+    {id:'rimuru',  file:'that-time-i-got-reincarnated-as-a-slime-hd-rimuru-tempest-cute_bWprZ2iUmZqaraWkpJRnaGtorWZtbmU-1130270688.jpg'},
+    {id:'llawliet',file:'8016-l-death-note-profile-picture-200403401.jpg'},
+    {id:'guts',    file:'3842c04380f19a44634e8825ca685530-3054180956.jpg'},
+    {id:'sukuna',  file:'OIP-808277131.jpg'},
+    {id:'roxy',    file:'6586-mushoku-tensei-pfp-235501744.jpg'}
+  ];
+  window.BANNERS=BANNERS;
+  window.AVATARS=AVATARS;
   var SK='papusbank_ranking_banner_v1';
-  function get(){try{return localStorage.getItem(SK);}catch(e){return null;}}
   function save(id){try{if(id)localStorage.setItem(SK,id);else localStorage.removeItem(SK);}catch(e){}}
   window.BANNERS=BANNERS;
   window.applyRankingBanner=function(id){
@@ -12622,14 +12671,21 @@ window.playBattle=async function(){
     if(!b) return;
     lbItem.style.setProperty('background', 'linear-gradient(90deg, rgba(10,26,46,1) 0%, rgba(10,26,46,0.85) 60%, rgba(6,14,26,0) 100%), url("' + b.file + '") right center/auto 120% no-repeat', 'important');
   };
-  window.setBanner=function(id){
+  window.setBanner=async function(id){
     save(id);window.applyRankingBanner(id);
-    document.getElementById('banner-picker').style.display='none';
+    var picker = document.getElementById('banner-picker');
+    if (picker) picker.style.display='none';
     document.querySelectorAll('.banner-card').forEach(function(c){
       var act=c.dataset.bid===id;
       c.style.border=act?'2px solid var(--primary)':'1px solid rgba(0,212,255,0.12)';
       c.style.boxShadow=act?'0 0 15px rgba(0,212,255,0.3)':'none';
     });
+    // Save to Firebase
+    if(window._db && window.currentUser) {
+        try {
+            await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', window.currentUser.nick), { banner: id||null });
+        } catch(e){}
+    }
     if(typeof window.showToast==='function')window.showToast(id?'🖼️ Banner aplicado!':'🖼️ Banner quitado','#00d4ff');
   };
   window.toggleBannerPicker=function(){
