@@ -12482,7 +12482,8 @@ function checkParejaNav() {
     var li = document.getElementById('nav-pareja-li');
     if (!li || !currentUser) return;
     var key = getRankKey(currentUser);
-    if (key && key.startsWith('pareja')) {
+    var hasPartner = bankAccount && bankAccount.partner;
+    if ((key && key.startsWith('pareja')) || key === 'owner' || hasPartner) {
         li.style.display = '';
     } else {
         li.style.display = 'none';
