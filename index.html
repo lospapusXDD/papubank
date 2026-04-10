@@ -2345,6 +2345,53 @@ body.loaded { overflow-x:hidden; }
 }
 .vis-btn:hover { opacity: .75; }
 
+/* ====== ROMANTIC GIFT MODAL ====== */
+.gift-modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.9); z-index: 10000;
+  display: flex; justify-content: center; align-items: center; flex-direction: column;
+  opacity: 0; transition: opacity 0.5s ease;
+}
+.gift-box-anim {
+  font-size: 100px;
+  transform: translateY(-100vh);
+  animation: dropGift 1s cubic-bezier(0.25, 1, 0.5, 1) forwards, shakeGift 0.5s 1.5s forwards;
+}
+.gift-explosion {
+  position: absolute; pointer-events: none;
+  font-size: 30px; animation: explodeHeart 1s cubic-bezier(0.1, 1, 0.1, 1) forwards;
+}
+.gift-message-box {
+  margin-top: 20px; font-size: 24px; color: #ff1493; font-weight: bold;
+  text-shadow: 0 0 10px #ff69b4; opacity: 0; transform: scale(0.5);
+  animation: popMessage 0.8s 2.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  text-align: center;
+}
+.gift-anime-img {
+  width: 90%; max-width: 400px; border-radius: 10px; margin-top: 20px;
+  box-shadow: 0 0 20px #ff69b4; opacity: 0;
+  animation: fadeInImage 1s 2.8s forwards;
+}
+
+@keyframes dropGift {
+  to { transform: translateY(0); }
+}
+@keyframes shakeGift {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  50% { transform: rotate(-15deg); }
+  75% { transform: rotate(10deg); }
+}
+@keyframes explodeHeart {
+  0% { transform: translate(0, 0) scale(0); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
+}
+@keyframes popMessage {
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeInImage {
+  to { opacity: 1; }
+}
 </style>
 </head>
 <body>
@@ -2614,6 +2661,9 @@ body.loaded { overflow-x:hidden; }
           <div class="flex gap-12">
             <button class="btn btn-primary" style="flex:1;justify-content:center;" onclick="showPage('transfer')">💸 Transferir</button>
             <button class="btn btn-outline" style="flex:1;justify-content:center;" onclick="showPage('history')">📋 Historial</button>
+          </div>
+          <div class="flex gap-12" style="margin-top:12px;">
+            <button class="btn btn-outline" style="flex:1;justify-content:center;border-color:#ff1493;color:#ff1493;text-shadow:0 0 5px #ff1493;" onclick="promptSendGift()">🎁 Enviar Mimo Mágico</button>
           </div>
         </div>
       </div>
@@ -5894,7 +5944,9 @@ const RANK_LOAN_MAX = {
 
 function getRankMultiplier(user) {
     const key = getRankKey(user);
-    return RANK_MULTIPLIERS[key] || 1;
+    let mult = RANK_MULTIPLIERS[key] || 1;
+    if (key.startsWith('pareja')) mult *= 4;
+    return mult;
 }
 function getRankLoanMax(user) {
     const key = getRankKey(user);
@@ -5946,6 +5998,9 @@ const RANKS = {
     admin:    { label:'ADMIN',      emoji:'🔱', color:'#ffd700', level:19, cls:'rank-admin'    },
     mod:      { label:'MOD',        emoji:'🛡',  color:'#00dcff', level:18, cls:'rank-mod'      },
     helper:   { label:'HELPER',     emoji:'🔧', color:'#00ff9d', level:17, cls:'rank-helper'   },
+    // Parejas Oficiales
+    pareja_emilio: { label:'Novia de Emilio', emoji:'💍', color:'#ff1493', level:17, cls:'rank-afrodita'},
+    pareja_oficial:{ label:'Pareja Oficial',  emoji:'💍', color:'#ff69b4', level:16, cls:'rank-hera'    },
     // Titanes
     urano:    { label:'Urano',      emoji:'🌌', color:'#38bdf8', level:16, cls:'rank-urano'    },
     nix:      { label:'Nix',        emoji:'✨', color:'#e879f9', level:16, cls:'rank-nix'      },
@@ -6806,6 +6861,98 @@ window.updateTransferPreview = function() {
     if (feeEl)  feeEl.textContent  = fee.toLocaleString('es') + ' PPC';
     if (totEl)  totEl.textContent  = total.toLocaleString('es') + ' PPC';
 };
+
+window.promptSendGift = async function() {
+    if (!bankAccount || !currentUser || !window._db) return;
+    const dest = prompt('💌 ¿A quién quieres mandarle tu Regalo Mágico de Pareja? (Nick)');
+    if (!dest) return;
+    const amtStr = prompt('¿Cuántos PPC quieres poner en la caja de regalo? 💰\n(Máximo disponible: ' + (bankAccount.balance || 0).toLocaleString('es') + ')');
+    const amt = Math.floor(parseFloat(amtStr));
+    if (!amt || amt <= 0 || amt > (bankAccount.balance || 0)) {
+        showToast('Monto inválido para enviar.', '#ff4466');
+        return;
+    }
+    const r = confirm('¿Enviar Mimo Especial a ' + dest + ' por ' + amt.toLocaleString('es') + ' PPC?\n(¡Sin comisiones de banco por ser regalo de pareja!)');
+    if (!r) return;
+
+    if (bankAccount.frozen) { showToast('Tu cuenta está congelada 🔒', '#ff4466'); return; }
+
+    try {
+        const db       = window._db;
+        const myRef    = window._fbDoc(db, 'bank_accounts', currentUser.nick);
+        const toRef    = window._fbDoc(db, 'bank_accounts', dest.trim().toLowerCase());
+        const toSnap   = await window._fbGetDoc(toRef);
+        if (!toSnap.exists()) { showToast('Esa persona no tiene cuenta en el banco.', '#ff4466'); return; }
+
+        await window._fbUpdateDoc(myRef, {
+            balance:  window._fbIncrement(-amt),
+            totalOut: window._fbIncrement(amt),
+            txCount:  window._fbIncrement(1),
+        });
+        await window._fbUpdateDoc(toRef, {
+            balance: window._fbIncrement(amt),
+            totalIn: window._fbIncrement(amt),
+            txCount: window._fbIncrement(1),
+        });
+        await addTx({ txType:'transfer', from:currentUser.nick, to:dest.trim().toLowerCase(), amount:amt, note:'💝 Regalo Mágico Especial' });
+        
+        showGiftAnimation(dest.trim(), amt);
+    } catch(e) {
+        showToast('Error al enviar regalo', '#ff4466');
+    }
+};
+
+function showGiftAnimation(toNick, amount) {
+    const existing = document.getElementById('gift-modal');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'gift-modal';
+    overlay.className = 'gift-modal-overlay';
+    
+    // Aleatorizar la imagen de fondo entre las dos proporcionadas por el usuario
+    const isHorimiya = Math.random() > 0.5;
+    const imgSrc = isHorimiya ? 'gift_horimiya.jpg' : 'gift_clannad.jpg';
+
+    overlay.innerHTML = `
+        <div class="gift-box-anim" id="gift-box">🎁</div>
+        <div class="gift-message-box" id="gift-message">
+            ¡ZAZ! Le regalaste ${amount.toLocaleString('es')} PPC a ${toNick} 💖
+        </div>
+        <img src="${imgSrc}" class="gift-anime-img">
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    // Fade in
+    setTimeout(() => { overlay.style.opacity = '1'; }, 50);
+
+    // Activar explosión cuando el shake términa (aprox 2000ms desde el inicio)
+    setTimeout(() => {
+        const box = document.getElementById('gift-box');
+        if (box) box.style.display = 'none';
+        
+        // Crear corazones explotando
+        for(let i=0; i<40; i++){
+            const heart = document.createElement('div');
+            heart.className = 'gift-explosion';
+            heart.textContent = ['💖','✨','😍','💕','💝'][Math.floor(Math.random()*5)];
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 100 + Math.random() * 200;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
+            heart.style.setProperty('--tx', tx + 'px');
+            heart.style.setProperty('--ty', ty + 'px');
+            overlay.appendChild(heart);
+        }
+    }, 2000);
+
+    // Cerrar después de 6 segundos
+    setTimeout(() => {
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 500);
+    }, 6500);
+}
 
 window.doTransfer = async function() {
     if (!bankAccount || !currentUser || !window._db) return;
