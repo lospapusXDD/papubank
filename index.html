@@ -12638,7 +12638,9 @@ window.sharedVaultDeposit = async function() {
             await window._fbSetDoc(vRef, { partner1:currentUser.nick, partner2:partner, balance:amt, history:[newEntry] });
         }
         await window._fbUpdateDoc(myRef, { balance: window._fbIncrement(-amt) });
-        if (bankAccount) bankAccount.balance = (bankAccount.balance||0) - amt;
+        // Re-leer saldo real de Firebase para evitar doble conteo
+        var freshSnap = await window._fbGetDoc(myRef);
+        if (freshSnap.exists() && bankAccount) bankAccount.balance = freshSnap.data().balance || 0;
         document.getElementById('shared-vault-deposit-amt').value = '';
         showToast('💰 ¡'+amt.toLocaleString('es')+' PPC depositados en la casa!', '#ffd700');
         updateBalanceDisplays();
@@ -12671,7 +12673,9 @@ window.sharedVaultWithdraw = async function() {
         hist.push({ type:'withdraw', amount:amt, who:currentUser.nick, time:Date.now() });
         await window._fbUpdateDoc(vRef, { balance: window._fbIncrement(-amt), history: hist });
         await window._fbUpdateDoc(myRef, { balance: window._fbIncrement(amt) });
-        if (bankAccount) bankAccount.balance = (bankAccount.balance||0) + amt;
+        // Re-leer saldo real de Firebase para evitar doble conteo
+        var freshSnap2 = await window._fbGetDoc(myRef);
+        if (freshSnap2.exists() && bankAccount) bankAccount.balance = freshSnap2.data().balance || 0;
         document.getElementById('shared-vault-withdraw-amt').value = '';
         showToast('📤 ¡'+amt.toLocaleString('es')+' PPC retirados de la casa!', '#ffa500');
         updateBalanceDisplays();
