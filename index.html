@@ -2568,6 +2568,9 @@ body.loaded { overflow-x:hidden; }
       <li><span class="sb-link" id="nav-frieren" onclick="showPage('frieren')" data-tooltip="Gremio Frieren">
         <span class="sb-icon">🧝‍♀️</span><span class="sb-label">Gremio Frieren</span>
       </span></li>
+      <li id="nav-pareja-li" style="display:none;"><span class="sb-link" id="nav-pareja" onclick="showPage('pareja')" data-tooltip="Zona de Pareja">
+        <span class="sb-icon">💍</span><span class="sb-label">Zona de Pareja</span>
+      </span></li>
       <li id="nav-admin-li" style="display:none;">
         <span class="sb-link" id="nav-admin" onclick="showPage('admin')" data-tooltip="Admin">
           <span class="sb-icon">⚡</span><span class="sb-label">Admin</span>
@@ -3354,6 +3357,95 @@ body.loaded { overflow-x:hidden; }
       </div>
     </div>
 
+
+    <!-- ═══════ ZONA DE PAREJA ═══════ -->
+    <div class="page" id="page-pareja">
+      <div class="page-title" style="color:#ff69b4;text-shadow:0 0 30px rgba(255,105,180,0.4);">💍 Zona de Pareja</div>
+      <div class="page-sub" style="color:rgba(255,105,180,0.5);">// EXCLUSIVO PARA NOVIOS DEL BANCO //</div>
+
+      <!-- Banner de pareja -->
+      <div style="background:linear-gradient(135deg,rgba(50,10,30,0.95),rgba(80,20,50,0.85));border:1px solid rgba(255,105,180,0.2);border-radius:12px;padding:20px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+          <div style="font-size:48px;filter:drop-shadow(0 0 20px rgba(255,105,180,0.5));">💕</div>
+          <div style="flex:1;">
+            <div style="font-size:18px;font-weight:800;color:#ff69b4;letter-spacing:2px;">NIDO DE AMOR</div>
+            <div style="font-size:11px;color:rgba(255,105,180,0.5);margin-top:4px;">// CARTA DE AMOR + BÓVEDA COMPARTIDA //</div>
+            <div style="font-size:11px;color:rgba(255,105,180,0.4);margin-top:6px;line-height:1.8;">Escríbele mensajes secretos a tu pareja y ahorren juntos en la bóveda compartida.</div>
+          </div>
+          <div style="text-align:center;background:rgba(255,105,180,0.08);border:1px solid rgba(255,105,180,0.2);border-radius:10px;padding:12px 18px;">
+            <div style="font-size:10px;color:rgba(255,105,180,0.4);text-transform:uppercase;">Tu pareja</div>
+            <div style="font-size:16px;font-weight:bold;color:#ff69b4;margin-top:4px;" id="pareja-partner-name">Sin configurar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Configurar pareja (si no tiene una) -->
+      <div id="pareja-setup-box" style="background:rgba(255,105,180,0.06);border:1px solid rgba(255,105,180,0.2);border-radius:12px;padding:20px;margin-bottom:20px;display:none;">
+        <div style="font-size:14px;font-weight:bold;color:#ff69b4;margin-bottom:10px;">💌 Configura tu pareja</div>
+        <div style="font-size:11px;color:rgba(255,105,180,0.5);margin-bottom:12px;">Escribe el nick exacto de tu pareja en el banco para vincularos.</div>
+        <div style="display:flex;gap:10px;">
+          <input class="form-input" id="pareja-set-nick" placeholder="Nick de tu pareja..." style="flex:1;border-color:rgba(255,105,180,0.3);">
+          <button class="btn btn-outline" style="border-color:#ff69b4;color:#ff69b4;" onclick="setPartner()">💍 Vincular</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;">
+
+        <!-- BUZÓN DE CARTAS -->
+        <div style="background:rgba(50,10,30,0.8);border:1px solid rgba(255,105,180,0.15);border-radius:12px;padding:20px;">
+          <div style="font-size:15px;font-weight:800;color:#ff69b4;letter-spacing:2px;margin-bottom:16px;border-bottom:1px solid rgba(255,105,180,0.1);padding-bottom:10px;">💌 BUZÓN DE CARTAS DE AMOR</div>
+          <!-- Escribir carta -->
+          <div style="margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:bold;color:rgba(255,105,180,0.7);margin-bottom:8px;">✍️ Escribir carta nueva</div>
+            <textarea class="form-input" id="love-letter-text" rows="4" maxlength="500" placeholder="Escribe tu mensaje de amor aquí... 💕" style="border-color:rgba(255,105,180,0.2);resize:none;width:100%;box-sizing:border-box;"></textarea>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+              <span style="font-size:10px;color:rgba(255,105,180,0.3);" id="letter-char-count">0/500</span>
+              <button class="btn btn-outline btn-sm" style="border-color:#ff69b4;color:#ff69b4;" onclick="sendLoveLetter()">💌 Enviar carta</button>
+            </div>
+          </div>
+          <!-- Cartas recibidas -->
+          <div style="font-size:12px;font-weight:bold;color:rgba(255,105,180,0.7);margin-bottom:8px;">📬 Cartas recibidas</div>
+          <div id="love-letters-inbox" style="max-height:300px;overflow-y:auto;">
+            <div class="empty-msg" style="color:rgba(255,105,180,0.3);">Sin cartas aún 💔</div>
+          </div>
+        </div>
+
+        <!-- CASA DE PAREJA / BÓVEDA COMPARTIDA -->
+        <div style="background:rgba(50,10,30,0.8);border:1px solid rgba(255,215,0,0.15);border-radius:12px;padding:20px;">
+          <div style="font-size:15px;font-weight:800;color:#ffd700;letter-spacing:2px;margin-bottom:16px;border-bottom:1px solid rgba(255,215,0,0.1);padding-bottom:10px;">🏠 CASA DE PAREJA — BÓVEDA</div>
+          <!-- Saldo compartido -->
+          <div style="text-align:center;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);border-radius:10px;padding:16px;margin-bottom:16px;">
+            <div style="font-size:10px;color:rgba(255,215,0,0.4);text-transform:uppercase;">Ahorro compartido</div>
+            <div style="font-size:28px;font-weight:900;color:#ffd700;margin-top:6px;" id="shared-vault-balance">0 PPC</div>
+            <div style="font-size:10px;color:rgba(255,105,180,0.4);margin-top:4px;">Los dos pueden depositar y retirar</div>
+          </div>
+          <!-- Depositar -->
+          <div style="margin-bottom:12px;">
+            <div style="font-size:12px;font-weight:bold;color:rgba(255,215,0,0.7);margin-bottom:6px;">💰 Depositar en la casa</div>
+            <div style="display:flex;gap:8px;">
+              <input class="form-input" id="shared-vault-deposit-amt" type="number" min="1" placeholder="Cantidad..." style="flex:1;border-color:rgba(255,215,0,0.2);">
+              <button class="btn btn-outline btn-sm" style="border-color:#ffd700;color:#ffd700;" onclick="sharedVaultDeposit()">💰 Meter</button>
+            </div>
+          </div>
+          <!-- Retirar -->
+          <div>
+            <div style="font-size:12px;font-weight:bold;color:rgba(255,215,0,0.7);margin-bottom:6px;">📤 Retirar de la casa</div>
+            <div style="display:flex;gap:8px;">
+              <input class="form-input" id="shared-vault-withdraw-amt" type="number" min="1" placeholder="Cantidad..." style="flex:1;border-color:rgba(255,215,0,0.2);">
+              <button class="btn btn-outline btn-sm" style="border-color:#ffa500;color:#ffa500;" onclick="sharedVaultWithdraw()">📤 Sacar</button>
+            </div>
+          </div>
+          <!-- Historial -->
+          <div style="margin-top:16px;">
+            <div style="font-size:12px;font-weight:bold;color:rgba(255,215,0,0.5);margin-bottom:6px;">📋 Últimos movimientos</div>
+            <div id="shared-vault-history" style="max-height:200px;overflow-y:auto;">
+              <div class="empty-msg" style="color:rgba(255,215,0,0.3);">Sin movimientos aún</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
     <!-- ═══════ GREMIO FRIEREN ═══════ -->
     <div class="page" id="page-frieren">
@@ -6379,6 +6471,7 @@ window.doLogin = async function() {
         if (RANKS[rankKey].level >= 19) {
             document.getElementById('nav-admin-li').style.display = '';
         }
+        if (typeof checkParejaNav === 'function') checkParejaNav();
         if (rankKey === 'owner') {
             const ownerBtn = document.getElementById('owner-tab-btn');
             if (ownerBtn) ownerBtn.style.display = '';
@@ -12330,6 +12423,8 @@ window.showPage = function(page) {
     if (page === 'admin') { setTimeout(function(){ initAdminHUD(); }, 50); }
     if (page === 'jjk') { setTimeout(function(){ if(typeof loadJJKPage==='function') loadJJKPage(); }, 30); }
     if (page === 'frieren') { setTimeout(function(){ loadFrierenPage(); }, 30); }
+    if (page === 'pareja') { setTimeout(function(){ loadParejaPage(); }, 30); }
+    if (typeof checkParejaNav === 'function') checkParejaNav();
 };
 
 // Sync HUD nav when adminTab is called from old tab buttons
@@ -12343,6 +12438,246 @@ window.adminTab = function(btn, page) {
     document.querySelectorAll('.hud-nav-item').forEach(function(n){ n.classList.remove('active'); });
     var labelEl = document.getElementById('hud-active-tab-label');
     if (labelEl) labelEl.textContent = page.toUpperCase().replace(/_/g,' ');
+};
+
+</script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// ZONA DE PAREJA — CARTAS DE AMOR + BÓVEDA COMPARTIDA
+// ═══════════════════════════════════════════════════════════════
+
+function getVaultId(nick1, nick2) {
+    var sorted = [nick1.toLowerCase(), nick2.toLowerCase()].sort();
+    return sorted[0] + '_' + sorted[1];
+}
+
+function loadParejaPage() {
+    if (!currentUser || !bankAccount) return;
+    var key = getRankKey(currentUser);
+    var partner = bankAccount.partner || '';
+    var nameEl = document.getElementById('pareja-partner-name');
+    var setupEl = document.getElementById('pareja-setup-box');
+
+    if (!partner) {
+        if (nameEl) nameEl.textContent = 'Sin configurar';
+        if (setupEl) setupEl.style.display = '';
+    } else {
+        if (nameEl) nameEl.textContent = '💕 ' + partner;
+        if (setupEl) setupEl.style.display = 'none';
+        loadLoveLetters(partner);
+        loadSharedVault(partner);
+    }
+
+    // Char counter
+    var ta = document.getElementById('love-letter-text');
+    var cc = document.getElementById('letter-char-count');
+    if (ta && cc) {
+        ta.oninput = function() { cc.textContent = ta.value.length + '/500'; };
+    }
+}
+
+// Mostrar el nav de pareja si el usuario tiene rango de pareja
+function checkParejaNav() {
+    var li = document.getElementById('nav-pareja-li');
+    if (!li || !currentUser) return;
+    var key = getRankKey(currentUser);
+    if (key && key.startsWith('pareja')) {
+        li.style.display = '';
+    } else {
+        li.style.display = 'none';
+    }
+}
+
+window.setPartner = async function() {
+    if (!currentUser || !window._db) return;
+    var nick = (document.getElementById('pareja-set-nick').value || '').trim().toLowerCase();
+    if (!nick) { showToast('Escribe un nick', '#ff4466'); return; }
+    if (nick === currentUser.nick) { showToast('No puedes ser tu propia pareja 😂', '#ff4466'); return; }
+    // Verificar que exista
+    var toRef = window._fbDoc(window._db, 'bank_accounts', nick);
+    var toSnap = await window._fbGetDoc(toRef);
+    if (!toSnap.exists()) { showToast('Esa persona no tiene cuenta en el banco', '#ff4466'); return; }
+
+    var ok = await showConfirm('💍 Vincular pareja', '¿Vincular con <strong style="color:#ff69b4">'+nick+'</strong> como tu pareja?', '💍 Sí, vincular');
+    if (!ok) return;
+
+    try {
+        var myRef = window._fbDoc(window._db, 'bank_accounts', currentUser.nick);
+        await window._fbUpdateDoc(myRef, { partner: nick });
+        if (bankAccount) bankAccount.partner = nick;
+        showToast('💕 ¡Vinculados! Ahora son pareja oficial en el banco', '#ff69b4');
+        loadParejaPage();
+    } catch(e) {
+        showToast('Error: '+e.message, '#ff4466');
+    }
+};
+
+// ─── CARTAS DE AMOR ───
+window.sendLoveLetter = async function() {
+    if (!currentUser || !bankAccount || !window._db) return;
+    var partner = bankAccount.partner;
+    if (!partner) { showToast('Primero vincula a tu pareja', '#ff4466'); return; }
+    var text = (document.getElementById('love-letter-text').value || '').trim();
+    if (!text) { showToast('Escribe algo bonito primero 💔', '#ff4466'); return; }
+
+    try {
+        await window._fbAddDoc(window._fbCollection(window._db, 'love_letters'), {
+            from: currentUser.nick,
+            to: partner,
+            message: text,
+            time: Date.now(),
+            read: false
+        });
+        document.getElementById('love-letter-text').value = '';
+        document.getElementById('letter-char-count').textContent = '0/500';
+        showToast('💌 ¡Carta enviada a '+partner+'! Le llegará cuando entre', '#ff69b4');
+        if (typeof pushNotification === 'function') {
+            pushNotification(partner, 'gift', '💌 Tienes una carta de amor de '+currentUser.nick, '💌');
+        }
+    } catch(e) {
+        showToast('Error enviando carta: '+e.message, '#ff4466');
+    }
+};
+
+async function loadLoveLetters(partner) {
+    var container = document.getElementById('love-letters-inbox');
+    if (!container || !window._db || !currentUser) return;
+    container.innerHTML = '<div class="empty-msg" style="color:rgba(255,105,180,0.3);">Cargando... 💕</div>';
+    try {
+        var q = window._fbQuery(
+            window._fbCollection(window._db, 'love_letters'),
+            window._fbOrderBy('time','desc'),
+            window._fbLimit(20)
+        );
+        var snap = await window._fbGetDocs(q);
+        var myNick = currentUser.nick;
+        var letters = [];
+        snap.forEach(function(d) {
+            var data = d.data();
+            if (data.to === myNick || data.from === myNick) {
+                data._id = d.id;
+                letters.push(data);
+            }
+        });
+        if (!letters.length) {
+            container.innerHTML = '<div class="empty-msg" style="color:rgba(255,105,180,0.3);">Sin cartas aún 💔</div>';
+            return;
+        }
+        container.innerHTML = letters.map(function(l) {
+            var isFromMe = l.from === myNick;
+            var timeStr = new Date(l.time).toLocaleString('es');
+            var arrow = isFromMe ? '📤 Enviada a <strong>'+l.to+'</strong>' : '📬 De <strong style="color:#ff69b4">'+l.from+'</strong>';
+            return '<div style="background:rgba(255,105,180,'+(isFromMe?'0.04':'0.08')+');border:1px solid rgba(255,105,180,'+(isFromMe?'0.1':'0.25')+');border-radius:8px;padding:10px;margin-bottom:8px;">'+
+                '<div style="font-size:10px;color:rgba(255,105,180,0.5);margin-bottom:4px;">'+arrow+' · '+timeStr+'</div>'+
+                '<div style="font-size:13px;color:rgba(255,200,220,0.9);line-height:1.5;">'+escHTML(l.message)+'</div>'+
+                '</div>';
+        }).join('');
+    } catch(e) {
+        container.innerHTML = '<div class="empty-msg" style="color:var(--danger)">Error: '+e.message+'</div>';
+    }
+}
+
+// ─── BÓVEDA COMPARTIDA ───
+async function loadSharedVault(partner) {
+    if (!window._db || !currentUser) return;
+    var vaultId = getVaultId(currentUser.nick, partner);
+    try {
+        var vRef = window._fbDoc(window._db, 'couple_vaults', vaultId);
+        var vSnap = await window._fbGetDoc(vRef);
+        var balance = 0;
+        var history = [];
+        if (vSnap.exists()) {
+            var data = vSnap.data();
+            balance = data.balance || 0;
+            history = data.history || [];
+        }
+        var balEl = document.getElementById('shared-vault-balance');
+        if (balEl) balEl.textContent = balance.toLocaleString('es') + ' PPC';
+
+        var histEl = document.getElementById('shared-vault-history');
+        if (histEl) {
+            if (!history.length) {
+                histEl.innerHTML = '<div class="empty-msg" style="color:rgba(255,215,0,0.3);">Sin movimientos aún</div>';
+            } else {
+                histEl.innerHTML = history.slice(-10).reverse().map(function(h) {
+                    return '<div style="font-size:11px;color:rgba(255,215,0,0.6);padding:4px 0;border-bottom:1px solid rgba(255,215,0,0.05);">'+
+                        '<strong style="color:'+(h.type==='deposit'?'#00ff9d':'#ffa500')+';">'+(h.type==='deposit'?'💰 +':'📤 -')+h.amount.toLocaleString('es')+'</strong> PPC por <strong>'+escHTML(h.who)+'</strong> · '+new Date(h.time).toLocaleString('es')+
+                        '</div>';
+                }).join('');
+            }
+        }
+    } catch(e) {}
+}
+
+window.sharedVaultDeposit = async function() {
+    if (!currentUser || !bankAccount || !window._db) return;
+    var partner = bankAccount.partner;
+    if (!partner) { showToast('Primero vincula tu pareja', '#ff4466'); return; }
+    var amt = Math.floor(parseFloat(document.getElementById('shared-vault-deposit-amt').value) || 0);
+    if (amt < 1) { showToast('Cantidad inválida', '#ff4466'); return; }
+    if ((bankAccount.balance || 0) < amt) { showToast('Saldo insuficiente 💀', '#ff4466'); return; }
+
+    var ok = await showConfirm('💰 Depositar en la casa', 'Depositar <strong style="color:#ffd700">'+amt.toLocaleString('es')+' PPC</strong> al ahorro compartido con <strong style="color:#ff69b4">'+partner+'</strong>', '💰 Depositar');
+    if (!ok) return;
+
+    try {
+        var vaultId = getVaultId(currentUser.nick, partner);
+        var myRef = window._fbDoc(window._db, 'bank_accounts', currentUser.nick);
+        var vRef = window._fbDoc(window._db, 'couple_vaults', vaultId);
+        var vSnap = await window._fbGetDoc(vRef);
+
+        var newEntry = { type:'deposit', amount:amt, who:currentUser.nick, time:Date.now() };
+
+        if (vSnap.exists()) {
+            var hist = vSnap.data().history || [];
+            hist.push(newEntry);
+            await window._fbUpdateDoc(vRef, { balance: window._fbIncrement(amt), history: hist });
+        } else {
+            await window._fbSetDoc(vRef, { partner1:currentUser.nick, partner2:partner, balance:amt, history:[newEntry] });
+        }
+        await window._fbUpdateDoc(myRef, { balance: window._fbIncrement(-amt) });
+        if (bankAccount) bankAccount.balance = (bankAccount.balance||0) - amt;
+        document.getElementById('shared-vault-deposit-amt').value = '';
+        showToast('💰 ¡'+amt.toLocaleString('es')+' PPC depositados en la casa!', '#ffd700');
+        updateBalanceDisplays();
+        loadSharedVault(partner);
+    } catch(e) {
+        showToast('Error: '+e.message, '#ff4466');
+    }
+};
+
+window.sharedVaultWithdraw = async function() {
+    if (!currentUser || !bankAccount || !window._db) return;
+    var partner = bankAccount.partner;
+    if (!partner) { showToast('Primero vincula tu pareja', '#ff4466'); return; }
+    var amt = Math.floor(parseFloat(document.getElementById('shared-vault-withdraw-amt').value) || 0);
+    if (amt < 1) { showToast('Cantidad inválida', '#ff4466'); return; }
+
+    var vaultId = getVaultId(currentUser.nick, partner);
+    var vRef = window._fbDoc(window._db, 'couple_vaults', vaultId);
+    var vSnap = await window._fbGetDoc(vRef);
+    if (!vSnap.exists() || (vSnap.data().balance || 0) < amt) {
+        showToast('No hay suficiente en la bóveda compartida', '#ff4466'); return;
+    }
+
+    var ok = await showConfirm('📤 Retirar de la casa', 'Retirar <strong style="color:#ffa500">'+amt.toLocaleString('es')+' PPC</strong> del ahorro compartido', '📤 Retirar');
+    if (!ok) return;
+
+    try {
+        var myRef = window._fbDoc(window._db, 'bank_accounts', currentUser.nick);
+        var hist = vSnap.data().history || [];
+        hist.push({ type:'withdraw', amount:amt, who:currentUser.nick, time:Date.now() });
+        await window._fbUpdateDoc(vRef, { balance: window._fbIncrement(-amt), history: hist });
+        await window._fbUpdateDoc(myRef, { balance: window._fbIncrement(amt) });
+        if (bankAccount) bankAccount.balance = (bankAccount.balance||0) + amt;
+        document.getElementById('shared-vault-withdraw-amt').value = '';
+        showToast('📤 ¡'+amt.toLocaleString('es')+' PPC retirados de la casa!', '#ffa500');
+        updateBalanceDisplays();
+        loadSharedVault(partner);
+    } catch(e) {
+        showToast('Error: '+e.message, '#ff4466');
+    }
 };
 
 </script>
