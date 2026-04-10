@@ -2565,6 +2565,9 @@ body.loaded { overflow-x:hidden; }
       <li><span class="sb-link" id="nav-jjk" onclick="showPage('jjk')" data-tooltip="Jujutsu">
         <span class="sb-icon">⚡</span><span class="sb-label">JJK Hechiceros</span>
       </span></li>
+      <li><span class="sb-link" id="nav-frieren" onclick="showPage('frieren')" data-tooltip="Gremio Frieren">
+        <span class="sb-icon">🧝‍♀️</span><span class="sb-label">Gremio Frieren</span>
+      </span></li>
       <li id="nav-admin-li" style="display:none;">
         <span class="sb-link" id="nav-admin" onclick="showPage('admin')" data-tooltip="Admin">
           <span class="sb-icon">⚡</span><span class="sb-label">Admin</span>
@@ -3348,6 +3351,135 @@ body.loaded { overflow-x:hidden; }
       <!-- Rank cards grid -->
       <div class="rank-shop-grid" id="rank-shop-grid">
         <!-- Se genera por JS -->
+      </div>
+    </div>
+
+
+    <!-- ═══════ GREMIO FRIEREN ═══════ -->
+    <div class="page" id="page-frieren">
+      <div class="page-title" style="color:#bce6ff;text-shadow:0 0 30px rgba(188,230,255,0.4);">🧝‍♀️ Gremio de Magia — Frieren</div>
+      <div class="page-sub" style="color:rgba(188,230,255,0.5);">// SENDA DE LA MAGIA — TÍTULOS Y RELIQUIAS //</div>
+
+      <!-- Banner -->
+      <div style="background:linear-gradient(135deg,rgba(15,25,50,0.95),rgba(30,60,90,0.85));border:1px solid rgba(188,230,255,0.15);border-radius:12px;padding:20px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+          <div style="font-size:48px;filter:drop-shadow(0 0 20px rgba(188,230,255,0.5));">🧝‍♀️</div>
+          <div style="flex:1;">
+            <div style="font-size:18px;font-weight:800;color:#bce6ff;letter-spacing:2px;">GREMIO DE MAGOS</div>
+            <div style="font-size:11px;color:rgba(188,230,255,0.5);margin-top:4px;">// RANGOS Y RELIQUIAS DE FRIEREN — BENEFICIOS MÁGICOS //</div>
+            <div style="font-size:11px;color:rgba(188,230,255,0.4);margin-top:6px;line-height:1.8;">Asciende por la Senda de la Magia comprando títulos de personajes. Colecciona reliquias legendarias que aparecerán en tu inventario.</div>
+          </div>
+          <div style="text-align:center;background:rgba(188,230,255,0.06);border:1px solid rgba(188,230,255,0.15);border-radius:10px;padding:12px 18px;">
+            <div style="font-size:10px;color:rgba(188,230,255,0.4);text-transform:uppercase;">Tu título Frieren</div>
+            <div style="font-size:16px;font-weight:bold;color:#bce6ff;margin-top:4px;" id="frieren-current-rank">Sin título</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIENDA DE TÍTULOS -->
+      <div style="background:rgba(10,20,40,0.8);border:1px solid rgba(188,230,255,0.12);border-radius:12px;padding:20px;margin-bottom:20px;">
+        <div style="font-size:15px;font-weight:800;color:#bce6ff;letter-spacing:2px;margin-bottom:16px;border-bottom:1px solid rgba(188,230,255,0.1);padding-bottom:10px;">🏅 TÍTULOS DE LA SENDA</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;" id="frieren-ranks-grid">
+          <!-- Fern -->
+          <div style="background:linear-gradient(135deg,rgba(216,180,226,0.1),rgba(216,180,226,0.03));border:1px solid rgba(216,180,226,0.25);border-radius:10px;padding:16px;position:relative;overflow:hidden;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+              <img src="frieren_fern_img.jpg" style="width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid rgba(216,180,226,0.5);">
+              <div>
+                <div style="font-size:14px;font-weight:bold;color:#d8b4e2;">🦋 Aprendiz de Magia</div>
+                <div style="font-size:11px;color:rgba(216,180,226,0.6);">Fern</div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:rgba(188,230,255,0.5);margin-bottom:8px;line-height:1.6;">Multiplicador <strong style="color:#d8b4e2;">x1.5</strong> en pensión diaria.</div>
+            <div style="font-size:13px;font-weight:bold;color:#ffd700;margin-bottom:10px;">💰 1,000,000 PPC</div>
+            <button class="btn btn-outline btn-full" style="border-color:rgba(216,180,226,0.3);color:#d8b4e2;" onclick="comprarFrierenRank('frieren_fern',1000000)">Obtener Título</button>
+          </div>
+          <!-- Stark -->
+          <div style="background:linear-gradient(135deg,rgba(255,85,85,0.1),rgba(255,85,85,0.03));border:1px solid rgba(255,85,85,0.25);border-radius:10px;padding:16px;position:relative;overflow:hidden;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+              <img src="frieren_stark_img.jpg" style="width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,85,85,0.5);">
+              <div>
+                <div style="font-size:14px;font-weight:bold;color:#ff5555;">🪓 Guerrero Heroico</div>
+                <div style="font-size:11px;color:rgba(255,85,85,0.6);">Stark</div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:rgba(188,230,255,0.5);margin-bottom:8px;line-height:1.6;">Multiplicador <strong style="color:#ff5555;">x2</strong> en pensión diaria.</div>
+            <div style="font-size:13px;font-weight:bold;color:#ffd700;margin-bottom:10px;">💰 3,500,000 PPC</div>
+            <button class="btn btn-outline btn-full" style="border-color:rgba(255,85,85,0.3);color:#ff5555;" onclick="comprarFrierenRank('frieren_stark',3500000)">Obtener Título</button>
+          </div>
+          <!-- Frieren -->
+          <div style="background:linear-gradient(135deg,rgba(188,230,255,0.1),rgba(188,230,255,0.03));border:1px solid rgba(188,230,255,0.25);border-radius:10px;padding:16px;position:relative;overflow:hidden;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+              <img src="frieren_frieren_img.jpg" style="width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid rgba(188,230,255,0.5);">
+              <div>
+                <div style="font-size:14px;font-weight:bold;color:#bce6ff;">🧝‍♀️ Maga de Primera Clase</div>
+                <div style="font-size:11px;color:rgba(188,230,255,0.6);">Frieren</div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:rgba(188,230,255,0.5);margin-bottom:8px;line-height:1.6;">Multiplicador <strong style="color:#bce6ff;">x3</strong> + sin comisiones en transferencias.</div>
+            <div style="font-size:13px;font-weight:bold;color:#ffd700;margin-bottom:10px;">💰 15,000,000 PPC</div>
+            <button class="btn btn-outline btn-full" style="border-color:rgba(188,230,255,0.3);color:#bce6ff;" onclick="comprarFrierenRank('frieren_frieren',15000000)">Obtener Título</button>
+          </div>
+          <!-- Himmel -->
+          <div style="background:linear-gradient(135deg,rgba(80,200,120,0.1),rgba(80,200,120,0.03));border:1px solid rgba(80,200,120,0.25);border-radius:10px;padding:16px;position:relative;overflow:hidden;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+              <img src="frieren_himmel_img.jpg" style="width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid rgba(80,200,120,0.5);">
+              <div>
+                <div style="font-size:14px;font-weight:bold;color:#50c878;">🗡️ Héroe de Leyenda</div>
+                <div style="font-size:11px;color:rgba(80,200,120,0.6);">Himmel</div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:rgba(188,230,255,0.5);margin-bottom:8px;line-height:1.6;">Multiplicador <strong style="color:#50c878;">x5</strong> + sin comisiones + préstamos masivos.</div>
+            <div style="font-size:13px;font-weight:bold;color:#ffd700;margin-bottom:10px;">💰 50,000,000 PPC</div>
+            <button class="btn btn-outline btn-full" style="border-color:rgba(80,200,120,0.3);color:#50c878;" onclick="comprarFrierenRank('frieren_himmel',50000000)">Obtener Título</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIENDA DE RELIQUIAS -->
+      <div style="background:rgba(10,20,40,0.8);border:1px solid rgba(255,215,0,0.12);border-radius:12px;padding:20px;margin-bottom:20px;">
+        <div style="font-size:15px;font-weight:800;color:#ffd700;letter-spacing:2px;margin-bottom:16px;border-bottom:1px solid rgba(255,215,0,0.1);padding-bottom:10px;">🏺 COFRE DE RELIQUIAS</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;" id="frieren-items-grid">
+          <!-- Varita -->
+          <div style="background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.15);border-radius:10px;padding:16px;text-align:center;">
+            <div style="font-size:40px;margin-bottom:8px;">🪄</div>
+            <div style="font-size:14px;font-weight:bold;color:#ffd700;">Varita de Frieren</div>
+            <div style="font-size:10px;color:rgba(188,230,255,0.4);margin:6px 0;">Reliquia coleccionable legendaria</div>
+            <div style="font-size:13px;font-weight:bold;color:#ffd700;margin-bottom:10px;">💰 1,000,000 PPC</div>
+            <button class="btn btn-outline btn-sm" style="border-color:rgba(255,215,0,0.3);color:#ffd700;width:100%;" onclick="comprarFrierenItem('varita_frieren','🪄 Varita de Frieren',1000000)">Comprar</button>
+          </div>
+          <!-- Grimorio -->
+          <div style="background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.15);border-radius:10px;padding:16px;text-align:center;">
+            <div style="font-size:40px;margin-bottom:8px;">📘</div>
+            <div style="font-size:14px;font-weight:bold;color:#ffd700;">Grimorio de Flamme</div>
+            <div style="font-size:10px;color:rgba(188,230,255,0.4);margin:6px 0;">Poder arcano antiguo</div>
+            <div style="font-size:13px;font-weight:bold;color:#ffd700;margin-bottom:10px;">💰 5,000,000 PPC</div>
+            <button class="btn btn-outline btn-sm" style="border-color:rgba(255,215,0,0.3);color:#ffd700;width:100%;" onclick="comprarFrierenItem('grimorio_flamme','📘 Grimorio de Flamme',5000000)">Comprar</button>
+          </div>
+          <!-- Hacha -->
+          <div style="background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.15);border-radius:10px;padding:16px;text-align:center;">
+            <div style="font-size:40px;margin-bottom:8px;">🪓</div>
+            <div style="font-size:14px;font-weight:bold;color:#ffd700;">Hacha de Stark</div>
+            <div style="font-size:10px;color:rgba(188,230,255,0.4);margin:6px 0;">Arma del guerrero cobarde-valiente</div>
+            <div style="font-size:13px;font-weight:bold;color:#ffd700;margin-bottom:10px;">💰 3,000,000 PPC</div>
+            <button class="btn btn-outline btn-sm" style="border-color:rgba(255,215,0,0.3);color:#ffd700;width:100%;" onclick="comprarFrierenItem('hacha_stark','🪓 Hacha de Stark',3000000)">Comprar</button>
+          </div>
+          <!-- Anillo -->
+          <div style="background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.15);border-radius:10px;padding:16px;text-align:center;">
+            <div style="font-size:40px;margin-bottom:8px;">💍</div>
+            <div style="font-size:14px;font-weight:bold;color:#ffd700;">Anillo de Loto Espejado</div>
+            <div style="font-size:10px;color:rgba(188,230,255,0.4);margin:6px 0;">El regalo de Himmel a Frieren</div>
+            <div style="font-size:13px;font-weight:bold;color:#ffd700;margin-bottom:10px;">💰 10,000,000 PPC</div>
+            <button class="btn btn-outline btn-sm" style="border-color:rgba(255,215,0,0.3);color:#ffd700;width:100%;" onclick="comprarFrierenItem('anillo_loto','💍 Anillo de Loto Espejado',10000000)">Comprar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- INVENTARIO -->
+      <div style="background:rgba(10,20,40,0.8);border:1px solid rgba(188,230,255,0.12);border-radius:12px;padding:20px;">
+        <div style="font-size:15px;font-weight:800;color:#bce6ff;letter-spacing:2px;margin-bottom:16px;border-bottom:1px solid rgba(188,230,255,0.1);padding-bottom:10px;">🎒 TU INVENTARIO</div>
+        <div id="frieren-inventory" style="display:flex;flex-wrap:wrap;gap:10px;">
+          <div class="empty-msg" style="color:rgba(188,230,255,0.3);">Aún no tienes reliquias. ¡Compra algo del cofre!</div>
+        </div>
       </div>
     </div>
 
@@ -4428,6 +4560,12 @@ body.loaded { overflow-x:hidden; }
                   <optgroup label="── 💍 PAREJAS ──">
                     <option value="pareja_emilio">💍 Novia de Emilio</option>
                     <option value="pareja_oficial">💍 Pareja Oficial</option>
+                  </optgroup>
+                  <optgroup label="── 🧝‍♀️ GREMIO FRIEREN ──">
+                    <option value="frieren_fern">🦋 Fern — Aprendiz (1M)</option>
+                    <option value="frieren_stark">🪓 Stark — Guerrero (3.5M)</option>
+                    <option value="frieren_frieren">🧝‍♀️ Frieren — Maga (15M)</option>
+                    <option value="frieren_himmel">🗡️ Himmel — Héroe (50M)</option>
                   </optgroup>
                   <optgroup label="── TITANES MASCULINOS ──">
                     <option value="urano">🌌 Urano (50M)</option>
@@ -5955,6 +6093,10 @@ function getRankMultiplier(user) {
     const key = getRankKey(user);
     let mult = RANK_MULTIPLIERS[key] || 1;
     if (key.startsWith('pareja')) mult *= 4;
+    if (key === 'frieren_fern') mult *= 1.5;
+    if (key === 'frieren_stark') mult *= 2;
+    if (key === 'frieren_frieren') mult *= 3;
+    if (key === 'frieren_himmel') mult *= 5;
     return mult;
 }
 function getRankLoanMax(user) {
@@ -6010,6 +6152,11 @@ const RANKS = {
     // Parejas Oficiales
     pareja_emilio: { label:'Novia de Emilio', emoji:'💍', color:'#ff1493', level:17, cls:'rank-afrodita'},
     pareja_oficial:{ label:'Pareja Oficial',  emoji:'💍', color:'#ff69b4', level:16, cls:'rank-hera'    },
+    // Gremio Frieren
+    frieren_fern:  { label:'Aprendiz de Magia', emoji:'🦋', color:'#d8b4e2', level:13, cls:'rank-orfeo' },
+    frieren_stark: { label:'Guerrero Heroico',  emoji:'🪓', color:'#ff5555', level:14, cls:'rank-ares' },
+    frieren_frieren:{label:'Maga de Primera Clase',emoji:'🧝‍♀️',color:'#bce6ff',level:16,cls:'rank-atenea' },
+    frieren_himmel:{ label:'Héroe de Leyenda',  emoji:'🗡️', color:'#50c878', level:18, cls:'rank-titanes' },
     // Titanes
     urano:    { label:'Urano',      emoji:'🌌', color:'#38bdf8', level:16, cls:'rank-urano'    },
     nix:      { label:'Nix',        emoji:'✨', color:'#e879f9', level:16, cls:'rank-nix'      },
@@ -12182,6 +12329,7 @@ window.showPage = function(page) {
     _showPageV5(page);
     if (page === 'admin') { setTimeout(function(){ initAdminHUD(); }, 50); }
     if (page === 'jjk') { setTimeout(function(){ if(typeof loadJJKPage==='function') loadJJKPage(); }, 30); }
+    if (page === 'frieren') { setTimeout(function(){ loadFrierenPage(); }, 30); }
 };
 
 // Sync HUD nav when adminTab is called from old tab buttons
@@ -12197,6 +12345,125 @@ window.adminTab = function(btn, page) {
     if (labelEl) labelEl.textContent = page.toUpperCase().replace(/_/g,' ');
 };
 
+</script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// GREMIO FRIEREN — LÓGICA DE TIENDA, RANGOS E INVENTARIO
+// ═══════════════════════════════════════════════════════════════
+
+function loadFrierenPage() {
+    if (!currentUser || !bankAccount) return;
+    var rankEl = document.getElementById('frieren-current-rank');
+    if (rankEl) {
+        var key = getRankKey(currentUser);
+        if (key && key.startsWith('frieren_')) {
+            var rd = RANKS[key];
+            rankEl.innerHTML = '<span style="color:'+rd.color+'">'+rd.emoji+' '+rd.label+'</span>';
+        } else {
+            rankEl.textContent = 'Sin título';
+        }
+    }
+    renderFrierenInventory();
+}
+
+window.comprarFrierenRank = async function(rankKey, price) {
+    if (!currentUser || !bankAccount || !window._db) return;
+    if ((bankAccount.balance || 0) < price) {
+        showToast('No tienes suficientes PPC para este título 💀', '#ff4466');
+        return;
+    }
+    var rd = RANKS[rankKey];
+    if (!rd) return;
+    var ok = await showConfirm(
+        '🧝‍♀️ Obtener Título Frieren',
+        'Título: <strong style="color:'+rd.color+'">'+rd.emoji+' '+rd.label+'</strong><br>'+
+        'Precio: <strong style="color:var(--gold)">'+price.toLocaleString('es')+' PPC</strong><br>'+
+        '<span style="color:rgba(188,230,255,0.5);">Tu rango del banco cambiará a este título.</span>',
+        '🧝‍♀️ Comprar'
+    );
+    if (!ok) return;
+    try {
+        var nick = currentUser.nick;
+        var myRef = window._fbDoc(window._db, 'bank_accounts', nick);
+        await window._fbUpdateDoc(myRef, {
+            balance: window._fbIncrement(-price),
+            rank: rankKey,
+        });
+        var userRef = window._fbDoc(window._db, 'users', nick);
+        await window._fbUpdateDoc(userRef, { rank: rankKey });
+        await addTx({ txType:'market', from:nick, to:'frieren_guild', amount:price, note:'🧝‍♀️ Título Frieren: '+rd.label });
+        showToast('✨ ¡Obtuviste el título '+rd.emoji+' '+rd.label+'!', rd.color);
+        if (bankAccount) { bankAccount.balance = (bankAccount.balance||0) - price; bankAccount.rank = rankKey; }
+        if (currentUser) currentUser.rank = rankKey;
+        loadFrierenPage();
+        updateBalanceDisplays();
+    } catch(e) {
+        showToast('Error: '+e.message, '#ff4466');
+    }
+};
+
+window.comprarFrierenItem = async function(itemId, itemLabel, price) {
+    if (!currentUser || !bankAccount || !window._db) return;
+    var inv = bankAccount.inventory || [];
+    if (inv.indexOf(itemId) !== -1) {
+        showToast('¡Ya tienes esta reliquia! 🎒', '#ffa500');
+        return;
+    }
+    if ((bankAccount.balance || 0) < price) {
+        showToast('No tienes suficientes PPC 💀', '#ff4466');
+        return;
+    }
+    var ok = await showConfirm(
+        '🏺 Comprar Reliquia',
+        'Objeto: <strong style="color:#ffd700">'+itemLabel+'</strong><br>'+
+        'Precio: <strong style="color:var(--gold)">'+price.toLocaleString('es')+' PPC</strong><br>'+
+        '<span style="color:rgba(188,230,255,0.5);">Se añadirá a tu inventario permanentemente.</span>',
+        '🏺 Comprar'
+    );
+    if (!ok) return;
+    try {
+        var nick = currentUser.nick;
+        var myRef = window._fbDoc(window._db, 'bank_accounts', nick);
+        var newInv = inv.slice();
+        newInv.push(itemId);
+        await window._fbUpdateDoc(myRef, {
+            balance: window._fbIncrement(-price),
+            inventory: newInv,
+        });
+        await addTx({ txType:'market', from:nick, to:'frieren_guild', amount:price, note:'🏺 Reliquia: '+itemLabel });
+        showToast('✨ ¡'+itemLabel+' añadido a tu inventario!', '#ffd700');
+        if (bankAccount) { bankAccount.balance = (bankAccount.balance||0) - price; bankAccount.inventory = newInv; }
+        renderFrierenInventory();
+        updateBalanceDisplays();
+    } catch(e) {
+        showToast('Error: '+e.message, '#ff4466');
+    }
+};
+
+var FRIEREN_ITEMS_DATA = {
+    'varita_frieren':   { emoji:'🪄', label:'Varita de Frieren',      color:'#bce6ff' },
+    'grimorio_flamme':  { emoji:'📘', label:'Grimorio de Flamme',     color:'#ffd700' },
+    'hacha_stark':      { emoji:'🪓', label:'Hacha de Stark',         color:'#ff5555' },
+    'anillo_loto':      { emoji:'💍', label:'Anillo de Loto Espejado',color:'#50c878' },
+};
+
+function renderFrierenInventory() {
+    var container = document.getElementById('frieren-inventory');
+    if (!container) return;
+    var inv = (bankAccount && bankAccount.inventory) ? bankAccount.inventory : [];
+    if (!inv.length) {
+        container.innerHTML = '<div class="empty-msg" style="color:rgba(188,230,255,0.3);">Aún no tienes reliquias. ¡Compra algo del cofre!</div>';
+        return;
+    }
+    container.innerHTML = inv.map(function(id) {
+        var data = FRIEREN_ITEMS_DATA[id] || { emoji:'❓', label:id, color:'#aaa' };
+        return '<div style="background:rgba(188,230,255,0.06);border:1px solid rgba(188,230,255,0.15);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px;">'+
+            '<span style="font-size:24px;">'+data.emoji+'</span>'+
+            '<span style="font-size:12px;font-weight:bold;color:'+data.color+';">'+data.label+'</span>'+
+            '</div>';
+    }).join('');
+}
 </script>
 
 <script>
