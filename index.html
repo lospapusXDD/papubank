@@ -32,7 +32,6 @@ body {
     color:var(--light);
     overflow-x:hidden;
     min-height:100vh;
-    cursor:none;
 }
 body.loaded { overflow-x:hidden; }
 ::selection{background:var(--primary);color:#000;}
@@ -2516,8 +2515,7 @@ body.loaded { overflow-x:hidden; }
     </div>
   </div>
 </div>
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
+<!-- CURSOR ELIMINADO POR OPTIMIZACIÓN -->
 
 <!-- DEBUG ERROR -->
 <div id="debug-error" style="display:none;position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#ff2244;color:#fff;padding:10px 20px;border-radius:8px;z-index:99999;font-size:12px;"></div>
@@ -13592,6 +13590,19 @@ const pCtx = pCanvas.getContext('2d');
 
 let pAnalyser, pData, pIsPlaying = false, pInited = false;
 
+// --- FUTURISTIC CLOCK :v ---
+function updatePapuClock() {
+    const el = document.getElementById('papu-clock');
+    if (!el) return;
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    el.innerHTML = `${h}:${m}:${s}<span>UTC-5</span>`;
+}
+setInterval(updatePapuClock, 1000);
+updatePapuClock();
+
 function initAudioContext() {
     if (pInited) return;
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -13611,13 +13622,26 @@ function animateVisualizer() {
     pAnalyser.getByteFrequencyData(pData);
     pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
     
-    const barW = (pCanvas.width / pData.length) * 2;
-    let x = 0;
+    const barW = 4; // Estilo Spotify
+    const gap = 3;
+    const centerY = pCanvas.height / 2;
+    const totalW = pData.length * (barW + gap);
+    let x = (pCanvas.width / 2) - (totalW / 2); // Centrar en pantalla
+    
     for (let i=0; i<pData.length; i++) {
-        const h = (pData[i] / 255) * pCanvas.height;
-        pCtx.fillStyle = `rgba(0, 211, 255, ${pData[i]/255})`;
-        pCtx.fillRect(x, pCanvas.height-h, barW-1, h);
-        x += barW;
+        const val = pData[i] / 255;
+        const h = Math.max(4, val * pCanvas.height * 0.85); // Altura centrada
+        const y = centerY - (h / 2);
+        
+        pCtx.fillStyle = `rgba(0, 212, 255, ${Math.max(0.3, val)})`;
+        if (pCtx.roundRect) {
+            pCtx.beginPath();
+            pCtx.roundRect(x, y, barW, h, 2);
+            pCtx.fill();
+        } else {
+            pCtx.fillRect(x, y, barW, h);
+        }
+        x += barW + gap;
     }
 }
 
