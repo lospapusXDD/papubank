@@ -52,6 +52,36 @@ body.loaded { overflow-x:hidden; }
 #music-control:hover { background: rgba(0, 212, 255, 0.15); border-color: var(--primary); transform: scale(1.1); box-shadow: 0 0 25px rgba(0, 212, 255, 0.2); }
 #music-control i { transition: transform 0.2s; }
 
+#play-controls {
+    position: fixed; top: 15px; right: 65px;
+    display: flex; gap: 8px; z-index: 10000;
+}
+.play-btn {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(6, 14, 26, 0.6); border: 1px solid var(--border);
+    color: var(--primary); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s; font-size: 10px; backdrop-filter: blur(4px);
+}
+.play-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
+
+#papu-lyrics {
+    position: fixed; top: 50%; right: 20px;
+    transform: translateY(-50%); width: 220px; max-height: 250px;
+    background: rgba(3, 0, 20, 0.4); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 15px;
+    padding: 20px; overflow-y: auto; z-index: 150;
+    opacity: 0; pointer-events: none; transition: all 0.5s ease;
+    scrollbar-width: none;
+}
+#papu-lyrics.visible { opacity: 1; pointer-events: auto; }
+.p-lyric-line { font-size: 11px; color: rgba(255, 255, 255, 0.5); margin-bottom: 8px; text-align: right; }
+.p-lyric-line.highlight { color: var(--primary); font-weight: bold; text-shadow: 0 0 8px var(--primary); }
+
+#papu-visualizer {
+    position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
+    z-index: 0; pointer-events: none; opacity: 0.6;
+}
+
 /* ═══════════════════════════ CURSOR */
 #cursor{position:fixed;width:10px;height:10px;background:var(--primary);border-radius:50%;pointer-events:none;z-index:999999;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--primary);mix-blend-mode:screen;}
 #cursor-ring{position:fixed;width:28px;height:28px;border:1px solid var(--primary);border-radius:50%;pointer-events:none;z-index:999998;transform:translate(-50%,-50%);opacity:.5;transition:all .15s ease;}
@@ -217,11 +247,31 @@ body.loaded { overflow-x:hidden; }
 /* User footer */
 .sb-user {
     border-top:1px solid var(--border);
-    padding:12px;overflow:hidden;white-space:nowrap;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px 0;
+}
+.sb-clock {
+    text-align: center;
+    margin-bottom: 10px;
 }
 .sb-user-inner {
     display:flex;align-items:center;gap:10px;margin-bottom:8px;
 }
+/* --- CLOCK SIDEBAR --- */
+.sb-clock {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    color: var(--primary);
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    white-space: nowrap;
+    overflow: hidden;
+}
+#sidebar.collapsed .sb-clock { display: none; }
+.sb-clock span { font-size: 10px; color: rgba(255, 255, 255, 0.3); margin-left: 2px; }
+
 .sb-avatar {
     width:32px;height:32px;border-radius:50%;
     background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);
@@ -2407,10 +2457,16 @@ body.loaded { overflow-x:hidden; }
 </style>
 </head>
 <body>
-    <audio id="papu-bg-music" loop src="nuts.mp3"></audio>
+    <audio id="papu-bg-music" src="nuts.mp3"></audio>
+    <div id="play-controls">
+        <div class="play-btn" onclick="prevPapuSong()" title="Anterior"><i class="fas fa-step-backward"></i></div>
+        <div class="play-btn" onclick="nextPapuSong()" title="Siguiente"><i class="fas fa-step-forward"></i></div>
+    </div>
     <div id="music-control" onclick="togglePapuMusic()" title="Silenciar/Activar Música">
         <i id="music-icon" class="fas fa-volume-mute"></i>
     </div>
+    <div id="papu-lyrics"></div>
+    <canvas id="papu-visualizer"></canvas>
 
 <!-- FONDO BASE OSCURO -->
 <div style="position:fixed;inset:0;background:#060e1a;z-index:-2;"></div>
@@ -2597,6 +2653,8 @@ body.loaded { overflow-x:hidden; }
 
   <!-- User footer -->
   <div class="sb-user">
+    <div class="sb-user">
+    <div class="sb-clock" id="papu-clock">00:00:00<span>UTC</span></div>
     <div class="sb-user-inner">
       <div class="sb-avatar">
         <span id="nav-user-emoji">👤</span>
@@ -13517,36 +13575,95 @@ window.playBattle=async function(){
 var _origDoLogin_jjk=window.doLogin;
 window.doLogin=async function(){await _origDoLogin_jjk.apply(this,arguments);if(currentUser&&currentUser.jjkRank)syncJJKBonuses();};
 
-// --- PAPUAUDIO ENGINE ---
-const papuAudio = document.getElementById('papu-bg-music');
-const papuIcon = document.getElementById('music-icon');
-let papuIsPlaying = false;
-papuAudio.volume = 0.5;
+// --- PAPUPLAYER v3.5 ENGINE (Playlist + Visualizer) XD :v :b ---
+const papuPlaylist = [
+    { file: 'nuts.mp3', title: 'NUTS', artist: '6IX9INE', lyrics: [{t:'H',text:'NUTS'},{t:'L',text:'...instrumental...'}] },
+    { file: 'kissme.mp3', title: 'I LIKE THE WAY YOU KISS ME', artist: 'ARTEMAS', lyrics: [{t:'H',text:'I LIKE THE WAY YOU KISS ME'},{t:'L',text:'I like the way you kiss me'}] },
+    { file: 'harvey.mp3', title: 'HARVEY', artist: "HER'S", lyrics: [{t:'H',text:'HARVEY'}] },
+    { file: 'olvidar.mp3', title: 'ME DEJAS OLVIDAR', artist: 'PERFECTO MISERABLE', lyrics: [{t:'H',text:'ME DEJAS OLVIDAR'}] }
+];
+
+let curPapuTrack = 0;
+const pAudio = document.getElementById('papu-bg-music');
+const pIcon = document.getElementById('music-icon');
+const pLyric = document.getElementById('papu-lyrics');
+const pCanvas = document.getElementById('papu-visualizer');
+const pCtx = pCanvas.getContext('2d');
+
+let pAnalyser, pData, pIsPlaying = false, pInited = false;
+
+function initAudioContext() {
+    if (pInited) return;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    pAnalyser = ctx.createAnalyser();
+    const source = ctx.createMediaElementSource(pAudio);
+    source.connect(pAnalyser);
+    pAnalyser.connect(ctx.destination);
+    pAnalyser.fftSize = 64; 
+    pData = new Uint8Array(pAnalyser.frequencyBinCount);
+    pInited = true;
+    animateVisualizer();
+}
+
+function animateVisualizer() {
+    if (!pInited) return;
+    requestAnimationFrame(animateVisualizer);
+    pAnalyser.getByteFrequencyData(pData);
+    pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+    
+    const barW = (pCanvas.width / pData.length) * 2;
+    let x = 0;
+    for (let i=0; i<pData.length; i++) {
+        const h = (pData[i] / 255) * pCanvas.height;
+        pCtx.fillStyle = `rgba(0, 211, 255, ${pData[i]/255})`;
+        pCtx.fillRect(x, pCanvas.height-h, barW-1, h);
+        x += barW;
+    }
+}
+
+function loadPapuTrack(idx) {
+    const track = papuPlaylist[idx];
+    pAudio.src = track.file;
+    let html = `<div class="p-lyric-line highlight">${track.title}</div><div style="font-size:8px; opacity:0.5; margin-bottom:10px">${track.artist}</div>`;
+    track.lyrics.forEach(l => {
+        html += `<div class="p-lyric-line ${l.t==='H'?'highlight':''}">${l.text}</div>`;
+    });
+    pLyric.innerHTML = html;
+    if (pIsPlaying) pAudio.play();
+}
 
 window.togglePapuMusic = function() {
-    if (papuIsPlaying) {
-        papuAudio.pause();
-        papuIcon.className = 'fas fa-volume-mute';
+    initAudioContext();
+    if (pIsPlaying) {
+        pAudio.pause();
+        pIcon.className = 'fas fa-volume-mute';
+        pLyric.classList.remove('visible');
     } else {
-        papuAudio.play().catch(e => console.log("Audio blocked"));
-        papuIcon.className = 'fas fa-volume-up';
+        pAudio.play();
+        pIcon.className = 'fas fa-volume-up';
+        pLyric.classList.add('visible');
     }
-    papuIsPlaying = !papuIsPlaying;
+    pIsPlaying = !pIsPlaying;
 };
+
+window.nextPapuSong = function() { curPapuTrack = (curPapuTrack + 1) % papuPlaylist.length; loadPapuTrack(curPapuTrack); };
+window.prevPapuSong = function() { curPapuTrack = (curPapuTrack - 1 + papuPlaylist.length) % papuPlaylist.length; loadPapuTrack(curPapuTrack); };
+
+window.addEventListener('resize', () => { pCanvas.width = window.innerWidth; pCanvas.height = 60; });
+window.dispatchEvent(new Event('resize'));
 
 var _origDoLogin_music = window.doLogin;
 window.doLogin = async function() {
     await _origDoLogin_music.apply(this, arguments);
-    // Arrancamos musica si el login fue exitoso
-    setTimeout(() => {
-        const overlay = document.getElementById('auth-overlay');
-        if (overlay && (getComputedStyle(overlay).display === 'none' || overlay.style.display === 'none') && !papuIsPlaying) {
-            papuAudio.play().then(() => {
-                papuIsPlaying = true;
-                papuIcon.className = 'fas fa-volume-up';
-            }).catch(e => console.log("Music blocked until manual trigger"));
-        }
-    }, 800);
+    if (!pIsPlaying) {
+        initAudioContext();
+        loadPapuTrack(curPapuTrack);
+        pAudio.play().then(() => {
+            pIsPlaying = true;
+            pIcon.className = 'fas fa-volume-up';
+            pLyric.classList.add('visible');
+        }).catch(e => console.log("Blocked"));
+    }
 };
 
 </script>
