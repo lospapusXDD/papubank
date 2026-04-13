@@ -2,7 +2,7 @@
   "name": "PapusBank",
   "short_name": "PapusBank",
   "description": "Banco oficial del clan Los Papus",
-  "start_url": "./banco.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#060e1a",
   "theme_color": "#00d4ff",

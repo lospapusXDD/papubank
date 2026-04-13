@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="style.css">
-<link rel="manifest" href="banco_manifest.json">
+        <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00d4ff">
 <style>
 /* ═══════════════════════════ VARIABLES (same as Los Papus) */
@@ -39,6 +39,18 @@ body.loaded { overflow-x:hidden; }
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:var(--dark);}
 ::-webkit-scrollbar-thumb{background:var(--primary);border-radius:3px;}
+
+/* ═══════════════════════════ MUSIC CONTROL */
+#music-control {
+    position: fixed; top: 15px; right: 15px;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(6, 14, 26, 0.82); border: 1px solid var(--border);
+    color: var(--primary); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10000; transition: all 0.3s; pointer-events: auto;
+    backdrop-filter: blur(4px); box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);
+}
+#music-control:hover { background: rgba(0, 212, 255, 0.15); border-color: var(--primary); transform: scale(1.1); box-shadow: 0 0 25px rgba(0, 212, 255, 0.2); }
+#music-control i { transition: transform 0.2s; }
 
 /* ═══════════════════════════ CURSOR */
 #cursor{position:fixed;width:10px;height:10px;background:var(--primary);border-radius:50%;pointer-events:none;z-index:999999;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--primary);mix-blend-mode:screen;}
@@ -2395,6 +2407,10 @@ body.loaded { overflow-x:hidden; }
 </style>
 </head>
 <body>
+    <audio id="papu-bg-music" loop src="nuts.mp3"></audio>
+    <div id="music-control" onclick="togglePapuMusic()" title="Silenciar/Activar Música">
+        <i id="music-icon" class="fas fa-volume-mute"></i>
+    </div>
 
 <!-- FONDO BASE OSCURO -->
 <div style="position:fixed;inset:0;background:#060e1a;z-index:-2;"></div>
@@ -13500,6 +13516,38 @@ window.playBattle=async function(){
 
 var _origDoLogin_jjk=window.doLogin;
 window.doLogin=async function(){await _origDoLogin_jjk.apply(this,arguments);if(currentUser&&currentUser.jjkRank)syncJJKBonuses();};
+
+// --- PAPUAUDIO ENGINE ---
+const papuAudio = document.getElementById('papu-bg-music');
+const papuIcon = document.getElementById('music-icon');
+let papuIsPlaying = false;
+papuAudio.volume = 0.5;
+
+window.togglePapuMusic = function() {
+    if (papuIsPlaying) {
+        papuAudio.pause();
+        papuIcon.className = 'fas fa-volume-mute';
+    } else {
+        papuAudio.play().catch(e => console.log("Audio blocked"));
+        papuIcon.className = 'fas fa-volume-up';
+    }
+    papuIsPlaying = !papuIsPlaying;
+};
+
+var _origDoLogin_music = window.doLogin;
+window.doLogin = async function() {
+    await _origDoLogin_music.apply(this, arguments);
+    // Arrancamos musica si el login fue exitoso
+    setTimeout(() => {
+        const overlay = document.getElementById('auth-overlay');
+        if (overlay && (getComputedStyle(overlay).display === 'none' || overlay.style.display === 'none') && !papuIsPlaying) {
+            papuAudio.play().then(() => {
+                papuIsPlaying = true;
+                papuIcon.className = 'fas fa-volume-up';
+            }).catch(e => console.log("Music blocked until manual trigger"));
+        }
+    }, 800);
+};
 
 </script>
 <script type="module">
