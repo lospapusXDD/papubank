@@ -1,7 +1,11 @@
 // PapusBank Service Worker v1.0
 const CACHE = 'papusbank-v1';
 const ASSETS = [
-  './banco.html',
+  './',
+  './index.html',
+  './style.css',
+  './globe.js',
+  './three_module_min.js',
   'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
 ];
