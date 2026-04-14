@@ -2665,6 +2665,9 @@ body.loaded { overflow-x:hidden; }
       <li><span class="sb-link" id="nav-inversiones" onclick="showPage('inversiones')" data-tooltip="Inversiones">
         <span class="sb-icon">📈</span><span class="sb-label">Inversiones</span>
       </span></li>
+      <li><span class="sb-link" id="nav-clan-nicks" onclick="showPage('clan-nicks')" data-tooltip="Nicks del Clan">
+        <span class="sb-icon">👤</span><span class="sb-label">Nicks del Clan</span>
+      </span></li>
       <li><span class="sb-link" id="nav-rewards" onclick="showPage('rewards')" data-tooltip="Rewards">
         <span class="sb-icon">🎁</span><span class="sb-label">Rewards</span>
       </span></li>
@@ -3315,6 +3318,26 @@ body.loaded { overflow-x:hidden; }
     </div>
 
     <!-- ── PERFIL ───────────────────────────────────────────── -->
+    <!-- CLAN NICKS SECTION -->
+    <div class="page" id="page-clan-nicks" style="display:none;">
+      <div class="section-title">👤 INTEGRANTES DEL CLAN</div>
+      <div class="glass-card" style="padding:20px;">
+        <div id="bank-live-nicks" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
+          <p style="text-align:center;grid-column:1/-1;color:var(--primary);opacity:0.6;">📡 Sincronizando con la Base de Datos Maestro...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLAN NICKS SECTION -->
+    <div class="page" id="page-clan-nicks" style="display:none;">
+      <div class="section-title">👤 INTEGRANTES DEL CLAN</div>
+      <div class="glass-card" style="padding:20px;">
+        <div id="bank-live-nicks" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
+          <p style="text-align:center;grid-column:1/-1;color:var(--primary);opacity:0.6;">📡 Sincronizando con la Base de Datos Maestro...</p>
+        </div>
+      </div>
+    </div>
+
     <div class="page" id="page-perfil">
       <div class="page-title">👤 Mi Perfil</div>
       <div class="page-sub">// TU TARJETA DE IDENTIDAD BANCARIA //</div>
@@ -13816,6 +13839,58 @@ if (_pg?.renderer) {
     _pg.renderer.domElement.style.opacity = cfg.visible ? (cfg.opacity/100).toFixed(2) : '0';
     if (cfg.color !== 'cyan') window.setPlanetColor(cfg.color);
 }
+
+// SINCRONIZACIÓN DE NICKS — Firebase ☁️ (sin login requerido)
+async function syncBankNicks() {
+  const container = document.getElementById('bank-live-nicks');
+  if(!container) return;
+
+  // Esperar hasta que Firebase esté listo (máx 5s)
+  let tries = 0;
+  while (!window._db && tries < 10) {
+    await new Promise(r => setTimeout(r, 500));
+    tries++;
+  }
+  if (!window._db) {
+    container.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:var(--danger);">⚠️ Firebase no disponible</p>';
+    return;
+  }
+
+  try {
+    // Dynamic import — funciona sin login
+    const { collection, getDocs, query, orderBy } = await import('https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js');
+    const q = query(collection(window._db, 'clan_nicks'), orderBy('created_at', 'desc'));
+    const snapshot = await getDocs(q);
+    if(snapshot.empty) {
+      container.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:var(--light);opacity:0.4;">Sin nicks aún 😎</p>';
+      return;
+    }
+    container.innerHTML = '';
+    snapshot.forEach(docSnap => {
+      const item = docSnap.data();
+      const card = document.createElement('div');
+      card.style = `background:rgba(255,255,255,0.03);border:1px solid rgba(0,212,255,0.1);border-radius:12px;padding:15px;text-align:center;animation:fadeInUp 0.5s ease-out;`;
+      card.innerHTML = `
+        <div style="font-size:24px;margin-bottom:6px;">👤</div>
+        <div style="font-weight:700;font-size:13px;color:#fff;">${item.nick}</div>
+        <div style="font-size:11px;color:var(--primary);opacity:0.8;">${item.original_name || 'Sin nombre real'}</div>
+      `;
+      container.appendChild(card);
+    });
+  } catch (e) {
+    container.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:var(--danger);">⚠️ Error cargando nicks</p>';
+    console.error('syncBankNicks error:', e);
+  }
+}
+
+// Hook de navegación
+var _showPageNicks = window.showPage;
+window.showPage = function(p) {
+  if(p === 'clan-nicks') syncBankNicks();
+  if(typeof _showPageNicks === 'function') _showPageNicks(p);
+};
+
+window.addEventListener('load', syncBankNicks);
 </script>
 </body>
 </html>
