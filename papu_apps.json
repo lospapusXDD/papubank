@@ -1,0 +1,34 @@
+[
+  {
+    "id": "papubank",
+    "name": "PapusBank",
+    "icon": "💰",
+    "description": "Banco oficial del clan Los Papus. Gestión de cuentas y ranking.",
+    "url": "./index.html",
+    "type": "file"
+  },
+  {
+    "id": "papucontrol",
+    "name": "PapuControl",
+    "icon": "🦾",
+    "description": "Centro de mando: Monitoreo de PC, terminal remota y Roblox tools.",
+    "url": "http://localhost:5173",
+    "type": "server"
+  },
+  {
+    "id": "papudb",
+    "name": "PapuDB Admin",
+    "icon": "📡",
+    "description": "Gestor visual de base de datos MariaDB (Adminer).",
+    "url": "http://localhost:8080/papudb_gui.php",
+    "type": "server"
+  },
+  {
+    "id": "lospapusxdd",
+    "name": "Los Papus XD",
+    "icon": "🔥",
+    "description": "Web del clan con scripts, nicks, ranking y más herramientas del grupo.",
+    "url": "../lospapusxdd-main/index.html",
+    "type": "file"
+  }
+]
