@@ -13851,20 +13851,20 @@ async function syncBankNicks() {
     await new Promise(r => setTimeout(r, 500));
     tries++;
   }
-  if (!window._db) {
+  if (!window._db || !window._fbCollection) {
     container.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:var(--danger);">⚠️ Firebase no disponible</p>';
     return;
   }
 
   try {
-    // Dynamic import — funciona sin login
-    const { collection, getDocs, query, orderBy } = await import('https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js');
-    const q = query(collection(window._db, 'clan_nicks'), orderBy('created_at', 'desc'));
-    const snapshot = await getDocs(q);
+    const q = window._fbQuery(window._fbCollection(window._db, 'clan_nicks'), window._fbOrderBy('created_at', 'desc'));
+    const snapshot = await window._fbGetDocs(q);
+    
     if(snapshot.empty) {
       container.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:var(--light);opacity:0.4;">Sin nicks aún 😎</p>';
       return;
     }
+    
     container.innerHTML = '';
     snapshot.forEach(docSnap => {
       const item = docSnap.data();
