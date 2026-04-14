@@ -2485,17 +2485,18 @@ body.loaded { overflow-x:hidden; }
     #music-control { top: 12px !important; right: 10px !important; }
     
     #sidebar { 
-        width: 60px !important; 
+        width: 60px; 
         border-right: 1px solid var(--border) !important;
         overflow: hidden !important;
         z-index: 5001 !important;
         display: flex !important;
+        transition: width .25s ease !important;
     }
     #sidebar.mobile-open { width: 220px !important; }
     .main-content { 
         margin-left: 0 !important; 
         width: 100% !important; 
-        padding-top: 70px !important; /* Espacio para botones de arriba */
+        padding-top: 70px !important; 
         z-index: 10 !important;
     }
     .mobile-overlay { z-index: 4999 !important; }
@@ -8145,8 +8146,12 @@ function collapseSidebar(instant) {
     var sb = document.getElementById('sidebar');
     var app = document.getElementById('app');
     var btn = document.getElementById('sidebar-toggle');
-    if (sb) { sb.classList.add('collapsed'); sb.style.width = '56px'; }
-    if (app) { app.classList.add('sidebar-collapsed'); app.style.marginLeft = '56px'; }
+    if (sb) { 
+        sb.classList.add('collapsed'); 
+        if (window.innerWidth <= 768) sb.classList.remove('mobile-open');
+        else sb.style.width = '56px'; 
+    }
+    if (app) { app.classList.add('sidebar-collapsed'); app.style.marginLeft = (window.innerWidth <= 768) ? '0' : '56px'; }
     if (btn) { btn.textContent = '›'; btn.title = 'Expandir'; }
     _sbCollapsed = true;
 }
@@ -8155,8 +8160,12 @@ function expandSidebar(instant) {
     var sb = document.getElementById('sidebar');
     var app = document.getElementById('app');
     var btn = document.getElementById('sidebar-toggle');
-    if (sb) { sb.classList.remove('collapsed'); sb.style.width = '220px'; }
-    if (app) { app.classList.remove('sidebar-collapsed'); app.style.marginLeft = '220px'; }
+    if (sb) { 
+        sb.classList.remove('collapsed'); 
+        if (window.innerWidth <= 768) sb.classList.add('mobile-open');
+        else sb.style.width = '220px'; 
+    }
+    if (app) { app.classList.remove('sidebar-collapsed'); app.style.marginLeft = (window.innerWidth <= 768) ? '0' : '220px'; }
     if (btn) { btn.textContent = '‹'; btn.title = 'Colapsar'; }
     _sbCollapsed = false;
 }
