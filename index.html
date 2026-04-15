@@ -6601,6 +6601,16 @@ window.doLogin = async function() {
         currentUser = Object.assign({ nick: nick }, data);
         localStorage.setItem(SESSION_KEY, JSON.stringify({ nick: nick, hash: data.hash }));
         localStorage.setItem('papus_session_v2', JSON.stringify({ nick: nick, hash: data.hash })); // sync web session
+        
+        // Registrar última IP y fecha en Firebase (sin bloquear el login si falla)
+        fetch('https://api.ipify.org?format=json')
+            .then(r => r.json())
+            .then(ipData => {
+                window._fbUpdateDoc(window._fbDoc(window._db, 'users', nick), {
+                    lastLogin: window._fbServerTimestamp(),
+                    lastLoginIp: ipData.ip
+                });
+            }).catch(e => console.log('Error de IP:', e));
 
         document.getElementById('auth-overlay').style.display = 'none';
         document.getElementById('app').classList.add('visible');
@@ -6906,6 +6916,12 @@ async function tryAutoLogin() {
         currentUser = Object.assign({ nick: s.nick }, snap.data());
         document.getElementById('auth-overlay').style.display = 'none';
         document.getElementById('app').classList.add('visible');
+
+        // Registrar IP (silencioso)
+        fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(ipData=>{
+            window._fbUpdateDoc(window._fbDoc(window._db, 'users', s.nick), {lastLogin: window._fbServerTimestamp(),lastLoginIp: ipData.ip});
+        }).catch(()=>{});
+
         await initBankAccount();
         updateNavUI();
         showPage('dashboard');
@@ -13857,11 +13873,11 @@ async function syncBankNicks() {
   }
 
   try {
-    const q = window._fbQuery(window._fbCollection(window._db, 'clan_nicks'), window._fbOrderBy('created_at', 'desc'));
+    const q = window._fbQuery(window._fbCollection(window._db, 'users'), window._fbOrderBy('createdAt', 'desc'));
     const snapshot = await window._fbGetDocs(q);
     
     if(snapshot.empty) {
-      container.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:var(--light);opacity:0.4;">Sin nicks aún 😎</p>';
+      container.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:var(--light);opacity:0.4;">La base de datos del banco está vacía 😎</p>';
       return;
     }
     
@@ -13891,6 +13907,37 @@ window.showPage = function(p) {
 };
 
 window.addEventListener('load', syncBankNicks);
+
+// Escucha activa de Anuncios Globales desde PapuControl
+setTimeout(() => {
+    if (window._db && window._fbDoc && window._fbOnSnapshot) {
+        window._fbOnSnapshot(window._fbDoc(window._db, 'system', 'broadcaster'), (doc) => {
+            const data = doc.data();
+            if (data && data.message) {
+                const lastMsg = sessionStorage.getItem('last_announcement');
+                if (lastMsg !== data.message) {
+                    sessionStorage.setItem('last_announcement', data.message);
+                    let color = '#ff00d4';
+                    if(data.type === 'error') color = '#ff4466';
+                    if(data.type === 'warning') color = '#ffaa00';
+                    if(data.type === 'epic') color = '#ffd700';
+                    if(data.type === 'success') color = '#00ff9d';
+                    
+                    const el = document.getElementById('toast');
+                    if (el) {
+                        el.style.background = `linear-gradient(45deg, ${color}, #fff)`;
+                        el.style.color = '#000';
+                        el.style.border = `2px solid ${color}`;
+                        el.style.boxShadow = `0 0 20px ${color}`;
+                        el.innerHTML = `<b style="font-size:16px;">📢 ALERTA DEL SISTEMA:</b><br><br>${data.message}`;
+                        el.className = 'toast show';
+                        setTimeout(() => { el.className = el.className.replace('show', ''); setTimeout(() => el.style = '', 500); }, 10000);
+                    }
+                }
+            }
+        });
+    }
+}, 6000);
 </script>
 </body>
 </html>
