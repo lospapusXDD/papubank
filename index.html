@@ -2534,29 +2534,55 @@ body.loaded { overflow-x:hidden; }
 
 <!-- ═══════════ INTRO VIDEO ═══════════ -->
 <div id="intro-overlay">
-    <video id="intro-video" src="Arch_boot.mp4" autoplay muted playsinline></video>
+    <video id="intro-video" autoplay muted playsinline>
+        <source src="Arch_boot.mp4" type="video/mp4">
+    </video>
     <button id="intro-skip" onclick="skipIntro()">SKIP ▶</button>
 </div>
 <script>
 (function() {
     function skipIntro() {
         const overlay = document.getElementById('intro-overlay');
+        if (!overlay || overlay.classList.contains('fade-out')) return;
         overlay.classList.add('fade-out');
-        setTimeout(() => overlay.remove(), 800);
+        setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 900);
     }
     window.skipIntro = skipIntro;
 
-    window.addEventListener('DOMContentLoaded', function() {
-        const video = document.getElementById('intro-video');
-        if (!video) return;
-        video.addEventListener('ended', skipIntro);
-        // Fallback: si el video no carga en 3s, saltamos
-        video.addEventListener('error', skipIntro);
-        setTimeout(function() {
-            const overlay = document.getElementById('intro-overlay');
-            if (overlay && !overlay.classList.contains('fade-out')) skipIntro();
-        }, 30000); // max 30s de espera
+    const video = document.getElementById('intro-video');
+
+    // Intenta reproducir en cuanto el DOM esté listo
+    function tryPlay() {
+        video.load();
+        const p = video.play();
+        if (p !== undefined) {
+            p.catch(() => {
+                // Autoplay bloqueado: mostrar botón prominente de play
+                const btn = document.getElementById('intro-skip');
+                if (btn) { btn.textContent = '▶ INICIAR'; btn.style.fontSize = '16px'; btn.style.padding = '14px 32px'; }
+                video.addEventListener('click', () => video.play(), { once: true });
+                video.style.cursor = 'pointer';
+            });
+        }
+    }
+
+    video.addEventListener('ended', skipIntro);
+    video.addEventListener('error', function(e) {
+        console.warn('Intro video error:', e);
+        // Si falla el video, poner fondo animado en vez de negro puro
+        const overlay = document.getElementById('intro-overlay');
+        if (overlay) overlay.style.background = 'radial-gradient(ellipse at center, #0a1a2e 0%, #000 100%)';
+        setTimeout(skipIntro, 3000);
     });
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', tryPlay);
+    } else {
+        tryPlay();
+    }
+
+    // Safety timeout: máx 60s
+    setTimeout(skipIntro, 60000);
 })();
 </script>
     <audio id="papu-bg-music" src="nuts.mp3"></audio>
