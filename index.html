@@ -39,32 +39,6 @@ body.loaded { overflow-x:hidden; }
 ::-webkit-scrollbar-track{background:var(--dark);}
 ::-webkit-scrollbar-thumb{background:var(--primary);border-radius:3px;}
 
-/* ═══════════════════════════ INTRO OVERLAY */
-#intro-overlay {
-    position: fixed; inset: 0; z-index: 999999;
-    background: #000;
-    display: flex; align-items: center; justify-content: center;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-}
-#intro-overlay.fade-out {
-    opacity: 0; visibility: hidden; pointer-events: none;
-}
-#intro-video {
-    width: 100%; height: 100%;
-    object-fit: cover;
-}
-#intro-skip {
-    position: absolute; bottom: 30px; right: 30px;
-    background: rgba(0,212,255,0.15);
-    border: 1px solid rgba(0,212,255,0.4);
-    color: var(--primary); font-family: 'Orbitron', sans-serif;
-    font-size: 11px; letter-spacing: 2px;
-    padding: 8px 18px; border-radius: 20px;
-    cursor: pointer; transition: all 0.2s;
-    backdrop-filter: blur(4px);
-}
-#intro-skip:hover { background: rgba(0,212,255,0.3); transform: scale(1.05); }
-
 /* ═══════════════════════════ MUSIC CONTROL */
 #music-control {
     position: fixed; top: 15px; right: 15px;
@@ -654,6 +628,28 @@ body.loaded { overflow-x:hidden; }
 .rank-andromeda{background:rgba(147,197,253,0.1); color:#93c5fd; border:1px solid rgba(147,197,253,0.2);}
 .rank-euridice{background:rgba(249,168,212,0.1);  color:#f9a8d4; border:1px solid rgba(249,168,212,0.2);}
 .rank-medusa  {background:rgba(107,114,128,0.12); color:#9ca3af; border:1px solid rgba(107,114,128,0.25);}
+/* ══ MR BEAST — Rango Exclusivo ══ */
+.rank-mrbeast {
+    background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(20,20,20,0.9));
+    color: #00cfff;
+    border: 1px solid rgba(0,207,255,0.5);
+    font-family: 'Playfair Display', 'Georgia', serif;
+    font-style: italic;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 10px rgba(0,207,255,0.6);
+    box-shadow: 0 0 12px rgba(0,207,255,0.2);
+    display: inline-flex !important;
+    align-items: center;
+    gap: 4px;
+}
+.rank-mrbeast::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: url('oNeJxPbU.png') center/contain no-repeat;
+    flex-shrink: 0;
+}
 
 /* ─── Tienda de Rangos ─── */
 .rank-shop-grid {
@@ -2531,60 +2527,6 @@ body.loaded { overflow-x:hidden; }
 </style>
 </head>
 <body>
-
-<!-- ═══════════ INTRO VIDEO ═══════════ -->
-<div id="intro-overlay">
-    <video id="intro-video" autoplay muted playsinline>
-        <source src="Arch_boot.mp4" type="video/mp4">
-    </video>
-    <button id="intro-skip" onclick="skipIntro()">SKIP ▶</button>
-</div>
-<script>
-(function() {
-    function skipIntro() {
-        const overlay = document.getElementById('intro-overlay');
-        if (!overlay || overlay.classList.contains('fade-out')) return;
-        overlay.classList.add('fade-out');
-        setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 900);
-    }
-    window.skipIntro = skipIntro;
-
-    const video = document.getElementById('intro-video');
-
-    // Intenta reproducir en cuanto el DOM esté listo
-    function tryPlay() {
-        video.load();
-        const p = video.play();
-        if (p !== undefined) {
-            p.catch(() => {
-                // Autoplay bloqueado: mostrar botón prominente de play
-                const btn = document.getElementById('intro-skip');
-                if (btn) { btn.textContent = '▶ INICIAR'; btn.style.fontSize = '16px'; btn.style.padding = '14px 32px'; }
-                video.addEventListener('click', () => video.play(), { once: true });
-                video.style.cursor = 'pointer';
-            });
-        }
-    }
-
-    video.addEventListener('ended', skipIntro);
-    video.addEventListener('error', function(e) {
-        console.warn('Intro video error:', e);
-        // Si falla el video, poner fondo animado en vez de negro puro
-        const overlay = document.getElementById('intro-overlay');
-        if (overlay) overlay.style.background = 'radial-gradient(ellipse at center, #0a1a2e 0%, #000 100%)';
-        setTimeout(skipIntro, 3000);
-    });
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', tryPlay);
-    } else {
-        tryPlay();
-    }
-
-    // Safety timeout: máx 60s
-    setTimeout(skipIntro, 60000);
-})();
-</script>
     <audio id="papu-bg-music" src="nuts.mp3"></audio>
     <div id="play-controls">
         <div class="play-btn" onclick="prevPapuSong()" title="Anterior"><i class="fas fa-step-backward"></i></div>
@@ -4877,6 +4819,9 @@ body.loaded { overflow-x:hidden; }
                     <option value="pareja_emilio">💍 Novia de Emilio</option>
                     <option value="pareja_oficial">💍 Pareja Oficial</option>
                   </optgroup>
+                  <optgroup label="── 🦁 EXCLUSIVO ──">
+                    <option value="mrbeast">🦁 Mr Beast — Exclusivo</option>
+                  </optgroup>
                   <optgroup label="── 🧝‍♀️ GREMIO FRIEREN ──">
                     <option value="frieren_fern">🦋 Fern — Aprendiz (1M)</option>
                     <option value="frieren_stark">🪓 Stark — Guerrero (3.5M)</option>
@@ -6392,6 +6337,7 @@ const RANK_MULTIPLIERS = {
     // Masculinos
     mortal_m:1,jason:1,heracles:1,teseo:1,semidios:1,dionisio:1,hefesto:1,hermes_m:1,ares:1,
     apolo:1.2, poseidon:1.5, hades:1.75, zeus:2, orfeo:2.5, cronos:2.75, urano:3,
+    mrbeast:10,
     // Femeninos
     mortal_f:1,medusa:1,ninfa:1,calipso:1,circe:1,andromeda:1,euridice:1,hera:1,demeter:1,
     persefone:1.2, artemisa:1.5, atenea:1.75, afrodita:2, hecate:2.5, gea:2.75, nix:3,
@@ -6403,6 +6349,7 @@ const RANK_LOAN_MAX = {
     mortal_f:5000,medusa:5000,ninfa:5000,calipso:7000,circe:8000,andromeda:10000,euridice:12000,hera:14000,demeter:18000,
     persefone:25000, artemisa:40000, atenea:60000, afrodita:100000, hecate:150000, gea:250000, nix:500000,
     owner:999999, admin:500000, mod:50000, helper:20000,
+    mrbeast:500000,
 };
 
 function getRankMultiplier(user) {
@@ -6509,6 +6456,8 @@ const RANKS = {
     mortal_m: { label:'Mortal',     emoji:'🗡️', color:'#6688aa', level:1,  cls:'rank-mortal'   },
     mortal_f: { label:'Mortal',     emoji:'🌸', color:'#6688aa', level:1,  cls:'rank-mortal'   },
     user:     { label:'Mortal',     emoji:'🗡️', color:'#6688aa', level:1,  cls:'rank-mortal'   },
+    // Rango Exclusivo
+    mrbeast:  { label:'Mr Beast',   emoji:'🦁', color:'#00cfff', level:16, cls:'rank-mrbeast'  },
 };
 const BANK_TIERS = [
     { min:0,     label:'Papu Pobre',    cls:'tag-blue'  },
