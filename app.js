@@ -341,7 +341,8 @@ window.doLogin = async function() {
             }
 
             const data = snap.data();
-            const hash = hashPass(pass, nick);
+            const hashSalt = data.hashSalt || nick;
+            const hash = hashPass(pass, hashSalt);
 
             if (data.hash !== hash) {
                 errEl.textContent = 'Contraseña incorrecta';

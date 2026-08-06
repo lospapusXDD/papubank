@@ -2105,8 +2105,8 @@ async function adminRenameUser() {
         if (newSnap.exists()) { showToast('El nick "' + newNick + '" ya está en uso', '#ff4466'); return; }
 
         const userData = oldSnap.data();
-        // Create new user doc
-        await window._fbSetDoc(window._fbDoc(db, 'users', newNick), { ...userData, nick: newNick });
+        // Create new user doc — preserve original hash salt so login still works
+        await window._fbSetDoc(window._fbDoc(db, 'users', newNick), { ...userData, nick: newNick, hashSalt: userData.hashSalt || oldNick });
         // Delete old user doc
         await window._fbDeleteDoc(window._fbDoc(db, 'users', oldNick));
 
