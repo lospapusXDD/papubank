@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Verificación — PapusBank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="style.css" rel="stylesheet">
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js';
+  import { getFirestore, doc, setDoc, getDoc, addDoc, collection, getDocs, query, where, orderBy, limit, serverTimestamp, deleteDoc, updateDoc, increment } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
+  const firebaseConfig = { apiKey: "AIzaSyBiFh_LL0wOE31sfhslB5RlGNhBNDhR8Pw", authDomain: "los-papus-nivel-dios.firebaseapp.com", projectId: "los-papus-nivel-dios", storageBucket: "los-papus-nivel-dios.appspot.com", messagingSenderId: "440148979897", appId: "1:440148979897:web:7ff95f28fdabe1f1d44bb1" };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window._db = db;
+  window._fbDoc = doc; window._fbSetDoc = setDoc; window._fbGetDoc = getDoc; window._fbAddDoc = addDoc; window._fbUpdateDoc = updateDoc; window._fbDeleteDoc = deleteDoc; window._fbCollection = collection; window._fbGetDocs = getDocs; window._fbQuery = query; window._fbWhere = where; window._fbOrderBy = orderBy; window._fbLimit = limit; window._fbServerTimestamp = serverTimestamp; window._fbIncrement = increment;
+</script>
+</head>
+<body>
+<div class="verif-wrapper">
+  <div class="verif-card">
+    <div class="verif-brand">
+      <i class="fa-solid fa-shield-halved"></i>
+      <h1>PapusBank <span style="font-size:14px;color:var(--text-muted);font-weight:400;">— Verificación</span></h1>
+    </div>
+    <div id="verif-status" style="margin-top:6px;font-size:11px;color:var(--secondary);">Conectado al sistema</div>
+
+    <div id="verif-session" style="margin-top:16px;padding:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;font-size:12px;color:var(--text-muted);display:none;">
+      Cuenta vinculada: <strong id="verif-session-user" style="color:var(--primary);">—</strong>
+    </div>
+
+    <div id="verif-code-box" style="margin-top:28px;display:none;">
+      <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;">Código numérico de verificación</div>
+      <div id="verif-code" style="font-family:'Orbitron',sans-serif;font-size:52px;font-weight:900;color:var(--gold);letter-spacing:10px;text-align:center;background:rgba(255,215,0,0.08);border:1px dashed rgba(255,215,0,0.35);border-radius:16px;padding:28px;text-shadow:0 0 25px rgba(255,215,0,0.3);">—</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:10px;text-align:center;">Expira en <strong id="verif-timer" style="color:var(--danger);">60</strong> segundos</div>
+    </div>
+
+    <div id="verif-empty" style="margin-top:28px;">
+      <p style="font-size:13px;color:var(--text-muted);text-align:center;">No hay código activo.</p>
+      <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;">El sistema genera un código numérico automáticamente cuando un <strong style="color:var(--primary);">Helper</strong>, <strong style="color:var(--primary);">Mod</strong>, <strong style="color:var(--primary);">Admin</strong> o <strong style="color:var(--primary);">Owner</strong> intenta ingresar.</p>
+    </div>
+
+    <form class="verif-form" id="verif-form" onsubmit="event.preventDefault(); verifyCode();" style="margin-top:24px;display:none;">
+      <label for="verif-input" style="display:block;font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;"><i class="fa-solid fa-key"></i> Ingresa el código numérico</label>
+      <input id="verif-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="Ej: 482951" autocomplete="off">
+      <button type="submit" class="verif-btn"><i class="fa-solid fa-check"></i> VERIFICAR</button>
+    </form>
+
+    <div style="margin-top:28px;border-top:1px solid rgba(255,255,255,0.05);padding-top:16px;">
+      <h3 style="font-family:'Orbitron',sans-serif;font-size:14px;color:var(--danger);margin-bottom:10px;"><i class="fa-solid fa-lock"></i> Verificación de 2 pasos</h3>
+      <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">Esta página está conectada al banco. Para acceder como <strong>Helper</strong>, <strong>Mod</strong>, <strong>Admin</strong> o <strong>Owner</strong>, visita esta web (`8081`) para ver tu código numérico generado automáticamente.</p>
+    </div>
+  </div>
+</div>
+
+<script src="verificacion.js"></script>
+</body>
+</html>

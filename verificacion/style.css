@@ -1,0 +1,15 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', 'Segoe UI', sans-serif; background: linear-gradient(135deg, #060e1a 0%, #0d1b2a 50%, #081224 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; color: #e2e8f0; }
+.verif-wrapper { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+.verif-card { background: rgba(6,14,32,0.92); border: 1px solid rgba(0,212,255,0.15); border-radius: 24px; padding: 36px; max-width: 460px; width: 100%; box-shadow: 0 20px 60px rgba(0,212,255,0.08); backdrop-filter: blur(12px); }
+.verif-brand { text-align: center; margin-bottom: 8px; }
+.verif-brand i { font-size: 42px; color: var(--primary); margin-bottom: 10px; }
+.verif-brand h1 { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900; letter-spacing: 2px; color: #fff; }
+#verif-code-box { background: rgba(0,212,255,0.08); border: 1px dashed rgba(0,212,255,0.3); border-radius: 16px; padding: 28px 20px; text-align: center; }
+#verif-code { font-family: 'Orbitron', sans-serif; font-size: 52px; font-weight: 900; color: var(--gold); letter-spacing: 10px; text-shadow: 0 0 20px rgba(255,215,0,0.25); }
+#verif-timer { font-size: 11px; color: var(--text-muted); margin-top: 10px; letter-spacing: 1px; }
+.verif-form { margin-top: 18px; }
+.verif-form input { width: 100%; padding: 14px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); color: #fff; font-family: 'Orbitron', sans-serif; font-size: 16px; letter-spacing: 4px; text-align: center; outline: none; transition: border-color .2s; }
+.verif-form input:focus { border-color: var(--primary); }
+.verif-btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #000; font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: 2px; font-size: 14px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,212,255,0.25); transition: all .2s; }
+.verif-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0,212,255,0.35); }
