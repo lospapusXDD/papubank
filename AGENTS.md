@@ -7,16 +7,15 @@ Este archivo es EXCLUSIVO para el agente (opencode). Documenta el contexto compl
 ## Flujo de trabajo
 
 1. **El agente modifica archivos** en la raíz del proyecto (`C:\Users\saidm\Desktop\PapusBank-V2\`).
-2. **Los archivos modificados se copian a `Actualizacion/`** para que el usuario pueda ver los cambios sin revisar diffs.
-3. **El usuario confirma** que subió los cambios a GitHub.
-4. **Se limpia `Actualizacion/`** completamente (0 archivos).
-5. **Se actualiza este archivo** con el registro de lo que se hizo.
+2. **Se hace commit y push directo a GitHub** (`git add . && git commit && git push`). GitHub Pages se actualiza solo.
+3. **Se actualiza este archivo** con el registro de lo que se hizo.
 
 **REGLAS:**
-- `Actualizacion/` es solo para que el usuario vea qué cambió. Al confirmar, se vacía.
+- Publicar directamente a GitHub. No es necesario copiar archivos a `Actualizacion/` para revisión.
+- `Actualizacion/` se mantiene por si acaso, pero ya no se usa en el flujo normal.
 - Este archivo (`AGENTS.md`) vive en la raíz del proyecto, NUNCA en `Actualizacion/`.
 - Documentar TODO lo importante aquí para que la siguiente sesión tenga contexto.
-- **ANTES de limpiar `Actualizacion/`**, enviar al usuario un **mensaje para WhatsApp comunidad** estilo llamativo con emojis, resumiendo los cambios para que lo mande al grupo.
+- **Antes de cada push**, enviar al usuario un **mensaje para WhatsApp comunidad** estilo llamativo con emojis, resumiendo los cambios para que lo mande al grupo.
 
 **FORMATO DEL MENSAJE (IMPORTANTE):**
 - Cada cosa en su propia línea, separada, NO juntas
@@ -287,5 +286,12 @@ Cuntsniffer
 - `Actualizacion/` limpiada
 - Usuario confirmó subida a GitHub
 
+### Sesión 17 — Fix balance no persistía + Doble conteo + Nick hardcodeado
+- **logros.js:286**: Eliminada mutación manual de `bankAccount.balance` — el `onSnapshot` ya actualiza automáticamente. Causaba doble conteo (se sumaba 2x) y al refrescar volvía al valor real.
+- **social.js:270**: Misma corrección — eliminada mutación manual de `bankAccount.balance` en recompensas de encuestas.
+- **clan-features.js:215**: Agregado `'solariswat'` a la lista de nicks owner hardcodeados (antes solo tenía `'emilio'` que ya no existía tras el rename).
+- **workflow**: Flujo de trabajo cambiado — ahora se publica directo a GitHub sin usar `Actualizacion/` para revisión. La carpeta se mantiene por si acaso.
+
 ---
+
 *Actualizar este archivo con cada cambio significativo.*
