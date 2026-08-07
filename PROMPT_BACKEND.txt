@@ -197,3 +197,21 @@ Campos:
 - Necesito que las tablas SQL usen el nick como PK donde Firestore lo usaba como doc ID
 - Las operaciones financieras necesitan transacciones SQL (BEGIN/COMMIT)
 - El frontend seguirá en GitHub Pages, solo cambio las llamadas fetch() para apuntar a mi backend
+
+## BACKUP DISPONIBLE
+- En el repo de GitHub hay un archivo llamado BACKUP_DATOS.json
+- Es un backup completo de TODA la base de datos de Firestore exportado el 2026-08-07
+- Contiene: users, bank_accounts, transactions, messages, board, chat, polls, loans, flores_requests, events, reports
+- Usa este archivo para importar los datos iniciales a PostgreSQL después de montar el esquema SQL
+- El archivo está en: https://github.com/lospapusXDD/papubank/blob/main/BACKUP_DATOS.json
+
+## PERMISOS DE LA PC LINUX
+- La PC tiene permisos sudo (soy el dueño de la máquina)
+- Necesito que configures la PC para que SIEMPRE esté encendida:
+  - Deshabilitar sleep/hibernación: sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+  - Auto-login en consola (sin pedir contraseña en boot)
+  - Si se apaga eléctricamente, que se encienda solo (BIOS: Power On After AC Loss o similar)
+  - Que el servicio del backend (Node.js + PostgreSQL) arranque automáticamente al iniciar
+  - Usar systemd para managing los servicios (postgresql y node app)
+  - IP fija en la red local (para que el frontend siempre encuentre el backend)
+  - Si tiene IP pública, configurar puertos. Si no, usar ngrok o similar para exponer la API
