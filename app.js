@@ -334,8 +334,7 @@ window.doLogin = async function() {
     errEl.textContent = '';
 
     try {
-        const hash = hashPass(pass, nick);
-        const res = await apiFetch('POST', '/auth/login', { nick, hash });
+        const res = await apiFetch('POST', '/auth/login', { nick, password: pass });
 
         window._apiToken = res.accessToken;
         localStorage.setItem('papubank_jwt', res.accessToken);
