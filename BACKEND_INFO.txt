@@ -1,24 +1,14 @@
-## SISTEMA DE HASH - NO ES SHA-256
+El hash en la DB de solariswat fue calculado con hashSalt "emilio" (su nick anterior).
+El frontend envía hashPass("nosexd103", "solariswat") pero el hash en la DB es hashPass("nosexd103", "emilio").
 
-El hash de contraseñas es una función custom doble (DJB2 + FNV-1a). El backend DEBE replicar esta función EXACTA para que las contraseñas del backup funcionen.
+Solución: En el login, cuando reciba { nick, hash }, el backend debe:
+1. Buscar el hashSalt del usuario en la tabla users
+2. Recalcular el hash con: hashPass(password, hashSalt)
+3. Comparar con el hash almacenado
 
-Código JavaScript original:
-function hashPass(p, salt) {
-    const salted = (salt || '') + p + (salt || '').split('').reverse().join('');
-    let h = 5381;
-    for (let i = 0; i < salted.length; i++) h = ((h << 5) + h) ^ salted.charCodeAt(i);
-    let h2 = 0x811c9dc5;
-    for (let i = 0; i < salted.length; i++) h2 = Math.imul(h2 ^ salted.charCodeAt(i), 0x01000193);
-    return 's2_' + (h >>> 0).toString(36) + (h2 >>> 0).toString(36) + salted.length.toString(36);
-}
+O mejor: que el frontend envíe { nick, password } y el backend haga todo el proceso de hashing con el hashSalt correcto.
 
-Cómo funciona:
-- salt = hashSalt del usuario (si existe) o el nick
-- string hasheado = salt + password + salt invertido
-- Resultado = "s2_" + hash1_base36 + hash2_base36 + largo_string_base36
-- Ejemplo: hashPass("1234", "emilio") = "s2_xxxxx"
-
-Para replicar en Node.js (usa esta función):
+La función hashPass del frontend es:
 function hashPass(p, salt) {
     salt = salt || '';
     const salted = salt + p + salt.split('').reverse().join('');
@@ -29,17 +19,4 @@ function hashPass(p, salt) {
     return 's2_' + (h >>> 0).toString(36) + (h2 >>> 0).toString(36) + salted.length.toString(36);
 }
 
-Para verificar login: generar hash con la contraseña ingresada + el hashSalt del usuario, y comparar con el hash almacenado.
-
-## EXPOSICIÓN A INTERNET: CLOUDFLARE TUNNEL
-
-Usar Cloudflare Tunnel (gratuito) para exponer el backend sin abrir puertos:
-1. Crear cuenta Cloudflare gratis
-2. Instalar cloudflared en CachyOS: yay -S cloudflared
-3. Configurar tunnel: cloudflared tunnel create papubank
-4. Apuntar tunnel a localhost:3000
-5. Asignar dominio subdominio via Cloudflare (ej: api.papubank.workers.dev)
-6. Configurar DNS en Cloudflare Dashboard
-7. Systemd service para que arranque automáticamente con la PC
-
-El frontend en GitHub Pages hará fetch() a https://api.tudominio.com en vez de Firebase.
+Replicar ESTA función exacta en Node.js para el backend. NO usar SHA256.
