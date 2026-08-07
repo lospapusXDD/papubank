@@ -75,7 +75,7 @@ function escHTML(s) {
 function waitForDB(cb, attempts) {
     attempts = attempts || 0;
     if (window._db) { cb(); return; }
-    if (attempts > 40) { console.error('Firebase not ready'); return; }
+    if (attempts > 40) { console.error('API Bridge not ready'); return; }
     setTimeout(() => waitForDB(cb, attempts + 1), 250);
 }
 
@@ -333,105 +333,43 @@ window.doLogin = async function() {
     btn.textContent = 'Verificando...';
     errEl.textContent = '';
 
-    waitForDB(async function() {
-        try {
-            const db   = window._db;
-            const snap = await window._fbGetDoc(window._fbDoc(db, 'users', nick));
+    try {
+        const hash = hashPass(pass, nick);
+        const res = await apiFetch('POST', '/auth/login', { nick, hash });
 
-            if (!snap.exists()) {
-                errEl.textContent = 'Usuario no encontrado en el clan';
-                btn.disabled = false; btn.textContent = 'INGRESAR AL BANCO';
-                return;
-            }
+        window._apiToken = res.accessToken;
+        localStorage.setItem('papubank_jwt', res.accessToken);
+        localStorage.setItem('papubank_refresh', res.refreshToken);
 
-            const data = snap.data();
-            const hashSalt = data.hashSalt || nick;
-            const hash = hashPass(pass, hashSalt);
+        currentUser = { nick, isAdmin: res.isAdmin, hash: res.hash || hash };
+        if (res.avatar) currentUser.avatar = res.avatar;
+        Object.assign(currentUser, res);
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash: res.hash || hash }));
+        localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash: res.hash || hash }));
 
-            if (data.hash !== hash) {
-                errEl.textContent = 'Contraseña incorrecta';
-                btn.disabled = false; btn.textContent = 'INGRESAR AL BANCO';
-                return;
-            }
+        document.getElementById('auth-overlay').style.display = 'none';
 
-            if (data.banned) {
-                errEl.textContent = 'Cuenta suspendida — contacta a emilio';
-                btn.disabled = false; btn.textContent = 'INGRESAR AL BANCO';
-                return;
-            }
+        await initBankAccount();
+        updateNavUI();
+        showPage('dashboard');
 
-            currentUser = Object.assign({ nick }, data);
-            localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash: data.hash }));
-            localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash: data.hash }));
+        if (typeof initMediaPlayer === 'function') initMediaPlayer();
+        if (typeof initMatrix === 'function') initMatrix();
+        if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
 
-            // Register IP asynchronously — non-blocking
-            fetch('https://api.ipify.org?format=json')
-                .then(r => r.json())
-                .then(ipData => {
-                    window._fbUpdateDoc(window._fbDoc(db, 'users', nick), {
-                        lastLogin: window._fbServerTimestamp(),
-                        lastLoginIp: ipData.ip
-                    });
-                    try {
-                        window._fbAddDoc(window._fbCollection(db, 'users', nick, 'logins'), {
-                            ip: ipData.ip,
-                            timestamp: window._fbServerTimestamp()
-                        });
-                    } catch(e2) { console.error('Error saving login history:', e2); }
-                }).catch(() => {});
-
-            // 2-step verification for admin-level accounts (helper, mod, admin, owner)
-            const userRankKey = getRankKey(currentUser);
-            const requires2FA = ['owner','admin','mod','helper'].includes(userRankKey);
-            if (requires2FA) {
-                const verifCode = Math.floor(100000 + Math.random() * 900000).toString();
-                // Generate code in Firebase
-                try {
-                    await window._fbAddDoc(window._fbCollection(db, 'verification_codes'), {
-                        code: verifCode,
-                        user: nick,
-                        created: window._fbServerTimestamp(),
-                        used: false
-                    });
-                } catch(e) { console.error('Error creating verification code:', e); }
-                // Set cookie/session for verificacion web (8081)
-                const verifSession = JSON.stringify({ nick: nick, code: verifCode, createdAt: Date.now(), verified: false });
-                document.cookie = 'papubank_verif=' + encodeURIComponent(verifSession) + ';path=/;domain=localhost;';
-                localStorage.setItem('papubank_verif', verifSession);
-                showToast('Verificación necesaria. Visita <strong>http://localhost:8081</strong> para ver tu código numérico.', '#ffd700');
-                // Continue with login but don't fully complete until verified? Keep simple: just show message
-                // User must visit 8081 manually to verify; after verification, cookie updated to verified=true
-                // For simplicity: proceed with login but require verification for admin actions
-            }
-            // Read existing verified session if user already verified
-            const existingVerif = getCookie('papubank_verif') ? JSON.parse(decodeURIComponent(getCookie('papubank_verif'))) : null;
-            if (requires2FA && (!existingVerif || !existingVerif.verified)) {
-                // Partial login: show message, don't fully unlock admin features yet
-                // But allow basic navigation
-            }
-
-            document.getElementById('auth-overlay').style.display = 'none';
-
-            await initBankAccount();
-            updateNavUI();
-            showPage('dashboard');
-
-            // Autoplay music
-            if (typeof initMediaPlayer === 'function') initMediaPlayer();
-            if (typeof initMatrix === 'function') initMatrix();
-            if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
-
-        } catch(e) {
-            console.error(e);
-            errEl.textContent = 'Error de conexión: ' + e.message;
-            btn.disabled = false; btn.textContent = 'INGRESAR AL BANCO';
-        }
-    });
+    } catch(e) {
+        console.error(e);
+        errEl.textContent = e.message || 'Error de conexión';
+        btn.disabled = false; btn.textContent = 'INGRESAR AL BANCO';
+    }
 };
 
 window.doLogout = function() {
     localStorage.removeItem(SESSION_KEY);
     localStorage.removeItem('papus_session_v2');
+    localStorage.removeItem('papubank_jwt');
+    localStorage.removeItem('papubank_refresh');
+    window._apiToken = null;
     currentUser = null;
     bankAccount = null;
     document.getElementById('auth-overlay').style.display = 'flex';
@@ -457,49 +395,34 @@ window.doRegister = async function() {
     btn.textContent = 'Registrando...';
     errEl.textContent = '';
 
-    waitForDB(async function() {
-        try {
-            const db = window._db;
-            const docRef = window._fbDoc(db, 'users', nick);
-            const snap = await window._fbGetDoc(docRef);
+    try {
+        const hash = hashPass(pass, nick);
+        const res = await apiFetch('POST', '/auth/register', { nick, hash });
 
-            if (snap.exists()) {
-                errEl.textContent = 'El nick ya está registrado';
-                btn.disabled = false; btn.textContent = 'CREAR CUENTA';
-                return;
-            }
+        window._apiToken = res.accessToken || null;
+        if (res.accessToken) localStorage.setItem('papubank_jwt', res.accessToken);
+        if (res.refreshToken) localStorage.setItem('papubank_refresh', res.refreshToken);
 
-            const hash = hashPass(pass, nick);
-            const newUser = {
-                hash: hash,
-                jjkRank: 'user',
-                avatar: 'avt_gojo.jpg',
-                registeredAt: window._fbServerTimestamp(),
-                mcUsername: ''
-            };
+        currentUser = { nick, hash, jjkRank: 'user', avatar: 'avt_gojo.jpg' };
+        Object.assign(currentUser, res);
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash }));
+        localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash }));
 
-            await window._fbSetDoc(docRef, newUser);
+        document.getElementById('auth-overlay').style.display = 'none';
 
-            currentUser = Object.assign({ nick }, newUser);
-            localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash: hash }));
-            localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash: hash }));
+        await initBankAccount();
+        updateNavUI();
+        showPage('dashboard');
 
-            document.getElementById('auth-overlay').style.display = 'none';
+        if (typeof initMediaPlayer === 'function') initMediaPlayer();
+        if (typeof initMatrix === 'function') initMatrix();
 
-            await initBankAccount();
-            updateNavUI();
-            showPage('dashboard');
+        showToast('¡Cuenta del Clan creada con éxito! ✓', 'var(--secondary)');
 
-            if (typeof initMediaPlayer === 'function') initMediaPlayer();
-            if (typeof initMatrix === 'function') initMatrix();
-
-            showToast('¡Cuenta del Clan creada con éxito! ✓', 'var(--secondary)');
-
-        } catch(e) {
-            errEl.textContent = 'Error: ' + e.message;
-            btn.disabled = false; btn.textContent = 'CREAR CUENTA';
-        }
-    });
+    } catch(e) {
+        errEl.textContent = 'Error: ' + e.message;
+        btn.disabled = false; btn.textContent = 'CREAR CUENTA';
+    }
 };
 
 window.initAuthOverlayEvents = function() {
@@ -515,27 +438,63 @@ window.initAuthOverlayEvents = function() {
 
 async function tryAutoLogin() {
     try {
+        const savedJWT = localStorage.getItem('papubank_jwt');
         const saved = localStorage.getItem(SESSION_KEY);
-        if (!saved) return;
+        if (!savedJWT && !saved) return;
+
+        if (savedJWT) {
+            // Try JWT auto-login
+            window._apiToken = savedJWT;
+            try {
+                const userData = await apiFetch('GET', '/auth/me');
+                currentUser = { nick: userData.nick, ...userData };
+                document.getElementById('auth-overlay').style.display = 'none';
+                await initBankAccount();
+                updateNavUI();
+                showPage('dashboard');
+                if (typeof initMediaPlayer === 'function') initMediaPlayer();
+                if (typeof initMatrix === 'function') initMatrix();
+                if (typeof loadSavedTheme === 'function') loadSavedTheme();
+                if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
+                return;
+            } catch(e) {
+                // JWT expired, try refresh
+                const refreshToken = localStorage.getItem('papubank_refresh');
+                if (refreshToken) {
+                    try {
+                        const refreshRes = await apiFetch('POST', '/auth/refresh', { refreshToken });
+                        window._apiToken = refreshRes.accessToken;
+                        localStorage.setItem('papubank_jwt', refreshRes.accessToken);
+                        currentUser = { nick: refreshRes.nick, ...refreshRes };
+                        document.getElementById('auth-overlay').style.display = 'none';
+                        await initBankAccount();
+                        updateNavUI();
+                        showPage('dashboard');
+                        if (typeof initMediaPlayer === 'function') initMediaPlayer();
+                        if (typeof initMatrix === 'function') initMatrix();
+                        return;
+                    } catch(e2) {}
+                }
+                localStorage.removeItem('papubank_jwt');
+                localStorage.removeItem('papubank_refresh');
+            }
+        }
+
+        // Fallback: hash-based auto-login
         const { nick, hash } = JSON.parse(saved);
         if (!nick || !hash) return;
 
         waitForDB(async function() {
             try {
-                const db   = window._db;
-                const snap = await window._fbGetDoc(window._fbDoc(db, 'users', nick));
-                if (!snap.exists()) { localStorage.removeItem(SESSION_KEY); return; }
-
-                const data = snap.data();
-                if (data.hash !== hash || data.banned) { localStorage.removeItem(SESSION_KEY); return; }
-
-                currentUser = Object.assign({ nick }, data);
+                const res = await apiFetch('POST', '/auth/login', { nick, hash });
+                window._apiToken = res.accessToken;
+                localStorage.setItem('papubank_jwt', res.accessToken);
+                if (res.refreshToken) localStorage.setItem('papubank_refresh', res.refreshToken);
+                currentUser = { nick, ...res };
                 document.getElementById('auth-overlay').style.display = 'none';
-
                 await initBankAccount();
                 updateNavUI();
                 showPage('dashboard');
-
                 if (typeof initMediaPlayer === 'function') initMediaPlayer();
                 if (typeof initMatrix === 'function') initMatrix();
                 if (typeof loadSavedTheme === 'function') loadSavedTheme();
@@ -553,47 +512,37 @@ async function tryAutoLogin() {
 
 async function initBankAccount() {
     if (!currentUser || !window._db) return;
-    const db    = window._db;
-    const nick  = currentUser.nick;
-    const ref   = window._fbDoc(db, 'bank_accounts', nick);
-    const snap  = await window._fbGetDoc(ref);
-
-    if (!snap.exists()) {
-        // Create new account
-        const startBal = bankConfig.startingBalance || 100;
-        await window._fbSetDoc(ref, {
-            balance:   startBal,
-            totalIn:   startBal,
-            totalOut:  0,
-            txCount:   1,
-            loanActive:false,
-            loanAmount:0,
-            createdAt: window._fbServerTimestamp()
-        });
-        bankAccount = { balance: startBal, totalIn: startBal, totalOut: 0, txCount: 1, loanActive: false, loanAmount: 0 };
-        showToast('¡Bienvenido al banco del clan! Cuenta creada con ' + startBal + ' PPC', '#00ffaa');
-    } else {
-        bankAccount = snap.data();
+    try {
+        const data = await apiFetch('GET', '/bank/' + currentUser.nick);
+        bankAccount = data;
+    } catch(e) {
+        // Account might not exist yet, create it
+        try {
+            await apiFetch('POST', '/bank/' + currentUser.nick, { balance: 100, totalIn: 100, totalOut: 0, txCount: 1 });
+            bankAccount = { balance: 100, totalIn: 100, totalOut: 0, txCount: 1, loanActive: false, loanAmount: 0 };
+            showToast('¡Bienvenido al banco del clan! Cuenta creada con 100 PPC', '#00ffaa');
+        } catch(e2) {
+            bankAccount = { balance: 0, totalIn: 0, totalOut: 0, txCount: 0 };
+        }
     }
-
-    // Load config
     await loadConfig();
-
     updateBalanceDisplays();
 }
 
 async function refreshBankAccount() {
     if (!currentUser || !window._db) return;
-    const snap = await window._fbGetDoc(window._fbDoc(window._db, 'bank_accounts', currentUser.nick));
-    if (snap.exists()) { bankAccount = snap.data(); updateBalanceDisplays(); }
+    try {
+        bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
+        updateBalanceDisplays();
+    } catch(e) {}
     return bankAccount;
 }
 
 async function loadConfig() {
     if (!window._db) return;
     try {
-        const snap = await window._fbGetDoc(window._fbDoc(window._db, 'config', 'bank'));
-        if (snap.exists()) bankConfig = Object.assign(bankConfig, snap.data());
+        const data = await apiFetch('GET', '/config/bank');
+        if (data) bankConfig = Object.assign(bankConfig, data);
     } catch(e) {}
 }
 
@@ -631,7 +580,7 @@ function updateBalanceDisplays() {
 
 async function loadDashboard() {
     if (!currentUser || !bankAccount) return;
-
+    try { bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick); } catch(e) {}
     const bal = bankAccount.balance || 0;
     const tier = getBankTier(bal);
 
@@ -944,15 +893,10 @@ function lockGodMode() {
 async function loadAdminStats() {
     if (!window._db) return;
     try {
-        const accSnap = await getCachedAccounts();
-        const userSnap = await getCachedUsers();
-
-        let totalBalance = 0;
-        let totalAccounts = 0;
-        accSnap.forEach(doc => {
-            totalBalance += doc.data().balance || 0;
-            totalAccounts++;
-        });
+        const data = await apiFetch('GET', '/admin/stats');
+        const totalAccounts = data.totalAccounts || 0;
+        const totalUsers = data.totalUsers || 0;
+        const totalBalance = data.totalBalance || 0;
 
         const adminStatsEl = document.getElementById('admin-stats-container');
         if (adminStatsEl) {
@@ -963,7 +907,7 @@ async function loadAdminStats() {
                 </div>
                 <div class="glass-card">
                     <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Usuarios registrados</div>
-                    <div style="font-family:'Orbitron',sans-serif;font-size:28px;color:var(--secondary);font-weight:900;">${userSnap.size}</div>
+                    <div style="font-family:'Orbitron',sans-serif;font-size:28px;color:var(--secondary);font-weight:900;">${totalUsers}</div>
                 </div>
                 <div class="glass-card">
                     <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">PPC circulando</div>
@@ -978,9 +922,9 @@ window._invalidateCaches = function() { window._cacheAccounts = null; window._ca
 
 async function loadAdminAccounts(forceRefresh) {
     if (!window._db || !checkAdminPermission()) return;
-    if (forceRefresh) window._invalidateCaches();
     const container = document.getElementById('admin-accounts-list');
     if (!container) return;
+    if (forceRefresh) window._invalidateCaches();
 
     const now = Date.now();
     if (window._adminCache && window._adminCache.ts > now - 30000 && forceRefresh !== true) {
@@ -991,14 +935,13 @@ async function loadAdminAccounts(forceRefresh) {
     container.innerHTML = '<div class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Cargando cuentas...</div>';
 
     try {
-        const accSnap = await getCachedAccounts();
-        const usersSnap = await getCachedUsers();
-        const usersMap = {};
-        usersSnap.forEach(d => { usersMap[d.id] = d.data(); });
+        const data = await apiFetch('GET', '/admin/accounts');
+        const accSnap = data.accounts || [];
+        const usersMap = data.users || {};
         window._adminCache = { accSnap, usersMap, ts: now };
         renderAdminAccounts(accSnap, usersMap);
     } catch(e) {
-        container.innerHTML = '<tr><td colspan="5" style="color:var(--danger);text-align:center;">Error al cargar cuentas</td></tr>';
+        container.innerHTML = '<tr><td colspan="5" style="color:var(--danger);text-align:center;">Error al cargar cuentas: ' + e.message + '</td></tr>';
     }
 }
 
@@ -1006,9 +949,10 @@ function renderAdminAccounts(accSnap, usersMap) {
     const container = document.getElementById('admin-accounts-list');
     if (!container) return;
     container.innerHTML = '';
-    accSnap.forEach(doc => {
-        const acc = doc.data();
-        const nick = doc.id;
+    const items = Array.isArray(accSnap) ? accSnap : [];
+    items.forEach(item => {
+        const acc = item.data ? item.data() : item;
+        const nick = item.id || item.nick;
         const user = usersMap[nick] || {};
         const rankKey = getRankKey(user);
         const rankInfo = RANKS[rankKey] || RANKS.mortal_m;
@@ -1066,14 +1010,10 @@ async function adminMint(nick) {
     if (!ok) return;
 
     try {
-        await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', nick), {
-            balance: window._fbIncrement(amt),
-            totalIn: window._fbIncrement(amt)
-        });
-        await addTx({ type: 'Mint', from: 'Admin', to: nick, amount: amt, note: reason });
+        await apiFetch('POST', '/bank/mint', { nick, amount: amt, reason });
         showToast(`Mint de ${amt.toLocaleString()} PPC a ${nick} ✓`, '#00ffaa');
         loadAdminAccounts(true);
-        if (nick === currentUser.nick) { const fresh = await window._fbGetDoc(window._fbDoc(window._db, 'bank_accounts', nick)); if (fresh.exists()) { bankAccount = fresh.data(); updateBalanceDisplays(); } }
+        if (nick === currentUser.nick) await refreshBankAccount();
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
@@ -1092,14 +1032,10 @@ async function adminBurn(nick) {
     if (!ok) return;
 
     try {
-        await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', nick), {
-            balance:  window._fbIncrement(-amt),
-            totalOut: window._fbIncrement(amt)
-        });
-        await addTx({ type: 'Burn', from: nick, to: 'Admin', amount: amt, note: reason });
+        await apiFetch('POST', '/bank/burn', { nick, amount: amt, reason });
         showToast(`Burn de ${amt.toLocaleString()} PPC a ${nick} ✓`, '#ff4466');
         loadAdminAccounts(true);
-        if (nick === currentUser.nick) { const fresh = await window._fbGetDoc(window._fbDoc(window._db, 'bank_accounts', nick)); if (fresh.exists()) { bankAccount = fresh.data(); updateBalanceDisplays(); } }
+        if (nick === currentUser.nick) await refreshBankAccount();
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }

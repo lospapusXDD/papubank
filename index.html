@@ -1855,58 +1855,84 @@
 </div>
 
 <!-- ════════════════════════════════════════════════════════════
-     FIREBASE SDK (compat-less modular)
+     API BRIDGE (replaces Firebase — same interface, backend calls)
 ════════════════════════════════════════════════════════════ -->
-<script type="module">
-  import { initializeApp }     from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js';
-  import {
-    getFirestore, doc, setDoc, getDoc, addDoc, updateDoc, deleteDoc,
-    collection, getDocs, query, where, orderBy, limit, onSnapshot,
-    serverTimestamp, increment, arrayUnion, arrayRemove, writeBatch
-  } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
-  import {
-    getStorage, ref, uploadBytes, getDownloadURL
-  } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js';
+<script>
+  const API_BASE = 'https://friend-usage-image-cancel.trycloudflare.com/api';
+  window._apiToken = localStorage.getItem('papubank_jwt') || null;
 
-  const firebaseConfig = {
-    apiKey:            "AIzaSyBiFh_LL0wOE31sfhslB5RlGNhBNDhR8Pw",
-    authDomain:        "los-papus-nivel-dios.firebaseapp.com",
-    projectId:         "los-papus-nivel-dios",
-    storageBucket:     "los-papus-nivel-dios.appspot.com",
-    messagingSenderId: "440148979897",
-    appId:             "1:440148979897:web:7ff95f28fdabe1f1d44bb1"
+  async function apiFetch(method, path, body) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (window._apiToken) headers['Authorization'] = 'Bearer ' + window._apiToken;
+    const opts = { method, headers };
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(API_BASE + path, opts);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'API error ' + res.status);
+    return data;
+  }
+
+  window._db = 'api';
+
+  // Firestore-like bridge: translates old _fb* calls to REST API
+  window._fbSetDoc = async function(ref, data) {
+    const [col, id] = ref.split('/');
+    await apiFetch('POST', '/' + col + '/' + id, data);
   };
+  window._fbGetDoc = async function(ref) {
+    const [col, id] = ref.split('/');
+    try {
+      const data = await apiFetch('GET', '/' + col + '/' + id);
+      return { exists: () => !!data, data: () => data };
+    } catch(e) {
+      return { exists: () => false, data: () => null };
+    }
+  };
+  window._fbGetDocs = async function(ref) {
+    const col = ref.replace(/^\/+|\/+$/g, '');
+    try {
+      const arr = await apiFetch('GET', '/' + col);
+      const docs = Array.isArray(arr) ? arr : (arr.items || Object.entries(arr).map(([id, d]) => ({ id, ...d })));
+      return { forEach: (cb) => docs.forEach((d, i) => cb({ id: d.id || String(i), data: () => d, ref: d.id || String(i) })), size: docs.length, docs };
+    } catch(e) { return { forEach: () => {}, size: 0, docs: [] }; }
+  };
+  window._fbUpdateDoc = async function(ref, data) {
+    const [col, id] = ref.split('/');
+    await apiFetch('PUT', '/' + col + '/' + id, data);
+  };
+  window._fbAddDoc = async function(ref, data) {
+    const col = ref.replace(/^\/+|\/+$/g, '');
+    return await apiFetch('POST', '/' + col, data);
+  };
+  window._fbDeleteDoc = async function(ref) {
+    const [col, id] = ref.split('/');
+    await apiFetch('DELETE', '/' + col + '/' + id);
+  };
+  window._fbDoc = function(db, col, id) { return col + '/' + id; };
+  window._fbCollection = function(db, col, id, sub) { return sub ? col + '/' + id + '/' + sub : col; };
+  window._fbServerTimestamp = function() { return new Date().toISOString(); };
+  window._fbIncrement = function(n) { return { _op: 'increment', value: n }; };
+  window._fbArrayUnion = function() { return { _op: 'arrayUnion', items: Array.from(arguments) }; };
+  window._fbArrayRemove = function() { return { _op: 'arrayRemove', items: Array.from(arguments) }; };
+  window._fbWriteBatch = function(db) {
+    const ops = [];
+    return {
+      update: (ref, data) => ops.push({ op: 'update', ref, data }),
+      set: (ref, data) => ops.push({ op: 'set', ref, data }),
+      commit: async () => { for (const o of ops) { const [col, id] = o.ref.split('/'); await apiFetch('PUT', '/' + col + '/' + id, o.data); } }
+    };
+  };
+  window._fbOnSnapshot = function() {};
+  window._fbQuery = function() { return ''; };
+  window._fbWhere = function() { return ''; };
+  window._fbOrderBy = function() { return ''; };
+  window._fbLimit = function(n) { return ''; };
+  window._fbStorage = null;
+  window._fbStorageRef = function() { return ''; };
+  window._fbUploadBytes = async function() { return {}; };
+  window._fbGetDownloadURL = async function() { return ''; };
 
-  const app = initializeApp(firebaseConfig);
-  const db  = getFirestore(app);
-  const storage = getStorage(app);
-
-  // Expose to global scope (legacy compat bridge)
-  window._db              = db;
-  window._fbDoc           = doc;
-  window._fbSetDoc        = setDoc;
-  window._fbGetDoc        = getDoc;
-  window._fbAddDoc        = addDoc;
-  window._fbUpdateDoc     = updateDoc;
-  window._fbDeleteDoc     = deleteDoc;
-  window._fbCollection    = collection;
-  window._fbGetDocs       = getDocs;
-  window._fbQuery         = query;
-  window._fbWhere         = where;
-  window._fbOrderBy       = orderBy;
-  window._fbLimit         = limit;
-  window._fbOnSnapshot    = onSnapshot;
-  window._fbServerTimestamp = serverTimestamp;
-  window._fbIncrement     = increment;
-  window._fbArrayUnion    = arrayUnion;
-  window._fbArrayRemove   = arrayRemove;
-  window._fbWriteBatch    = writeBatch;
-  window._fbStorage       = storage;
-  window._fbStorageRef    = ref;
-  window._fbUploadBytes   = uploadBytes;
-  window._fbGetDownloadURL = getDownloadURL;
-
-  console.log('[PapusBank] Firebase OK — proyecto:', firebaseConfig.projectId);
+  console.log('[PapusBank] API Bridge OK — ' + API_BASE);
 </script>
 
 <!-- ════════════════════════════════════════════════════════════

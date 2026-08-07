@@ -175,42 +175,7 @@ async function doTransfer() {
     btn.textContent = 'Enviando...';
 
     try {
-        const db = window._db;
-        const myRef = window._fbDoc(db, 'bank_accounts', currentUser.nick);
-        const toRef = window._fbDoc(db, 'bank_accounts', toNick);
-        let toSnap = await window._fbGetDoc(toRef);
-        
-        if (!toSnap.exists()) {
-            const startBal = bankConfig.startingBalance || 100;
-            await window._fbSetDoc(toRef, {
-                balance: startBal, totalIn: startBal, totalOut: 0, txCount: 0,
-                loanActive: false, loanAmount: 0, createdAt: window._fbServerTimestamp()
-            });
-            toSnap = await window._fbGetDoc(toRef);
-        }
-        if (toSnap.data().frozen) { 
-            showToast('La cuenta destino está congelada', '#ff4466'); 
-            return; 
-        }
-
-        await window._fbUpdateDoc(myRef, {
-            balance: window._fbIncrement(-total),
-            totalOut: window._fbIncrement(amt),
-            txCount: window._fbIncrement(1),
-        });
-        await window._fbUpdateDoc(toRef, {
-            balance: window._fbIncrement(amt),
-            totalIn: window._fbIncrement(amt),
-            txCount: window._fbIncrement(1),
-        });
-
-        await addTx({ 
-            type: 'transfer', 
-            from: currentUser.nick, 
-            to: toNick, 
-            amount: amt, 
-            note: note || `Transferencia de ${currentUser.nick}` 
-        });
+        await apiFetch('POST', '/bank/transfer', { to: toNick, amount: amt, note: note || `Transferencia de ${currentUser.nick}` });
 
         if (amtInput) amtInput.value = '';
         if (noteInput) noteInput.value = '';
@@ -220,6 +185,7 @@ async function doTransfer() {
         showToast(`¡${fmt(amt)} enviados a ${toNick}!`, '#00ff9d');
         if (window.trackActivity) window.trackActivity('transfer', amt);
         if (typeof checkAchievements === 'function') checkAchievements();
+        await refreshBankAccount();
         await loadTransferUsers();
         if (window.loadDashboard) window.loadDashboard();
     } catch(e) {
@@ -249,23 +215,12 @@ async function loadLeaderboard(filter) {
     container.innerHTML = '<tr><td colspan="5" class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Cargando Ranking...</td></tr>';
     
     try {
-        const now = Date.now();
-        let accSnap, usersMap;
+        const data = await apiFetch('GET', '/leaderboard?limit=50');
+        const accounts = data.accounts || [];
+        const usersMap = data.users || {};
 
-        if (window._lbCache && window._lbCache.ts > now - 60000) {
-            accSnap = window._lbCache.accSnap;
-            usersMap = window._lbCache.usersMap;
-        } else {
-            accSnap = await getCachedAccounts();
-            const usersSnap = await getCachedUsers();
-            usersMap = {};
-            usersSnap.forEach(d => { usersMap[d.id] = d.data(); });
-            window._lbCache = { accSnap, usersMap, ts: now };
-        }
-
-        // Build array and sort by balance descending client-side
-        const accounts = [];
-        accSnap.forEach(doc => accounts.push({ id: doc.id, ...doc.data() }));
+        // Build array and sort by balance descending
+        const accounts = Array.isArray(data.accounts) ? data.accounts.map(a => ({ id: a.id || a.nick, ...a })) : [];
         accounts.sort((a, b) => (b.balance || 0) - (a.balance || 0));
 
         // Filter by admin/user
