@@ -125,7 +125,7 @@ function loadBocchiPage() {
     BOCCHI_RANKS.forEach(rank => {
         const isOwned = currentUser?.boughtRanks?.includes(rank.key);
         const ppcBalance = bankAccount?.balance || 0;
-        const usdBalance = bankAccount?.usd_balance || 0;
+        const usdBalance = currentUser?.pusdBalance || 0;
         let canBuy = false;
         if (!isOwned) {
             if (rank.gradeTier >= 3) {
@@ -195,7 +195,7 @@ async function buyBocchiRank(rankKey) {
         const accSnap = await window._fbGetDoc(accRef);
         const accData = accSnap.exists() ? accSnap.data() : {};
         const ppcBalance = accData.balance || 0;
-        const usdBalance = accData.usd_balance || 0;
+        const usdBalance = currentUser?.pusdBalance || 0;
 
         if (rank.gradeTier >= 3) {
             if (ppcBalance < rank.price || usdBalance < rank.price_usd) {
@@ -203,21 +203,24 @@ async function buyBocchiRank(rankKey) {
                 return;
             }
             await window._fbUpdateDoc(accRef, {
-                balance: window._fbIncrement(-rank.price),
-                usd_balance: window._fbIncrement(-rank.price_usd)
+                balance: window._fbIncrement(-rank.price)
             });
+            await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { pusdBalance: window._fbIncrement(-rank.price_usd) });
+            currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
         } else {
             if (ppcBalance >= rank.price && usdBalance >= rank.price_usd) {
                 const useUsd = await showConfirm('Método de Pago', `¿Pagar con P-USD ($${rank.price_usd.toLocaleString()})?\nResponda No para pagar con PPC (${rank.price.toLocaleString()} PPC)`);
                 if (useUsd) {
-                    await window._fbUpdateDoc(accRef, { usd_balance: window._fbIncrement(-rank.price_usd) });
+                    await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { pusdBalance: window._fbIncrement(-rank.price_usd) });
+                    currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
                 } else {
                     await window._fbUpdateDoc(accRef, { balance: window._fbIncrement(-rank.price) });
                 }
             } else if (ppcBalance >= rank.price) {
                 await window._fbUpdateDoc(accRef, { balance: window._fbIncrement(-rank.price) });
             } else if (usdBalance >= rank.price_usd) {
-                await window._fbUpdateDoc(accRef, { usd_balance: window._fbIncrement(-rank.price_usd) });
+                await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { pusdBalance: window._fbIncrement(-rank.price_usd) });
+                currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
             } else {
                 showToast('Saldo insuficiente', '#ff4466');
                 return;

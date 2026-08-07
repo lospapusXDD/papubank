@@ -124,7 +124,7 @@ function loadMushokuPage() {
     MUSHOKU_RANKS.forEach(rank => {
         const isOwned = currentUser?.boughtRanks?.includes(rank.key);
         const ppcBalance = bankAccount?.balance || 0;
-        const pusdBalance = currentUser?.p_usd || 0;
+        const pusdBalance = currentUser?.pusdBalance || 0;
         let canBuy = false;
         if (!isOwned) {
             if (rank.gradeTier >= 3) {
@@ -196,7 +196,7 @@ async function buyMushokuRank(rankKey) {
         const accRef = window._fbDoc(window._db, 'bank_accounts', currentUser.nick);
         const accSnap = await window._fbGetDoc(accRef);
         const ppcBalance = accSnap.exists() ? (accSnap.data().balance || 0) : 0;
-        const pusdBalance = currentUser?.p_usd || 0;
+        const pusdBalance = currentUser?.pusdBalance || 0;
 
         if (needsBoth) {
             if (ppcBalance < rank.price || pusdBalance < rank.price_usd) {
@@ -205,16 +205,16 @@ async function buyMushokuRank(rankKey) {
             }
             await window._fbUpdateDoc(accRef, { balance: window._fbIncrement(-rank.price) });
             await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
-                p_usd: window._fbIncrement(-rank.price_usd)
+                pusdBalance: window._fbIncrement(-rank.price_usd)
             });
-            currentUser.p_usd = (currentUser.p_usd || 0) - rank.price_usd;
+            currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
             await addTx({ type: 'Rango Mushoku', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Mushoku: ${rank.label} (PPC + P-USD)` });
         } else {
             if (pusdBalance >= rank.price_usd) {
                 await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
-                    p_usd: window._fbIncrement(-rank.price_usd)
+                    pusdBalance: window._fbIncrement(-rank.price_usd)
                 });
-                currentUser.p_usd = (currentUser.p_usd || 0) - rank.price_usd;
+                currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
                 await addTx({ type: 'Rango Mushoku', from: currentUser.nick, to: 'Banco', amount: rank.price_usd, note: `Rango Mushoku: ${rank.label} (P-USD)` });
             } else if (ppcBalance >= rank.price) {
                 await window._fbUpdateDoc(accRef, { balance: window._fbIncrement(-rank.price) });
