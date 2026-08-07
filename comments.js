@@ -196,8 +196,8 @@ async function loadPerfiles() {
     container.innerHTML = '<div class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Cargando perfiles...</div>';
     try {
         const [userSnap, accSnap] = await Promise.all([
-            window._fbGetDocs(window._fbCollection(window._db, 'users')),
-            window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts'))
+            getCachedUsers(),
+            getCachedAccounts()
         ]);
         const usersMap = {};
         userSnap.forEach(d => usersMap[d.id] = d.data());

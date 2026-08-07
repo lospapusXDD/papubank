@@ -12,7 +12,7 @@ async function loadBirthdaysPage() {
     if (!container) return;
 
     try {
-        const usersSnap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
+        const usersSnap = await getCachedUsers();
         const today = new Date();
         const todayStr = `${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
         const birthdays = [];

@@ -63,7 +63,7 @@ async function loadTransferUsers() {
     grid.innerHTML = '<div class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Cargando usuarios...</div>';
     
     try {
-        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
+        const snap = await getCachedUsers();
         grid.innerHTML = '';
         
         snap.forEach(doc => {
@@ -249,14 +249,19 @@ async function loadLeaderboard(filter) {
     container.innerHTML = '<tr><td colspan="5" class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Cargando Ranking...</td></tr>';
     
     try {
-        // Use plain getDocs (no orderBy) and sort client-side to avoid missing Firestore index
-        const [accSnap, usersSnap] = await Promise.all([
-            window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts')),
-            window._fbGetDocs(window._fbCollection(window._db, 'users'))
-        ]);
+        const now = Date.now();
+        let accSnap, usersMap;
 
-        const usersMap = {};
-        usersSnap.forEach(d => { usersMap[d.id] = d.data(); });
+        if (window._lbCache && window._lbCache.ts > now - 60000) {
+            accSnap = window._lbCache.accSnap;
+            usersMap = window._lbCache.usersMap;
+        } else {
+            accSnap = await getCachedAccounts();
+            const usersSnap = await getCachedUsers();
+            usersMap = {};
+            usersSnap.forEach(d => { usersMap[d.id] = d.data(); });
+            window._lbCache = { accSnap, usersMap, ts: now };
+        }
 
         // Build array and sort by balance descending client-side
         const accounts = [];
@@ -823,7 +828,7 @@ async function loadSplitUsers() {
     grid.innerHTML = '<div class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Cargando...</div>';
     
     try {
-        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
+        const snap = await getCachedUsers();
         grid.innerHTML = '';
         
         snap.forEach(doc => {

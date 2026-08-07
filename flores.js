@@ -229,7 +229,7 @@ async function loadFloresUserList() {
     if (!select || !window._db) return;
 
     try {
-        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
+        const snap = await getCachedUsers();
         const options = ['<option value="">Selecciona un usuario...</option>'];
         snap.forEach(doc => {
             const u = doc.data();

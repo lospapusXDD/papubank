@@ -3,6 +3,10 @@
 const SESSION_KEY = 'papusbank_session_v1';
 
 let currentUser   = null;
+window._cacheUsers = null; window._cacheUsersTs = 0;
+window._cacheAccounts = null; window._cacheAccountsTs = 0;
+async function getCachedUsers() { const now=Date.now(); if(window._cacheUsers && window._cacheUsersTs > now-60000) return window._cacheUsers; const s=await window._fbGetDocs(window._fbCollection(window._db,'users')); window._cacheUsers=s; window._cacheUsersTs=now; return s; }
+async function getCachedAccounts() { const now=Date.now(); if(window._cacheAccounts && window._cacheAccountsTs > now-60000) return window._cacheAccounts; const s=await window._fbGetDocs(window._fbCollection(window._db,'bank_accounts')); window._cacheAccounts=s; window._cacheAccountsTs=now; return s; }
 let bankAccount   = null;
 let bankConfig    = { interest: 2, fee: 2, startingBalance: 100, loanMax: 10000, vaultInterest: 0.5 };
 let allAccounts   = {};
@@ -200,16 +204,16 @@ function showPage(pageId) {
     const pageTitle = document.getElementById('page-header-title');
     if (pageTitle && titleMap[pageId]) pageTitle.innerHTML = titleMap[pageId];
 
-    // Lazy-load page data
+    // Lazy-load page data (refresh balance only when needed)
     switch (pageId) {
-        case 'dashboard':   loadDashboard();     break;
-        case 'transfer':    loadTransferUsers(); break;
-        case 'history':     loadRecentTx();      break;
-        case 'market':      renderMarket();      break;
-        case 'leaderboard': loadLeaderboard('users');   break;
-        case 'loans':       loadLoans();         break;
-        case 'deudas':      loadDebts();         break;
-        case 'vault':       loadVaultPage();     break;
+        case 'dashboard':   refreshBankAccount().then(loadDashboard);     break;
+        case 'transfer':    refreshBankAccount().then(loadTransferUsers); break;
+        case 'history':     refreshBankAccount().then(loadRecentTx);      break;
+        case 'market':      refreshBankAccount().then(renderMarket);      break;
+        case 'leaderboard': refreshBankAccount().then(() => loadLeaderboard('users'));   break;
+        case 'loans':       refreshBankAccount().then(loadLoans);         break;
+        case 'deudas':      refreshBankAccount().then(loadDebts);         break;
+        case 'vault':       refreshBankAccount().then(loadVaultPage);     break;
         case 'verificacion': loadVerificacionPage(); break;
         case 'board':       loadBoard();         break;
         case 'mensajes':    loadInbox();         break;
@@ -575,15 +579,14 @@ async function initBankAccount() {
     // Load config
     await loadConfig();
 
-    // Live-sync balance
-    window._fbOnSnapshot(ref, snap => {
-        if (snap.exists()) {
-            bankAccount = snap.data();
-            updateBalanceDisplays();
-        }
-    });
-
     updateBalanceDisplays();
+}
+
+async function refreshBankAccount() {
+    if (!currentUser || !window._db) return;
+    const snap = await window._fbGetDoc(window._fbDoc(window._db, 'bank_accounts', currentUser.nick));
+    if (snap.exists()) { bankAccount = snap.data(); updateBalanceDisplays(); }
+    return bankAccount;
 }
 
 async function loadConfig() {
@@ -913,7 +916,7 @@ async function loadAdmin() {
         gateway.style.display = 'none';
         dashboard.style.display = 'block';
         loadAdminStats();
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } else {
         gateway.style.display = 'block';
         dashboard.style.display = 'none';
@@ -941,8 +944,8 @@ function lockGodMode() {
 async function loadAdminStats() {
     if (!window._db) return;
     try {
-        const accSnap = await window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts'));
-        const userSnap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
+        const accSnap = await getCachedAccounts();
+        const userSnap = await getCachedUsers();
 
         let totalBalance = 0;
         let totalAccounts = 0;
@@ -971,67 +974,83 @@ async function loadAdminStats() {
     } catch(e) { console.error(e); }
 }
 
-async function loadAdminAccounts() {
+window._invalidateCaches = function() { window._cacheAccounts = null; window._cacheUsers = null; window._adminCache = null; window._lbCache = null; };
+
+async function loadAdminAccounts(forceRefresh) {
     if (!window._db || !checkAdminPermission()) return;
+    if (forceRefresh) window._invalidateCaches();
     const container = document.getElementById('admin-accounts-list');
     if (!container) return;
+
+    const now = Date.now();
+    if (window._adminCache && window._adminCache.ts > now - 30000 && forceRefresh !== true) {
+        renderAdminAccounts(window._adminCache.accSnap, window._adminCache.usersMap);
+        return;
+    }
+
     container.innerHTML = '<div class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Cargando cuentas...</div>';
 
     try {
-        const accSnap = await window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts'));
-        const userSnap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
+        const accSnap = await getCachedAccounts();
+        const usersSnap = await getCachedUsers();
         const usersMap = {};
-        userSnap.forEach(d => { usersMap[d.id] = d.data(); });
-
-        container.innerHTML = '';
-        accSnap.forEach(doc => {
-            const acc = doc.data();
-            const nick = doc.id;
-            const user = usersMap[nick] || {};
-            const rankKey = getRankKey(user);
-            const rankInfo = RANKS[rankKey] || RANKS.mortal_m;
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <img src="${user.avatar || 'avt_gojo.jpg'}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
-                        <strong>${nick}</strong>
-                    </div>
-                </td>
-                <td style="font-family:'Orbitron',sans-serif;color:var(--gold);">${(acc.balance||0).toLocaleString()} PPC</td>
-                <td><span class="badge-tag ${rankInfo.cls}" style="font-size:9px;"><i class="${rankInfo.icon}"></i> ${rankInfo.label}</span></td>
-                <td>
-                    ${user.banned
-                        ? '<span class="badge-tag" style="background:rgba(217,70,239,0.15);color:#d946ef;">Baneado</span>'
-                        : `<span class="badge-tag" style="background:${acc.frozen ? 'rgba(255,68,102,0.15)' : 'rgba(0,255,170,0.15)'};color:${acc.frozen ? 'var(--danger)':'var(--secondary)'}">
-                            ${acc.frozen ? 'Congelada' : 'Activa'}
-                           </span>`
-                    }
-                </td>
-                <td style="display:flex;gap:6px;flex-wrap:wrap;">
-                    <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="adminMint('${nick}')"><i class="fa-solid fa-plus"></i> Mint</button>
-                    <button class="btn btn-danger" style="font-size:9px;padding:4px 8px;" onclick="adminBurn('${nick}')"><i class="fa-solid fa-minus"></i> Burn</button>
-                    <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="adminToggleFreeze('${nick}', ${acc.frozen ? 'false' : 'true'})">
-                        <i class="fa-solid fa-${acc.frozen ? 'lock-open' : 'lock'}"></i> ${acc.frozen ? 'Descongelar' : 'Congelar'}
-                    </button>
-                    <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:#d946ef;color:#d946ef;" onclick="adminToggleBan('${nick}', ${user.banned ? 'false' : 'true'})">
-                        <i class="fa-solid fa-${user.banned ? 'unlock' : 'ban'}"></i> ${user.banned ? 'Desbanear' : 'Banear'}
-                    </button>
-                    <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--gold);color:var(--gold);" onclick="adminSetBalance('${nick}')"><i class="fa-solid fa-coins"></i> Editar Saldo</button>
-                    <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--secondary);color:var(--secondary);" onclick="adminDailyReward('${nick}')"><i class="fa-solid fa-gift"></i> Recompensa</button>
-                    <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--primary);color:var(--primary);" onclick="adminResetPassword('${nick}')"><i class="fa-solid fa-key"></i> Reset Pass</button>
-                    <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="adminViewHistory('${nick}')"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
-                    <button class="btn btn-danger" style="font-size:9px;padding:4px 8px;background:var(--danger);color:#000;" onclick="godBankrupt('${nick}')"><i class="fa-solid fa-skull"></i> Bancarrota</button>
-                    <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--purple);color:var(--purple);" onclick="godChangeRank('${nick}')"><i class="fa-solid fa-chess-knight"></i> Forzar Rango</button>
-                    <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--secondary);color:var(--secondary);" onclick="godChangeAvatar('${nick}')"><i class="fa-solid fa-image"></i> Forzar Avatar</button>
-                </td>
-            `;
-            container.appendChild(row);
-        });
+        usersSnap.forEach(d => { usersMap[d.id] = d.data(); });
+        window._adminCache = { accSnap, usersMap, ts: now };
+        renderAdminAccounts(accSnap, usersMap);
     } catch(e) {
         container.innerHTML = '<tr><td colspan="5" style="color:var(--danger);text-align:center;">Error al cargar cuentas</td></tr>';
     }
+}
+
+function renderAdminAccounts(accSnap, usersMap) {
+    const container = document.getElementById('admin-accounts-list');
+    if (!container) return;
+    container.innerHTML = '';
+    accSnap.forEach(doc => {
+        const acc = doc.data();
+        const nick = doc.id;
+        const user = usersMap[nick] || {};
+        const rankKey = getRankKey(user);
+        const rankInfo = RANKS[rankKey] || RANKS.mortal_m;
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <img src="${user.avatar || 'avt_gojo.jpg'}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
+                    <strong>${nick}</strong>
+                </div>
+            </td>
+            <td style="font-family:'Orbitron',sans-serif;color:var(--gold);">${(acc.balance||0).toLocaleString()} PPC</td>
+            <td><span class="badge-tag ${rankInfo.cls}" style="font-size:9px;"><i class="${rankInfo.icon}"></i> ${rankInfo.label}</span></td>
+            <td>
+                ${user.banned
+                    ? '<span class="badge-tag" style="background:rgba(217,70,239,0.15);color:#d946ef;">Baneado</span>'
+                    : `<span class="badge-tag" style="background:${acc.frozen ? 'rgba(255,68,102,0.15)' : 'rgba(0,255,170,0.15)'};color:${acc.frozen ? 'var(--danger)':'var(--secondary)'}">
+                        ${acc.frozen ? 'Congelada' : 'Activa'}
+                       </span>`
+                }
+            </td>
+            <td style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="adminMint('${nick}')"><i class="fa-solid fa-plus"></i> Mint</button>
+                <button class="btn btn-danger" style="font-size:9px;padding:4px 8px;" onclick="adminBurn('${nick}')"><i class="fa-solid fa-minus"></i> Burn</button>
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="adminToggleFreeze('${nick}', ${acc.frozen ? 'false' : 'true'})">
+                    <i class="fa-solid fa-${acc.frozen ? 'lock-open' : 'lock'}"></i> ${acc.frozen ? 'Descongelar' : 'Congelar'}
+                </button>
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:#d946ef;color:#d946ef;" onclick="adminToggleBan('${nick}', ${user.banned ? 'false' : 'true'})">
+                    <i class="fa-solid fa-${user.banned ? 'unlock' : 'ban'}"></i> ${user.banned ? 'Desbanear' : 'Banear'}
+                </button>
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--gold);color:var(--gold);" onclick="adminSetBalance('${nick}')"><i class="fa-solid fa-coins"></i> Editar Saldo</button>
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--secondary);color:var(--secondary);" onclick="adminDailyReward('${nick}')"><i class="fa-solid fa-gift"></i> Recompensa</button>
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--primary);color:var(--primary);" onclick="adminResetPassword('${nick}')"><i class="fa-solid fa-key"></i> Reset Pass</button>
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="adminViewHistory('${nick}')"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
+                <button class="btn btn-danger" style="font-size:9px;padding:4px 8px;background:var(--danger);color:#000;" onclick="godBankrupt('${nick}')"><i class="fa-solid fa-skull"></i> Bancarrota</button>
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--purple);color:var(--purple);" onclick="godChangeRank('${nick}')"><i class="fa-solid fa-chess-knight"></i> Forzar Rango</button>
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--secondary);color:var(--secondary);" onclick="godChangeAvatar('${nick}')"><i class="fa-solid fa-image"></i> Forzar Avatar</button>
+            </td>
+        `;
+        container.appendChild(row);
+    });
 }
 
 async function adminMint(nick) {
@@ -1053,7 +1072,8 @@ async function adminMint(nick) {
         });
         await addTx({ type: 'Mint', from: 'Admin', to: nick, amount: amt, note: reason });
         showToast(`Mint de ${amt.toLocaleString()} PPC a ${nick} ✓`, '#00ffaa');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
+        if (nick === currentUser.nick) { const fresh = await window._fbGetDoc(window._fbDoc(window._db, 'bank_accounts', nick)); if (fresh.exists()) { bankAccount = fresh.data(); updateBalanceDisplays(); } }
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
@@ -1078,7 +1098,8 @@ async function adminBurn(nick) {
         });
         await addTx({ type: 'Burn', from: nick, to: 'Admin', amount: amt, note: reason });
         showToast(`Burn de ${amt.toLocaleString()} PPC a ${nick} ✓`, '#ff4466');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
+        if (nick === currentUser.nick) { const fresh = await window._fbGetDoc(window._fbDoc(window._db, 'bank_accounts', nick)); if (fresh.exists()) { bankAccount = fresh.data(); updateBalanceDisplays(); } }
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
@@ -1091,7 +1112,7 @@ async function adminToggleFreeze(nick, freeze) {
     try {
         await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', nick), { frozen: freeze });
         showToast(`Cuenta de ${nick} ${freeze ? 'congelada' : 'descongelada'}`, '#00ffaa');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
@@ -1106,7 +1127,7 @@ async function adminToggleBan(nick, ban) {
     try {
         await window._fbUpdateDoc(window._fbDoc(window._db, 'users', nick), { banned: ban });
         showToast(`Usuario ${nick} ${ban ? 'baneado' : 'desbaneado'}`, ban ? '#ff4466' : '#00ffaa');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
@@ -1124,7 +1145,7 @@ async function adminSetBalance(nick) {
         await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', nick), { balance: amt });
         await addTx({ type: 'Ajuste Admin', from: 'Admin', to: nick, amount: 0, note: 'Saldo fijado a ' + amt + ' PPC por ' + currentUser.nick });
         showToast(`Saldo de ${nick} ajustado a ${amt.toLocaleString()} PPC`, '#00ffaa');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
@@ -1158,7 +1179,7 @@ async function adminDailyReward(nick) {
         });
         await addTx({ type: 'Recompensa', from: 'Banco', to: nick, amount: amt, note: `Recompensa diaria manual por ${currentUser.nick} (×${mult.toFixed(2)})` });
         showToast(`Recompensa de ${amt.toLocaleString()} PPC entregada a ${nick}`, '#00ffaa');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
@@ -1175,7 +1196,7 @@ async function adminResetPassword(nick) {
         const newHash = hashPass(pass.trim(), nick);
         await window._fbUpdateDoc(window._fbDoc(window._db, 'users', nick), { hash: newHash });
         showToast(`Contraseña de ${nick} actualizada ✓`, '#00ffaa');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
@@ -1283,6 +1304,7 @@ async function adminPayInterest() {
     if (!ok) return;
 
     try {
+        window._invalidateCaches();
         const accSnap = await window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts'));
         let count = 0;
         const updates = [];
@@ -1314,7 +1336,7 @@ async function adminPayInterest() {
         }
 
         showToast(`Interés pagado a ${count} cuentas`, '#00ffaa');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
@@ -2078,6 +2100,7 @@ async function godAirdropGlobal() {
     if (!confirm) return;
 
     try {
+        window._invalidateCaches();
         const snap = await window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts'));
         const batch = window._fbWriteBatch(window._db);
         snap.forEach(doc => {
@@ -2086,7 +2109,7 @@ async function godAirdropGlobal() {
         await batch.commit();
         showToast('Airdrop Global completado con éxito.', 'var(--primary)');
         logAudit('SYSTEM', `Airdrop Global de ${amt} PPC a todos.`);
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch (e) {
         showToast('Error en Airdrop: ' + e.message, 'var(--danger)');
     }
@@ -2098,6 +2121,7 @@ async function godEconomicCrisis() {
     if (!confirm) return;
 
     try {
+        window._invalidateCaches();
         const snap = await window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts'));
         const batch = window._fbWriteBatch(window._db);
         snap.forEach(doc => {
@@ -2108,7 +2132,7 @@ async function godEconomicCrisis() {
         await batch.commit();
         showToast('La Crisis Económica ha golpeado.', 'var(--danger)');
         logAudit('SYSTEM', 'Se aplicó Crisis Económica (-10%).');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) { console.error(e); }
 }
 
@@ -2128,7 +2152,7 @@ async function godEconomicBoom() {
         await batch.commit();
         showToast('Boom Económico aplicado.', 'var(--primary)');
         logAudit('SYSTEM', 'Se aplicó Boom Económico (+10%).');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) { console.error(e); }
 }
 
@@ -2145,7 +2169,7 @@ async function godFreezeAll() {
         });
         await batch.commit();
         showToast('PÁNICO GLOBAL: TODAS LAS CUENTAS ESTÁN CONGELADAS.', 'var(--danger)');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) { console.error(e); }
 }
 
@@ -2196,7 +2220,7 @@ async function godBankrupt(nick) {
         await window._fbUpdateDoc(docRef, { balance: 0 });
         showToast(`${nick} está en bancarrota absoluta.`, 'var(--danger)');
         logAudit('SYSTEM', `Bancarrota aplicada a ${nick}.`);
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) { showToast('Error: ' + e.message, 'var(--danger)'); }
 }
 
@@ -2278,7 +2302,7 @@ async function godChangeRank(nick) {
         }
 
         showToast(`El rango de ${nick} ahora es ${rank}.`, 'var(--primary)');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) { showToast('Error: ' + e.message, 'var(--danger)'); }
 }
 
@@ -2310,7 +2334,7 @@ async function godResetAllBalances() {
 
         await batch.commit();
         showToast('Base de datos reseteada a 1000 PPC.', 'var(--primary)');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) {
         showToast('Error al resetear: ' + e.message, 'var(--danger)');
     }
@@ -2346,7 +2370,7 @@ async function godRepairDatabase() {
         
         await batch.commit();
         showToast(`Se repararon ${repaired} cuentas.`, 'var(--primary)');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) {
         showToast('Error al reparar: ' + e.message, 'var(--danger)');
     }
@@ -2374,7 +2398,7 @@ async function godChangeAvatar(nick) {
         const db = window._db;
         await window._fbUpdateDoc(window._fbDoc(db, 'users', nick), { avatar: filename });
         showToast(`Avatar de ${nick} actualizado.`, 'var(--primary)');
-        loadAdminAccounts();
+        loadAdminAccounts(true);
     } catch(e) {
         showToast('Error al forzar avatar: ' + e.message, 'var(--danger)');
     }

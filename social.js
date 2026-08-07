@@ -12,7 +12,7 @@ async function loadInbox() {
 
     const partnerSel = document.getElementById('pm-user-select');
     if (partnerSel) {
-        const usersSnap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
+        const usersSnap = await getCachedUsers();
         let opts = '';
         usersSnap.forEach(d => { if (d.id !== currentUser.nick) opts += `<option value="${escHTML(d.id)}">${escHTML(d.id)}</option>`; });
         partnerSel.innerHTML = '<option value="">Selecciona un usuario...</option>' + opts;
