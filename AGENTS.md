@@ -297,6 +297,11 @@ Cuntsniffer
 - **clan-features.js:215**: Agregado `'solariswat'` a la lista de nicks owner hardcodeados (antes solo tenía `'emilio'` que ya no existía tras el rename).
 - **workflow**: Flujo de trabajo cambiado — ahora se publica directo a GitHub sin usar `Actualizacion/` para revisión. La carpeta se mantiene por si acaso.
 
+### Sesión 17c — Cache bust forzado en TODOS los scripts
+- **Causa raíz REAL**: 19 de 31 archivos JS no tenían `?v=` cache buster. El navegador servía código viejo con el bug de `boughtRanks` a pesar de que el fix ya estaba en GitHub.
+- **Fix**: Todos los 31 `<script>` tags ahora tienen `?v=16`. El servidor PowerShell no envía `Cache-Control`, así que el navegador cachea agresivamente.
+- **Lección**: Siempre poner `?v=` en TODOS los script tags, no solo los modificados.
+
 ---
 
 *Actualizar este archivo con cada cambio significativo.*
