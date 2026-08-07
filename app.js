@@ -341,9 +341,9 @@ window.doLogin = async function() {
         localStorage.setItem('papubank_jwt', res.accessToken);
         localStorage.setItem('papubank_refresh', res.refreshToken);
 
-        currentUser = { nick, isAdmin: res.isAdmin, hash: res.hash || hash };
-        if (res.avatar) currentUser.avatar = res.avatar;
+        currentUser = { nick, hash };
         Object.assign(currentUser, res);
+        currentUser.nick = nick;
         localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash: res.hash || hash }));
         localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash: res.hash || hash }));
 
@@ -438,49 +438,8 @@ window.initAuthOverlayEvents = function() {
 
 async function tryAutoLogin() {
     try {
-        const savedJWT = localStorage.getItem('papubank_jwt');
         const saved = localStorage.getItem(SESSION_KEY);
-        if (!savedJWT && !saved) return;
-
-        if (savedJWT) {
-            // Try JWT auto-login
-            window._apiToken = savedJWT;
-            try {
-                const userData = await apiFetch('GET', '/auth/me');
-                currentUser = { nick: userData.nick, ...userData };
-                document.getElementById('auth-overlay').style.display = 'none';
-                await initBankAccount();
-                updateNavUI();
-                showPage('dashboard');
-                if (typeof initMediaPlayer === 'function') initMediaPlayer();
-                if (typeof initMatrix === 'function') initMatrix();
-                if (typeof loadSavedTheme === 'function') loadSavedTheme();
-                if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
-                return;
-            } catch(e) {
-                // JWT expired, try refresh
-                const refreshToken = localStorage.getItem('papubank_refresh');
-                if (refreshToken) {
-                    try {
-                        const refreshRes = await apiFetch('POST', '/auth/refresh', { refreshToken });
-                        window._apiToken = refreshRes.accessToken;
-                        localStorage.setItem('papubank_jwt', refreshRes.accessToken);
-                        currentUser = { nick: refreshRes.nick, ...refreshRes };
-                        document.getElementById('auth-overlay').style.display = 'none';
-                        await initBankAccount();
-                        updateNavUI();
-                        showPage('dashboard');
-                        if (typeof initMediaPlayer === 'function') initMediaPlayer();
-                        if (typeof initMatrix === 'function') initMatrix();
-                        return;
-                    } catch(e2) {}
-                }
-                localStorage.removeItem('papubank_jwt');
-                localStorage.removeItem('papubank_refresh');
-            }
-        }
-
-        // Fallback: hash-based auto-login
+        if (!saved) return;
         const { nick, hash } = JSON.parse(saved);
         if (!nick || !hash) return;
 
@@ -490,7 +449,11 @@ async function tryAutoLogin() {
                 window._apiToken = res.accessToken;
                 localStorage.setItem('papubank_jwt', res.accessToken);
                 if (res.refreshToken) localStorage.setItem('papubank_refresh', res.refreshToken);
-                currentUser = { nick, ...res };
+
+                currentUser = { nick, hash };
+                Object.assign(currentUser, res);
+                currentUser.nick = nick;
+
                 document.getElementById('auth-overlay').style.display = 'none';
                 await initBankAccount();
                 updateNavUI();
