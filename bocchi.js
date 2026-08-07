@@ -227,16 +227,12 @@ async function buyBocchiRank(rankKey) {
             }
         }
         
-        const boughtRanks = currentUser.boughtRanks || [];
-        if (!boughtRanks.includes(rank.key)) boughtRanks.push(rank.key);
-        
         await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
             bocchiRank: rank.key,
-            boughtRanks: boughtRanks
+            boughtRanks: window._fbArrayUnion(rank.key)
         });
 
         currentUser.bocchiRank = rank.key;
-        currentUser.boughtRanks = boughtRanks;
 
         await addTx({ type: 'Rango Bocchi', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Bocchi the Rock!: ${rank.label}` });
 

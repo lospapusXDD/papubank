@@ -240,16 +240,12 @@ async function buyBerserkRank(rankKey) {
             }
         }
         
-        const boughtRanks = currentUser.boughtRanks || [];
-        if (!boughtRanks.includes(rank.key)) boughtRanks.push(rank.key);
-        
         await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
             berserkRank: rank.key,
-            boughtRanks: boughtRanks
+            boughtRanks: window._fbArrayUnion(rank.key)
         });
 
         currentUser.berserkRank = rank.key;
-        currentUser.boughtRanks = boughtRanks;
 
         await addTx({ type: 'Rango Berserk', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Berserk: ${rank.label}` });
 

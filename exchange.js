@@ -172,13 +172,9 @@ async function buyPremiumItem(itemId) {
         
         // Grant the item/rank
         if (item.type === 'rank') {
-            const boughtRanks = currentUser.boughtRanks || [];
-            if (!boughtRanks.includes(item.rankKey)) boughtRanks.push(item.rankKey);
-            
             await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
-                boughtRanks: boughtRanks
+                boughtRanks: window._fbArrayUnion(item.rankKey)
             });
-            currentUser.boughtRanks = boughtRanks;
         } else if (item.type === 'item' || item.type === 'cosmetic' || item.type === 'pet' || item.type === 'booster' || item.type === 'title' || item.type === 'functional') {
             let inventory = bankAccount.inventory || [];
             const itemKey = item.itemKey || item.cosmeticKey || item.petKey || item.boosterKey || item.titleKey || item.funcKey;

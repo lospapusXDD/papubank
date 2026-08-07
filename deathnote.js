@@ -240,16 +240,12 @@ async function buyDeathnoteRank(rankKey) {
             }
         }
         
-        const boughtRanks = currentUser.boughtRanks || [];
-        if (!boughtRanks.includes(rank.key)) boughtRanks.push(rank.key);
-        
         await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
             deathnoteRank: rank.key,
-            boughtRanks: boughtRanks
+            boughtRanks: window._fbArrayUnion(rank.key)
         });
 
         currentUser.deathnoteRank = rank.key;
-        currentUser.boughtRanks = boughtRanks;
 
         await addTx({ type: 'Rango Death Note', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Death Note: ${rank.label}` });
 

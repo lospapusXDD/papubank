@@ -245,16 +245,12 @@ async function buyRezeroRank(rankKey) {
             }
         }
         
-        const boughtRanks = currentUser.boughtRanks || [];
-        if (!boughtRanks.includes(rank.key)) boughtRanks.push(rank.key);
-        
         await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
             rezeroRank: rank.key,
-            boughtRanks: boughtRanks
+            boughtRanks: window._fbArrayUnion(rank.key)
         });
 
         currentUser.rezeroRank = rank.key;
-        currentUser.boughtRanks = boughtRanks;
 
         await addTx({ type: 'Rango Re:Zero', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Re:Zero: ${rank.label}` });
 

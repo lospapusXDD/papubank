@@ -240,16 +240,12 @@ async function buyRimuruRank(rankKey) {
             }
         }
         
-        const boughtRanks = currentUser.boughtRanks || [];
-        if (!boughtRanks.includes(rank.key)) boughtRanks.push(rank.key);
-        
         await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
             rimuruRank: rank.key,
-            boughtRanks: boughtRanks
+            boughtRanks: window._fbArrayUnion(rank.key)
         });
 
         currentUser.rimuruRank = rank.key;
-        currentUser.boughtRanks = boughtRanks;
 
         await addTx({ type: 'Rango Rimuru', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Rimuru Tempest: ${rank.label}` });
 
