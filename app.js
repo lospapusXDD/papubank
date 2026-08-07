@@ -2173,6 +2173,64 @@ async function godFreezeAll() {
     } catch(e) { console.error(e); }
 }
 
+async function godBackupDatabase() {
+    if (!checkAdminPermission()) return;
+    const ok = await showConfirm('Backup Completo', 'Se exportará TODA la base de datos a un archivo JSON. Esto puede tardar unos segundos.');
+    if (!ok) return;
+
+    showToast('Generando backup...', '#ffd700');
+    try {
+        const [usersSnap, accSnap, txSnap, msgSnap, boardSnap, chatSnap, pollSnap, loanSnap, floresSnap, eventSnap, reportSnap] = await Promise.all([
+            window._fbGetDocs(window._fbCollection(window._db, 'users')),
+            window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts')),
+            window._fbGetDocs(window._fbCollection(window._db, 'transactions')),
+            window._fbGetDocs(window._fbCollection(window._db, 'messages')),
+            window._fbGetDocs(window._fbCollection(window._db, 'board')),
+            window._fbGetDocs(window._fbCollection(window._db, 'chat')),
+            window._fbGetDocs(window._fbCollection(window._db, 'polls')),
+            window._fbGetDocs(window._fbCollection(window._db, 'loans')),
+            window._fbGetDocs(window._fbCollection(window._db, 'flores_requests')),
+            window._fbGetDocs(window._fbCollection(window._db, 'events')),
+            window._fbGetDocs(window._fbCollection(window._db, 'reports'))
+        ]);
+
+        const collectionToObj = (snap) => { const o = {}; snap.forEach(d => { o[d.id] = d.data(); }); return o; };
+        const collectionToArray = (snap) => { const a = []; snap.forEach(d => { a.push({ id: d.id, ...d.data() }); }); return a; };
+
+        const backup = {
+            _meta: { version: '1.0', timestamp: new Date().toISOString(), project: 'PapusBank', exportedBy: currentUser.nick },
+            users: collectionToObj(usersSnap),
+            bank_accounts: collectionToObj(accSnap),
+            transactions: collectionToArray(txSnap),
+            messages: collectionToArray(msgSnap),
+            board: collectionToArray(boardSnap),
+            chat: collectionToArray(chatSnap),
+            polls: collectionToArray(pollSnap),
+            loans: collectionToArray(loanSnap),
+            flores_requests: collectionToArray(floresSnap),
+            events: collectionToArray(eventSnap),
+            reports: collectionToArray(reportSnap)
+        };
+
+        const json = JSON.stringify(backup, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `papubank_backup_${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        const totalDocs = usersSnap.size + accSnap.size + txSnap.size + msgSnap.size + boardSnap.size + chatSnap.size + pollSnap.size + loanSnap.size + floresSnap.size + eventSnap.size + reportSnap.size;
+        showToast(`Backup completado: ${totalDocs} documentos exportados ✓`, '#00ffaa');
+    } catch(e) {
+        console.error(e);
+        showToast('Error en backup: ' + e.message, '#ff4466');
+    }
+}
+
 async function godFlashSale() {
     if (!checkAdminPermission()) return;
     const minStr = await showInputModal('Flash Sale 50% OFF', 'Duración en minutos (ej: 60 = 1 hora)', 'number');
