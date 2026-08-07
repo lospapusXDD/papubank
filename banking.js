@@ -56,7 +56,7 @@ async function addTx(opts) {
 let selectedTransferRecipient = null;
 
 async function loadTransferUsers() {
-    if (!window._db || !currentUser) return;
+    if (!currentUser) return;
     const grid = document.getElementById('transfer-users-grid');
     if (!grid) return;
     
@@ -290,7 +290,7 @@ async function loadLeaderboard(filter) {
 
 
 async function loadRecentTx() {
-    if (!window._db || !currentUser) return;
+    if (!currentUser) return;
     const container = document.getElementById('recent-tx-list');
     if (!container) return;
     
