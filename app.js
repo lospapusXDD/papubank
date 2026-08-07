@@ -707,73 +707,94 @@ window.saveAvatar = async function(filename) {
 
 window.uploadCustomAvatar = function(event) {
     const file = event.target.files[0];
-    if (!file || !currentUser || !window._db) return;
+    if (!file || !currentUser) return;
 
-    if (!file.type.startsWith('image/')) {
-        showToast('El archivo debe ser una imagen', 'var(--danger)');
+    const isImage = file.type.startsWith('image/');
+    const isVideo = file.type.startsWith('video/');
+    if (!isImage && !isVideo) {
+        showToast('El archivo debe ser imagen o video', 'var(--danger)');
         return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-        showToast('La imagen no puede pasar de 5MB', 'var(--danger)');
+    if (file.size > 10 * 1024 * 1024) {
+        showToast('El archivo no puede pasar de 10MB', 'var(--danger)');
         return;
     }
+
+    const btn = document.querySelector('[onclick*="uploadCustomAvatar"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Subiendo...'; }
 
     const reader = new FileReader();
-    reader.onload = function(e) {
-        const img = new Image();
-        img.onload = async function() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const maxSize = 256;
-            let w = img.width;
-            let h = img.height;
+    reader.onload = async function(e) {
+        try {
+            const dataUrl = e.target.result;
 
-            if (w > h) {
-                if (w > maxSize) { h = Math.round(h * maxSize / w); w = maxSize; }
-            } else {
-                if (h > maxSize) { w = Math.round(w * maxSize / h); h = maxSize; }
-            }
+            if (isImage) {
+                const img = new Image();
+                img.onload = async function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const maxSize = 256;
+                    let w = img.width, h = img.height;
+                    if (w > h) { if (w > maxSize) { h = Math.round(h * maxSize / w); w = maxSize; } }
+                    else { if (h > maxSize) { w = Math.round(w * maxSize / h); h = maxSize; } }
+                    canvas.width = w;
+                    canvas.height = h;
+                    ctx.drawImage(img, 0, 0, w, h);
 
-            canvas.width = w;
-            canvas.height = h;
-            ctx.drawImage(img, 0, 0, w, h);
-
-            canvas.toBlob(async function(blob) {
-                if (!blob) { showToast('Error al procesar imagen', '#ff4466'); return; }
-
-                const btn = document.querySelector('[onclick*="uploadCustomAvatar"]');
-                if (btn) { btn.disabled = true; btn.textContent = 'Subiendo...'; }
-
-                try {
-                    const storage = window._fbStorage;
-                    const storageRef = window._fbStorageRef(storage, 'avatars/' + currentUser.nick + '.jpg');
-                    await window._fbUploadBytes(storageRef, blob);
-                    const downloadURL = await window._fbGetDownloadURL(storageRef);
-
-                    await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { avatar: downloadURL });
-                    currentUser.avatar = downloadURL;
-
-                    const pAv = document.getElementById('profile-avatar');
-                    if (pAv) pAv.src = downloadURL;
-                    const sAv = document.getElementById('sidebar-user-avatar');
-                    if (sAv) sAv.src = downloadURL;
-
+                    const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                    await apiFetch('PUT', '/users/' + currentUser.nick + '/avatar', { avatar: resizedDataUrl });
+                    currentUser.avatar = resizedDataUrl;
+                    updateAvatarUI(resizedDataUrl);
                     loadProfile();
                     showToast('Foto de perfil actualizada ✓', '#00ffaa');
-                } catch(err) {
-                    showToast('Error al subir: ' + err.message, '#ff4466');
-                } finally {
-                    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-camera"></i> Subir Foto'; }
-                }
-            }, 'image/jpeg', 0.85);
-        };
-        img.src = e.target.result;
+                };
+                img.src = dataUrl;
+            } else {
+                await apiFetch('PUT', '/users/' + currentUser.nick + '/avatar', { avatar: dataUrl });
+                currentUser.avatar = dataUrl;
+                updateAvatarUI(dataUrl);
+                loadProfile();
+                showToast('Video de perfil actualizado ✓', '#00ffaa');
+            }
+        } catch(err) {
+            showToast('Error al subir: ' + err.message, '#ff4466');
+        } finally {
+            if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-camera"></i> Subir Foto/Video'; }
+        }
     };
     reader.readAsDataURL(file);
 };
 
+function updateAvatarUI(src) {
+    const pAv = document.getElementById('profile-avatar');
+    if (pAv) {
+        if (src && src.startsWith('data:video')) {
+            const parent = pAv.parentElement;
+            let vid = parent.querySelector('video');
+            if (!vid) {
+                vid = document.createElement('video');
+                vid.autoplay = true;
+                vid.loop = true;
+                vid.muted = true;
+                vid.playsInline = true;
+                vid.style.cssText = pAv.style.cssText;
+                parent.insertBefore(vid, pAv);
+                pAv.style.display = 'none';
+            }
+            vid.src = src;
+        } else {
+            pAv.src = src;
+            pAv.style.display = '';
+            const vid = pAv.parentElement.querySelector('video');
+            if (vid) vid.remove();
+        }
+    }
+    const sAv = document.getElementById('sidebar-user-avatar');
+    if (sAv && !src?.startsWith('data:video')) sAv.src = src;
+}
+
 window.saveAvatarFromUrl = async function() {
-    if (!currentUser || !window._db) return;
+    if (!currentUser) return;
     const input = document.getElementById('profile-avatar-url-input');
     const url = (input.value || '').trim();
     if (!url) { showToast('Pega un link de imagen primero', 'var(--danger)'); return; }
@@ -787,12 +808,9 @@ window.saveAvatarFromUrl = async function() {
     previewImg.onload = async () => {
         preview.style.display = 'flex';
         try {
-            await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { avatar: url });
+            await apiFetch('PUT', '/users/' + currentUser.nick + '/avatar', { avatar: url });
             currentUser.avatar = url;
-            const pAv = document.getElementById('profile-avatar');
-            if (pAv) pAv.src = url;
-            const sAv = document.getElementById('sidebar-user-avatar');
-            if (sAv) sAv.src = url;
+            updateAvatarUI(url);
             loadProfile();
             showToast('Avatar actualizado con tu link ✓', '#00ffaa');
         } catch(err) { showToast('Error: ' + err.message, '#ff4466'); }
