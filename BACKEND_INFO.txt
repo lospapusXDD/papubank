@@ -1,34 +1,6 @@
-GET  /api/users          → retorna todos los usuarios de la tabla "users"
-GET  /api/users/:nick    → retorna un usuario específico  
-PUT  /api/users/:nick    → actualiza campos de un usuario
+Antigravity, necesito 2 fixes urgentes en el backend:
 
-GET  /api/bank_accounts           → retorna todas las cuentas bancarias
-PUT  /api/bank_accounts/:nick     → actualiza una cuenta bancaria
+1. El endpoint POST /api/auth/login debe incluir el campo "hash" del usuario en la respuesta JSON. Actualmente solo devuelve { message, nick, isAdmin, accessToken, refreshToken }. Necesito que devuelva también el hash del usuario para que el auto-login del frontend funcione. Ejemplo:
+{ "message": "...", "nick": "solariswat", "isAdmin": true, "hash": "s2_xxx", "accessToken": "...", "refreshToken": "..." }
 
-GET  /api/transactions            → retorna las transacciones
-POST /api/transactions            → crea una transacción
-
-GET  /api/board                   → retorna posts del board
-POST /api/board                   → crea un post
-
-GET  /api/chat                    → retorna mensajes del chat
-POST /api/chat                    → envía un mensaje
-
-GET  /api/polls                   → retorna encuestas
-POST /api/polls                   → crea una encuesta
-
-GET  /api/loans                   → retorna préstamos
-POST /api/loans                   → crea un préstamo
-
-GET  /api/messages                → retorna mensajes privados
-POST /api/messages                → envía un mensaje privado
-
-GET  /api/vaults                  → retorna bóvedas
-GET  /api/vaults/:id              → retorna una bóveda
-PUT  /api/vaults/:id              → actualiza una bóveda
-POST /api/vaults/:id/letters      → agrega carta a bóveda
-GET  /api/vaults/:id/letters      → retorna cartas de bóveda
-
-GET  /api/flores_requests         → solicitudes de flores
-GET  /api/events                  → eventos
-GET  /api/reports                 → reportes
+2. Falta el endpoint GET /api/bank_accounts/:nick — necesito que devuelva una sola cuenta bancaria por nick. Ya existe el GET /api/bank_accounts (listado) y PUT /api/bank_accounts/:nick (update), pero falta el GET individual. Si el nick no existe, devolver 404 con { error: "Cuenta no encontrada" }.
