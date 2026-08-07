@@ -286,6 +286,11 @@ Cuntsniffer
 - `Actualizacion/` limpiada
 - Usuario confirmó subida a GitHub
 
+### Sesión 17b — Fix boughtRanks se sobreescribía al comprar rangos
+- **Causa raíz**: 10 fandoms (chainsaw, berserk, deathnote, elfen, rezero, rimuru, bocchi, vocaloid, mushoku, exchange) escribían `boughtRanks` como array manual completo, sobreescribiendo los rangos de OTROS fandoms. Al refrescar, solo quedaba el último rango comprado.
+- **Fix**: Todos ahora usan `window._fbArrayUnion(rank.key)` — operación atómica de Firestore que agrega sin sobreescribir. Los que ya lo hacían bien: godzilla, ben10, mha, nanatsu, frieren, jjk, olimpo.
+- **Archivos modificados**: chainsaw.js, berserk.js, deathnote.js, elfen.js, rezero.js, rimuru.js, bocchi.js, vocaloid.js, mushoku.js, exchange.js
+
 ### Sesión 17 — Fix balance no persistía + Doble conteo + Nick hardcodeado
 - **logros.js:286**: Eliminada mutación manual de `bankAccount.balance` — el `onSnapshot` ya actualiza automáticamente. Causaba doble conteo (se sumaba 2x) y al refrescar volvía al valor real.
 - **social.js:270**: Misma corrección — eliminada mutación manual de `bankAccount.balance` en recompensas de encuestas.
