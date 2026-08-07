@@ -216,38 +216,48 @@ async function loadLeaderboard(filter) {
     
     try {
         const data = await apiFetch('GET', '/leaderboard?limit=50');
-        const usersMap = data.users || {};
 
-        // Build array and sort by balance descending
-        const accounts = Array.isArray(data.accounts) ? data.accounts.map(a => ({ id: a.id || a.nick, ...a })) : [];
-        accounts.sort((a, b) => (b.balance || 0) - (a.balance || 0));
+        let entries = [];
+        if (Array.isArray(data)) {
+            entries = data;
+        } else if (data.accounts || data.users) {
+            const usersMap = data.users || {};
+            const accounts = Array.isArray(data.accounts) ? data.accounts : [];
+            entries = accounts.map(a => {
+                const u = usersMap[a.id || a.nick] || {};
+                return { ...u, ...a, nick: a.id || a.nick };
+            });
+        }
 
-        // Filter by admin/user
+        entries.sort((a, b) => {
+            const balA = parseFloat(a.balance) || 0;
+            const balB = parseFloat(b.balance) || 0;
+            return balB - balA;
+        });
+
         const adminRoles = ['owner', 'admin', 'mod', 'helper'];
-        const filtered = accounts.filter(acc => {
-            const userProfile = usersMap[acc.id] || {};
-            const rKey = getRankKey(userProfile);
+        const filtered = entries.filter(entry => {
+            const rKey = getRankKey(entry);
             const isAdmin = adminRoles.includes(rKey);
             return mode === 'admins' ? isAdmin : !isAdmin;
         });
 
         let html = '';
-        filtered.forEach((acc, idx) => {
-            const nick    = acc.id;
-            const balance = acc.balance || 0;
+        filtered.forEach((entry, idx) => {
+            const nick    = entry.nick;
+            const balance = parseFloat(entry.balance) || 0;
             const tier    = getBankTier(balance);
             const isMine  = nick === (currentUser ? currentUser.nick : '');
-            
-            const userProfile = usersMap[nick] || {};
-            const rKey        = getRankKey(userProfile);
+
+            const rKey        = getRankKey(entry);
             const rankInfo    = RANKS[rKey] || RANKS.user;
-            
-            const avatarSrc = userProfile.avatar ? userProfile.avatar : 'avt_gojo.jpg';
+
+            const avatarSrc = entry.avatar || 'avt_gojo.jpg';
             const nameColor = (nick === 'emilio' || nick === 'insanlj5')
                 ? 'color: var(--purple); font-weight: bold;'
-                : (userProfile.jjkRank === 'gojo'
+                : (entry.jjkRank === 'gojo'
                     ? 'color: var(--primary); font-weight: bold; text-shadow:0 0 10px var(--primary-glow);'
-                    : (userProfile.jjkRank === 'sukuna' ? 'color: var(--danger); font-weight: bold;' : ''));
+                    : (entry.jjkRank === 'sukuna' ? 'color: var(--danger); font-weight: bold;' : ''));
 
             let positionLabel = `#${idx + 1}`;
             if (idx === 0) positionLabel = '<i class="fa-solid fa-trophy" style="color:var(--gold)"></i>';
@@ -261,7 +271,7 @@ async function loadLeaderboard(filter) {
                         <div style="display:flex; align-items:center; gap:8px;">
                             <div style="position:relative; display:inline-block; width:32px; height:32px;">
                                 <img src="${avatarSrc}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1px solid var(--dark-border);">
-                                ${userProfile.mcUsername ? `<img src="https://mc-heads.net/head/${userProfile.mcUsername}/18" style="position:absolute; right:-4px; bottom:-4px; width:18px; height:18px; filter:drop-shadow(0 0 4px var(--primary-glow)); z-index:2;" title="MC: ${userProfile.mcUsername}">` : ''}
+                                ${entry.mcUsername ? `<img src="https://mc-heads.net/head/${entry.mcUsername}/18" style="position:absolute; right:-4px; bottom:-4px; width:18px; height:18px; filter:drop-shadow(0 0 4px var(--primary-glow)); z-index:2;" title="MC: ${entry.mcUsername}">` : ''}
                             </div>
                             <span style="${nameColor}">${nick}</span>
                             ${isMine ? '<span style="font-size:9px; background:var(--primary); color:#000; padding:1px 4px; border-radius:3px;">TÚ</span>' : ''}
@@ -278,7 +288,7 @@ async function loadLeaderboard(filter) {
                 </tr>
             `;
         });
-        
+
         container.innerHTML = html || '<tr><td colspan="5" class="text-center">No hay cuentas bancarias registradas</td></tr>';
     } catch(e) {
         console.error('Leaderboard error:', e);
