@@ -216,7 +216,6 @@ async function loadLeaderboard(filter) {
     
     try {
         const data = await apiFetch('GET', '/leaderboard?limit=50');
-        const accounts = data.accounts || [];
         const usersMap = data.users || {};
 
         // Build array and sort by balance descending
