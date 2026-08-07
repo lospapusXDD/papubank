@@ -233,8 +233,21 @@ function renderProfileRings(container) {
     container.innerHTML = html;
 }
 
+async function loadRingsInventory() {
+    if (!currentUser) return;
+    try {
+        const inv = await apiFetch('GET', '/inventory/' + currentUser.nick);
+        const rings = (inv || []).filter(i => i.item_id && i.item_id.startsWith('ring_')).map(i => i.item_id.replace('ring_', ''));
+        currentUser.boughtRings = rings;
+        const activeRing = (inv || []).find(i => i.item_type === 'ring' && i.active);
+        if (activeRing) {
+            currentUser.profileRing = activeRing.item_id.replace('ring_', '');
+        }
+    } catch(e) {}
+}
+
 async function buyRing(ringKey) {
-    if (!currentUser || !window._db) return;
+    if (!currentUser) return;
     
     const ring = getRingData(ringKey);
     if (!ring) return;
@@ -243,29 +256,18 @@ async function buyRing(ringKey) {
     if (!ok) return;
 
     try {
-        const accRef = window._fbDoc(window._db, 'bank_accounts', currentUser.nick);
-        const accSnap = await window._fbGetDoc(accRef);
-        const balance = accSnap.exists() ? (accSnap.data().balance || 0) : 0;
-
-        if (balance < ring.price) {
-            showToast('Saldo insuficiente', '#ff4466');
-            return;
-        }
-
-        await window._fbUpdateDoc(accRef, { balance: window._fbIncrement(-ring.price) });
-        
-        const boughtRings = currentUser.boughtRings || [];
-        if (!boughtRings.includes(ring.key)) boughtRings.push(ring.key);
-        
-        await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
-            boughtRings: boughtRings,
-            profileRing: ring.key
+        await apiFetch('POST', '/inventory/buy', {
+            nick: currentUser.nick,
+            item_id: 'ring_' + ring.key,
+            price: ring.price,
+            currency: 'ppc'
         });
 
-        currentUser.boughtRings = boughtRings;
+        const inv = await apiFetch('GET', '/inventory/' + currentUser.nick);
+        currentUser.boughtRings = (inv || []).filter(i => i.item_id && i.item_id.startsWith('ring_')).map(i => i.item_id.replace('ring_', ''));
         currentUser.profileRing = ring.key;
 
-        await addTx({ type: 'Aro Perfil', from: currentUser.nick, to: 'Banco', amount: ring.price, note: `Aro: ${ring.label}` });
+        bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
 
         showToast(`¡${ring.label} adquirido! 💫`, ring.color);
         renderProfileRings(document.getElementById('rings-grid'));
@@ -275,11 +277,11 @@ async function buyRing(ringKey) {
 }
 
 async function equipRing(ringKey) {
-    if (!currentUser || !window._db) return;
+    if (!currentUser) return;
     
     try {
-        await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
-            profileRing: ringKey
+        await apiFetch('PUT', '/inventory/' + currentUser.nick + '/activate', {
+            item_id: 'ring_' + ringKey
         });
         currentUser.profileRing = ringKey;
         
@@ -303,18 +305,15 @@ function getRingHTML(user) {
 /* ─────────── CHECK SECRET ACHIEVEMENTS ─────────── */
 
 async function checkSecretAchievements() {
-    if (!currentUser || !window._db) return;
+    if (!currentUser) return;
 
     try {
-        const userSnap = await window._fbGetDoc(window._fbDoc(window._db, 'users', currentUser.nick));
-        const accSnap = await window._fbGetDoc(window._fbDoc(window._db, 'bank_accounts', currentUser.nick));
-        const userData = userSnap.exists() ? userSnap.data() : {};
-        const accData = accSnap.exists() ? accSnap.data() : {};
+        const userData = await apiFetch('GET', '/users/' + currentUser.nick);
+        const accData = await apiFetch('GET', '/bank/' + currentUser.nick);
         const earned = userData.secretAchievements || [];
         
         const newly = [];
         
-        // Check each secret achievement
         for (const ach of SECRET_ACHIEVEMENTS) {
             if (earned.includes(ach.id)) continue;
             
@@ -325,11 +324,6 @@ async function checkSecretAchievements() {
             }
             if (ach.id === 'secret_streak7' && (userData.loginStreak || 0) >= 7) newly.push(ach);
             if (ach.id === 'secret_streak30' && (userData.loginStreak || 0) >= 30) newly.push(ach);
-            if (ach.id === 'secret_social' && (userData.pmSent || 0) >= 100) newly.push(ach);
-            if (ach.id === 'secret_investor') {
-                const invSnap = await window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts', currentUser.nick, 'investments'));
-                if (invSnap.size >= 10) newly.push(ach);
-            }
         }
 
         if (!newly.length) return;
@@ -340,8 +334,8 @@ async function checkSecretAchievements() {
         const mult = (typeof getRankMultiplier === 'function') ? getRankMultiplier(currentUser) : 1;
         const finalReward = Math.round(totalReward * mult);
 
-        await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', currentUser.nick), { balance: window._fbIncrement(finalReward) });
-        await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
+        await apiFetch('POST', '/bank/mint', { nick: currentUser.nick, amount: finalReward, reason: 'Logro Secreto' });
+        await apiFetch('PUT', '/users/' + currentUser.nick, {
             secretAchievements: [...earned, ...newly.map(x => x.id)]
         });
 
@@ -358,7 +352,8 @@ function loadThemesPage() {
     if (container) renderThemes(container);
 }
 
-function loadRingsPage() {
+async function loadRingsPage() {
+    await loadRingsInventory();
     const container = document.getElementById('rings-grid');
     if (container) renderProfileRings(container);
 }

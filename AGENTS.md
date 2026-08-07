@@ -302,6 +302,44 @@ Cuntsniffer
 - **Fix**: Todos los 31 `<script>` tags ahora tienen `?v=16`. El servidor PowerShell no envía `Cache-Control`, así que el navegador cachea agresivamente.
 - **Lección**: Siempre poner `?v=` en TODOS los script tags, no solo los modificados.
 
+### Sesión 18 — Migración a Backend PostgreSQL + Cloudflare Tunnel
+
+**Problema original**: Firestore free plan agotado (quota exceeded). Se migró todo a PostgreSQL + Node.js/Express en la PC Linux del usuario (CachyOS), expuesto vía Cloudflare Tunnel.
+
+**Cambios principales**:
+- **index.html**: Firebase SDK eliminado. Reemplazado con API Bridge que traduce llamadas `_fb*` (Firestore) a REST API (`apiFetch`). Cloudflare Tunnel URL configurable.
+- **app.js**: `doLogin`, `doRegister`, `initBankAccount`, `loadDashboard`, `adminMint`, `adminBurn` migrados a `apiFetch` (REST). JWT auth con localStorage. Sistema de cache global (60s TTL) para reducir llamadas.
+- **banking.js**: `loadLeaderboard` migrado a REST (formato flat array del backend). `loadTransferUsers` y `loadRecentTx` liberados de guard `window._db`.
+- **API Bridge** (index.html): `_fbGetDocs`, `_fbGetDoc`, `_fbSetDoc`, `_fbUpdateDoc`, `_fbAddDoc`, `_fbDeleteDoc`, `_fbWriteBatch` — todos traducen a REST genérico.
+
+**Backend endpoints implementados por Antigravity**:
+- Auth: `POST /api/auth/login` (devuelve hash), `POST /api/auth/register`
+- Bank: `GET /api/bank/:nick`, `POST /api/bank/mint|burn|transfer`, `GET /api/bank_accounts`, `GET /api/bank_accounts/:nick`, `PUT /api/bank_accounts/:nick`
+- Users: `GET /api/users`, `GET /api/users/:nick`, `PUT /api/users/:nick`
+- Admin: `GET /api/admin/accounts`, `GET /api/admin/stats`
+- Social: `GET /api/transactions`, `POST /api/transactions`, `GET /api/board`, `POST /api/board`, `GET /api/chat`, `POST /api/chat`, `GET /api/polls`, `POST /api/polls`, `GET /api/messages`, `POST /api/messages`
+- Vaults: `GET /api/vaults`, `GET /api/vaults/:id`, `PUT /api/vaults/:id`, `POST /api/vaults/:id/letters`, `GET /api/vaults/:id/letters`
+- Otros: `GET /api/leaderboard`, `GET /api/loans`, `POST /api/loans`, `GET /api/flores_requests`, `GET /api/events`, `GET /api/reports`, `GET /config/bank`
+
+**Fixes**:
+- Login: frontend envía `{ nick, password }` en vez de `{ nick, hash }` para que el backend use el hashSalt correcto
+- `tryAutoLogin`: usa hash del login response (backend ahora devuelve campo `hash`)
+- `loadLeaderboard`: adaptado a formato flat array `[{nick, balance, rank, ...}]`
+- `_fbGetDocs`: ID detection mejorado (busca `nick` como ID si no hay campo `id`)
+- `_fbUpdateDoc`: preserva operaciones `_op: increment`, `arrayUnion`, `arrayRemove`
+
+**Estado actual**:
+- ✅ Login + auto-login funciona
+- ✅ Dashboard (balance propio)
+- ✅ Ranking/Leaderboard
+- ✅ Admin panel (stats + cuentas)
+- ⚠️ Compra de rangos — pendiente verificar si backend soporta `_op: increment`
+- ⚠️ Vault, board, chat, mensajes — pendiente verificar
+- ⚠️ Todas las páginas de fandoms — pendiente verificar
+- ⚠️ Auto-login puede fallar si el JWT expira y el hash guardado es viejo
+
+**Cloudflare Tunnel**: `https://friend-usage-image-cancel.trycloudflare.com/api` (cambia en cada reinicio del servicio)
+
 ---
 
 *Actualizar este archivo con cada cambio significativo.*

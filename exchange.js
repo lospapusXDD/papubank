@@ -66,30 +66,23 @@ function convertPUSDtoPPC(pusdAmount) {
 /* ─────────── EXCHANGE OPERATIONS ─────────── */
 
 async function exchangePPCtoPUSD(ppcAmount) {
-    if (!window._db || !currentUser) return false;
+    if (!currentUser) return false;
     if (ppcAmount <= 0) return false;
     
     const pusdAmount = convertPPCtoPUSD(ppcAmount);
     
     try {
-        const accRef = window._fbDoc(window._db, 'bank_accounts', currentUser.nick);
-        const accSnap = await window._fbGetDoc(accRef);
-        const balance = accSnap.exists() ? (accSnap.data().balance || 0) : 0;
+        await apiFetch('POST', '/bank/transfer', {
+            from: currentUser.nick,
+            to: 'exchange',
+            amount: ppcAmount,
+            note: `Convertido ${formatPPC(ppcAmount)} → ${formatPUSD(pusdAmount)}`
+        });
         
-        if (balance < ppcAmount) {
-            showToast('Saldo PPC insuficiente', '#ff4466');
-            return false;
-        }
-        
-        // Deduct PPC and add P-USD
-        await window._fbUpdateDoc(accRef, { balance: window._fbIncrement(-ppcAmount) });
-        
-        const userRef = window._fbDoc(window._db, 'users', currentUser.nick);
-        await window._fbUpdateDoc(userRef, { pusdBalance: window._fbIncrement(pusdAmount) });
+        await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) + pusdAmount });
         
         currentUser.pusdBalance = (currentUser.pusdBalance || 0) + pusdAmount;
-        
-        await addTx({ type: 'Exchange', from: currentUser.nick, to: 'Exchange', amount: ppcAmount, note: `Convertido ${formatPPC(ppcAmount)} → ${formatPUSD(pusdAmount)}` });
+        bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
         
         showToast(`¡Convertido! ${formatPPC(ppcAmount)} → ${formatPUSD(pusdAmount)}`, '#00ffaa');
         return true;
@@ -100,30 +93,23 @@ async function exchangePPCtoPUSD(ppcAmount) {
 }
 
 async function exchangePUSDtoPPC(pusdAmount) {
-    if (!window._db || !currentUser) return false;
+    if (!currentUser) return false;
     if (pusdAmount <= 0) return false;
     
     const ppcAmount = convertPUSDtoPPC(pusdAmount);
     
     try {
-        const userRef = window._fbDoc(window._db, 'users', currentUser.nick);
-        const userSnap = await window._fbGetDoc(userRef);
-        const pusdBalance = userSnap.exists() ? (userSnap.data().pusdBalance || 0) : 0;
+        await apiFetch('POST', '/bank/transfer', {
+            from: 'exchange',
+            to: currentUser.nick,
+            amount: ppcAmount,
+            note: `Convertido ${formatPUSD(pusdAmount)} → ${formatPPC(ppcAmount)}`
+        });
         
-        if (pusdBalance < pusdAmount) {
-            showToast('Saldo P-USD insuficiente', '#ff4466');
-            return false;
-        }
-        
-        // Deduct P-USD and add PPC
-        await window._fbUpdateDoc(userRef, { pusdBalance: window._fbIncrement(-pusdAmount) });
-        
-        const accRef = window._fbDoc(window._db, 'bank_accounts', currentUser.nick);
-        await window._fbUpdateDoc(accRef, { balance: window._fbIncrement(ppcAmount) });
+        await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - pusdAmount });
         
         currentUser.pusdBalance = (currentUser.pusdBalance || 0) - pusdAmount;
-        
-        await addTx({ type: 'Exchange', from: 'Exchange', to: currentUser.nick, amount: ppcAmount, note: `Convertido ${formatPUSD(pusdAmount)} → ${formatPPC(ppcAmount)}` });
+        bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
         
         showToast(`¡Convertido! ${formatPUSD(pusdAmount)} → ${formatPPC(ppcAmount)}`, '#00ffaa');
         return true;
@@ -136,53 +122,42 @@ async function exchangePUSDtoPPC(pusdAmount) {
 /* ─────────── PREMIUM SHOP ─────────── */
 
 async function buyPremiumItem(itemId) {
-    if (!window._db || !currentUser) return;
+    if (!currentUser) return;
     
     const item = PREMIUM_SHOP.find(i => i.id === itemId);
     if (!item) return;
     
-    // Check if user has enough PPC OR P-USD
-    const accSnap = await window._fbGetDoc(window._fbDoc(window._db, 'bank_accounts', currentUser.nick));
-    const ppcBalance = accSnap.exists() ? (accSnap.data().balance || 0) : 0;
     const pusdBalance = currentUser.pusdBalance || 0;
+    const ppcBalance = bankAccount?.balance || 0;
     
-    const canPayPPC = ppcBalance >= item.price_ppc;
     const canPayPUSD = pusdBalance >= item.price_usd;
+    const canPayPPC = ppcBalance >= item.price_ppc;
     
     if (!canPayPPC && !canPayPUSD) {
         showToast('No tienes suficiente saldo (PPC o P-USD)', '#ff4466');
         return;
     }
     
-    const payMethod = canPayPUSD ? 'P-USD' : 'PPC';
+    const payMethod = canPayPUSD ? 'pustd' : 'ppc';
     const payAmount = canPayPUSD ? item.price_usd : item.price_ppc;
     
     const ok = await showConfirm('Comprar Premium', `¿Comprar ${item.name} por ${canPayPUSD ? formatPUSD(item.price_usd) : formatPPC(item.price_ppc)}?`);
     if (!ok) return;
     
     try {
-        if (canPayPUSD) {
-            // Pay with P-USD
-            await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { pusdBalance: window._fbIncrement(-item.price_usd) });
+        const itemKey = item.itemKey || item.cosmeticKey || item.petKey || item.boosterKey || item.titleKey || item.funcKey;
+        
+        await apiFetch('POST', '/inventory/buy', {
+            nick: currentUser.nick,
+            item_id: itemKey,
+            price: payAmount,
+            currency: payMethod
+        });
+        
+        if (payMethod === 'pustd') {
             currentUser.pusdBalance -= item.price_usd;
-        } else {
-            // Pay with PPC
-            await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', currentUser.nick), { balance: window._fbIncrement(-item.price_ppc) });
         }
-        
-        // Grant the item/rank
-        if (item.type === 'rank') {
-            await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), {
-                boughtRanks: window._fbArrayUnion(item.rankKey)
-            });
-        } else if (item.type === 'item' || item.type === 'cosmetic' || item.type === 'pet' || item.type === 'booster' || item.type === 'title' || item.type === 'functional') {
-            let inventory = bankAccount.inventory || [];
-            const itemKey = item.itemKey || item.cosmeticKey || item.petKey || item.boosterKey || item.titleKey || item.funcKey;
-            inventory.push(itemKey);
-            await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', currentUser.nick), { inventory: inventory });
-        }
-        
-        await addTx({ type: 'Tienda Premium', from: currentUser.nick, to: 'Tienda Premium', amount: payAmount, note: `${item.name} (${payMethod})` });
+        bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
         
         showToast(`¡${item.name} adquirido! 🌟`, item.color);
         renderPremiumShop(document.getElementById('premium-shop-grid'));
