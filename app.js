@@ -340,11 +340,11 @@ window.doLogin = async function() {
         localStorage.setItem('papubank_jwt', res.accessToken);
         localStorage.setItem('papubank_refresh', res.refreshToken);
 
-        currentUser = { nick, hash };
+        currentUser = { nick, hash: res.hash };
         Object.assign(currentUser, res);
         currentUser.nick = nick;
-        localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash: res.hash || hash }));
-        localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash: res.hash || hash }));
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash: res.hash }));
+        localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash: res.hash }));
 
         document.getElementById('auth-overlay').style.display = 'none';
 
