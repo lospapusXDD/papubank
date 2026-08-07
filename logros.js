@@ -283,7 +283,7 @@ async function checkAchievements() {
                 timestamp: window._fbServerTimestamp()
             });
         } catch(e) {}
-        if (window.bankAccount) window.bankAccount.balance = (window.bankAccount.balance || 0) + finalReward;
+        // onSnapshot ya actualiza bankAccount automáticamente
 
         const names = newly.map(x => `<b style="color:var(--gold)">${escHTML(x.name)}</b>`).join(', ');
         showToast('🏆 ¡Logro desbloqueado: ' + newly.map(x => x.name).join(', ') + '! +' + finalReward.toLocaleString() + ' PPC (×' + mult.toFixed(2) + ')', 'var(--gold)');

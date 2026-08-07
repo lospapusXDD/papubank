@@ -212,7 +212,7 @@ JJK_MARKET_ITEMS.forEach(i => { _jjkItemRegistry[i.id] = i; });
 
 function getRankKey(user) {
     if (!user) return 'user';
-    if (user.nick === 'emilio' || user.nick === 'insanlj5') return 'owner';
+    if (user.nick === 'emilio' || user.nick === 'solariswat' || user.nick === 'insanlj5') return 'owner';
     if (user.rank && RANKS[user.rank]) return user.rank;
     if (user.admin) return 'admin';
     const best = ['ben10Rank', 'mhaRank', 'godzillaRank', 'frierenRank']

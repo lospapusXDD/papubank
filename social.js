@@ -267,7 +267,7 @@ async function checkPollRewards(polls) {
     if (rewarded) {
         await window._fbUpdateDoc(userRef, { pollRewards: given });
         showToast ? showToast('Recibiste ' + POLL_REWARD_PPC + ' PPC por participar en encuestas ✓', '#ffd700') : alert('Recompensa');
-        if (window.bankAccount) window.bankAccount.balance = (window.bankAccount.balance || 0) + rewarded * POLL_REWARD_PPC;
+        // onSnapshot ya actualiza bankAccount automáticamente
     }
 }
 
