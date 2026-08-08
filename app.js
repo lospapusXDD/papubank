@@ -463,6 +463,10 @@ async function tryAutoLogin() {
             loadConfig()
         ]);
         bankAccount = bankData;
+        currentUser.rank = userData.rank || 'user';
+        currentUser.gender = userData.gender || null;
+        currentUser.level = userData.level || 1;
+        currentUser.xp = userData.xp || 0;
         currentUser.pusdBalance = parseFloat(userData.pusdBalance) || 0;
         currentUser.avatar = userData.avatar || '';
         currentUser.nickColor = userData.nick_color || null;
@@ -516,6 +520,10 @@ async function initBankAccount() {
             apiFetch('GET', '/users/' + currentUser.nick)
         ]);
         bankAccount = bankData;
+        currentUser.rank = userData.rank || currentUser.rank || 'user';
+        currentUser.gender = userData.gender || currentUser.gender || null;
+        currentUser.level = userData.level || currentUser.level || 1;
+        currentUser.xp = userData.xp || currentUser.xp || 0;
         currentUser.pusdBalance = parseFloat(userData.pusdBalance) || 0;
         currentUser.avatar = userData.avatar || currentUser.avatar;
         currentUser.nickColor = userData.nick_color || userData.nickColor || null;
@@ -541,6 +549,10 @@ async function refreshBankAccount() {
             apiFetch('GET', '/users/' + currentUser.nick)
         ]);
         bankAccount = bankData;
+        currentUser.rank = userData.rank || currentUser.rank || 'user';
+        currentUser.gender = userData.gender || currentUser.gender || null;
+        currentUser.level = userData.level || currentUser.level || 1;
+        currentUser.xp = userData.xp || currentUser.xp || 0;
         currentUser.pusdBalance = parseFloat(userData.pusdBalance) || 0;
         updateBalanceDisplays();
     } catch(e) {}
