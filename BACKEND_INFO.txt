@@ -1,13 +1,21 @@
-El endpoint POST /api/bank/mint no funciona. Siempre responde {"error":"Destino y monto requeridos"} sin importar el body. 
+La tabla users de PostgreSQL no tiene estas columnas que el frontend intenta escribir:
 
-Prueba que hice:
-POST /api/bank/mint
-Content-Type: application/json
-Authorization: Bearer [token válido]
-Body: {"destino":"solariswat","monto":500}
+- mushokurank
+- berserkrank  
+- chainsawrank
+- deathnoterank
+- elfenrank
+- rerank
+- rimururank
+- bocchirank
+- vocaloidrank
+- floresrank
+- ben10rank
+- godzillarank
+- mharank
+- nanatsurank
+- frierenrank
 
-Respuesta: {"error":"Destino y monto requeridos"}
+El frontend escribe a estas columnas al comprar rangos de cada fandom. Necesito que las agregues como VARCHAR/TEXT con default null.
 
-Lo mismo pasa con nick/amount. Parece que el body parser no está leyendo el JSON. Revisa que el endpoint esté leyendo req.body correctamente.
-
-Mismo problema con POST /api/bank/burn.
+También verifica que el endpoint PUT /api/users/:nick acepte todos estos campos.
