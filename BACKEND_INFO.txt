@@ -1,6 +1,10 @@
-Necesito el endpoint PUT /api/users/:nick/avatar
+Cambia el rate-limit del login:
 
-Body: { "avatar": "data:image/jpeg;base64,..." }
-Guarda el base64 en el campo "avatar" de la tabla users
-Respuesta: { "message": "Avatar actualizado" }
-Si el usuario no existe: 404
+Máximo 500 intentos por IP (en vez de 5-10)
+Cooldown de 1 minuto (en vez de 15)
+O idealmente el reset del contador debería ser: los 500 intentos se cuentan en ventana de 15 min, pero con cooldown corto
+// ejemplo:
+attempts = 0
+LIMIT = 500          // era 5-10
+WINDOW_MS = 15 * 60 * 1000
+COOLDOWN_MS = 60 * 1000  // era 15 min
