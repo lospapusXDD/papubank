@@ -1,9 +1,9 @@
-El backend gatea los endpoints /admin/* por el flag isAdmin del JWT, pero el panel admin del frontend otorga admin vía rank: 'admin'. Resultado: jero tiene rank:'admin', isAdmin:false en la DB → /api/admin/accounts le devuelve 403 y no puede ver la lista de usuarios.
+PUT /api/bank_accounts/:nick con el campo badges en el body devuelve 500 (columna inexistente). Esto rompe el Dedo de Sukuna (market.js) y el Omnitrix (ben10.js): la compra falla entera y el jugador pierde la plata sin recibir nada.
 
 Por favor:
 
-Fix de fondo: que la verificación de admin en los endpoints /admin/* acepte rank IN ('owner','admin') (además de isAdmin), leyendo el usuario de la DB y no solo del JWT.
-Fix de datos: ponle is_admin = true a jero (re-login para regenerar su token).
-Limpieza: borra test_probe_x (cuenta de prueba mía para diagnosticar esto) y de paso jjk_rank = 'admin' de jero (rango JJK inexistente).
-Prevención: cuando el panel cambie el rank de alguien a admin/owner, sincroniza is_admin = true en la misma operación (o documenta el endpoint para que el frontend lo haga).
-Lo del 403 ya quedó comprobado de mi lado (creé test_probe_x, token con isAdmin:false → 403; owner solariswat → 200). Ojo que el panel del frontend no puede arreglar esto: es el servidor rechazando la petición.
+Agrega a bank_accounts una columna badges tipo JSONB (array de strings, default []).
+Si puedes, haz el PUT tolerante: ignorar columnas desconocidas en vez de fallar (previene futuros 500 con campos nuevos).
+Dime el esquema actual completo de bank_accounts (columnas y tipos) para que el frontend sepa qué campos puede escribir.
+Borra la cuenta de prueba test_finger_x.
+Dato extra: la cuenta test_finger_x se creó sola con 5000 PPC al hacer GET — asumo que hay lazy-create; si no es intencional, puede ser otro bug menor, revisa de paso.
