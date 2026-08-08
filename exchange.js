@@ -74,9 +74,11 @@ async function exchangePPCtoPUSD(ppcAmount) {
     try {
         await apiFetch('POST', '/bank/burn', { nick: currentUser.nick, amount: ppcAmount });
         
-        await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) + pusdAmount });
+        const currentPusd = parseFloat(currentUser.pusdBalance) || 0;
+        const newPusd = parseFloat((currentPusd + pusdAmount).toFixed(4));
+        await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: newPusd });
         
-        currentUser.pusdBalance = (currentUser.pusdBalance || 0) + pusdAmount;
+        currentUser.pusdBalance = newPusd;
         bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
         
         showToast(`¡Convertido! ${formatPPC(ppcAmount)} → ${formatPUSD(pusdAmount)}`, '#00ffaa');
@@ -96,9 +98,11 @@ async function exchangePUSDtoPPC(pusdAmount) {
     try {
         await apiFetch('POST', '/bank/mint', { nick: currentUser.nick, amount: ppcAmount });
         
-        await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - pusdAmount });
+        const currentPusd = parseFloat(currentUser.pusdBalance) || 0;
+        const newPusd = parseFloat((currentPusd - pusdAmount).toFixed(4));
+        await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: newPusd });
         
-        currentUser.pusdBalance = (currentUser.pusdBalance || 0) - pusdAmount;
+        currentUser.pusdBalance = newPusd;
         bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
         
         showToast(`¡Convertido! ${formatPUSD(pusdAmount)} → ${formatPPC(ppcAmount)}`, '#00ffaa');
@@ -156,7 +160,8 @@ async function buyPremiumItem(itemId) {
         } catch(e) { /* ignore activate errors */ }
         
         if (payMethod === 'pustd') {
-            currentUser.pusdBalance -= item.price_usd;
+            const freshUser = await apiFetch('GET', '/users/' + currentUser.nick);
+            currentUser.pusdBalance = parseFloat(freshUser.pusdBalance) || 0;
         }
         bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
         

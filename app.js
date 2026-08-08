@@ -460,7 +460,7 @@ async function tryAutoLogin() {
             loadConfig()
         ]);
         bankAccount = bankData;
-        currentUser.pusdBalance = userData.pusdBalance || 0;
+        currentUser.pusdBalance = parseFloat(userData.pusdBalance) || 0;
         currentUser.avatar = userData.avatar || '';
         currentUser.nickColor = userData.nick_color || null;
         currentUser.active_title = userData.active_title || null;
@@ -511,7 +511,7 @@ async function initBankAccount() {
             apiFetch('GET', '/users/' + currentUser.nick)
         ]);
         bankAccount = bankData;
-        currentUser.pusdBalance = userData.pusdBalance || 0;
+        currentUser.pusdBalance = parseFloat(userData.pusdBalance) || 0;
         currentUser.avatar = userData.avatar || currentUser.avatar;
         currentUser.nickColor = userData.nick_color || userData.nickColor || null;
         currentUser.active_title = userData.active_title || null;
@@ -536,7 +536,7 @@ async function refreshBankAccount() {
             apiFetch('GET', '/users/' + currentUser.nick)
         ]);
         bankAccount = bankData;
-        currentUser.pusdBalance = userData.pusdBalance || 0;
+        currentUser.pusdBalance = parseFloat(userData.pusdBalance) || 0;
         updateBalanceDisplays();
     } catch(e) {}
     return bankAccount;
