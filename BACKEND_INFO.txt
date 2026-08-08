@@ -1,10 +1,9 @@
-Cambia el rate-limit del login:
+PUT /api/bank_accounts/:nick con el campo badges en el body devuelve 500 (columna inexistente). Esto rompe el Dedo de Sukuna (market.js) y el Omnitrix (ben10.js): la compra falla entera y el jugador pierde la plata sin recibir nada.
 
-Máximo 500 intentos por IP (en vez de 5-10)
-Cooldown de 1 minuto (en vez de 15)
-O idealmente el reset del contador debería ser: los 500 intentos se cuentan en ventana de 15 min, pero con cooldown corto
-// ejemplo:
-attempts = 0
-LIMIT = 500          // era 5-10
-WINDOW_MS = 15 * 60 * 1000
-COOLDOWN_MS = 60 * 1000  // era 15 min
+Por favor:
+
+Agrega a bank_accounts una columna badges tipo JSONB (array de strings, default []).
+Si puedes, haz el PUT tolerante: ignorar columnas desconocidas en vez de fallar (previene futuros 500 con campos nuevos).
+Dime el esquema actual completo de bank_accounts (columnas y tipos) para que el frontend sepa qué campos puede escribir.
+Borra la cuenta de prueba test_finger_x.
+Dato extra: la cuenta test_finger_x se creó sola con 5000 PPC al hacer GET — asumo que hay lazy-create; si no es intencional, puede ser otro bug menor, revisa de paso.
