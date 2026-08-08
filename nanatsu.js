@@ -159,8 +159,8 @@ async function loadNanatsuPage() {
         NANATSU_RANKS.forEach(rank => {
             const isOwned = currentUser.nanatsuRank === rank.key;
             const canAfford = rank.gradeTier >= 3
-                ? (bankAccount.balance >= rank.price && (currentUser.balance_usd || 0) >= rank.price_usd)
-                : (bankAccount.balance >= rank.price || (currentUser.balance_usd || 0) >= rank.price_usd);
+                ? (bankAccount.balance >= rank.price && (currentUser.pusdBalance || 0) >= rank.price_usd)
+                : (bankAccount.balance >= rank.price || (currentUser.pusdBalance || 0) >= rank.price_usd);
             const card = document.createElement('div');
             card.className = 'glass-card';
             card.style.borderColor = isOwned ? rank.color : 'var(--dark-border)';
@@ -233,7 +233,7 @@ async function buyNanatsuRank(rankKey) {
 
     const rank = _nanatsuRankRegistry[rankKey];
     const ppc = bankAccount.balance;
-    const pUsd = currentUser.balance_usd || 0;
+    const pUsd = currentUser.pusdBalance || 0;
 
     if (rank.gradeTier >= 3) {
         if (ppc < rank.price || pUsd < rank.price_usd) { showToast('Saldo insuficiente', '#ff4466'); return; }
@@ -259,12 +259,12 @@ async function buyNanatsuRank(rankKey) {
         const db = window._db;
         if (paymentMethod === 'both') {
             await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), { balance: window._fbIncrement(-rank.price) });
-            await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { balance_usd: window._fbIncrement(-rank.price_usd) });
-            currentUser.balance_usd = (currentUser.balance_usd || 0) - rank.price_usd;
+            await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - rank.price_usd });
+            currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
             await addTx({ type: 'Rango Nanatsu', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Pecado Capital: ${rank.label} (${rank.sin}) — ${rank.price.toLocaleString()} PPC + $${rank.price_usd} P-USD` });
         } else if (paymentMethod === 'usd') {
-            await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { balance_usd: window._fbIncrement(-rank.price_usd) });
-            currentUser.balance_usd = (currentUser.balance_usd || 0) - rank.price_usd;
+            await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - rank.price_usd });
+            currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
             await addTx({ type: 'Rango Nanatsu', from: currentUser.nick, to: 'Banco', amount: rank.price_usd, note: `Pecado Capital: ${rank.label} (${rank.sin}) — $${rank.price_usd} P-USD` });
         } else {
             await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), { balance: window._fbIncrement(-rank.price) });

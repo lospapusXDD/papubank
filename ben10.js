@@ -62,7 +62,7 @@ async function loadBen10Page() {
         BEN10_RANKS.forEach(rank => {
             const isOwned = currentUser.ben10Rank === rank.key;
             const canAffordPPC = bankAccount.balance >= rank.price;
-            const balanceUsd = bankAccount.balance_usd || 0;
+            const balanceUsd = currentUser.pusdBalance || 0;
             const canAffordUSD = balanceUsd >= rank.price_usd;
             const needsBoth = rank.gradeTier >= 3;
             const canAfford = needsBoth ? (canAffordPPC && canAffordUSD) : canAffordPPC;
@@ -123,7 +123,7 @@ async function buyBen10Rank(rankKey) {
     const rank = BEN10_RANKS.find(r => r.key === rankKey);
     if (!rank) return;
 
-    const balanceUsd = bankAccount.balance_usd || 0;
+    const balanceUsd = currentUser.pusdBalance || 0;
     const needsBoth = rank.gradeTier >= 3;
     if (bankAccount.balance < rank.price || (needsBoth && balanceUsd < rank.price_usd)) {
         showToast('Saldo insuficiente', '#ff4466');
@@ -139,13 +139,13 @@ async function buyBen10Rank(rankKey) {
     try {
         const db = window._db;
         const updates = { balance: window._fbIncrement(-rank.price) };
-        if (needsBoth) updates.balance_usd = window._fbIncrement(-rank.price_usd);
+        if (needsBoth) {
+            await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - rank.price_usd });
+            currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
+        }
         await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), updates);
         await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { ben10Rank: rankKey, boughtRanks: window._fbArrayUnion(rankKey) });
         currentUser.ben10Rank = rankKey;
-        if (needsBoth) {
-            bankAccount.balance_usd = (bankAccount.balance_usd || 0) - rank.price_usd;
-        }
         await addTx({ type: 'Rango Ben 10', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Transformación Omnitrix: ${rank.label}${needsBoth ? ` (+${rank.price_usd} P-USD)` : ''}` });
         showToast(`¡AHORA ERES ${rank.label.toUpperCase()}!`, rank.color);
         loadBen10Page();

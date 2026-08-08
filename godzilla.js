@@ -91,12 +91,12 @@ async function loadGodzillaPage() {
 }
 
 async function buyGodzillaRank(rankKey) {
-    if (!currentUser || !bankAccount || !window._db) return;
+    if (!currentUser || !bankAccount) return;
 
     const rank = GODZILLA_RANKS.find(r => r.key === rankKey);
     if (!rank) return;
 
-    const balanceUsd = bankAccount.balance_usd || 0;
+    const balanceUsd = currentUser.pusdBalance || 0;
     const needsBoth = rank.gradeTier >= 3;
     if (bankAccount.balance < rank.price || (needsBoth && balanceUsd < rank.price_usd)) {
         showToast('Saldo insuficiente', '#ff4466');
@@ -112,13 +112,13 @@ async function buyGodzillaRank(rankKey) {
     try {
         const db = window._db;
         const updates = { balance: window._fbIncrement(-rank.price) };
-        if (needsBoth) updates.balance_usd = window._fbIncrement(-rank.price_usd);
         await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), updates);
+        if (needsBoth) {
+            await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - rank.price_usd });
+            currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
+        }
         await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { godzillaRank: rankKey, boughtRanks: window._fbArrayUnion(rankKey) });
         currentUser.godzillaRank = rankKey;
-        if (needsBoth) {
-            bankAccount.balance_usd = (bankAccount.balance_usd || 0) - rank.price_usd;
-        }
         await addTx({ type: 'Rango Godzilla', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Forma Godzilla: ${rank.label}${needsBoth ? ` (+${rank.price_usd} P-USD)` : ''}` });
         showToast(`¡${rank.label.toUpperCase()} DESPIERTA!`, rank.color);
         loadGodzillaPage();
