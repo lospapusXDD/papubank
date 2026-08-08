@@ -555,7 +555,7 @@ async function initBankAccount() {
         if (notFound) {
             try {
                 await apiFetch('POST', '/bank/' + currentUser.nick, { balance: 100, totalIn: 100, totalOut: 0, txCount: 1 });
-                bankAccount = { balance: 100, totalIn: 100, totalOut: 0, txCount: 1, loanActive: false, loanAmount: 0 };
+                bankAccount = { balance: 100, totalIn: 100, totalOut: 0, txCount: 1, loan_active: false, loan_amount: 0, loanActive: false, loanAmount: 0 };
                 showToast('¡Bienvenido al banco del clan! Cuenta creada con 100 PPC', '#00ffaa');
             } catch(e2) {
                 bankAccount = { balance: 0, totalIn: 0, totalOut: 0, txCount: 0 };
@@ -661,11 +661,11 @@ async function loadDashboard() {
     // Loan alert
     const loanAlertEl = document.getElementById('dash-loan-alert');
     if (loanAlertEl) {
-        if (bankAccount.loanActive && bankAccount.loanAmount > 0) {
+        if ((bankAccount.loan_active ?? bankAccount.loanActive) && Number(bankAccount.loan_amount ?? bankAccount.loanAmount || 0) > 0) {
             loanAlertEl.style.display = 'block';
             loanAlertEl.innerHTML = `
                 <i class="fa-solid fa-triangle-exclamation" style="color:var(--danger)"></i>
-                Tienes una deuda activa de <strong style="color:var(--gold)">${bankAccount.loanAmount.toLocaleString()} PPC</strong>.
+                Tienes una deuda activa de <strong style="color:var(--gold)">${Number(bankAccount.loan_amount ?? bankAccount.loanAmount || 0).toLocaleString()} PPC</strong>.
                 <a href="#" onclick="showPage('deudas')" style="color:var(--primary)">Pagar</a>
             `;
         } else {
@@ -2541,8 +2541,8 @@ async function godResetAllBalances() {
                 totalIn: 1000,
                 totalOut: 0,
                 txCount: 1,
-                loanActive: false,
-                loanAmount: 0
+                loan_active: false,
+                loan_amount: 0
             });
         });
         

@@ -425,12 +425,12 @@ async function loadLoans() {
     const activeLoanDisplay = document.getElementById('active-loan-container');
     if (!activeLoanDisplay) return;
     
-    if (isTrue(bankAccount.loanActive)) {
+    if (isTrue(bankAccount.loan_active ?? bankAccount.loanActive)) {
         activeLoanDisplay.innerHTML = `
             <div class="glass-card" style="border-color:var(--danger);">
                 <h3 style="color:var(--danger); font-family:'Orbitron',sans-serif; margin-bottom:12px;"><i class="fa-solid fa-circle-exclamation"></i> PRÉSTAMO ACTIVO DETECTADO</h3>
                 <div style="font-size:13px; margin-bottom:15px;">
-                    Tienes una deuda pendiente de <strong style="color:var(--gold); font-size:15px;">${Number(bankAccount.loanAmount || 0).toLocaleString()} PPC</strong>.<br>
+                    Tienes una deuda pendiente de <strong style="color:var(--gold); font-size:15px;">${Number(bankAccount.loan_amount ?? bankAccount.loanAmount || 0).toLocaleString()} PPC</strong>.<br>
                     Debes saldar tu deuda en la pestaña de <strong>Deudas</strong> para poder solicitar otro préstamo o realizar retiros especiales.
                 </div>
                 <button class="btn btn-danger" onclick="showPage('deudas')">Pagar Deuda de Préstamo</button>
@@ -452,7 +452,7 @@ async function loadLoans() {
 
 async function requestLoan() {
     if (!currentUser || !bankAccount || !window._db) return;
-    const amountInput = document.getElementById('loan-amount-input');
+    const amountInput = document.getElementById('loan-amount-input') || document.getElementById('loan-amount');
     const amt = Math.floor(parseFloat(amountInput ? amountInput.value : 0) || 0);
     
     if (amt <= 0) {
@@ -478,9 +478,9 @@ async function requestLoan() {
         
         await window._fbUpdateDoc(myRef, {
             balance: window._fbIncrement(amt),
-            loanActive: true,
-            loanAmount: amt,
-            loanDate: window._fbServerTimestamp()
+            loan_active: true,
+            loan_amount: amt,
+            loan_date: window._fbServerTimestamp()
         });
 
         await addTx({
@@ -508,7 +508,7 @@ async function loadDebts() {
     const debtContainer = document.getElementById('debts-container');
     if (!debtContainer) return;
     
-    if (!isTrue(bankAccount.loanActive)) {
+    if (!isTrue(bankAccount.loan_active ?? bankAccount.loanActive)) {
         debtContainer.innerHTML = `
             <div class="glass-card text-center" style="padding:40px;">
                 <div style="font-size:48px; color:var(--secondary); margin-bottom:15px;"><i class="fa-solid fa-circle-check"></i></div>
@@ -517,7 +517,7 @@ async function loadDebts() {
             </div>
         `;
     } else {
-        const debt = Number(bankAccount.loanAmount || 0);
+        const debt = Number(bankAccount.loan_amount ?? bankAccount.loanAmount || 0);
         debtContainer.innerHTML = `
             <div class="glass-card" style="border-color:var(--danger);">
                 <h3 style="color:var(--danger); font-family:'Orbitron',sans-serif; margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> DEUDA DE PRÉSTAMO ACTIVA</h3>
@@ -542,7 +542,7 @@ async function loadDebts() {
 
 async function payDebt(type) {
     if (!currentUser || !bankAccount || !window._db) return;
-    const debt = Number(bankAccount.loanAmount || 0);
+    const debt = Number(bankAccount.loan_amount ?? bankAccount.loanAmount || 0);
     
     if (bankAccount.balance <= 0) {
         showToast('No tienes saldo de PPC para abonar', '#ff4466');
@@ -573,12 +573,12 @@ async function payDebt(type) {
         const remaining = debt - payAmt;
         let updates = {
             balance: window._fbIncrement(-payAmt),
-            loanAmount: remaining
+            loan_amount: remaining
         };
         
         if (remaining <= 0) {
-            updates.loanActive = false;
-            updates.loanAmount = 0;
+            updates.loan_active = false;
+            updates.loan_amount = 0;
         }
         
         await window._fbUpdateDoc(accRef, updates);

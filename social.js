@@ -175,10 +175,11 @@ async function loadPolls() {
         if (!polls.length) container.innerHTML = '<div class="empty-msg">No hay encuestas aún. ¡Pide al admin que cree una!</div>';
 
         const now = Date.now();
-        polls.sort((a, b) => (b.created ? (b.created.toMillis ? b.created.toMillis() : new Date(b.created).getTime()) : 0) - (a.created ? (a.created.toMillis ? a.created.toMillis() : new Date(a.created).getTime()) : 0));
+        const pTime = (p) => p.created_at ? new Date(p.created_at).getTime() : (p.created ? (p.created.toMillis ? p.created.toMillis() : new Date(p.created).getTime()) : 0);
+        polls.sort((a, b) => pTime(b) - pTime(a));
 
         polls.forEach(p => {
-            const created = p.created ? (p.created.toMillis ? p.created.toMillis() : new Date(p.created).getTime()) : now;
+            const created = pTime(p) || now;
             const endsAt = created + POLL_DURATION_DAYS * 86400000;
             const ended = now > endsAt;
             const votedBy = (p.votes && p.votes[0] ? p.votes[0] : []).concat(p.votes && p.votes[1] ? p.votes[1] : []);
@@ -203,11 +204,11 @@ async function loadPolls() {
             });
             card.innerHTML = `
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                    <span style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;color:var(--primary);"><i class="fa-solid fa-poll"></i> ${escHTML(p.title || 'Encuesta')}</span>
+                    <span style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;color:var(--primary);"><i class="fa-solid fa-poll"></i> ${escHTML(p.question || p.title || 'Encuesta')}</span>
                     <span style="font-size:10px;color:var(--text-muted);">${ended ? '<span style="color:var(--danger);">TERMINADA</span>' : 'Quedan ' + Math.max(0, Math.ceil((endsAt - now) / 86400000)) + ' días'}</span>
                 </div>
                 ${optsHtml}
-                <div style="font-size:10px;color:var(--text-muted);">${votedBy.length} participante(s) · creada por <strong style="color:var(--gold);">${escHTML(p.author || 'Admin')}</strong></div>
+                <div style="font-size:10px;color:var(--text-muted);">${votedBy.length} participante(s) · creada por <strong style="color:var(--gold);">${escHTML(p.created_by || p.author || 'Admin')}</strong></div>
             `;
             container.appendChild(card);
         });
@@ -248,7 +249,7 @@ async function checkPollRewards(polls) {
 
     for (const p of polls) {
         if (given[p.id]) continue;
-        const created = p.created ? (p.created.toMillis ? p.created.toMillis() : new Date(p.created).getTime()) : 0;
+        const created = p.created_at ? new Date(p.created_at).getTime() : (p.created ? (p.created.toMillis ? p.created.toMillis() : new Date(p.created).getTime()) : 0);
         if (now <= created + POLL_DURATION_DAYS * 86400000) continue;
         const participants = p.participants || [];
         if (!participants.includes(currentUser.nick)) continue;
@@ -282,8 +283,8 @@ async function createPoll() {
     if (opt3) options.push(opt3);
     try {
         await window._fbAddDoc(window._fbCollection(window._db, 'polls'), {
-            title: title, options: options, votes: {}, participants: [],
-            author: currentUser.nick, created: window._fbServerTimestamp()
+            title: title, question: title, options: options, votes: {}, participants: [],
+            author: currentUser.nick, created_by: currentUser.nick, created: window._fbServerTimestamp()
         });
         ['poll-title-input','poll-opt1-input','poll-opt2-input','poll-opt3-input'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
         showToast ? showToast('Encuesta creada ✓', '#00ffaa') : alert('Creada');
