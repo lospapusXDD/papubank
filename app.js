@@ -709,7 +709,7 @@ async function loadProfile() {
             const ringDiv = document.createElement('div');
             ringDiv.className = 'profile-ring-overlay';
             if (ringData.color === 'rainbow') {
-                ringDiv.style.cssText = 'position:absolute;inset:-4px;border-radius:50%;border:4px solid transparent;background:linear-gradient(90deg,red,orange,yellow,green,blue,violet) border-box;animation:ringRotate 3s linear infinite;pointer-events:none;z-index:1;';
+                ringDiv.style.cssText = 'position:absolute;inset:-4px;border-radius:50%;border:4px solid transparent;background:linear-gradient(#030914,#030914) padding-box,linear-gradient(90deg,red,orange,yellow,green,blue,violet) border-box;animation:ringRotate 3s linear infinite;pointer-events:none;z-index:1;';
             } else {
                 ringDiv.style.cssText = 'position:absolute;inset:-4px;border-radius:50%;border:4px solid ' + ringData.color + ';pointer-events:none;z-index:1;box-shadow:0 0 10px ' + ringData.color + '60;';
             }
