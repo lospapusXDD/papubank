@@ -475,12 +475,18 @@ async function tryAutoLogin() {
 // ═══════════════════════════ ACCOUNT INIT ═══════════════════════════
 
 async function initBankAccount() {
-    if (!currentUser || !window._db) return;
+    if (!currentUser) return;
     try {
-        const data = await apiFetch('GET', '/bank/' + currentUser.nick);
-        bankAccount = data;
+        const [bankData, userData] = await Promise.all([
+            apiFetch('GET', '/bank/' + currentUser.nick),
+            apiFetch('GET', '/users/' + currentUser.nick)
+        ]);
+        bankAccount = bankData;
+        currentUser.pusdBalance = userData.pusdBalance || 0;
+        currentUser.avatar = userData.avatar || currentUser.avatar;
+        currentUser.nickColor = userData.nick_color || userData.nickColor || null;
+        currentUser.active_title = userData.active_title || null;
     } catch(e) {
-        // Account might not exist yet, create it
         try {
             await apiFetch('POST', '/bank/' + currentUser.nick, { balance: 100, totalIn: 100, totalOut: 0, txCount: 1 });
             bankAccount = { balance: 100, totalIn: 100, totalOut: 0, txCount: 1, loanActive: false, loanAmount: 0 };
@@ -494,9 +500,14 @@ async function initBankAccount() {
 }
 
 async function refreshBankAccount() {
-    if (!currentUser || !window._db) return;
+    if (!currentUser) return;
     try {
-        bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
+        const [bankData, userData] = await Promise.all([
+            apiFetch('GET', '/bank/' + currentUser.nick),
+            apiFetch('GET', '/users/' + currentUser.nick)
+        ]);
+        bankAccount = bankData;
+        currentUser.pusdBalance = userData.pusdBalance || 0;
         updateBalanceDisplays();
     } catch(e) {}
     return bankAccount;
@@ -518,6 +529,9 @@ function updateBalanceDisplays() {
 
     const balEls = document.querySelectorAll('[data-balance]');
     balEls.forEach(el => { el.textContent = formatMoney(bal); });
+
+    const pusdEls = document.querySelectorAll('[data-pusd]');
+    pusdEls.forEach(el => { el.textContent = '$' + (currentUser.pusdBalance || 0).toLocaleString(); });
 
     const nickEls = document.querySelectorAll('[data-nick]');
     nickEls.forEach(el => { el.textContent = nick; });
