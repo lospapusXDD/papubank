@@ -306,6 +306,43 @@ Cuntsniffer
 
 **Problema original**: Firestore free plan agotado (quota exceeded). Se migró todo a PostgreSQL + Node.js/Express en la PC Linux del usuario (CachyOS), expuesto vía Cloudflare Tunnel.
 
+**Cómo funciona el backend (IMPORTANTE — leer esto primero)**:
+
+El backend NO está en este repo. Está en la PC Linux del usuario, manejado por Antigravity (el otro AI).
+
+- **Stack**: Node.js + Express + PostgreSQL (CachyOS)
+- **Exposición**: Cloudflare Tunnel → genera una URL tipo `https://modified-factory-adapter-myth.trycloudflare.com/api` que CAMBIA cada vez que se reinicia el servicio
+- **Frontend**: GitHub Pages (HTML/CSS/JS vanilla, sin frameworks)
+- **Comunicación**: Frontend hace `fetch()` a la URL del tunnel → Express → PostgreSQL
+
+**Tablas de PostgreSQL**:
+- `users` — nick, hash, hashSalt, avatar, rank, level, xp, boughtRanks[], todos los *Rank (jjkRank, godzillaRank, etc.), nick_color, profileRing, active_title, karma, parejaWith, customWallpaper, boughtRings[], pusdBalance, etc.
+- `bank_accounts` — nick (FK a users), balance, balance_usd, loans[], badges[]
+- `transactions` — from, to, amount, note, type, timestamp
+- `user_inventory` — nick, item_id, item_type (ring/cosmetic/title), purchased_at, expires_at, active
+- `board` — posts del tablón
+- `chat` — mensajes del chat en vivo
+- `polls` — encuestas
+- `messages` — mensajes privados
+- `vaults` — bóvedas compartidas
+- `flores_requests` — solicitudes de pareja
+- `events` — eventos
+- `reports` — reportes
+- `loans` — préstamos
+
+**Reglas importantes del backend**:
+- `PUT /api/users/:nick` acepta AMBOS formats: camelCase (`nickColor`) y snake_case (`nick_color`). Siempre devuelve ambos en la respuesta.
+- `POST /api/inventory/buy` solo crea el registro en `user_inventory`, NO modifica `users.nick_color` ni `users.profileRing`
+- `PUT /api/inventory/:nick/activate` marca un item como `active=true`
+- `GET /api/leaderboard` NO incluye `nick_color`, `profileRing`, `active_title` — el frontend debe hacer fetch adicional a `GET /api/users` para enriquecer
+- `GET /api/inventory/:nick` devuelve array de items: `[{id, nick, item_id, item_type, purchased_at, expires_at, active}]`
+- `POST /api/bank/burn` — quema PPC (resta del balance)
+- `POST /api/bank/mint` — acuña PPC (suma al balance)
+- `POST /api/bank/transfer` — requiere que el destinatario EXISTA en la tabla users
+- **NO crear usuarios ficticios** como 'exchange' para transferencias — usar burn/mint directamente
+- `pusdBalance` viene como STRING de PostgreSQL (ej: `"9964580.00"`), siempre usar `parseFloat()` antes de operar
+- Auth: `POST /api/auth/login` con `{ nick, password }` → backend hashea con hashSalt de DB → devuelve JWT + hash
+
 **Cambios principales**:
 - **index.html**: Firebase SDK eliminado. Reemplazado con API Bridge que traduce llamadas `_fb*` (Firestore) a REST API (`apiFetch`). Cloudflare Tunnel URL configurable.
 - **app.js**: `doLogin`, `doRegister`, `initBankAccount`, `loadDashboard`, `adminMint`, `adminBurn` migrados a `apiFetch` (REST). JWT auth con localStorage. Sistema de cache global (60s TTL) para reducir llamadas.
