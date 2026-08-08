@@ -527,6 +527,15 @@ function applyUserData(u) {
     currentUser.karma = u.karma || currentUser.karma || 0;
     currentUser.profileRing = u.profileRing || u.profile_ring || currentUser.profileRing || null;
     currentUser.nickStyle = u.nickStyle || u.nick_style || currentUser.nickStyle || null;
+    if (Array.isArray(u.boughtRanks) || Array.isArray(u.bought_ranks)) {
+        currentUser.boughtRanks = u.boughtRanks || u.bought_ranks || [];
+    }
+}
+
+function grantRankLocal(rankKey) {
+    if (!currentUser || !rankKey) return;
+    const br = Array.isArray(currentUser.boughtRanks) ? currentUser.boughtRanks : [];
+    if (!br.includes(rankKey)) currentUser.boughtRanks = br.concat(rankKey);
 }
 
 // ═══════════════════════════ ACCOUNT INIT ═══════════════════════════
@@ -1594,6 +1603,7 @@ async function buyRank(rankKey) {
             boughtRanks: window._fbArrayUnion(rankKey)
         });
         currentUser.rank = newRank;
+        grantRankLocal(rankKey);
 
         await addTx({ type: 'Compra Rango', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Olimpo comprado: ${rank.label}` });
 
@@ -1743,6 +1753,7 @@ async function buyFrierenRank(rankKey) {
         }
         await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { frierenRank: rankKey, boughtRanks: window._fbArrayUnion(rankKey) });
         currentUser.frierenRank = rankKey;
+        grantRankLocal(rankKey);
         await addTx({ type: 'Rango Frieren', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Título Frieren: ${rank.label}` });
         showToast(`¡Título "${rank.label}" obtenido!`, '#bce6ff');
         loadFrierenPage();
@@ -1880,6 +1891,7 @@ async function buyJJKRank(rankKey) {
         }
         await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { jjkRank: rankKey, boughtRanks: window._fbArrayUnion(rankKey) });
         currentUser.jjkRank = rankKey;
+        grantRankLocal(rankKey);
         await addTx({ type: 'Rango JJK', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Hechicero JJK: ${rank.label}` });
         showToast(`¡Ahora eres ${rank.label}!`, rank.color);
         loadJJKPage();

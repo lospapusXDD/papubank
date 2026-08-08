@@ -260,6 +260,7 @@ async function buyVocaloidRank(rankKey) {
         });
 
         currentUser.vocaloidRank = rank.key;
+        grantRankLocal(rank.key);
 
         await addTx({ type: 'Rango Vocaloid', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Vocaloid: ${rank.label}` });
 

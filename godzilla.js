@@ -119,6 +119,7 @@ async function buyGodzillaRank(rankKey) {
         }
         await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { godzillaRank: rankKey, boughtRanks: window._fbArrayUnion(rankKey) });
         currentUser.godzillaRank = rankKey;
+        grantRankLocal(rankKey);
         await addTx({ type: 'Rango Godzilla', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Forma Godzilla: ${rank.label}${needsBoth ? ` (+${rank.price_usd} P-USD)` : ''}` });
         showToast(`¡${rank.label.toUpperCase()} DESPIERTA!`, rank.color);
         loadGodzillaPage();

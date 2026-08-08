@@ -273,6 +273,7 @@ async function buyNanatsuRank(rankKey) {
 
         await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { nanatsuRank: rankKey, boughtRanks: window._fbArrayUnion(rankKey) });
         currentUser.nanatsuRank = rankKey;
+        grantRankLocal(rankKey);
         showToast(`¡Ahora eres ${rank.label} — ${rank.sin}!`, rank.color);
         loadNanatsuPage();
     } catch(e) {

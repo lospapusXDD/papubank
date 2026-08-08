@@ -232,6 +232,7 @@ async function buyElfenRank(rankKey) {
         });
 
         currentUser.elfenRank = rank.key;
+        grantRankLocal(rank.key);
 
         await addTx({ type: 'Rango Elfen', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Elfen Lied: ${rank.label}` });
 

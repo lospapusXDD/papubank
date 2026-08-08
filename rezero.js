@@ -251,6 +251,7 @@ async function buyRezeroRank(rankKey) {
         });
 
         currentUser.rezeroRank = rank.key;
+        grantRankLocal(rank.key);
 
         await addTx({ type: 'Rango Re:Zero', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Re:Zero: ${rank.label}` });
 

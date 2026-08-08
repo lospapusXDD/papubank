@@ -231,6 +231,7 @@ async function buyMushokuRank(rankKey) {
         });
 
         currentUser.mushokuRank = rank.key;
+        grantRankLocal(rank.key);
 
         showToast(`¡Rango ${rank.label} adquirido! ✨`, '#3498db');
         loadMushokuPage();

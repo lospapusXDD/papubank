@@ -246,6 +246,7 @@ async function buyBerserkRank(rankKey) {
         });
 
         currentUser.berserkRank = rank.key;
+        grantRankLocal(rank.key);
 
         await addTx({ type: 'Rango Berserk', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Berserk: ${rank.label}` });
 

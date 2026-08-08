@@ -245,6 +245,7 @@ async function buyChainsawRank(rankKey) {
         });
 
         currentUser.chainsawRank = rank.key;
+        grantRankLocal(rank.key);
 
         await addTx({ type: 'Rango Chainsaw', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Chainsaw Man: ${rank.label}` });
 

@@ -146,6 +146,7 @@ async function buyBen10Rank(rankKey) {
         await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), updates);
         await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { ben10Rank: rankKey, boughtRanks: window._fbArrayUnion(rankKey) });
         currentUser.ben10Rank = rankKey;
+        grantRankLocal(rankKey);
         await addTx({ type: 'Rango Ben 10', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Transformación Omnitrix: ${rank.label}${needsBoth ? ` (+${rank.price_usd} P-USD)` : ''}` });
         showToast(`¡AHORA ERES ${rank.label.toUpperCase()}!`, rank.color);
         loadBen10Page();

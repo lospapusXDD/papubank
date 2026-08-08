@@ -246,6 +246,7 @@ async function buyDeathnoteRank(rankKey) {
         });
 
         currentUser.deathnoteRank = rank.key;
+        grantRankLocal(rank.key);
 
         await addTx({ type: 'Rango Death Note', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Death Note: ${rank.label}` });
 

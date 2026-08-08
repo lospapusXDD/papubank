@@ -246,6 +246,7 @@ async function buyRimuruRank(rankKey) {
         });
 
         currentUser.rimuruRank = rank.key;
+        grantRankLocal(rank.key);
 
         await addTx({ type: 'Rango Rimuru', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Rimuru Tempest: ${rank.label}` });
 

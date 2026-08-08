@@ -90,6 +90,7 @@ async function buyMhaRank(rankKey) {
         }
         await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { mhaRank: rankKey, boughtRanks: window._fbArrayUnion(rankKey) });
         currentUser.mhaRank = rankKey;
+        grantRankLocal(rankKey);
         await addTx({ type: 'Rango MHA', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Quirk MHA: ${rank.label}${needsBoth ? ` (+${rank.price_usd} P-USD)` : ''}` });
         showToast(`¡${rank.label.toUpperCase()}! ¡PLUS ULTRA!`, rank.color);
         loadMhaPage();

@@ -233,6 +233,7 @@ async function buyBocchiRank(rankKey) {
         });
 
         currentUser.bocchiRank = rank.key;
+        grantRankLocal(rank.key);
 
         await addTx({ type: 'Rango Bocchi', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Rango Bocchi the Rock!: ${rank.label}` });
 
