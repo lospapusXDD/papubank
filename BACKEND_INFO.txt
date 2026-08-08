@@ -1,10 +1,28 @@
-Cambia el rate-limit del login:
+Antigravity, necesito 4 verificaciones/fixes en el backend del banco (Node.js/Express/PostgreSQL):
 
-Máximo 500 intentos por IP (en vez de 5-10)
-Cooldown de 1 minuto (en vez de 15)
-O idealmente el reset del contador debería ser: los 500 intentos se cuentan en ventana de 15 min, pero con cooldown corto
-// ejemplo:
-attempts = 0
-LIMIT = 500          // era 5-10
-WINDOW_MS = 15 * 60 * 1000
-COOLDOWN_MS = 60 * 1000  // era 15 min
+1. Rutas de inversiones (feature posiblemente muerta): El frontend usa estas rutas para la feature de inversiones:
+
+GET /api/bank_accounts/:nick/investments — listar inversiones del usuario
+POST /api/bank_accounts/:nick/investments — crear inversión (body: {planId, amount, rate, term, expectedReturn, startDate})
+GET /api/bank_accounts/:nick/investments/:invId — verificar que existe antes de cobrar
+DELETE /api/bank_accounts/:nick/investments/:invId — borrar tras cobrar
+¿Existen? Si no, créalas (en PostgreSQL: tabla investments con nick, id, plan_id, amount, rate, term, expected_return, start_date). OJO: antes el frontend hacía DELETE /api/bank_accounts/:nick por error del bridge y borraba la cuenta entera — ya lo arreglé del lado cliente, pero confirma que el DELETE de la cuenta base no exista o esté protegido.
+
+2. Operaciones atómicas (anti doble-click/doble-pestaña): El frontend resuelve {_op: 'increment'} client-side con GET→PUT (no atómico). Dos pestañas abiertas pueden perder cobros. Implementa en SQL:
+
+UPDATE bank_accounts SET balance = balance + $1 WHERE nick = $2 (en transfer, mint, burn, cobros)
+Igual para pusdBalance en users (UPDATE users SET pusd_balance = pusd_balance + $1 WHERE nick = $2)
+3. /api/inventory/buy debe validar server-side: Hoy el cliente manda {nick, item_id, price, currency} y el backend confía en el price. Esto permite comprar items premium con price: 1. Implementa:
+
+Catálogo de items premium en el servidor (o al menos validar que el price coincida con el catálogo conocido)
+Validar saldo del usuario (PPC en bank_accounts.balance o P-USD en users.pusd_balance) ANTES de acreditar el item
+Debitar atómicamente (punto 2)
+4. Esquema de bank_accounts — confirmar campos: El frontend escribe/lee: frozen, loanActive, loanAmount, loanDate. Confirma que:
+
+Esas columnas existen (o que el PUT las acepta como upsert suelto)
+frozen y loanActive se guardan como booleano real, NO como string "false" (si vienen como string, "false" es truthy y bloquea transferencias/préstamos a todos — ya lo blindé en el frontend con isTrue(), pero es mejor corregir el origen)
+Que el PUT a bank_accounts NO haga replace total (borraría totalIn/totalOut/txCount/balance_usd) — usa UPDATE parcial de columnas
+Bonus (si puedes): el multiplicador base owner/admin/mod/helper está en 1x en RANK_MULTIPLIERS del frontend — no es bug tuyo, solo confirma que no lo tocas.
+
+Gracias papu 🙏
+
