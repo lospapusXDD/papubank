@@ -1127,6 +1127,7 @@ async function adminMintPUSD(nick) {
         const userData = await apiFetch('GET', '/users/' + nick);
         const currentPUSD = userData.pusdBalance || 0;
         await apiFetch('PUT', '/users/' + nick, { pusdBalance: currentPUSD + amt });
+        if (nick === currentUser.nick) currentUser.pusdBalance = currentPUSD + amt;
         showToast(`Mint de $${amt} P-USD a ${nick} ✓`, 'var(--gold)');
         loadAdminAccounts(true);
     } catch(e) {
@@ -1151,6 +1152,7 @@ async function adminBurnPUSD(nick) {
         const currentPUSD = userData.pusdBalance || 0;
         if (currentPUSD < amt) { showToast('Ese usuario no tiene tanto P-USD', '#ff4466'); return; }
         await apiFetch('PUT', '/users/' + nick, { pusdBalance: currentPUSD - amt });
+        if (nick === currentUser.nick) currentUser.pusdBalance = currentPUSD - amt;
         showToast(`Burn de $${amt} P-USD a ${nick} ✓`, '#ff4466');
         loadAdminAccounts(true);
     } catch(e) {
