@@ -338,7 +338,97 @@ Cuntsniffer
 - ⚠️ Todas las páginas de fandoms — pendiente verificar
 - ⚠️ Auto-login puede fallar si el JWT expira y el hash guardado es viejo
 
-**Cloudflare Tunnel**: `https://friend-usage-image-cancel.trycloudflare.com/api` (cambia en cada reinicio del servicio)
+**Cloudflare Tunnel**: `https://modified-factory-adapter-myth.trycloudflare.com/api` (cambia en cada reinicio del servicio)
+
+### Sesión 19 — Fixes de Tienda Premium, Exchange, Multiplicadores y Login
+
+**hash function (IMPORTANTE)**:
+- NO es SHA-256. Es custom DJB2+FNV-1a con prefijo `s2_`
+- `hashPass(p, salt)`: salt + p + salt reversed → DJB2 (h) + FNV-1a (h2) → base36
+- Ejemplo: solariswat tiene `hashSalt: "emilio"` en la DB
+- Login flow: frontend envía `{ nick, password }` → backend hashea con hashSalt de DB → compara. Devuelve JWT + `hash` para auto-login
+- `hashPass` está en `banking.js`, no es una función nativa
+
+**API Bridge** (index.html):
+- `_fbGetDocs` detecta `nick` como ID field
+- `_fbUpdateDoc` resuelve `_op: increment/arrayUnion/arrayRemove` client-side antes de enviar
+- Cache: 60s TTL para GET, 10s timeout, cache invalidation en POST/PUT/DELETE
+- Exchange rate: 1 P-USD = 10,000 PPC
+
+**Backend** (hosted on user's Linux PC CachyOS, 24/7):
+- El otro AI (Antigravity) maneja el backend Node.js/Express/PostgreSQL
+- `PUT /api/users/:nick` acepta ambos formats: camelCase y lowercase (nick_color, profileRing, active_title, etc.)
+- `PUT /api/users/:nick/avatar` — soporta imágenes (resize 256x256 base64) y videos
+- `GET /api/inventory/:nick` — items del inventario del usuario
+- `POST /api/inventory/buy` — comprar item premium
+- `PUT /api/inventory/:nick/activate` — activar item del inventario
+- `POST /api/bank/burn` — quemar PPC (para exchange PPC→P-USD)
+- `POST /api/bank/mint` — acuñar PPC (para exchange P-USD→PPC)
+
+**Fixes sesión 19**:
+
+1. **Nick Arcoíris animado** (`extras.js`, `style.css`):
+   - `@keyframes nickRainbow` con `background-size: 200%` y `animation: linear infinite`
+   - Clases CSS: `.nick-rainbow`, `.nick-fire`, `.nick-ice`, `.nick-neon`, `.nick-gold`
+   - `applyNickColor()` y `getNickColorStyle()` ahora usan CSS classes en vez de inline styles
+   - `loadInventorySettings()` aplica clases a `header-user-nick`, `sidebar-user-nick`, `profile-nick`
+
+2. **Detección de propiedad en Tienda Premium** (`exchange.js`):
+   - `renderPremiumShop()` checkea `currentUser._inventory` por `item_id`
+   - Si ya lo tiene → "✓ Ya lo tienes" (verde, disabled)
+   - Si no alcanza → "🔒 No alcanza" (rojo, disabled)
+   - Si puede comprar → "Comprar" (normal)
+   - `buyPremiumItem()` tiene double-check al inicio
+
+3. **Auto-activate al comprar premium** (`exchange.js`):
+   - Después de `POST /inventory/buy`, llama `PUT /inventory/:nick/activate`
+   - Luego `loadRingsInventory()` + `loadInventorySettings()` para refrescar estado
+
+4. **Sync de nick_color/profileRing a users table** (`extras.js`):
+   - `loadInventorySettings()` escribe `nick_color`, `profileRing`, `active_title` a `PUT /users/:nick`
+   - Esto es necesario porque el leaderboard NO incluye datos de `user_inventory`
+
+5. **Leaderboard enriquecido** (`banking.js`):
+   - Después de `GET /leaderboard`, fetch adicional a `GET /users` para llenar `nick_color`, `profileRing`, `active_title`
+   - Nick usa CSS class (`nick-rainbow`) en vez de inline style
+   - Ring rainbow usa gradiente CSS en vez de transparent
+
+6. **Aro rainbow en PROFILE_RINGS** (`extras.js`):
+   - Agregado `{ key: 'rainbow', label: 'Aro Arcoíris', color: 'rainbow', price: 100000000 }`
+   - Antes `getRingData('rainbow')` fallaba porque no existía
+
+7. **Exchange P-USD fix** (`exchange.js`):
+   - Antes intentaba `POST /bank/transfer` a usuario ficticio `'exchange'` → error "Usuario destino no encontrado"
+   - Ahora usa `POST /bank/burn` (PPC→P-USD) y `POST /bank/mint` (P-USD→PPC)
+
+8. **parseFloat pusdBalance** (`app.js`, `exchange.js`):
+   - PostgreSQL devuelve `pusdBalance` como STRING `"9964580.00"`
+   - Sin parseFloat: `"9964580.00" + 0.3242 = "9964580.000.3242"` → error numeric
+   - Ahora usa `parseFloat()` en los 3 puntos de carga y en exchange
+
+9. **Login carga TODOS los fandom ranks** (`app.js`):
+   - Antes solo cargaba: pusdBalance, avatar, nickColor, active_title
+   - Ahora carga: boughtRanks, jjkRank, frierenRank, godzillaRank, mhaRank, ben10Rank, nanatsuRank, berserkRank, chainsawRank, deathnoteRank, elfenRank, rezeroRank, rimuruRank, bocchiRank, vocaloidRank, mushokuRank, floresRank, karma
+   - Sin esto, todas las tiendas de fandom no detectaban `isOwned`
+
+10. **`loadRingsInventory()` await fix** (`app.js`):
+    - Era fire-and-forget (sin await), entonces `loadInventorySettings()` corría antes de tener `_inventory`
+    - Ahora es `await loadRingsInventory()` → `loadInventorySettings()`
+
+11. **Multiplicadores de fandom en `getRankMultiplier`** (`clan-features.js`):
+    - Faltaban 10 fandoms: Berserk, Chainsaw, Death Note, Elfen, Re:Zero, Rimuru, Bocchi, Vocaloid, Mushoku, Flores
+    - Ahora todos suman `(rank.mult - 1)` al multiplicador base
+
+**Credenciales de usuario**:
+- Login: `solariswat` / `nosexd103`
+
+**Archivos modificados sesión 19**:
+- `app.js` — parseFloat pusdBalance, await loadRingsInventory, cargar todos los fandom ranks
+- `banking.js` — leaderboard enrich con /users, ring rainbow border, nick CSS class
+- `clan-features.js` — 10 fandom multipliers faltantes
+- `exchange.js` — fix exchange P-USD (burn/mint), auto-activate, detect owned items
+- `extras.js` — nick animado CSS, loadInventorySettings sync, rainbow ring en PROFILE_RINGS
+- `style.css` — @keyframes nickRainbow + nickFire + nickNeon, .nick-rainbow/fire/ice/neon/gold
 
 ---
 
