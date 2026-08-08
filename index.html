@@ -1862,7 +1862,7 @@
   window._apiToken = localStorage.getItem('papubank_jwt') || null;
 
   const _apiCache = {};
-  const CACHE_TTL = 30000;
+  const CACHE_TTL = 60000;
 
   async function apiFetch(method, path, body) {
     const cacheKey = method + ':' + path;
@@ -1875,7 +1875,20 @@
     if (window._apiToken) headers['Authorization'] = 'Bearer ' + window._apiToken;
     const opts = { method, headers };
     if (body) opts.body = JSON.stringify(body);
-    const res = await fetch(API_BASE + path, opts);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    opts.signal = controller.signal;
+
+    let res;
+    try {
+      res = await fetch(API_BASE + path, opts);
+    } catch(e) {
+      clearTimeout(timeout);
+      throw new Error('Sin conexión al servidor');
+    }
+    clearTimeout(timeout);
+
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'API error ' + res.status);
 
@@ -1883,10 +1896,7 @@
       _apiCache[cacheKey] = { data, ts: Date.now() };
     }
     if (method !== 'GET') {
-      Object.keys(_apiCache).forEach(k => {
-        if (k.endsWith(path.split('/').slice(0, -1).join('/') + '/') || k.includes(path.split('/').slice(0, -1).join('/')))
-          delete _apiCache[k];
-      });
+      Object.keys(_apiCache).forEach(k => delete _apiCache[k]);
     }
     return data;
   }

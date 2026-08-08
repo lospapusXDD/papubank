@@ -454,11 +454,22 @@ async function tryAutoLogin() {
                 currentUser.nick = nick;
         document.getElementById('auth-overlay').style.display = 'none';
 
-        await initBankAccount();
-        await loadRingsInventory();
-        loadInventorySettings();
+        const [bankData, userData] = await Promise.all([
+            apiFetch('GET', '/bank/' + nick),
+            apiFetch('GET', '/users/' + nick),
+            loadConfig()
+        ]);
+        bankAccount = bankData;
+        currentUser.pusdBalance = userData.pusdBalance || 0;
+        currentUser.avatar = userData.avatar || '';
+        currentUser.nickColor = userData.nick_color || null;
+        currentUser.active_title = userData.active_title || null;
+        updateBalanceDisplays();
         updateNavUI();
         showPage('dashboard');
+
+        loadRingsInventory();
+        loadInventorySettings();
                 if (typeof initMediaPlayer === 'function') initMediaPlayer();
                 if (typeof initMatrix === 'function') initMatrix();
                 if (typeof loadSavedTheme === 'function') loadSavedTheme();
