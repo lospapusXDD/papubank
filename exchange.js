@@ -44,7 +44,7 @@ let _exchangeHistory = [EXCHANGE_RATE]; // Historical rates for chart
 
 function getPUSDBalance(user) {
     if (!user) return 0;
-    return user.pusdBalance || 0;
+    return parseFloat(user.pusdBalance) || 0;
 }
 
 function formatPPC(amount) {
@@ -69,13 +69,20 @@ async function exchangePPCtoPUSD(ppcAmount) {
     if (!currentUser) return false;
     if (ppcAmount <= 0) return false;
     
+    const ppcBalance = parseFloat(bankAccount?.balance) || 0;
+    if (ppcAmount > ppcBalance) {
+        showToast('No tienes suficientes PPC', '#ff4466');
+        return false;
+    }
+    
     const pusdAmount = convertPPCtoPUSD(ppcAmount);
     
     try {
-        await apiFetch('POST', '/bank/burn', { nick: currentUser.nick, amount: ppcAmount });
-        
-        const currentPusd = parseFloat(currentUser.pusdBalance) || 0;
+        const fresh = await apiFetch('GET', '/users/' + currentUser.nick);
+        const currentPusd = parseFloat(fresh.pusdBalance) || 0;
         const newPusd = parseFloat((currentPusd + pusdAmount).toFixed(4));
+        
+        await apiFetch('POST', '/bank/burn', { nick: currentUser.nick, amount: ppcAmount });
         await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: newPusd });
         
         currentUser.pusdBalance = newPusd;
@@ -93,13 +100,25 @@ async function exchangePUSDtoPPC(pusdAmount) {
     if (!currentUser) return false;
     if (pusdAmount <= 0) return false;
     
+    const currentPusd = getPUSDBalance(currentUser);
+    if (pusdAmount > currentPusd) {
+        showToast('No tienes suficientes P-USD', '#ff4466');
+        return false;
+    }
+    
     const ppcAmount = convertPUSDtoPPC(pusdAmount);
     
     try {
+        const fresh = await apiFetch('GET', '/users/' + currentUser.nick);
+        const freshPusd = parseFloat(fresh.pusdBalance) || 0;
+        if (pusdAmount > freshPusd) {
+            showToast('No tienes suficientes P-USD', '#ff4466');
+            return false;
+        }
+        
         await apiFetch('POST', '/bank/mint', { nick: currentUser.nick, amount: ppcAmount });
         
-        const currentPusd = parseFloat(currentUser.pusdBalance) || 0;
-        const newPusd = parseFloat((currentPusd - pusdAmount).toFixed(4));
+        const newPusd = parseFloat((freshPusd - pusdAmount).toFixed(4));
         await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: newPusd });
         
         currentUser.pusdBalance = newPusd;
@@ -117,6 +136,7 @@ async function exchangePUSDtoPPC(pusdAmount) {
 
 async function buyPremiumItem(itemId) {
     if (!currentUser) return;
+    if (buyPremiumItem._busy) return;
     
     const item = PREMIUM_SHOP.find(i => i.id === itemId);
     if (!item) return;
@@ -128,8 +148,8 @@ async function buyPremiumItem(itemId) {
         return;
     }
     
-    const pusdBalance = currentUser.pusdBalance || 0;
-    const ppcBalance = bankAccount?.balance || 0;
+    const pusdBalance = getPUSDBalance(currentUser);
+    const ppcBalance = parseFloat(bankAccount?.balance) || 0;
     
     const canPayPUSD = pusdBalance >= item.price_usd;
     const canPayPPC = ppcBalance >= item.price_ppc;
@@ -139,15 +159,14 @@ async function buyPremiumItem(itemId) {
         return;
     }
     
-    const payMethod = canPayPUSD ? 'pustd' : 'ppc';
+    const payMethod = canPayPUSD ? 'pusd' : 'ppc';
     const payAmount = canPayPUSD ? item.price_usd : item.price_ppc;
     
     const ok = await showConfirm('Comprar Premium', `¿Comprar ${item.name} por ${canPayPUSD ? formatPUSD(item.price_usd) : formatPPC(item.price_ppc)}?`);
     if (!ok) return;
     
+    buyPremiumItem._busy = true;
     try {
-        const itemKey = item.itemKey || item.cosmeticKey || item.petKey || item.boosterKey || item.titleKey || item.funcKey;
-        
         await apiFetch('POST', '/inventory/buy', {
             nick: currentUser.nick,
             item_id: itemKey,
@@ -155,23 +174,32 @@ async function buyPremiumItem(itemId) {
             currency: payMethod
         });
         
+        let activateOk = true;
         try {
             await apiFetch('PUT', '/inventory/' + currentUser.nick + '/activate', { item_id: itemKey });
-        } catch(e) { /* ignore activate errors */ }
+        } catch(e) { activateOk = false; }
         
-        if (payMethod === 'pustd') {
+        if (payMethod === 'pusd') {
             const freshUser = await apiFetch('GET', '/users/' + currentUser.nick);
             currentUser.pusdBalance = parseFloat(freshUser.pusdBalance) || 0;
         }
         bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
         
+        const freshInv = await apiFetch('GET', '/inventory/' + currentUser.nick).catch(() => null);
+        if (freshInv) {
+            const items = Array.isArray(freshInv) ? freshInv : (freshInv.items || []);
+            currentUser._inventory = items;
+        }
+        
         await loadRingsInventory();
         if (typeof loadInventorySettings === 'function') await loadInventorySettings();
         
-        showToast(`¡${item.name} adquirido y activado! 🌟`, item.color);
+        showToast(activateOk ? `¡${item.name} adquirido y activado! 🌟` : `¡${item.name} comprado! (la activación falló, reintenta en Inventario)`, item.color);
         renderPremiumShop(document.getElementById('premium-shop-grid'));
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
+    } finally {
+        buyPremiumItem._busy = false;
     }
 }
 
@@ -261,7 +289,7 @@ function renderPremiumShop(container) {
     if (!container) return;
     
     const pusdBalance = getPUSDBalance(currentUser);
-    const ppcBalance = bankAccount?.balance || 0;
+    const ppcBalance = parseFloat(bankAccount?.balance) || 0;
     
     let html = `
         <div class="glass-card" style="margin-bottom:20px;text-align:center;background:linear-gradient(135deg,rgba(251,191,36,0.08),rgba(0,0,0,0));border-color:rgba(251,191,36,0.3);">
@@ -339,24 +367,28 @@ function doExchangePPCtoPUSD() {
     const input = document.getElementById('exchange-ppc-input');
     const amount = Math.floor(parseFloat(input?.value) || 0);
     if (amount <= 0) { showToast('Ingresa una cantidad válida', '#ff4466'); return; }
+    const btn = input?.closest('.glass-card')?.querySelector('button');
+    if (btn) btn.disabled = true;
     exchangePPCtoPUSD(amount).then(ok => {
         if (ok) {
             input.value = '';
             document.getElementById('exchange-ppc-result').textContent = '0 P-USD';
             renderExchange(document.getElementById('exchange-container'));
         }
-    });
+    }).finally(() => { if (btn) btn.disabled = false; });
 }
 
 function doExchangePUSDtoPPC() {
     const input = document.getElementById('exchange-usd-input');
     const amount = parseFloat(input?.value) || 0;
     if (amount <= 0) { showToast('Ingresa una cantidad válida', '#ff4466'); return; }
+    const btn = input?.closest('.glass-card')?.querySelector('button');
+    if (btn) btn.disabled = true;
     exchangePUSDtoPPC(amount).then(ok => {
         if (ok) {
             input.value = '';
             document.getElementById('exchange-usd-result').textContent = '0 PPC';
             renderExchange(document.getElementById('exchange-container'));
         }
-    });
+    }).finally(() => { if (btn) btn.disabled = false; });
 }

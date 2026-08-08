@@ -64,7 +64,7 @@ async function loadGodzillaPage() {
         GODZILLA_RANKS.forEach(rank => {
             const isOwned = currentUser.godzillaRank === rank.key;
             const canAffordPPC = bankAccount.balance >= rank.price;
-            const balanceUsd = bankAccount.balance_usd || 0;
+            const balanceUsd = parseFloat(currentUser.pusdBalance) || 0;
             const canAffordUSD = balanceUsd >= rank.price_usd;
             const needsBoth = rank.gradeTier >= 3;
             const canAfford = needsBoth ? (canAffordPPC && canAffordUSD) : canAffordPPC;

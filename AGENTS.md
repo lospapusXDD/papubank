@@ -459,13 +459,80 @@ El backend NO está en este repo. Está en la PC Linux del usuario, manejado por
 **Credenciales de usuario**:
 - Login: `solariswat` / `nosexd103`
 
-**Archivos modificados sesión 19**:
-- `app.js` — parseFloat pusdBalance, await loadRingsInventory, cargar todos los fandom ranks
-- `banking.js` — leaderboard enrich con /users, ring rainbow border, nick CSS class
-- `clan-features.js` — 10 fandom multipliers faltantes
-- `exchange.js` — fix exchange P-USD (burn/mint), auto-activate, detect owned items
-- `extras.js` — nick animado CSS, loadInventorySettings sync, rainbow ring en PROFILE_RINGS
-- `style.css` — @keyframes nickRainbow + nickFire + nickNeon, .nick-rainbow/fire/ice/neon/gold
+**Fixes sesión 20 (auditoría multi-agente + P-USD para usuarios)**:
+
+1. **Exchange P-USD accesible y corregido** (`exchange.js`):
+   - Fix CRÍTICO: typo `'pustd'` → `'pusd'` en `buyPremiumItem` (pago P-USD nunca era reconocido por el backend)
+   - Validación de saldo ANTES de operar (PPC para comprar, P-USD para vender)
+   - GET fresco de `/users/:nick` antes de calcular el nuevo pusdBalance (evita sobrescribir con estado stale)
+   - Guard anti doble-click en botones de exchange y en `buyPremiumItem` (`_busy`)
+   - `getPUSDBalance()` ahora hace `parseFloat()` (string del backend)
+   - `renderPremiumShop` usa parseFloat en balances
+   - Después de comprar, refresca `currentUser._inventory` desde `GET /inventory/:nick`
+   - Si la activación falla, avisa al usuario en vez de silenciarlo
+
+2. **`adminMintPUSD`/`adminBurnPUSD` concat de string** (`app.js`):
+   - `currentPUSD + amt` con pusdBalance string → `"100.0050"` corrupto
+   - Ahora `parseFloat()` + `.toFixed(4)`
+
+3. **`jjkRank: 'user'` rompía loadProfile** (`app.js`):
+   - Registro ponía `jjkRank: 'user'` que no existe en `_jjkRankRegistry` → TypeError en `jr.icon`
+   - Ahora `jjkRank: null` + guard `if (jr)` en loadProfile y en minijuegos
+
+4. **`initBankAccount`/`refreshBankAccount` no cargaban ranks** (`app.js`):
+   - Nuevo helper `applyUserData(userData)` que lee los 3 formatos de campo del backend:
+     camelCase (`nanatsuRank`), snake_case (`nanatsu_rank`), lowercase sin guión (`nanatsurank`)
+   - Usado en auto-login, login manual, registro, initBankAccount y refreshBankAccount
+   - `loadConfig` filtra nulls antes de merge
+
+5. **`tryAutoLogin` robusto** (`app.js`):
+   - El guard `_autoLoginRunning` ahora espera el login real (Promise + await en vez de waitForDB fire-and-forget)
+   - Solo borra la sesión si el error es de autenticación (401/token/sesión) — antes expulsaba en cualquier fallo de red
+   - `Object.assign` filtra valores null
+
+6. **`claimInvestment` borraba la cuenta** (`banking.js`):
+   - El ref `bank_accounts/{nick}/investments/{docId}` con `_fbDeleteDoc` (que toma `[col, id]`) ejecutaba `DELETE /bank_accounts/{nick}` → BORRABA LA CUENTA ENTERA
+   - Ahora: verifica existencia con `GET` directo, usa REST directo para GET/DELETE de la inversión, calcula mult con user fresco
+   - Si la inversión no existe → toast y no toca la cuenta
+
+7. **Booleanos string frozen/loanActive** (`banking.js`):
+   - `if (bankAccount.frozen)` con `"false"` string era truthy → TODOS bloqueados
+   - Nuevo helper `isTrue()` usado en frozen y loanActive
+   - `loanAmount` con `Number()` para strings
+
+8. **XSS en leaderboard/splits** (`banking.js`):
+   - Nicks/avatars/mcUsername/active_title/notas iban crudos a innerHTML
+   - Nuevo helper `esc()` aplicado en leaderboard, transfer users, splits y historial
+   - onclick de perfil escapa comillas del nick
+
+9. **Multiplicador: docs raw lowercase + fallback asimétrico** (`clan-features.js`):
+   - `getRankMultiplier` ahora lee también campos lowercase (`user[f.low]`) para docs crudos
+   - El fallback `boughtRanks` corre SIEMPRE (con dedupe via `owned` Set), no solo cuando el campo está vacío — antes tener el campo seteado "castigaba" (perdías los otros rangos comprados)
+   - Frieren sigue multiplicativo (design)
+   - `getRankKey` y `getRankLoanMax` normalizan lowercase también
+
+10. **Godzilla balance_usd** (`godzilla.js`):
+    - Leía `bankAccount.balance_usd` (no existe) → tiers 3+ imposibles
+    - Ahora usa `parseFloat(currentUser.pusdBalance)`
+
+11. **Otros**:
+    - `loadRecentTx` cap de 15 items + `Number(tx.amount)` guard
+    - Transfer a sí mismo bloqueado
+    - Split: valida saldo de cada participante antes de descontar
+    - `case 'loans'` duplicado eliminado (el segundo era código muerto)
+    - `godChangeRank` ya no mete sentinels `{_op}` en currentUser, re-fetch con applyUserData
+    - `loadRingsInventory` resetea `profileRing` a 'none' al des-equipar
+    - `loadInventorySettings` ahora async con await en PUTs
+    - `uploadCustomAvatar` con `img.onerror` + reset del input (botón no se atasca)
+    - Solo crea cuenta de banco nueva si el error es 404 (antes creaba en cualquier fallo de red)
+
+**Archivos modificados sesión 20**:
+- `app.js` — applyUserData, tryAutoLogin robusto, jjkRank null, adminMint/BurnPUSD parseFloat, godChangeRank, uploadCustomAvatar
+- `banking.js` — claimInvestment seguro, isTrue(), esc() XSS, split validación, transfer self-guard, loadRecentTx cap
+- `clan-features.js` — getRankMultiplier lowercase + fallback boughtRanks siempre, getRankKey/getRankLoanMax normalize
+- `exchange.js` — typo pustd→pusd, validación saldo, GET fresco, guards doble-click, inventory refresh
+- `extras.js` — profileRing reset, loadInventorySettings async
+- `godzilla.js` — balance_usd → pusdBalance
 
 ---
 

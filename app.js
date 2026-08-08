@@ -233,7 +233,6 @@ function showPage(pageId) {
         case 'pareja':      loadParejaPage();    break;
         case 'flores':      loadFloresPage();    break;
         case 'premium':     loadPremiumPage();   break;
-        case 'loans':       loadLoansPage();     break;
         case 'stocks':      loadStocksPage();    break;
         case 'gifts':       loadGiftsPage();     break;
         case 'themes':      loadThemesPage();    break;
@@ -341,7 +340,7 @@ window.doLogin = async function() {
         localStorage.setItem('papubank_refresh', res.refreshToken);
 
         currentUser = { nick, hash: res.hash };
-        Object.assign(currentUser, res);
+        Object.assign(currentUser, Object.fromEntries(Object.entries(res || {}).filter(([, v]) => v != null)));
         currentUser.nick = nick;
         localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash: res.hash }));
         localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash: res.hash }));
@@ -402,8 +401,8 @@ window.doRegister = async function() {
         if (res.accessToken) localStorage.setItem('papubank_jwt', res.accessToken);
         if (res.refreshToken) localStorage.setItem('papubank_refresh', res.refreshToken);
 
-        currentUser = { nick, hash, jjkRank: 'user', avatar: 'avt_gojo.jpg' };
-        Object.assign(currentUser, res);
+        currentUser = { nick, hash, jjkRank: null, avatar: 'avt_gojo.jpg' };
+        Object.assign(currentUser, Object.fromEntries(Object.entries(res || {}).filter(([, v]) => v != null)));
         localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash }));
         localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash }));
 
@@ -445,69 +444,89 @@ async function tryAutoLogin() {
         const { nick, hash } = JSON.parse(saved);
         if (!nick || !hash) return;
 
-        waitForDB(async function() {
-            try {
-                const res = await apiFetch('POST', '/auth/login', { nick, hash });
-                window._apiToken = res.accessToken;
-                localStorage.setItem('papubank_jwt', res.accessToken);
-                if (res.refreshToken) localStorage.setItem('papubank_refresh', res.refreshToken);
-
-                currentUser = { nick, hash };
-                Object.assign(currentUser, res);
-                currentUser.nick = nick;
-        document.getElementById('auth-overlay').style.display = 'none';
-
-        const [bankData, userData] = await Promise.all([
-            apiFetch('GET', '/bank/' + nick),
-            apiFetch('GET', '/users/' + nick),
-            loadConfig()
-        ]);
-        bankAccount = bankData;
-        currentUser.rank = userData.rank || 'user';
-        currentUser.gender = userData.gender || null;
-        currentUser.level = userData.level || 1;
-        currentUser.xp = userData.xp || 0;
-        currentUser.pusdBalance = parseFloat(userData.pusdBalance) || 0;
-        currentUser.avatar = userData.avatar || '';
-        currentUser.nickColor = userData.nick_color || null;
-        currentUser.active_title = userData.active_title || null;
-        currentUser.boughtRanks = userData.boughtRanks || userData.bought_ranks || [];
-        currentUser.jjkRank = userData.jjkRank || userData.jjk_rank || null;
-        currentUser.frierenRank = userData.frierenRank || userData.frieren_rank || userData.frierenrank || null;
-        currentUser.godzillaRank = userData.godzillaRank || userData.godzilla_rank || userData.godzillarank || null;
-        currentUser.mhaRank = userData.mhaRank || userData.mha_rank || userData.mharank || null;
-        currentUser.ben10Rank = userData.ben10Rank || userData.ben10_rank || userData.ben10rank || null;
-        currentUser.nanatsuRank = userData.nanatsuRank || userData.nanatsu_rank || userData.nanatsurank || null;
-        currentUser.berserkRank = userData.berserkRank || userData.berserk_rank || userData.berserkrank || null;
-        currentUser.chainsawRank = userData.chainsawRank || userData.chainsaw_rank || userData.chainsawrank || null;
-        currentUser.deathnoteRank = userData.deathnoteRank || userData.deathnote_rank || userData.deathnoterank || null;
-        currentUser.elfenRank = userData.elfenRank || userData.elfen_rank || userData.elfenrank || null;
-        currentUser.rezeroRank = userData.rezeroRank || userData.rezero_rank || userData.rerank || null;
-        currentUser.rimuruRank = userData.rimuruRank || userData.rimuru_rank || userData.rimururank || null;
-        currentUser.bocchiRank = userData.bocchiRank || userData.bocchi_rank || userData.bocchirank || null;
-        currentUser.vocaloidRank = userData.vocaloidRank || userData.vocaloid_rank || userData.vocaloidrank || null;
-        currentUser.mushokuRank = userData.mushokuRank || userData.mushoku_rank || userData.mushokurank || null;
-        currentUser.floresRank = userData.floresRank || userData.flores_rank || userData.floresrank || null;
-        currentUser.karma = userData.karma || 0;
-        updateBalanceDisplays();
-        updateNavUI();
-        showPage('dashboard');
-
-        await loadRingsInventory();
-        loadInventorySettings();
-                if (typeof initMediaPlayer === 'function') initMediaPlayer();
-                if (typeof initMatrix === 'function') initMatrix();
-                if (typeof loadSavedTheme === 'function') loadSavedTheme();
-                if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
-            } catch(e) {
-                localStorage.removeItem(SESSION_KEY);
-            }
+        await new Promise(resolve => {
+            let att = 0;
+            const tick = () => {
+                if (window._db) return resolve();
+                if (att++ > 40) { console.error('API Bridge not ready'); return resolve(); }
+                setTimeout(tick, 250);
+            };
+            tick();
         });
+
+        try {
+            const res = await apiFetch('POST', '/auth/login', { nick, hash });
+            window._apiToken = res.accessToken;
+            localStorage.setItem('papubank_jwt', res.accessToken);
+            if (res.refreshToken) localStorage.setItem('papubank_refresh', res.refreshToken);
+
+            currentUser = { nick, hash };
+            Object.assign(currentUser, Object.fromEntries(Object.entries(res || {}).filter(([, v]) => v != null)));
+            currentUser.nick = nick;
+            document.getElementById('auth-overlay').style.display = 'none';
+
+            const [bankData, userData] = await Promise.all([
+                apiFetch('GET', '/bank/' + nick),
+                apiFetch('GET', '/users/' + nick),
+                loadConfig()
+            ]);
+            bankAccount = bankData;
+            applyUserData(userData);
+            updateBalanceDisplays();
+            updateNavUI();
+            showPage('dashboard');
+
+            await loadRingsInventory();
+            if (typeof loadInventorySettings === 'function') await loadInventorySettings();
+            if (typeof initMediaPlayer === 'function') initMediaPlayer();
+            if (typeof initMatrix === 'function') initMatrix();
+            if (typeof loadSavedTheme === 'function') loadSavedTheme();
+            if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
+        } catch(e) {
+            const isAuthErr = e && (String(e.message).includes('401') || String(e.message).includes('token') || String(e.message).includes('sesión'));
+            if (isAuthErr) {
+                localStorage.removeItem(SESSION_KEY);
+            } else {
+                console.warn('Auto-login sin expulsar sesión:', e.message);
+            }
+        }
     } catch(e) {
-        localStorage.removeItem(SESSION_KEY);
+        console.warn('Auto-login error:', e.message);
     } finally {
         _autoLoginRunning = false;
     }
+}
+
+function applyUserData(u) {
+    if (!u || !currentUser) return;
+    currentUser.rank = u.rank || currentUser.rank || 'user';
+    currentUser.gender = u.gender || currentUser.gender || null;
+    currentUser.level = u.level || currentUser.level || 1;
+    currentUser.xp = u.xp || currentUser.xp || 0;
+    currentUser.pusdBalance = parseFloat(u.pusdBalance) || 0;
+    currentUser.avatar = u.avatar || currentUser.avatar || '';
+    currentUser.nickColor = u.nick_color || u.nickColor || null;
+    currentUser.active_title = u.active_title || u.activeTitle || null;
+    currentUser.boughtRanks = u.boughtRanks || u.bought_ranks || [];
+    currentUser.jjkRank = u.jjkRank || u.jjk_rank || null;
+    currentUser.frierenRank = u.frierenRank || u.frieren_rank || u.frierenrank || null;
+    currentUser.godzillaRank = u.godzillaRank || u.godzilla_rank || u.godzillarank || null;
+    currentUser.mhaRank = u.mhaRank || u.mha_rank || u.mharank || null;
+    currentUser.ben10Rank = u.ben10Rank || u.ben10_rank || u.ben10rank || null;
+    currentUser.nanatsuRank = u.nanatsuRank || u.nanatsu_rank || u.nanatsurank || null;
+    currentUser.berserkRank = u.berserkRank || u.berserk_rank || u.berserkrank || null;
+    currentUser.chainsawRank = u.chainsawRank || u.chainsaw_rank || u.chainsawrank || null;
+    currentUser.deathnoteRank = u.deathnoteRank || u.deathnote_rank || u.deathnoterank || null;
+    currentUser.elfenRank = u.elfenRank || u.elfen_rank || u.elfenrank || null;
+    currentUser.rezeroRank = u.rezeroRank || u.rezero_rank || u.rerank || null;
+    currentUser.rimuruRank = u.rimuruRank || u.rimuru_rank || u.rimururank || null;
+    currentUser.bocchiRank = u.bocchiRank || u.bocchi_rank || u.bocchirank || null;
+    currentUser.vocaloidRank = u.vocaloidRank || u.vocaloid_rank || u.vocaloidrank || null;
+    currentUser.mushokuRank = u.mushokuRank || u.mushoku_rank || u.mushokurank || null;
+    currentUser.floresRank = u.floresRank || u.flores_rank || u.floresrank || null;
+    currentUser.karma = u.karma || currentUser.karma || 0;
+    currentUser.profileRing = u.profileRing || u.profile_ring || currentUser.profileRing || null;
+    currentUser.nickStyle = u.nickStyle || u.nick_style || currentUser.nickStyle || null;
 }
 
 // ═══════════════════════════ ACCOUNT INIT ═══════════════════════════
@@ -520,21 +539,20 @@ async function initBankAccount() {
             apiFetch('GET', '/users/' + currentUser.nick)
         ]);
         bankAccount = bankData;
-        currentUser.rank = userData.rank || currentUser.rank || 'user';
-        currentUser.gender = userData.gender || currentUser.gender || null;
-        currentUser.level = userData.level || currentUser.level || 1;
-        currentUser.xp = userData.xp || currentUser.xp || 0;
-        currentUser.pusdBalance = parseFloat(userData.pusdBalance) || 0;
-        currentUser.avatar = userData.avatar || currentUser.avatar;
-        currentUser.nickColor = userData.nick_color || userData.nickColor || null;
-        currentUser.active_title = userData.active_title || null;
+        applyUserData(userData);
     } catch(e) {
-        try {
-            await apiFetch('POST', '/bank/' + currentUser.nick, { balance: 100, totalIn: 100, totalOut: 0, txCount: 1 });
-            bankAccount = { balance: 100, totalIn: 100, totalOut: 0, txCount: 1, loanActive: false, loanAmount: 0 };
-            showToast('¡Bienvenido al banco del clan! Cuenta creada con 100 PPC', '#00ffaa');
-        } catch(e2) {
-            bankAccount = { balance: 0, totalIn: 0, totalOut: 0, txCount: 0 };
+        const msg = String(e?.message || '');
+        const notFound = msg.includes('404') || msg.toLowerCase().includes('not found') || msg.toLowerCase().includes('no existe');
+        if (notFound) {
+            try {
+                await apiFetch('POST', '/bank/' + currentUser.nick, { balance: 100, totalIn: 100, totalOut: 0, txCount: 1 });
+                bankAccount = { balance: 100, totalIn: 100, totalOut: 0, txCount: 1, loanActive: false, loanAmount: 0 };
+                showToast('¡Bienvenido al banco del clan! Cuenta creada con 100 PPC', '#00ffaa');
+            } catch(e2) {
+                bankAccount = { balance: 0, totalIn: 0, totalOut: 0, txCount: 0 };
+            }
+        } else {
+            bankAccount = bankAccount || { balance: 0, totalIn: 0, totalOut: 0, txCount: 0 };
         }
     }
     await loadConfig();
@@ -549,11 +567,7 @@ async function refreshBankAccount() {
             apiFetch('GET', '/users/' + currentUser.nick)
         ]);
         bankAccount = bankData;
-        currentUser.rank = userData.rank || currentUser.rank || 'user';
-        currentUser.gender = userData.gender || currentUser.gender || null;
-        currentUser.level = userData.level || currentUser.level || 1;
-        currentUser.xp = userData.xp || currentUser.xp || 0;
-        currentUser.pusdBalance = parseFloat(userData.pusdBalance) || 0;
+        applyUserData(userData);
         updateBalanceDisplays();
     } catch(e) {}
     return bankAccount;
@@ -563,7 +577,7 @@ async function loadConfig() {
     if (!window._db) return;
     try {
         const data = await apiFetch('GET', '/config/bank');
-        if (data) bankConfig = Object.assign(bankConfig, data);
+        if (data) bankConfig = Object.assign(bankConfig, Object.fromEntries(Object.entries(data).filter(([, v]) => v != null)));
     } catch(e) {}
 }
 
@@ -757,8 +771,8 @@ async function loadProfile() {
     // JJK Rank badge
     const jjkEl = document.getElementById('profile-jjk-rank');
     if (jjkEl) {
-        if (currentUser.jjkRank) {
-            const jr = _jjkRankRegistry[currentUser.jjkRank];
+        const jr = currentUser.jjkRank ? _jjkRankRegistry[currentUser.jjkRank] : null;
+        if (jr) {
             jjkEl.style.display = 'inline-flex';
             jjkEl.innerHTML = `<i class="${jr.icon}" style="color:${jr.color}"></i> ${jr.label}`;
             jjkEl.style.color = jr.color;
@@ -827,6 +841,7 @@ window.saveAvatar = async function(filename) {
 window.uploadCustomAvatar = function(event) {
     const file = event.target.files[0];
     if (!file || !currentUser) return;
+    event.target.value = '';
 
     const isImage = file.type.startsWith('image/');
     const isVideo = file.type.startsWith('video/');
@@ -850,22 +865,32 @@ window.uploadCustomAvatar = function(event) {
             if (isImage) {
                 const img = new Image();
                 img.onload = async function() {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    const maxSize = 256;
-                    let w = img.width, h = img.height;
-                    if (w > h) { if (w > maxSize) { h = Math.round(h * maxSize / w); w = maxSize; } }
-                    else { if (h > maxSize) { w = Math.round(w * maxSize / h); h = maxSize; } }
-                    canvas.width = w;
-                    canvas.height = h;
-                    ctx.drawImage(img, 0, 0, w, h);
+                    try {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxSize = 256;
+                        let w = img.width, h = img.height;
+                        if (w > h) { if (w > maxSize) { h = Math.round(h * maxSize / w); w = maxSize; } }
+                        else { if (h > maxSize) { w = Math.round(w * maxSize / h); h = maxSize; } }
+                        canvas.width = w;
+                        canvas.height = h;
+                        ctx.drawImage(img, 0, 0, w, h);
 
-                    const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-                    await apiFetch('PUT', '/users/' + currentUser.nick + '/avatar', { avatar: resizedDataUrl });
-                    currentUser.avatar = resizedDataUrl;
-                    updateAvatarUI(resizedDataUrl);
-                    loadProfile();
-                    showToast('Foto de perfil actualizada ✓', '#00ffaa');
+                        const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                        await apiFetch('PUT', '/users/' + currentUser.nick + '/avatar', { avatar: resizedDataUrl });
+                        currentUser.avatar = resizedDataUrl;
+                        updateAvatarUI(resizedDataUrl);
+                        loadProfile();
+                        showToast('Foto de perfil actualizada ✓', '#00ffaa');
+                    } catch(err) {
+                        showToast('Error al subir: ' + err.message, '#ff4466');
+                    } finally {
+                        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-camera"></i> Subir Foto/Video'; }
+                    }
+                };
+                img.onerror = function() {
+                    showToast('Imagen inválida o corrupta', '#ff4466');
+                    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-camera"></i> Subir Foto/Video'; }
                 };
                 img.src = dataUrl;
             } else {
@@ -1164,9 +1189,10 @@ async function adminMintPUSD(nick) {
 
     try {
         const userData = await apiFetch('GET', '/users/' + nick);
-        const currentPUSD = userData.pusdBalance || 0;
-        await apiFetch('PUT', '/users/' + nick, { pusdBalance: currentPUSD + amt });
-        if (nick === currentUser.nick) currentUser.pusdBalance = currentPUSD + amt;
+        const currentPUSD = parseFloat(userData.pusdBalance) || 0;
+        const newPUSD = parseFloat((currentPUSD + amt).toFixed(4));
+        await apiFetch('PUT', '/users/' + nick, { pusdBalance: newPUSD });
+        if (nick === currentUser.nick) currentUser.pusdBalance = newPUSD;
         showToast(`Mint de $${amt} P-USD a ${nick} ✓`, 'var(--gold)');
         loadAdminAccounts(true);
     } catch(e) {
@@ -1188,10 +1214,11 @@ async function adminBurnPUSD(nick) {
 
     try {
         const userData = await apiFetch('GET', '/users/' + nick);
-        const currentPUSD = userData.pusdBalance || 0;
+        const currentPUSD = parseFloat(userData.pusdBalance) || 0;
         if (currentPUSD < amt) { showToast('Ese usuario no tiene tanto P-USD', '#ff4466'); return; }
-        await apiFetch('PUT', '/users/' + nick, { pusdBalance: currentPUSD - amt });
-        if (nick === currentUser.nick) currentUser.pusdBalance = currentPUSD - amt;
+        const newPUSD = parseFloat((currentPUSD - amt).toFixed(4));
+        await apiFetch('PUT', '/users/' + nick, { pusdBalance: newPUSD });
+        if (nick === currentUser.nick) currentUser.pusdBalance = newPUSD;
         showToast(`Burn de $${amt} P-USD a ${nick} ✓`, '#ff4466');
         loadAdminAccounts(true);
     } catch(e) {
@@ -1800,7 +1827,7 @@ async function loadJJKPage() {
     // Show minigames section
     const gamesSection = document.getElementById('jjk-games-section');
     if (gamesSection) {
-        gamesSection.style.display = currentUser.jjkRank ? 'block' : 'none';
+        gamesSection.style.display = (currentUser.jjkRank && _jjkRankRegistry[currentUser.jjkRank]) ? 'block' : 'none';
     }
 }
 
@@ -2449,7 +2476,14 @@ async function godChangeRank(nick) {
         await window._fbUpdateDoc(docRef, updates);
 
         if (nick === currentUser.nick) {
-            Object.assign(currentUser, updates);
+            const cleanUpdates = {};
+            for (const [k, v] of Object.entries(updates)) {
+                if (v && typeof v === 'object' && v._op) continue;
+                cleanUpdates[k] = v;
+            }
+            Object.assign(currentUser, cleanUpdates);
+            const freshMe = await apiFetch('GET', '/users/' + nick).catch(() => null);
+            if (freshMe) applyUserData(freshMe);
             updateNavUI();
         }
 

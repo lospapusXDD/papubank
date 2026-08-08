@@ -241,16 +241,14 @@ async function loadRingsInventory() {
         const rings = (inv || []).filter(i => i.item_id && i.item_id.startsWith('ring_')).map(i => i.item_id.replace('ring_', ''));
         currentUser.boughtRings = rings;
         const activeRing = (inv || []).find(i => i.item_type === 'ring' && i.active);
-        if (activeRing) {
-            currentUser.profileRing = activeRing.item_id.replace('ring_', '');
-        }
+        currentUser.profileRing = activeRing ? activeRing.item_id.replace('ring_', '') : 'none';
         currentUser._inventory = inv || [];
     } catch(e) {
         currentUser._inventory = [];
     }
 }
 
-function loadInventorySettings() {
+async function loadInventorySettings() {
     if (!currentUser) return;
     const inv = currentUser._inventory || [];
     
@@ -264,21 +262,21 @@ function loadInventorySettings() {
             const el = document.getElementById(id);
             if (el && cls) { el.className = el.className.replace(/nick-(rainbow|fire|ice|neon|gold)/g,'').trim(); el.classList.add(cls); }
         });
-        try { apiFetch('PUT', '/users/' + currentUser.nick, { nick_color: color }); } catch(e) {}
+        try { await apiFetch('PUT', '/users/' + currentUser.nick, { nick_color: color }); } catch(e) {}
     }
     
     const activeRing = inv.find(i => i.item_type === 'ring' && i.active);
     if (activeRing) {
         const ringName = activeRing.item_id.replace('ring_', '');
         currentUser.profileRing = ringName;
-        try { apiFetch('PUT', '/users/' + currentUser.nick, { profileRing: ringName }); } catch(e) {}
+        try { await apiFetch('PUT', '/users/' + currentUser.nick, { profileRing: ringName }); } catch(e) {}
     }
     
     const activeTitle = inv.find(i => i.item_type === 'title' && i.active);
     if (activeTitle) {
         const title = activeTitle.item_id.replace('title_', '');
         currentUser.active_title = title;
-        try { apiFetch('PUT', '/users/' + currentUser.nick, { active_title: title }); } catch(e) {}
+        try { await apiFetch('PUT', '/users/' + currentUser.nick, { active_title: title }); } catch(e) {}
     }
 }
 

@@ -215,7 +215,7 @@ function getRankKey(user) {
     if (user.nick === 'emilio' || user.nick === 'solariswat' || user.nick === 'insanlj5') return 'owner';
     if (user.rank && RANKS[user.rank]) return user.rank;
     if (user.admin) return 'admin';
-    const best = ['ben10Rank', 'mhaRank', 'godzillaRank', 'frierenRank']
+    const best = ['ben10Rank', 'ben10rank', 'mhaRank', 'mharank', 'godzillaRank', 'godzillarank', 'frierenRank', 'frierenrank', 'nanatsuRank', 'nanatsurank', 'jjkRank', 'jjkrank']
         .map(f => user[f])
         .filter(k => k && RANKS[k])
         .sort((a, b) => RANKS[b].level - RANKS[a].level)[0];
@@ -228,38 +228,39 @@ function getRankMultiplier(user) {
     let mult = RANK_MULTIPLIERS[key] || 1;
     if (key.startsWith('pareja')) mult *= 4;
 
-    // Add Frieren title multipliers
-    if (user && user.frierenRank) {
-        const fRank = FRIEREN_RANKS.find(x => x.key === user.frierenRank);
+    // Add Frieren title multipliers (multiplicative)
+    if (user && (user.frierenRank || user.frierenrank)) {
+        const fRank = FRIEREN_RANKS.find(x => x.key === (user.frierenRank || user.frierenrank));
         if (fRank) mult *= fRank.mult;
     }
 
     const fandomMap = [
-        { field: 'jjkRank', arr: JJK_RANKS, name: 'jjk', additive: true },
-        { field: 'ben10Rank', arr: BEN10_RANKS, name: 'ben10' },
-        { field: 'mhaRank', arr: MHA_RANKS, name: 'mha' },
-        { field: 'godzillaRank', arr: GODZILLA_RANKS, name: 'godzilla' },
-        { field: 'nanatsuRank', arr: typeof NANATSU_RANKS !== 'undefined' ? NANATSU_RANKS : [], name: 'nanatsu' },
-        { field: 'berserkRank', arr: typeof BERSERK_RANKS !== 'undefined' ? BERSERK_RANKS : [], name: 'berserk' },
-        { field: 'chainsawRank', arr: typeof CHAINSAW_RANKS !== 'undefined' ? CHAINSAW_RANKS : [], name: 'chainsaw' },
-        { field: 'deathnoteRank', arr: typeof DEATHNOTE_RANKS !== 'undefined' ? DEATHNOTE_RANKS : [], name: 'deathnote' },
-        { field: 'elfenRank', arr: typeof ELFEN_RANKS !== 'undefined' ? ELFEN_RANKS : [], name: 'elfen' },
-        { field: 'rezeroRank', arr: typeof REZERO_RANKS !== 'undefined' ? REZERO_RANKS : [], name: 'rezero' },
-        { field: 'rimuruRank', arr: typeof RIMURU_RANKS !== 'undefined' ? RIMURU_RANKS : [], name: 'rimuru' },
-        { field: 'bocchiRank', arr: typeof BOCCHI_RANKS !== 'undefined' ? BOCCHI_RANKS : [], name: 'bocchi' },
-        { field: 'vocaloidRank', arr: typeof VOCALOID_RANKS !== 'undefined' ? VOCALOID_RANKS : [], name: 'vocaloid' },
-        { field: 'mushokuRank', arr: typeof MUSHOKU_RANKS !== 'undefined' ? MUSHOKU_RANKS : [], name: 'mushoku' },
-        { field: 'floresRank', arr: typeof FLORES_RANKS !== 'undefined' ? FLORES_RANKS : [], name: 'flores' },
+        { field: 'jjkRank',     low: 'jjkrank',      arr: JJK_RANKS, name: 'jjk', additive: true },
+        { field: 'ben10Rank',   low: 'ben10rank',    arr: BEN10_RANKS, name: 'ben10' },
+        { field: 'mhaRank',     low: 'mharank',      arr: MHA_RANKS, name: 'mha' },
+        { field: 'godzillaRank',low: 'godzillarank', arr: GODZILLA_RANKS, name: 'godzilla' },
+        { field: 'nanatsuRank', low: 'nanatsurank',  arr: typeof NANATSU_RANKS !== 'undefined' ? NANATSU_RANKS : [], name: 'nanatsu' },
+        { field: 'berserkRank', low: 'berserkrank',  arr: typeof BERSERK_RANKS !== 'undefined' ? BERSERK_RANKS : [], name: 'berserk' },
+        { field: 'chainsawRank',low: 'chainsawrank', arr: typeof CHAINSAW_RANKS !== 'undefined' ? CHAINSAW_RANKS : [], name: 'chainsaw' },
+        { field: 'deathnoteRank', low: 'deathnoterank', arr: typeof DEATHNOTE_RANKS !== 'undefined' ? DEATHNOTE_RANKS : [], name: 'deathnote' },
+        { field: 'elfenRank',   low: 'elfenrank',    arr: typeof ELFEN_RANKS !== 'undefined' ? ELFEN_RANKS : [], name: 'elfen' },
+        { field: 'rezeroRank',  low: 'rerank',       arr: typeof REZERO_RANKS !== 'undefined' ? REZERO_RANKS : [], name: 'rezero' },
+        { field: 'rimuruRank',  low: 'rimururank',   arr: typeof RIMURU_RANKS !== 'undefined' ? RIMURU_RANKS : [], name: 'rimuru' },
+        { field: 'bocchiRank',  low: 'bocchirank',   arr: typeof BOCCHI_RANKS !== 'undefined' ? BOCCHI_RANKS : [], name: 'bocchi' },
+        { field: 'vocaloidRank',low: 'vocaloidrank', arr: typeof VOCALOID_RANKS !== 'undefined' ? VOCALOID_RANKS : [], name: 'vocaloid' },
+        { field: 'mushokuRank', low: 'mushokurank',  arr: typeof MUSHOKU_RANKS !== 'undefined' ? MUSHOKU_RANKS : [], name: 'mushoku' },
+        { field: 'floresRank',  low: 'floresrank',   arr: typeof FLORES_RANKS !== 'undefined' ? FLORES_RANKS : [], name: 'flores' },
     ];
 
     const owned = new Set();
     for (const f of fandomMap) {
-        const val = user && user[f.field];
+        const val = user && (user[f.field] || user[f.low]);
         if (val) {
-            owned.add(f.name + ':' + val);
             const found = f.arr.find(x => x.key === val);
-            if (found) mult += f.additive ? found.mult : (found.mult - 1);
-            continue;
+            if (found) {
+                owned.add(f.name + ':' + val);
+                mult += f.additive ? found.mult : (found.mult - 1);
+            }
         }
         if (user && user.boughtRanks && Array.isArray(user.boughtRanks) && f.arr.length) {
             for (const br of user.boughtRanks) {
@@ -280,8 +281,8 @@ function getRankLoanMax(user, bankConfig) {
     let baseMax = RANK_LOAN_MAX[key] || (bankConfig ? bankConfig.loanMax : 10000);
     
     // JJK Loan Bonus
-    if (user && user.jjkRank) {
-        const jRank = JJK_RANKS.find(x => x.key === user.jjkRank);
+    if (user && (user.jjkRank || user.jjkrank)) {
+        const jRank = JJK_RANKS.find(x => x.key === (user.jjkRank || user.jjkrank));
         if (jRank) {
             if (jRank.key === 'gojo' || jRank.key === 'sukuna') return 99999999;
             if (jRank.gradeTier === 1) baseMax *= 1.1;

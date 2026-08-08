@@ -1,5 +1,13 @@
 /* Core Banking Engine: Transactions, Leaderboard, Loans, Debts, Investments, and Bill Splits */
 
+function isTrue(v) {
+    return v === true || v === 'true' || v === 1 || v === '1';
+}
+
+function esc(s) {
+    return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function fmt(n) {
     return Number(n || 0).toLocaleString('es') + ' PPC';
 }
@@ -79,8 +87,8 @@ async function loadTransferUsers() {
             // Check avatar
             const avatarSrc = user.avatar ? user.avatar : 'avt_gojo.jpg';
             card.innerHTML = `
-                <img class="user-select-avatar" src="${avatarSrc}" alt="${nick}">
-                <div class="user-select-name">${nick}</div>
+                <img class="user-select-avatar" src="${esc(avatarSrc)}" alt="${esc(nick)}">
+                <div class="user-select-name">${esc(nick)}</div>
             `;
             grid.appendChild(card);
         });
@@ -92,7 +100,7 @@ async function loadTransferUsers() {
             snap.forEach(doc => {
                 const nick = doc.id;
                 if (nick !== currentUser.nick) {
-                    select.innerHTML += `<option value="${nick}" ${selectedTransferRecipient === nick ? 'selected' : ''}>${nick}</option>`;
+                    select.innerHTML += `<option value="${esc(nick)}" ${selectedTransferRecipient === nick ? 'selected' : ''}>${esc(nick)}</option>`;
                 }
             });
         }
@@ -152,6 +160,7 @@ async function doTransfer() {
 
     if (!toNick)  { showToast('Selecciona un destinatario', '#ff4466'); return; }
     if (amt < 1)  { showToast('Ingresa una cantidad válida', '#ff4466'); return; }
+    if (toNick.toLowerCase() === currentUser.nick.toLowerCase()) { showToast('No puedes transferirte a ti mismo', '#ff4466'); return; }
 
     const rankKey = getRankKey(currentUser);
     const noFeeEvent = (typeof hasActiveEvent === 'function' && hasActiveEvent('sin_comision'));
@@ -159,7 +168,7 @@ async function doTransfer() {
     const fee = Math.floor(amt * feeRate);
     const total = amt + fee;
 
-    if (bankAccount.frozen) { showToast('Tu cuenta está congelada 🔒', '#ff4466'); return; }
+    if (isTrue(bankAccount.frozen)) { showToast('Tu cuenta está congelada 🔒', '#ff4466'); return; }
     if ((bankAccount.balance || 0) < total) { showToast('Saldo insuficiente 💀', '#ff4466'); return; }
 
     const ok = await showConfirm(
@@ -275,6 +284,7 @@ async function loadLeaderboard(filter) {
             const rankInfo    = RANKS[rKey] || RANKS.user;
 
             const avatarSrc = entry.avatar || 'avt_gojo.jpg';
+            const nickSafe = esc(nick);
 
             const nickColor = entry.nick_color || entry.nickColor || '';
             const nickColorClass = ['rainbow','fire','ice','neon','gold'].includes(nickColor) ? ' nick-' + nickColor : '';
@@ -298,13 +308,13 @@ async function loadLeaderboard(filter) {
                     <td>
                         <div style="display:flex; align-items:center; gap:8px;">
                             <div style="position:relative; display:inline-block; width:32px; height:32px;">
-                                <img src="${avatarSrc}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; ${ringBorder}">
-                                ${entry.mcUsername ? `<img src="https://mc-heads.net/head/${entry.mcUsername}/18" style="position:absolute; right:-4px; bottom:-4px; width:18px; height:18px; filter:drop-shadow(0 0 4px var(--primary-glow)); z-index:2;" title="MC: ${entry.mcUsername}">` : ''}
+                                <img src="${esc(avatarSrc)}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; ${ringBorder}">
+                                ${entry.mcUsername ? `<img src="https://mc-heads.net/head/${esc(entry.mcUsername)}/18" style="position:absolute; right:-4px; bottom:-4px; width:18px; height:18px; filter:drop-shadow(0 0 4px var(--primary-glow)); z-index:2;" title="MC: ${esc(entry.mcUsername)}">` : ''}
                             </div>
-                            <span class="${nickColorClass}" style="${nameColorStyle}">${nick}</span>
-                            ${entry.active_title ? `<span style="font-size:8px;color:var(--gold);font-style:italic;">「${entry.active_title}」</span>` : ''}
+                            <span class="${nickColorClass}" style="${nameColorStyle}">${nickSafe}</span>
+                            ${entry.active_title ? `<span style="font-size:8px;color:var(--gold);font-style:italic;">「${esc(entry.active_title)}」</span>` : ''}
                             ${isMine ? '<span style="font-size:9px; background:var(--primary); color:#000; padding:1px 4px; border-radius:3px;">TÚ</span>' : ''}
-                            <button class="btn-icon" style="font-size:11px; color:var(--primary);" onclick="viewUserProfile('${nick}')" title="Ver perfil y comentar"><i class="fa-solid fa-comment"></i></button>
+                            <button class="btn-icon" style="font-size:11px; color:var(--primary);" onclick="viewUserProfile('${nick.replace(/'/g, "\\'")}')" title="Ver perfil y comentar"><i class="fa-solid fa-comment"></i></button>
                         </div>
                     </td>
                     <td>
@@ -353,6 +363,7 @@ async function loadRecentTx() {
             const isToMe = tx.to === currentUser.nick;
             
             if (!isFromMe && !isToMe) return; // Filter client-side if query limits prevent compound indexing
+            if (count >= 15) return;
             
             count++;
             const item = document.createElement('div');
@@ -380,12 +391,12 @@ async function loadRecentTx() {
                         <i class="${icon}"></i>
                     </div>
                     <div>
-                        <div style="font-size:12px; font-weight:600;">${isIncome ? 'Recibido de ' + tx.from : 'Enviado a ' + tx.to}</div>
-                        <div style="font-size:10px; color:var(--text-muted);">${tx.note || 'Transferencia'}</div>
+                        <div style="font-size:12px; font-weight:600;">${isIncome ? 'Recibido de ' + esc(tx.from) : 'Enviado a ' + esc(tx.to)}</div>
+                        <div style="font-size:10px; color:var(--text-muted);">${esc(tx.note) || 'Transferencia'}</div>
                     </div>
                 </div>
                 <div class="text-right">
-                    <div style="font-family:'Orbitron',sans-serif; font-size:13px; font-weight:bold; color:${iconColor};">${prefix}${tx.amount.toLocaleString()} PPC</div>
+                    <div style="font-family:'Orbitron',sans-serif; font-size:13px; font-weight:bold; color:${iconColor};">${prefix}${Number(tx.amount || 0).toLocaleString()} PPC</div>
                     <div style="font-size:9px; color:var(--text-muted);">${dateStr}</div>
                 </div>
             `;
@@ -414,12 +425,12 @@ async function loadLoans() {
     const activeLoanDisplay = document.getElementById('active-loan-container');
     if (!activeLoanDisplay) return;
     
-    if (bankAccount.loanActive) {
+    if (isTrue(bankAccount.loanActive)) {
         activeLoanDisplay.innerHTML = `
             <div class="glass-card" style="border-color:var(--danger);">
                 <h3 style="color:var(--danger); font-family:'Orbitron',sans-serif; margin-bottom:12px;"><i class="fa-solid fa-circle-exclamation"></i> PRÉSTAMO ACTIVO DETECTADO</h3>
                 <div style="font-size:13px; margin-bottom:15px;">
-                    Tienes una deuda pendiente de <strong style="color:var(--gold); font-size:15px;">${bankAccount.loanAmount.toLocaleString()} PPC</strong>.<br>
+                    Tienes una deuda pendiente de <strong style="color:var(--gold); font-size:15px;">${Number(bankAccount.loanAmount || 0).toLocaleString()} PPC</strong>.<br>
                     Debes saldar tu deuda en la pestaña de <strong>Deudas</strong> para poder solicitar otro préstamo o realizar retiros especiales.
                 </div>
                 <button class="btn btn-danger" onclick="showPage('deudas')">Pagar Deuda de Préstamo</button>
@@ -496,7 +507,7 @@ async function loadDebts() {
     const debtContainer = document.getElementById('debts-container');
     if (!debtContainer) return;
     
-    if (!bankAccount.loanActive) {
+    if (!isTrue(bankAccount.loanActive)) {
         debtContainer.innerHTML = `
             <div class="glass-card text-center" style="padding:40px;">
                 <div style="font-size:48px; color:var(--secondary); margin-bottom:15px;"><i class="fa-solid fa-circle-check"></i></div>
@@ -505,7 +516,7 @@ async function loadDebts() {
             </div>
         `;
     } else {
-        const debt = bankAccount.loanAmount || 0;
+        const debt = Number(bankAccount.loanAmount || 0);
         debtContainer.innerHTML = `
             <div class="glass-card" style="border-color:var(--danger);">
                 <h3 style="color:var(--danger); font-family:'Orbitron',sans-serif; margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> DEUDA DE PRÉSTAMO ACTIVA</h3>
@@ -530,7 +541,7 @@ async function loadDebts() {
 
 async function payDebt(type) {
     if (!currentUser || !bankAccount || !window._db) return;
-    const debt = bankAccount.loanAmount || 0;
+    const debt = Number(bankAccount.loanAmount || 0);
     
     if (bankAccount.balance <= 0) {
         showToast('No tienes saldo de PPC para abonar', '#ff4466');
@@ -775,21 +786,28 @@ async function createInvestment() {
 async function claimInvestment(invDocId, expectedReturn) {
     if (!currentUser || !window._db) return;
     
-    const mult = (typeof getRankMultiplier === 'function') ? getRankMultiplier(currentUser) : 1;
-    const finalReturn = Math.round(expectedReturn * mult);
-    
     try {
-        const db = window._db;
-        const accRef = window._fbDoc(db, 'bank_accounts', currentUser.nick);
-        const invDocRef = window._fbDoc(db, `bank_accounts/${currentUser.nick}/investments`, invDocId);
+        const invPath = `/bank_accounts/${currentUser.nick}/investments/${invDocId}`;
         
-        // Add returns to account balance (with multiplier)
+        const invSnap = await apiFetch('GET', invPath).catch(() => null);
+        if (!invSnap) {
+            showToast('Esta inversión ya fue cobrada o no existe', '#ff4466');
+            loadInvestments();
+            return;
+        }
+        
+        const freshUser = await apiFetch('GET', '/users/' + currentUser.nick).catch(() => null);
+        const mult = (typeof getRankMultiplier === 'function') ? getRankMultiplier(freshUser || currentUser) : 1;
+        const finalReturn = Math.round(expectedReturn * mult);
+        
+        const accRef = window._fbDoc(window._db, 'bank_accounts', currentUser.nick);
         await window._fbUpdateDoc(accRef, {
             balance: window._fbIncrement(finalReturn)
         });
         
-        // Remove investment subdocument
-        await window._fbDeleteDoc(invDocRef);
+        await apiFetch('DELETE', invPath).catch(() => {
+            console.warn('No se pudo borrar la inversión ' + invDocId + ' tras cobrarla');
+        });
         
         await addTx({
             type: 'Cobro Inversión',
@@ -836,8 +854,8 @@ async function loadSplitUsers() {
             
             const avatarSrc = doc.data().avatar ? doc.data().avatar : 'avt_gojo.jpg';
             card.innerHTML = `
-                <img class="user-select-avatar" src="${avatarSrc}" alt="${nick}">
-                <div class="user-select-name">${nick}</div>
+                <img class="user-select-avatar" src="${esc(avatarSrc)}" alt="${esc(nick)}">
+                <div class="user-select-name">${esc(nick)}</div>
             `;
             grid.appendChild(card);
         });
@@ -916,6 +934,11 @@ async function triggerSplit() {
             const userSnap = await window._fbGetDoc(userRef);
             
             if (userSnap.exists()) {
+                const userBal = parseFloat(userSnap.data()?.balance) || 0;
+                if (userBal < splitPerPerson) {
+                    showToast(`${nick} no tiene saldo suficiente para el split`, '#ff4466');
+                    continue;
+                }
                 // Deduct balance from debtor and give to creator (simple instant split execution)
                 await window._fbUpdateDoc(userRef, {
                     balance: window._fbIncrement(-splitPerPerson)
