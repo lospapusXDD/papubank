@@ -1,21 +1,6 @@
-La tabla users de PostgreSQL no tiene estas columnas que el frontend intenta escribir:
+Necesito el endpoint PUT /api/users/:nick/avatar
 
-- mushokurank
-- berserkrank  
-- chainsawrank
-- deathnoterank
-- elfenrank
-- rerank
-- rimururank
-- bocchirank
-- vocaloidrank
-- floresrank
-- ben10rank
-- godzillarank
-- mharank
-- nanatsurank
-- frierenrank
-
-El frontend escribe a estas columnas al comprar rangos de cada fandom. Necesito que las agregues como VARCHAR/TEXT con default null.
-
-También verifica que el endpoint PUT /api/users/:nick acepte todos estos campos.
+Body: { "avatar": "data:image/jpeg;base64,..." }
+Guarda el base64 en el campo "avatar" de la tabla users
+Respuesta: { "message": "Avatar actualizado" }
+Si el usuario no existe: 404
