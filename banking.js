@@ -233,15 +233,19 @@ async function loadLeaderboard(filter) {
         if (needEnrich.length > 0 && needEnrich.length <= 50) {
             try {
                 const allUsers = await apiFetch('GET', '/users');
-                const userList = Array.isArray(allUsers) ? allUsers : (allUsers.users || []);
-                const userMap = {};
-                userList.forEach(u => { userMap[u.nick] = u; });
+                let userMap = {};
+                if (Array.isArray(allUsers)) {
+                    allUsers.forEach(u => { userMap[u.nick] = u; });
+                } else if (allUsers && typeof allUsers === 'object') {
+                    userMap = allUsers;
+                }
                 entries.forEach(e => {
                     const u = userMap[e.nick];
                     if (u) {
                         if (!e.nick_color && !e.nickColor) e.nick_color = u.nick_color || u.nickColor || null;
-                        if (!e.profileRing) e.profileRing = u.profileRing || u.profile_ring || null;
-                        if (!e.active_title) e.active_title = u.active_title || u.activeTitle || null;
+                        if (!e.profileRing && !e.profile_ring) e.profileRing = u.profileRing || u.profile_ring || null;
+                        if (!e.active_title && !e.activeTitle) e.active_title = u.active_title || u.activeTitle || null;
+                        if (!e.avatar) e.avatar = u.avatar || null;
                     }
                 });
             } catch(e) {}
