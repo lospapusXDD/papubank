@@ -176,7 +176,7 @@ async function loadNanatsuPage() {
                 </div>
                 <div style="font-weight:700;color:${rank.color};font-size:14px;text-align:center;margin-bottom:4px;">${rank.label}</div>
                 <div style="font-size:10px;color:var(--text-muted);text-align:center;margin-bottom:8px;">${rank.sin} • ${rank.grade}</div>
-                <div style="font-size:11px;color:var(--secondary);font-weight:bold;margin-bottom:8px;">+${Math.round(rank.mult * 100)}% ganancias</div>
+                <div style="font-size:11px;color:var(--secondary);font-weight:bold;margin-bottom:8px;">+${Math.round((rank.mult - 1) * 100)}% ganancias</div>
                 <div style="font-size:10px;color:${rank.color};margin-bottom:6px;"><i class="${rank.weaponIcon}"></i> Tesoro: <strong>${rank.weapon}</strong></div>
                 <p style="font-size:11px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;">${rank.desc}</p>
                 <div style="display:flex;gap:8px;justify-content:center;margin-bottom:4px;">
@@ -317,7 +317,7 @@ async function checkNanatsuAchievements() {
         if (earned.includes(ach.id)) continue;
         let ok = false;
         if (ach.id === 'first_nanatsu' && currentUser.nanatsuRank) ok = true;
-        if (ach.id === 'collect_3' && (currentUser.boughtRanks || []).filter(r => r.startsWith('nanatsu') || ['meliodas','diane','ban','king','gowther','merlin','escanor'].includes(r)).length >= 3) ok = true;
+        if (ach.id === 'collect_3' && (currentUser.boughtRanks || []).filter(r => ['meliodas','diane','ban','king','gowther','merlin','escanor'].includes(r)).length >= 3) ok = true;
         if (ach.id === 'collect_7' && (currentUser.boughtRanks || []).filter(r => ['meliodas','diane','ban','king','gowther','merlin','escanor'].includes(r)).length >= 7) ok = true;
         if (ach.id === 'escanor_rank' && currentUser.nanatsuRank === 'escanor') ok = true;
 

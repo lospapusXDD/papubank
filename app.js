@@ -561,16 +561,24 @@ async function initBankAccount() {
 
 async function refreshBankAccount() {
     if (!currentUser) return;
+    if (refreshBankAccount._pending) return refreshBankAccount._pending;
+    refreshBankAccount._pending = (async () => {
+        try {
+            const [bankData, userData] = await Promise.all([
+                apiFetch('GET', '/bank/' + currentUser.nick),
+                apiFetch('GET', '/users/' + currentUser.nick)
+            ]);
+            bankAccount = bankData;
+            applyUserData(userData);
+            updateBalanceDisplays();
+        } catch(e) {}
+        return bankAccount;
+    })();
     try {
-        const [bankData, userData] = await Promise.all([
-            apiFetch('GET', '/bank/' + currentUser.nick),
-            apiFetch('GET', '/users/' + currentUser.nick)
-        ]);
-        bankAccount = bankData;
-        applyUserData(userData);
-        updateBalanceDisplays();
-    } catch(e) {}
-    return bankAccount;
+        return await refreshBankAccount._pending;
+    } finally {
+        refreshBankAccount._pending = null;
+    }
 }
 
 async function loadConfig() {
@@ -2465,12 +2473,25 @@ async function godChangeRank(nick) {
             updates.jjkRank = rank;
         } else {
             updates.rank = rank;
-            const spec = {
-                'ben10_': 'ben10Rank', 'mha_': 'mhaRank', 'godzilla_': 'godzillaRank',
-                'frieren_': 'frierenRank'
-            };
-            const field = spec[rank.split('_')[0] + '_'];
-            if (field) updates[field] = rank;
+            const fandomFields = [
+                { field: 'ben10Rank', arr: BEN10_RANKS },
+                { field: 'mhaRank', arr: MHA_RANKS },
+                { field: 'godzillaRank', arr: GODZILLA_RANKS },
+                { field: 'frierenRank', arr: FRIEREN_RANKS },
+                { field: 'nanatsuRank', arr: typeof NANATSU_RANKS !== 'undefined' ? NANATSU_RANKS : [] },
+                { field: 'berserkRank', arr: typeof BERSERK_RANKS !== 'undefined' ? BERSERK_RANKS : [] },
+                { field: 'chainsawRank', arr: typeof CHAINSAW_RANKS !== 'undefined' ? CHAINSAW_RANKS : [] },
+                { field: 'deathnoteRank', arr: typeof DEATHNOTE_RANKS !== 'undefined' ? DEATHNOTE_RANKS : [] },
+                { field: 'elfenRank', arr: typeof ELFEN_RANKS !== 'undefined' ? ELFEN_RANKS : [] },
+                { field: 'rezeroRank', arr: typeof REZERO_RANKS !== 'undefined' ? REZERO_RANKS : [] },
+                { field: 'rimuruRank', arr: typeof RIMURU_RANKS !== 'undefined' ? RIMURU_RANKS : [] },
+                { field: 'bocchiRank', arr: typeof BOCCHI_RANKS !== 'undefined' ? BOCCHI_RANKS : [] },
+                { field: 'vocaloidRank', arr: typeof VOCALOID_RANKS !== 'undefined' ? VOCALOID_RANKS : [] },
+                { field: 'mushokuRank', arr: typeof MUSHOKU_RANKS !== 'undefined' ? MUSHOKU_RANKS : [] },
+                { field: 'floresRank', arr: typeof FLORES_RANKS !== 'undefined' ? FLORES_RANKS : [] },
+            ];
+            const foundFandom = fandomFields.find(f => f.arr.length && f.arr.some(r => r.key === rank));
+            if (foundFandom) updates[foundFandom.field] = rank;
         }
         updates.boughtRanks = window._fbArrayUnion(rank);
         await window._fbUpdateDoc(docRef, updates);

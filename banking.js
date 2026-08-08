@@ -494,6 +494,7 @@ async function requestLoan() {
         showToast(`¡Préstamo de ${fmt(amt)} aprobado e ingresado a tu cuenta!`, '#00ffaa');
         if (amountInput) amountInput.value = '';
         
+        if (typeof refreshBankAccount === 'function') await refreshBankAccount();
         if (window.loadDashboard) window.loadDashboard();
         loadLoans();
     } catch(e) {
@@ -597,6 +598,7 @@ async function payDebt(type) {
         
         showToast(remaining <= 0 ? '¡Has liquidado tu deuda con éxito!' : `Abonaste ${fmt(payAmt)} a tu préstamo.`, '#00ffaa');
         
+        if (typeof refreshBankAccount === 'function') await refreshBankAccount();
         if (window.loadDashboard) window.loadDashboard();
         loadDebts();
     } catch(e) {

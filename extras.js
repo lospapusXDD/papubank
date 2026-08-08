@@ -140,17 +140,31 @@ function renderThemes(container) {
 function uploadCustomWallpaper(input) {
     const file = input.files[0];
     if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+        showToast('El archivo no puede pasar de 5MB', 'var(--danger)');
+        if (input) input.value = '';
+        return;
+    }
     
     const reader = new FileReader();
     reader.onload = function(e) {
-        const dataUrl = e.target.result;
-        localStorage.setItem('papubank_custom_wallpaper', dataUrl);
-        document.body.style.backgroundImage = `url('${dataUrl}')`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundAttachment = 'fixed';
-        document.body.style.backgroundRepeat = 'no-repeat';
-        showToast('Fondo de pantalla actualizado 🖼️', 'var(--primary)');
+        try {
+            const dataUrl = e.target.result;
+            localStorage.setItem('papubank_custom_wallpaper', dataUrl);
+            document.body.style.backgroundImage = `url('${dataUrl}')`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundAttachment = 'fixed';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            showToast('Fondo de pantalla actualizado 🖼️', 'var(--primary)');
+        } catch(err) {
+            showToast('Error al guardar el fondo: ' + err.message, 'var(--danger)');
+        }
+        if (input) input.value = '';
+    };
+    reader.onerror = function() {
+        showToast('No se pudo leer el archivo', 'var(--danger)');
+        if (input) input.value = '';
     };
     reader.readAsDataURL(file);
 }

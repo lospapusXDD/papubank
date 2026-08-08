@@ -39,7 +39,7 @@ const GODZILLA_ACHIEVEMENTS = [
     { id: 'first_godzilla', icon: 'fa-solid fa-radiation', name: 'Primer Rugido', desc: 'Compra tu primer rango de Godzilla.', reward: 2000 },
     { id: 'collect_5_gz', icon: 'fa-solid fa-dragon', name: 'Cinco Formas', desc: 'Obtén 5 rangos de Godzilla.', reward: 15000 },
     { id: 'collect_15_gz', icon: 'fa-solid fa-crown', name: 'Rey de los Monstruos', desc: 'Obtén 15 rangos de Godzilla.', reward: 50000 },
-    { id: 'collect_all_gz', icon: 'fa-solid fa-skull-crossbones', name: 'Dios del Caos', desc: 'Colecciona los 31 rangos.', reward: 250000 },
+    { id: 'collect_all_gz', icon: 'fa-solid fa-skull-crossbones', name: 'Dios del Caos', desc: 'Colecciona los 30 rangos.', reward: 250000 },
     { id: 'hakaishin_rank', icon: 'fa-solid fa-skull-crossbones', name: 'Hakaishin Supremo', desc: 'Alcanza el rango Godzilla Hakaishin.', reward: 300000 },
     { id: 'destroyah_rank', icon: 'fa-solid fa-hat-wizard', name: 'El Más Cheto', desc: 'Alcanza el rango Destoroyah.', reward: 300000 },
     { id: 'king_kaiju', icon: 'fa-solid fa-hand-fist', name: 'Rey de los Kaijus', desc: 'Obtén 5 rangos de la categoría Kaijus.', reward: 100000 }
@@ -147,7 +147,7 @@ async function checkGodzillaAchievements() {
             if (ach.id === 'first_godzilla' && userData.godzillaRank) newly.push(ach);
             if (ach.id === 'collect_5_gz' && gzRanks.length >= 5) newly.push(ach);
             if (ach.id === 'collect_15_gz' && gzRanks.length >= 15) newly.push(ach);
-            if (ach.id === 'collect_all_gz' && gzRanks.length >= 31) newly.push(ach);
+            if (ach.id === 'collect_all_gz' && gzRanks.length >= GODZILLA_RANKS.length) newly.push(ach);
             if (ach.id === 'hakaishin_rank' && userData.godzillaRank === 'godzilla_hakaishin') newly.push(ach);
             if (ach.id === 'destroyah_rank' && userData.godzillaRank === 'destroyah') newly.push(ach);
             if (ach.id === 'king_kaiju' && kaijuRanks.length >= 5) newly.push(ach);
