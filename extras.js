@@ -243,7 +243,65 @@ async function loadRingsInventory() {
         if (activeRing) {
             currentUser.profileRing = activeRing.item_id.replace('ring_', '');
         }
-    } catch(e) {}
+        currentUser._inventory = inv || [];
+    } catch(e) {
+        currentUser._inventory = [];
+    }
+}
+
+function loadInventorySettings() {
+    if (!currentUser) return;
+    const inv = currentUser._inventory || [];
+    
+    const activeNick = inv.find(i => i.item_id && i.item_id.startsWith('nick_') && i.active);
+    if (activeNick) {
+        const color = activeNick.item_id.replace('nick_', '');
+        currentUser.nickColor = color;
+        applyNickColor(currentUser.nick, color);
+    }
+    
+    const activeRing = inv.find(i => i.item_type === 'ring' && i.active);
+    if (activeRing) {
+        currentUser.profileRing = activeRing.item_id.replace('ring_', '');
+    }
+}
+
+function applyNickColor(nick, color) {
+    const colorMap = {
+        'rainbow': 'linear-gradient(90deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff)',
+        'fire': 'linear-gradient(90deg, #ff4400, #ff8800, #ffcc00)',
+        'ice': 'linear-gradient(90deg, #88ddff, #aaeeff, #ffffff)',
+        'neon': 'linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff)',
+        'gold': 'linear-gradient(90deg, #ffd700, #ffaa00, #ffd700)'
+    };
+    
+    document.querySelectorAll('.nick-color-target').forEach(el => {
+        if (el.dataset.nick === nick) {
+            if (colorMap[color]) {
+                el.style.background = colorMap[color];
+                el.style.webkitBackgroundClip = 'text';
+                el.style.webkitTextFillColor = 'transparent';
+                el.style.backgroundClip = 'text';
+                el.style.fontWeight = 'bold';
+            } else {
+                el.style.background = '';
+                el.style.webkitBackgroundClip = '';
+                el.style.webkitTextFillColor = '';
+                el.style.backgroundClip = '';
+            }
+        }
+    });
+}
+
+function getNickColorStyle(color) {
+    const colorMap = {
+        'rainbow': 'background:linear-gradient(90deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:bold;',
+        'fire': 'background:linear-gradient(90deg,#ff4400,#ff8800,#ffcc00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:bold;',
+        'ice': 'background:linear-gradient(90deg,#88ddff,#aaeeff,#ffffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:bold;',
+        'neon': 'background:linear-gradient(90deg,#ff00ff,#00ffff,#ff00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:bold;',
+        'gold': 'background:linear-gradient(90deg,#ffd700,#ffaa00,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:bold;'
+    };
+    return colorMap[color] || '';
 }
 
 async function buyRing(ringKey) {

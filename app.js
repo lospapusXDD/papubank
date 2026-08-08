@@ -452,11 +452,13 @@ async function tryAutoLogin() {
                 currentUser = { nick, hash };
                 Object.assign(currentUser, res);
                 currentUser.nick = nick;
+        document.getElementById('auth-overlay').style.display = 'none';
 
-                document.getElementById('auth-overlay').style.display = 'none';
-                await initBankAccount();
-                updateNavUI();
-                showPage('dashboard');
+        await initBankAccount();
+        await loadRingsInventory();
+        loadInventorySettings();
+        updateNavUI();
+        showPage('dashboard');
                 if (typeof initMediaPlayer === 'function') initMediaPlayer();
                 if (typeof initMatrix === 'function') initMatrix();
                 if (typeof loadSavedTheme === 'function') loadSavedTheme();
@@ -605,7 +607,7 @@ function updateNavUI() {
 // ═══════════════════════════ PROFILE ═══════════════════════════
 
 async function loadProfile() {
-    if (!currentUser || !bankAccount || !window._db) return;
+    if (!currentUser || !bankAccount) return;
 
     const nickEl = document.getElementById('profile-nick');
     const balEl  = document.getElementById('profile-balance');
@@ -633,7 +635,62 @@ async function loadProfile() {
 
     // Avatar
     const avatarEl = document.getElementById('profile-avatar');
-    if (avatarEl && currentUser.avatar) avatarEl.src = currentUser.avatar;
+    if (avatarEl && currentUser.avatar) {
+        if (currentUser.avatar.startsWith('data:video')) {
+            const parent = avatarEl.parentElement;
+            let vid = parent.querySelector('video');
+            if (!vid) {
+                vid = document.createElement('video');
+                vid.autoplay = true;
+                vid.loop = true;
+                vid.muted = true;
+                vid.playsInline = true;
+                vid.style.cssText = 'width:120px;height:120px;border-radius:50%;object-fit:cover;';
+                parent.insertBefore(vid, avatarEl);
+                avatarEl.style.display = 'none';
+            }
+            vid.src = currentUser.avatar;
+        } else {
+            avatarEl.src = currentUser.avatar;
+        }
+    }
+
+    // Ring around avatar
+    const ringWrap = document.querySelector('.profile-avatar-wrap');
+    if (ringWrap) {
+        const existingRing = ringWrap.querySelector('.profile-ring-overlay');
+        if (existingRing) existingRing.remove();
+        const ringKey = currentUser.profileRing || 'none';
+        if (ringKey !== 'none') {
+            const ringData = getRingData(ringKey);
+            const ringDiv = document.createElement('div');
+            ringDiv.className = 'profile-ring-overlay';
+            if (ringData.color === 'rainbow') {
+                ringDiv.style.cssText = 'position:absolute;inset:-4px;border-radius:50%;border:4px solid transparent;background:linear-gradient(90deg,red,orange,yellow,green,blue,violet) border-box;animation:ringRotate 3s linear infinite;pointer-events:none;z-index:1;';
+            } else {
+                ringDiv.style.cssText = 'position:absolute;inset:-4px;border-radius:50%;border:4px solid ' + ringData.color + ';pointer-events:none;z-index:1;box-shadow:0 0 10px ' + ringData.color + '60;';
+            }
+            ringWrap.style.position = 'relative';
+            ringWrap.appendChild(ringDiv);
+        }
+    }
+
+    // Nick color
+    if (currentUser.nickColor) {
+        const nickEl2 = document.getElementById('profile-nick');
+        if (nickEl2) nickEl2.style.cssText += ';' + getNickColorStyle(currentUser.nickColor);
+    }
+
+    // Active title
+    const titleEl = document.getElementById('profile-title-display');
+    if (titleEl) {
+        if (currentUser.active_title) {
+            titleEl.textContent = currentUser.active_title;
+            titleEl.style.display = 'block';
+        } else {
+            titleEl.style.display = 'none';
+        }
+    }
 
     // JJK Rank badge
     const jjkEl = document.getElementById('profile-jjk-rank');

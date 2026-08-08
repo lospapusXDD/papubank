@@ -259,6 +259,12 @@ async function loadLeaderboard(filter) {
                     ? 'color: var(--primary); font-weight: bold; text-shadow:0 0 10px var(--primary-glow);'
                     : (entry.jjkRank === 'sukuna' ? 'color: var(--danger); font-weight: bold;' : ''));
 
+            const nickColor = entry.nick_color || entry.nickColor || '';
+            const nickStyle = nickColor ? getNickColorStyle(nickColor) : nameColor;
+            const ringKey = entry.profileRing || 'ring_rainbow';
+            const ringData = getRingData ? getRingData(ringKey) : { key: 'none' };
+            const ringBorder = ringData.key !== 'none' ? (ringData.color === 'rainbow' ? 'border:3px solid transparent;background-clip:padding-box;' : `border:3px solid ${ringData.color};box-shadow:0 0 6px ${ringData.color}60;`) : '';
+
             let positionLabel = `#${idx + 1}`;
             if (idx === 0) positionLabel = '<i class="fa-solid fa-trophy" style="color:var(--gold)"></i>';
             else if (idx === 1) positionLabel = '<i class="fa-solid fa-trophy" style="color:#c0c0c0"></i>';
@@ -270,10 +276,11 @@ async function loadLeaderboard(filter) {
                     <td>
                         <div style="display:flex; align-items:center; gap:8px;">
                             <div style="position:relative; display:inline-block; width:32px; height:32px;">
-                                <img src="${avatarSrc}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1px solid var(--dark-border);">
+                                <img src="${avatarSrc}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; ${ringBorder}">
                                 ${entry.mcUsername ? `<img src="https://mc-heads.net/head/${entry.mcUsername}/18" style="position:absolute; right:-4px; bottom:-4px; width:18px; height:18px; filter:drop-shadow(0 0 4px var(--primary-glow)); z-index:2;" title="MC: ${entry.mcUsername}">` : ''}
                             </div>
-                            <span style="${nameColor}">${nick}</span>
+                            <span style="${nickStyle}">${nick}</span>
+                            ${entry.active_title ? `<span style="font-size:8px;color:var(--gold);font-style:italic;">「${entry.active_title}」</span>` : ''}
                             ${isMine ? '<span style="font-size:9px; background:var(--primary); color:#000; padding:1px 4px; border-radius:3px;">TÚ</span>' : ''}
                             <button class="btn-icon" style="font-size:11px; color:var(--primary);" onclick="viewUserProfile('${nick}')" title="Ver perfil y comentar"><i class="fa-solid fa-comment"></i></button>
                         </div>
