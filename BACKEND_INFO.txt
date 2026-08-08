@@ -1,9 +1,13 @@
-PUT /api/bank_accounts/:nick con el campo badges en el body devuelve 500 (columna inexistente). Esto rompe el Dedo de Sukuna (market.js) y el Omnitrix (ben10.js): la compra falla entera y el jugador pierde la plata sin recibir nada.
+Antigravity, fixes pendientes de encuestas (votación rota):
 
+Ya arreglé la creación de encuestas del lado frontend (ahora mando question + created_by, que es lo que tu backend exige). Pero votar sigue roto, lo verifiqué en vivo:
+
+PUT /api/polls/:id → 404 "Ruta no encontrada" (el frontend lo usa para votes y participants)
+POST /api/polls/:id/vote → 500 Error interno (existe pero falla)
+GET /api/polls/:id → 404 (el frontend lo usa en votePoll para comprobar si ya votaste; sin él, aborta en silencio)
 Por favor:
 
-Agrega a bank_accounts una columna badges tipo JSONB (array de strings, default []).
-Si puedes, haz el PUT tolerante: ignorar columnas desconocidas en vez de fallar (previene futuros 500 con campos nuevos).
-Dime el esquema actual completo de bank_accounts (columnas y tipos) para que el frontend sepa qué campos puede escribir.
-Borra la cuenta de prueba test_finger_x.
-Dato extra: la cuenta test_finger_x se creó sola con 5000 PPC al hacer GET — asumo que hay lazy-create; si no es intencional, puede ser otro bug menor, revisa de paso.
+Implementa POST /api/polls/:id/vote — dame la spec exacta (body esperado: {nick, option}? ¿option es índice numérico? ¿qué devuelve?). El frontend necesita saber qué campo lee para marcar "ya votaste" (o GET /api/polls/:id con el detalle).
+Confirma que GET /api/polls devuelve los votos con formato votes: {"0": ["nick1"], "1": ["nick2"]} para que el contador de % funcione.
+Limpieza: borra mis datos de prueba — encuestas id 1, 2, 3 ("x", "test encuesta", "PREGUNTA TEST") y las cuentas test_ranks_x y test_finger2.
+Dato: el préstamo ya quedó arreglado del lado frontend (mando loan_active/loan_amount/loan_date en snake_case) — confirmado que tu PUT de bank_accounts rechaza camelCase con 500, así que verifícalo si puedes aceptar ambos formatos para evitar futuros bugs.
