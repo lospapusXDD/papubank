@@ -435,7 +435,10 @@ window.initAuthOverlayEvents = function() {
 };
 
 
+let _autoLoginRunning = false;
 async function tryAutoLogin() {
+    if (_autoLoginRunning) return;
+    _autoLoginRunning = true;
     try {
         const saved = localStorage.getItem(SESSION_KEY);
         if (!saved) return;
@@ -498,6 +501,8 @@ async function tryAutoLogin() {
         });
     } catch(e) {
         localStorage.removeItem(SESSION_KEY);
+    } finally {
+        _autoLoginRunning = false;
     }
 }
 
