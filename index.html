@@ -1861,13 +1861,13 @@
   const API_BASE = 'https://communities-probe-poster-tiny.trycloudflare.com/api';
   window._apiToken = localStorage.getItem('papubank_jwt') || null;
 
-  const _apiCache = {};
+  window.window._apiCache = {};
   const CACHE_TTL = 60000;
 
   async function apiFetch(method, path, body) {
     const cacheKey = method + ':' + path;
     if (method === 'GET' && !body) {
-      const cached = _apiCache[cacheKey];
+      const cached = window._apiCache[cacheKey];
       if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.data;
     }
 
@@ -1893,10 +1893,10 @@
     if (!res.ok) throw new Error(data.error || 'API error ' + res.status);
 
     if (method === 'GET' && !body) {
-      _apiCache[cacheKey] = { data, ts: Date.now() };
+      window._apiCache[cacheKey] = { data, ts: Date.now() };
     }
     if (method !== 'GET') {
-      Object.keys(_apiCache).forEach(k => delete _apiCache[k]);
+      Object.keys(window._apiCache).forEach(k => delete window._apiCache[k]);
     }
     return data;
   }

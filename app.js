@@ -1081,6 +1081,7 @@ async function adminMint(nick) {
 
     try {
         await apiFetch('POST', '/bank/mint', { nick, amount: amt, reason });
+        delete _apiCache['GET:/bank/' + nick];
         showToast(`Mint de ${amt.toLocaleString()} PPC a ${nick} ✓`, '#00ffaa');
         loadAdminAccounts(true);
         if (nick === currentUser.nick) await refreshBankAccount();
@@ -1103,6 +1104,7 @@ async function adminBurn(nick) {
 
     try {
         await apiFetch('POST', '/bank/burn', { nick, amount: amt, reason });
+        delete window._apiCache['GET:/bank/' + nick];
         showToast(`Burn de ${amt.toLocaleString()} PPC a ${nick} ✓`, '#ff4466');
         loadAdminAccounts(true);
         if (nick === currentUser.nick) await refreshBankAccount();
