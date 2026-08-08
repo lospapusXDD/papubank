@@ -928,7 +928,6 @@ function lockGodMode() {
 }
 
 async function loadAdminStats() {
-    if (!window._db) return;
     try {
         const data = await apiFetch('GET', '/admin/stats');
         const totalAccounts = data.totalAccounts || 0;
@@ -958,7 +957,7 @@ async function loadAdminStats() {
 window._invalidateCaches = function() { window._cacheAccounts = null; window._cacheUsers = null; window._adminCache = null; window._lbCache = null; };
 
 async function loadAdminAccounts(forceRefresh) {
-    if (!window._db || !checkAdminPermission()) return;
+    if (!checkAdminPermission()) return;
     const container = document.getElementById('admin-accounts-list');
     if (!container) return;
     if (forceRefresh) window._invalidateCaches();
@@ -973,8 +972,15 @@ async function loadAdminAccounts(forceRefresh) {
 
     try {
         const data = await apiFetch('GET', '/admin/accounts');
-        const accSnap = data.accounts || [];
-        const usersMap = data.users || {};
+        let accSnap = [];
+        let usersMap = {};
+        if (Array.isArray(data)) {
+            accSnap = data.map(d => ({ id: d.nick, ...d }));
+            data.forEach(d => { usersMap[d.nick] = d; });
+        } else {
+            accSnap = data.accounts || [];
+            usersMap = data.users || {};
+        }
         window._adminCache = { accSnap, usersMap, ts: now };
         renderAdminAccounts(accSnap, usersMap);
     } catch(e) {
