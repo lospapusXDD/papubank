@@ -1928,19 +1928,30 @@
   };
   window._fbUpdateDoc = async function(ref, data) {
     const [col, id] = ref.split('/');
-    const cleaned = {};
-    for (const [k, v] of Object.entries(data)) {
-      if (v && typeof v === 'object' && v._op === 'increment') {
-        cleaned[k] = { _op: 'increment', value: v.value };
-      } else if (v && typeof v === 'object' && v._op === 'arrayUnion') {
-        cleaned[k] = { _op: 'arrayUnion', items: v.items };
-      } else if (v && typeof v === 'object' && v._op === 'arrayRemove') {
-        cleaned[k] = { _op: 'arrayRemove', items: v.items };
-      } else {
-        cleaned[k] = v;
+    const hasOps = Object.values(data).some(v => v && typeof v === 'object' && v._op);
+
+    if (hasOps) {
+      let current = {};
+      try { current = await apiFetch('GET', '/' + col + '/' + id); } catch(e) {}
+      const resolved = {};
+      for (const [k, v] of Object.entries(data)) {
+        if (v && typeof v === 'object' && v._op === 'increment') {
+          const cur = parseFloat(current[k]) || 0;
+          resolved[k] = cur + v.value;
+        } else if (v && typeof v === 'object' && v._op === 'arrayUnion') {
+          const cur = current[k] || [];
+          resolved[k] = [...cur, ...v.items.filter(i => !cur.includes(i))];
+        } else if (v && typeof v === 'object' && v._op === 'arrayRemove') {
+          const cur = current[k] || [];
+          resolved[k] = cur.filter(i => !v.items.includes(i));
+        } else {
+          resolved[k] = v;
+        }
       }
+      await apiFetch('PUT', '/' + col + '/' + id, resolved);
+    } else {
+      await apiFetch('PUT', '/' + col + '/' + id, data);
     }
-    await apiFetch('PUT', '/' + col + '/' + id, cleaned);
   };
   window._fbAddDoc = async function(ref, data) {
     const col = ref.replace(/^\/+|\/+$/g, '');
