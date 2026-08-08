@@ -222,20 +222,23 @@ async function votePoll(pollId, optionIdx) {
         const pollSnap = await window._fbGetDoc(pollRef);
         if (!pollSnap.exists()) return;
         const p = pollSnap.data();
-        const created = p.created ? (p.created.toMillis ? p.created.toMillis() : new Date(p.created).getTime()) : Date.now();
+        const created = p.created_at ? new Date(p.created_at).getTime() : (p.created ? (p.created.toMillis ? p.created.toMillis() : new Date(p.created).getTime()) : Date.now());
         if (Date.now() > created + POLL_DURATION_DAYS * 86400000) { showToast ? showToast('La encuesta ya terminó', '#ff4466') : alert('Terminada'); return; }
-        const votes = p.votes || {};
-        const allVoters = [];
-        Object.keys(votes).forEach(k => { if (Array.isArray(votes[k])) allVoters.push(...votes[k]); });
-        if (allVoters.includes(currentUser.nick)) { showToast ? showToast('Ya votaste en esta encuesta', '#ffd700') : alert('Ya votaste'); return; }
-        const patch = { participants: window._fbArrayUnion(currentUser.nick) };
-        patch['votes.' + optionIdx] = window._fbArrayUnion(currentUser.nick);
-        await window._fbUpdateDoc(pollRef, patch);
+        const votesRaw = p.votesRaw || {};
+        if (votesRaw[currentUser.nick] !== undefined) { showToast ? showToast('Ya votaste en esta encuesta', '#ffd700') : alert('Ya votaste'); return; }
+        await apiFetch('POST', '/polls/' + pollId + '/vote', { nick: currentUser.nick, option: optionIdx });
         await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { votedPolls: window._fbIncrement(1) });
         showToast ? showToast('Voto registrado ✓', '#00ffaa') : alert('Votado');
         loadPolls();
         if (typeof checkAchievements === 'function') checkAchievements();
-    } catch(e) { showToast ? showToast('Error: ' + e.message, '#ff4466') : alert('Error'); }
+    } catch(e) {
+        const msg = String((e && e.message) || '');
+        if (msg.includes('409') || /ya vot|conflict/i.test(msg)) {
+            showToast ? showToast('Ya votaste en esta encuesta', '#ffd700') : alert('Ya votaste');
+        } else {
+            showToast ? showToast('Error: ' + msg, '#ff4466') : alert('Error');
+        }
+    }
 }
 
 async function checkPollRewards(polls) {
