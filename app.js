@@ -1019,8 +1019,10 @@ function renderAdminAccounts(accSnap, usersMap) {
                 }
             </td>
             <td style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="adminMint('${nick}')"><i class="fa-solid fa-plus"></i> Mint</button>
-                <button class="btn btn-danger" style="font-size:9px;padding:4px 8px;" onclick="adminBurn('${nick}')"><i class="fa-solid fa-minus"></i> Burn</button>
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="adminMint('${nick}')"><i class="fa-solid fa-plus"></i> Mint PPC</button>
+                <button class="btn btn-danger" style="font-size:9px;padding:4px 8px;" onclick="adminBurn('${nick}')"><i class="fa-solid fa-minus"></i> Burn PPC</button>
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--gold);color:var(--gold);" onclick="adminMintPUSD('${nick}')"><i class="fa-solid fa-plus"></i> Mint P-USD</button>
+                <button class="btn btn-danger" style="font-size:9px;padding:4px 8px;border-color:var(--gold);color:var(--gold);" onclick="adminBurnPUSD('${nick}')"><i class="fa-solid fa-minus"></i> Burn P-USD</button>
                 <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="adminToggleFreeze('${nick}', ${acc.frozen ? 'false' : 'true'})">
                     <i class="fa-solid fa-${acc.frozen ? 'lock-open' : 'lock'}"></i> ${acc.frozen ? 'Descongelar' : 'Congelar'}
                 </button>
@@ -1079,6 +1081,53 @@ async function adminBurn(nick) {
         showToast(`Burn de ${amt.toLocaleString()} PPC a ${nick} ✓`, '#ff4466');
         loadAdminAccounts(true);
         if (nick === currentUser.nick) await refreshBankAccount();
+    } catch(e) {
+        showToast('Error: ' + e.message, '#ff4466');
+    }
+}
+
+async function adminMintPUSD(nick) {
+    if (!checkAdminPermission()) return;
+    const amtStr = await showInputModal('Mint P-USD a ' + nick, 'Cantidad de P-USD a añadir', 'number');
+    if (!amtStr) return;
+    const amt = parseFloat(amtStr) || 0;
+    if (amt <= 0) return;
+
+    const reason = await showInputModal('Motivo', 'Motivo (opcional)', 'text') || 'Mint P-USD';
+
+    const ok = await showConfirm('Confirmar Mint P-USD', `Añadirás <strong style="color:var(--gold)">$${amt.toLocaleString()} P-USD</strong> a <strong>${nick}</strong>`);
+    if (!ok) return;
+
+    try {
+        const userData = await apiFetch('GET', '/users/' + nick);
+        const currentPUSD = userData.pusdBalance || 0;
+        await apiFetch('PUT', '/users/' + nick, { pusdBalance: currentPUSD + amt });
+        showToast(`Mint de $${amt} P-USD a ${nick} ✓`, 'var(--gold)');
+        loadAdminAccounts(true);
+    } catch(e) {
+        showToast('Error: ' + e.message, '#ff4466');
+    }
+}
+
+async function adminBurnPUSD(nick) {
+    if (!checkAdminPermission()) return;
+    const amtStr = await showInputModal('Burn P-USD de ' + nick, 'Cantidad de P-USD a quitar', 'number');
+    if (!amtStr) return;
+    const amt = parseFloat(amtStr) || 0;
+    if (amt <= 0) return;
+
+    const reason = await showInputModal('Motivo', 'Motivo (obligatorio)', 'text') || 'Burn P-USD';
+
+    const ok = await showConfirm('Confirmar Burn P-USD', `Quitarás <strong style="color:var(--danger)">$${amt.toLocaleString()} P-USD</strong> a <strong>${nick}</strong>`);
+    if (!ok) return;
+
+    try {
+        const userData = await apiFetch('GET', '/users/' + nick);
+        const currentPUSD = userData.pusdBalance || 0;
+        if (currentPUSD < amt) { showToast('Ese usuario no tiene tanto P-USD', '#ff4466'); return; }
+        await apiFetch('PUT', '/users/' + nick, { pusdBalance: currentPUSD - amt });
+        showToast(`Burn de $${amt} P-USD a ${nick} ✓`, '#ff4466');
+        loadAdminAccounts(true);
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
