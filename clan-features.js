@@ -227,103 +227,51 @@ function getRankMultiplier(user) {
     const key = getRankKey(user);
     let mult = RANK_MULTIPLIERS[key] || 1;
     if (key.startsWith('pareja')) mult *= 4;
-    
+
     // Add Frieren title multipliers
     if (user && user.frierenRank) {
         const fRank = FRIEREN_RANKS.find(x => x.key === user.frierenRank);
         if (fRank) mult *= fRank.mult;
     }
-    
-    // Add JJK rank multipliers
-    if (user && user.jjkRank) {
-        const jRank = JJK_RANKS.find(x => x.key === user.jjkRank);
-        if (jRank) mult += jRank.mult; // additive bonus multiplier
+
+    const fandomMap = [
+        { field: 'jjkRank', arr: JJK_RANKS, name: 'jjk', additive: true },
+        { field: 'ben10Rank', arr: BEN10_RANKS, name: 'ben10' },
+        { field: 'mhaRank', arr: MHA_RANKS, name: 'mha' },
+        { field: 'godzillaRank', arr: GODZILLA_RANKS, name: 'godzilla' },
+        { field: 'nanatsuRank', arr: typeof NANATSU_RANKS !== 'undefined' ? NANATSU_RANKS : [], name: 'nanatsu' },
+        { field: 'berserkRank', arr: typeof BERSERK_RANKS !== 'undefined' ? BERSERK_RANKS : [], name: 'berserk' },
+        { field: 'chainsawRank', arr: typeof CHAINSAW_RANKS !== 'undefined' ? CHAINSAW_RANKS : [], name: 'chainsaw' },
+        { field: 'deathnoteRank', arr: typeof DEATHNOTE_RANKS !== 'undefined' ? DEATHNOTE_RANKS : [], name: 'deathnote' },
+        { field: 'elfenRank', arr: typeof ELFEN_RANKS !== 'undefined' ? ELFEN_RANKS : [], name: 'elfen' },
+        { field: 'rezeroRank', arr: typeof REZERO_RANKS !== 'undefined' ? REZERO_RANKS : [], name: 'rezero' },
+        { field: 'rimuruRank', arr: typeof RIMURU_RANKS !== 'undefined' ? RIMURU_RANKS : [], name: 'rimuru' },
+        { field: 'bocchiRank', arr: typeof BOCCHI_RANKS !== 'undefined' ? BOCCHI_RANKS : [], name: 'bocchi' },
+        { field: 'vocaloidRank', arr: typeof VOCALOID_RANKS !== 'undefined' ? VOCALOID_RANKS : [], name: 'vocaloid' },
+        { field: 'mushokuRank', arr: typeof MUSHOKU_RANKS !== 'undefined' ? MUSHOKU_RANKS : [], name: 'mushoku' },
+        { field: 'floresRank', arr: typeof FLORES_RANKS !== 'undefined' ? FLORES_RANKS : [], name: 'flores' },
+    ];
+
+    const owned = new Set();
+    for (const f of fandomMap) {
+        const val = user && user[f.field];
+        if (val) {
+            owned.add(f.name + ':' + val);
+            const found = f.arr.find(x => x.key === val);
+            if (found) mult += f.additive ? found.mult : (found.mult - 1);
+            continue;
+        }
+        if (user && user.boughtRanks && Array.isArray(user.boughtRanks) && f.arr.length) {
+            for (const br of user.boughtRanks) {
+                const found = f.arr.find(x => x.key === br);
+                if (found && !owned.has(f.name + ':' + br)) {
+                    owned.add(f.name + ':' + br);
+                    mult += f.additive ? found.mult : (found.mult - 1);
+                }
+            }
+        }
     }
-    
-    // Add Ben 10 multiplier
-    if (user && user.ben10Rank) {
-        const bRank = BEN10_RANKS.find(x => x.key === user.ben10Rank);
-        if (bRank) mult += (bRank.mult - 1);
-    }
-    
-    // Add MHA multiplier
-    if (user && user.mhaRank) {
-        const mRank = MHA_RANKS.find(x => x.key === user.mhaRank);
-        if (mRank) mult += (mRank.mult - 1);
-    }
-    
-    // Add Godzilla multiplier
-    if (user && user.godzillaRank) {
-        const gRank = GODZILLA_RANKS.find(x => x.key === user.godzillaRank);
-        if (gRank) mult += (gRank.mult - 1);
-    }
-    
-    // Add Nanatsu multiplier
-    if (user && user.nanatsuRank && typeof NANATSU_RANKS !== 'undefined') {
-        const nRank = NANATSU_RANKS.find(x => x.key === user.nanatsuRank);
-        if (nRank) mult += (nRank.mult - 1);
-    }
-    
-    // Add Berserk multiplier
-    if (user && user.berserkRank && typeof BERSERK_RANKS !== 'undefined') {
-        const bkRank = BERSERK_RANKS.find(x => x.key === user.berserkRank);
-        if (bkRank) mult += (bkRank.mult - 1);
-    }
-    
-    // Add Chainsaw multiplier
-    if (user && user.chainsawRank && typeof CHAINSAW_RANKS !== 'undefined') {
-        const csRank = CHAINSAW_RANKS.find(x => x.key === user.chainsawRank);
-        if (csRank) mult += (csRank.mult - 1);
-    }
-    
-    // Add Death Note multiplier
-    if (user && user.deathnoteRank && typeof DEATHNOTE_RANKS !== 'undefined') {
-        const dnRank = DEATHNOTE_RANKS.find(x => x.key === user.deathnoteRank);
-        if (dnRank) mult += (dnRank.mult - 1);
-    }
-    
-    // Add Elfen multiplier
-    if (user && user.elfenRank && typeof ELFEN_RANKS !== 'undefined') {
-        const efRank = ELFEN_RANKS.find(x => x.key === user.elfenRank);
-        if (efRank) mult += (efRank.mult - 1);
-    }
-    
-    // Add Re:Zero multiplier
-    if (user && user.rezeroRank && typeof REZERO_RANKS !== 'undefined') {
-        const rzRank = REZERO_RANKS.find(x => x.key === user.rezeroRank);
-        if (rzRank) mult += (rzRank.mult - 1);
-    }
-    
-    // Add Rimuru multiplier
-    if (user && user.rimuruRank && typeof RIMURU_RANKS !== 'undefined') {
-        const rmRank = RIMURU_RANKS.find(x => x.key === user.rimuruRank);
-        if (rmRank) mult += (rmRank.mult - 1);
-    }
-    
-    // Add Bocchi multiplier
-    if (user && user.bocchiRank && typeof BOCCHI_RANKS !== 'undefined') {
-        const bcRank = BOCCHI_RANKS.find(x => x.key === user.bocchiRank);
-        if (bcRank) mult += (bcRank.mult - 1);
-    }
-    
-    // Add Vocaloid multiplier
-    if (user && user.vocaloidRank && typeof VOCALOID_RANKS !== 'undefined') {
-        const vcRank = VOCALOID_RANKS.find(x => x.key === user.vocaloidRank);
-        if (vcRank) mult += (vcRank.mult - 1);
-    }
-    
-    // Add Mushoku multiplier
-    if (user && user.mushokuRank && typeof MUSHOKU_RANKS !== 'undefined') {
-        const muRank = MUSHOKU_RANKS.find(x => x.key === user.mushokuRank);
-        if (muRank) mult += (muRank.mult - 1);
-    }
-    
-    // Add Flores multiplier
-    if (user && user.floresRank && typeof FLORES_RANKS !== 'undefined') {
-        const flRank = FLORES_RANKS.find(x => x.key === user.floresRank);
-        if (flRank) mult += (flRank.mult - 1);
-    }
-    
+
     return mult;
 }
 
