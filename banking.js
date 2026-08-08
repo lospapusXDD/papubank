@@ -229,6 +229,24 @@ async function loadLeaderboard(filter) {
             });
         }
 
+        const needEnrich = entries.filter(e => !e.nick_color && !e.nickColor);
+        if (needEnrich.length > 0 && needEnrich.length <= 50) {
+            try {
+                const allUsers = await apiFetch('GET', '/users');
+                const userList = Array.isArray(allUsers) ? allUsers : (allUsers.users || []);
+                const userMap = {};
+                userList.forEach(u => { userMap[u.nick] = u; });
+                entries.forEach(e => {
+                    const u = userMap[e.nick];
+                    if (u) {
+                        if (!e.nick_color && !e.nickColor) e.nick_color = u.nick_color || u.nickColor || null;
+                        if (!e.profileRing) e.profileRing = u.profileRing || u.profile_ring || null;
+                        if (!e.active_title) e.active_title = u.active_title || u.activeTitle || null;
+                    }
+                });
+            } catch(e) {}
+        }
+
         entries.sort((a, b) => {
             const balA = parseFloat(a.balance) || 0;
             const balB = parseFloat(b.balance) || 0;
@@ -253,17 +271,17 @@ async function loadLeaderboard(filter) {
             const rankInfo    = RANKS[rKey] || RANKS.user;
 
             const avatarSrc = entry.avatar || 'avt_gojo.jpg';
-            const nameColor = (nick === 'emilio' || nick === 'insanlj5')
+
+            const nickColor = entry.nick_color || entry.nickColor || '';
+            const nickColorClass = ['rainbow','fire','ice','neon','gold'].includes(nickColor) ? ' nick-' + nickColor : '';
+            const nameColorStyle = (nick === 'emilio' || nick === 'insanlj5')
                 ? 'color: var(--purple); font-weight: bold;'
                 : (entry.jjkRank === 'gojo'
                     ? 'color: var(--primary); font-weight: bold; text-shadow:0 0 10px var(--primary-glow);'
                     : (entry.jjkRank === 'sukuna' ? 'color: var(--danger); font-weight: bold;' : ''));
-
-            const nickColor = entry.nick_color || entry.nickColor || '';
-            const nickStyle = nickColor ? getNickColorStyle(nickColor) : nameColor;
-            const ringKey = entry.profileRing || 'ring_rainbow';
+            const ringKey = entry.profileRing || 'none';
             const ringData = getRingData ? getRingData(ringKey) : { key: 'none' };
-            const ringBorder = ringData.key !== 'none' ? (ringData.color === 'rainbow' ? 'border:3px solid transparent;background-clip:padding-box;' : `border:3px solid ${ringData.color};box-shadow:0 0 6px ${ringData.color}60;`) : '';
+            const ringBorder = ringData.key !== 'none' ? (ringData.color === 'rainbow' ? 'border:3px solid transparent;background:linear-gradient(var(--dark-bg),var(--dark-bg)) padding-box,linear-gradient(90deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff) border-box;' : `border:3px solid ${ringData.color};box-shadow:0 0 6px ${ringData.color}60;`) : '';
 
             let positionLabel = `#${idx + 1}`;
             if (idx === 0) positionLabel = '<i class="fa-solid fa-trophy" style="color:var(--gold)"></i>';
@@ -279,7 +297,7 @@ async function loadLeaderboard(filter) {
                                 <img src="${avatarSrc}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; ${ringBorder}">
                                 ${entry.mcUsername ? `<img src="https://mc-heads.net/head/${entry.mcUsername}/18" style="position:absolute; right:-4px; bottom:-4px; width:18px; height:18px; filter:drop-shadow(0 0 4px var(--primary-glow)); z-index:2;" title="MC: ${entry.mcUsername}">` : ''}
                             </div>
-                            <span style="${nickStyle}">${nick}</span>
+                            <span class="${nickColorClass}" style="${nameColorStyle}">${nick}</span>
                             ${entry.active_title ? `<span style="font-size:8px;color:var(--gold);font-style:italic;">「${entry.active_title}」</span>` : ''}
                             ${isMine ? '<span style="font-size:9px; background:var(--primary); color:#000; padding:1px 4px; border-radius:3px;">TÚ</span>' : ''}
                             <button class="btn-icon" style="font-size:11px; color:var(--primary);" onclick="viewUserProfile('${nick}')" title="Ver perfil y comentar"><i class="fa-solid fa-comment"></i></button>

@@ -72,12 +72,7 @@ async function exchangePPCtoPUSD(ppcAmount) {
     const pusdAmount = convertPPCtoPUSD(ppcAmount);
     
     try {
-        await apiFetch('POST', '/bank/transfer', {
-            from: currentUser.nick,
-            to: 'exchange',
-            amount: ppcAmount,
-            note: `Convertido ${formatPPC(ppcAmount)} → ${formatPUSD(pusdAmount)}`
-        });
+        await apiFetch('POST', '/bank/burn', { nick: currentUser.nick, amount: ppcAmount });
         
         await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) + pusdAmount });
         
@@ -99,12 +94,7 @@ async function exchangePUSDtoPPC(pusdAmount) {
     const ppcAmount = convertPUSDtoPPC(pusdAmount);
     
     try {
-        await apiFetch('POST', '/bank/transfer', {
-            from: 'exchange',
-            to: currentUser.nick,
-            amount: ppcAmount,
-            note: `Convertido ${formatPUSD(pusdAmount)} → ${formatPPC(ppcAmount)}`
-        });
+        await apiFetch('POST', '/bank/mint', { nick: currentUser.nick, amount: ppcAmount });
         
         await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - pusdAmount });
         
@@ -126,6 +116,13 @@ async function buyPremiumItem(itemId) {
     
     const item = PREMIUM_SHOP.find(i => i.id === itemId);
     if (!item) return;
+    
+    const itemKey = item.itemKey || item.cosmeticKey || item.petKey || item.boosterKey || item.titleKey || item.funcKey;
+    const inv = currentUser?._inventory || [];
+    if (inv.some(i => i.item_id === itemKey)) {
+        showToast('Ya tienes este item', '#ff4466');
+        return;
+    }
     
     const pusdBalance = currentUser.pusdBalance || 0;
     const ppcBalance = bankAccount?.balance || 0;
@@ -154,12 +151,19 @@ async function buyPremiumItem(itemId) {
             currency: payMethod
         });
         
+        try {
+            await apiFetch('PUT', '/inventory/' + currentUser.nick + '/activate', { item_id: itemKey });
+        } catch(e) { /* ignore activate errors */ }
+        
         if (payMethod === 'pustd') {
             currentUser.pusdBalance -= item.price_usd;
         }
         bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
         
-        showToast(`¡${item.name} adquirido! 🌟`, item.color);
+        await loadRingsInventory();
+        if (typeof loadInventorySettings === 'function') await loadInventorySettings();
+        
+        showToast(`¡${item.name} adquirido y activado! 🌟`, item.color);
         renderPremiumShop(document.getElementById('premium-shop-grid'));
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
@@ -273,8 +277,24 @@ function renderPremiumShop(container) {
     `;
     
     PREMIUM_SHOP.forEach(item => {
+        const itemKey = item.itemKey || item.cosmeticKey || item.petKey || item.boosterKey || item.titleKey || item.funcKey;
+        const inv = currentUser?._inventory || [];
+        const isOwned = inv.some(i => i.item_id === itemKey);
+        const canPayPPC = ppcBalance >= item.price_ppc;
+        const canPayPUSD = pusdBalance >= item.price_usd;
+        const canAfford = canPayPPC || canPayPUSD;
+
+        let btnHtml = '';
+        if (isOwned) {
+            btnHtml = `<button class="btn btn-full" disabled style="font-size:10px;opacity:0.5;background:rgba(0,255,170,0.15);color:var(--secondary);cursor:default;"><i class="fa-solid fa-check"></i> Ya lo tienes</button>`;
+        } else if (!canAfford) {
+            btnHtml = `<button class="btn btn-full" disabled style="font-size:10px;opacity:0.5;background:rgba(255,68,102,0.15);color:var(--danger);cursor:default;"><i class="fa-solid fa-lock"></i> No alcanza</button>`;
+        } else {
+            btnHtml = `<button class="btn btn-primary btn-full" onclick="buyPremiumItem('${item.id}')" style="font-size:10px;"><i class="fa-solid fa-cart-shopping"></i> Comprar</button>`;
+        }
+
         html += `
-            <div class="glass-card" style="border-color:${item.color}30;">
+            <div class="glass-card" style="border-color:${isOwned ? 'var(--secondary)' : item.color + '30'};${isOwned ? 'box-shadow:0 0 10px rgba(0,255,170,0.15);' : ''}">
                 <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
                     <div style="width:40px;height:40px;border-radius:50%;background:${item.color}20;display:flex;align-items:center;justify-content:center;">
                         <i class="${item.icon}" style="color:${item.color};font-size:18px;"></i>
@@ -286,12 +306,10 @@ function renderPremiumShop(container) {
                 </div>
                 <p style="font-size:10px;color:var(--text-muted);margin-bottom:10px;">${item.desc}</p>
                 <div style="display:flex;gap:6px;margin-bottom:10px;">
-                    <span style="font-size:10px;color:var(--secondary);flex:1;text-align:center;padding:4px;background:rgba(0,255,170,0.1);border-radius:6px;">${formatPPC(item.price_ppc)}</span>
-                    <span style="font-size:10px;color:var(--gold);flex:1;text-align:center;padding:4px;background:rgba(251,191,36,0.1);border-radius:6px;">${formatPUSD(item.price_usd)}</span>
+                    <span style="font-size:10px;color:${canPayPPC ? 'var(--secondary)' : 'var(--text-muted)'};flex:1;text-align:center;padding:4px;background:rgba(0,255,170,0.1);border-radius:6px;${!canPayPPC && !isOwned ? 'opacity:0.5;' : ''}">${formatPPC(item.price_ppc)}</span>
+                    <span style="font-size:10px;color:${canPayPUSD ? 'var(--gold)' : 'var(--text-muted)'};flex:1;text-align:center;padding:4px;background:rgba(251,191,36,0.1);border-radius:6px;${!canPayPUSD && !isOwned ? 'opacity:0.5;' : ''}">${formatPUSD(item.price_usd)}</span>
                 </div>
-                <button class="btn btn-primary btn-full" onclick="buyPremiumItem('${item.id}')" style="font-size:10px;">
-                    <i class="fa-solid fa-cart-shopping"></i> Comprar
-                </button>
+                ${btnHtml}
             </div>
         `;
     });

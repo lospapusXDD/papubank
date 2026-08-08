@@ -464,11 +464,29 @@ async function tryAutoLogin() {
         currentUser.avatar = userData.avatar || '';
         currentUser.nickColor = userData.nick_color || null;
         currentUser.active_title = userData.active_title || null;
+        currentUser.boughtRanks = userData.boughtRanks || userData.bought_ranks || [];
+        currentUser.jjkRank = userData.jjkRank || userData.jjk_rank || null;
+        currentUser.frierenRank = userData.frierenRank || userData.frieren_rank || null;
+        currentUser.godzillaRank = userData.godzillaRank || userData.godzilla_rank || null;
+        currentUser.mhaRank = userData.mhaRank || userData.mha_rank || null;
+        currentUser.ben10Rank = userData.ben10Rank || userData.ben10_rank || null;
+        currentUser.nanatsuRank = userData.nanatsuRank || userData.nanatsu_rank || null;
+        currentUser.berserkRank = userData.berserkRank || userData.berserk_rank || null;
+        currentUser.chainsawRank = userData.chainsawRank || userData.chainsaw_rank || null;
+        currentUser.deathnoteRank = userData.deathnoteRank || userData.deathnote_rank || null;
+        currentUser.elfenRank = userData.elfenRank || userData.elfen_rank || null;
+        currentUser.rezeroRank = userData.rezeroRank || userData.rezero_rank || null;
+        currentUser.rimuruRank = userData.rimuruRank || userData.rimuru_rank || null;
+        currentUser.bocchiRank = userData.bocchiRank || userData.bocchi_rank || null;
+        currentUser.vocaloidRank = userData.vocaloidRank || userData.vocaloid_rank || null;
+        currentUser.mushokuRank = userData.mushokuRank || userData.mushoku_rank || null;
+        currentUser.floresRank = userData.floresRank || userData.flores_rank || null;
+        currentUser.karma = userData.karma || 0;
         updateBalanceDisplays();
         updateNavUI();
         showPage('dashboard');
 
-        loadRingsInventory();
+        await loadRingsInventory();
         loadInventorySettings();
                 if (typeof initMediaPlayer === 'function') initMediaPlayer();
                 if (typeof initMatrix === 'function') initMatrix();
@@ -703,7 +721,9 @@ async function loadProfile() {
     // Nick color
     if (currentUser.nickColor) {
         const nickEl2 = document.getElementById('profile-nick');
-        if (nickEl2) nickEl2.style.cssText += ';' + getNickColorStyle(currentUser.nickColor);
+        if (nickEl2 && ['rainbow','fire','ice','neon','gold'].includes(currentUser.nickColor)) {
+            nickEl2.classList.add('nick-' + currentUser.nickColor);
+        }
     }
 
     // Active title

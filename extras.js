@@ -176,6 +176,7 @@ const PROFILE_RINGS = [
     { key: 'emerald',    label: 'Aro Esmeralda',   icon: 'fa-solid fa-diamond',     color: '#50c878',    price: 5000000, requirement: 'investment_10' },
     { key: 'sapphire',   label: 'Aro Zafiro',      icon: 'fa-solid fa-star',        color: '#0f52ba',    price: 5000000, requirement: 'streak_7' },
     { key: 'mythic',     label: 'Aro Mítico',      icon: 'fa-solid fa-crown',       color: '#ff6b6b',    price: 50000000, requirement: 'rank_17' },
+    { key: 'rainbow',    label: 'Aro Arcoíris',    icon: 'fa-solid fa-rainbow',     color: 'rainbow',    price: 100000000, requirement: null },
     { key: 'animated',   label: 'Aro Animado',     icon: 'fa-solid fa-sparkles',    color: 'rainbow',    price: 100000000, requirement: 'all_rings' }
 ];
 
@@ -257,51 +258,50 @@ function loadInventorySettings() {
     if (activeNick) {
         const color = activeNick.item_id.replace('nick_', '');
         currentUser.nickColor = color;
-        applyNickColor(currentUser.nick, color);
+        const classMap = { rainbow:'nick-rainbow', fire:'nick-fire', ice:'nick-ice', neon:'nick-neon', gold:'nick-gold' };
+        const cls = classMap[color] || '';
+        ['header-user-nick','sidebar-user-nick','profile-nick'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el && cls) { el.className = el.className.replace(/nick-(rainbow|fire|ice|neon|gold)/g,'').trim(); el.classList.add(cls); }
+        });
+        try { apiFetch('PUT', '/users/' + currentUser.nick, { nick_color: color }); } catch(e) {}
     }
     
     const activeRing = inv.find(i => i.item_type === 'ring' && i.active);
     if (activeRing) {
-        currentUser.profileRing = activeRing.item_id.replace('ring_', '');
+        const ringName = activeRing.item_id.replace('ring_', '');
+        currentUser.profileRing = ringName;
+        try { apiFetch('PUT', '/users/' + currentUser.nick, { profileRing: ringName }); } catch(e) {}
+    }
+    
+    const activeTitle = inv.find(i => i.item_type === 'title' && i.active);
+    if (activeTitle) {
+        const title = activeTitle.item_id.replace('title_', '');
+        currentUser.active_title = title;
+        try { apiFetch('PUT', '/users/' + currentUser.nick, { active_title: title }); } catch(e) {}
     }
 }
 
 function applyNickColor(nick, color) {
-    const colorMap = {
-        'rainbow': 'linear-gradient(90deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff)',
-        'fire': 'linear-gradient(90deg, #ff4400, #ff8800, #ffcc00)',
-        'ice': 'linear-gradient(90deg, #88ddff, #aaeeff, #ffffff)',
-        'neon': 'linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff)',
-        'gold': 'linear-gradient(90deg, #ffd700, #ffaa00, #ffd700)'
-    };
-    
     document.querySelectorAll('.nick-color-target').forEach(el => {
         if (el.dataset.nick === nick) {
-            if (colorMap[color]) {
-                el.style.background = colorMap[color];
-                el.style.webkitBackgroundClip = 'text';
-                el.style.webkitTextFillColor = 'transparent';
-                el.style.backgroundClip = 'text';
-                el.style.fontWeight = 'bold';
-            } else {
-                el.style.background = '';
-                el.style.webkitBackgroundClip = '';
-                el.style.webkitTextFillColor = '';
-                el.style.backgroundClip = '';
+            el.className = el.className.replace(/nick-(rainbow|fire|ice|neon|gold)/g, '').trim();
+            if (['rainbow','fire','ice','neon','gold'].includes(color)) {
+                el.classList.add('nick-' + color);
             }
         }
     });
 }
 
 function getNickColorStyle(color) {
-    const colorMap = {
-        'rainbow': 'background:linear-gradient(90deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:bold;',
-        'fire': 'background:linear-gradient(90deg,#ff4400,#ff8800,#ffcc00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:bold;',
-        'ice': 'background:linear-gradient(90deg,#88ddff,#aaeeff,#ffffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:bold;',
-        'neon': 'background:linear-gradient(90deg,#ff00ff,#00ffff,#ff00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:bold;',
-        'gold': 'background:linear-gradient(90deg,#ffd700,#ffaa00,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:bold;'
+    const classMap = {
+        'rainbow': 'nick-rainbow',
+        'fire': 'nick-fire',
+        'ice': 'nick-ice',
+        'neon': 'nick-neon',
+        'gold': 'nick-gold'
     };
-    return colorMap[color] || '';
+    return classMap[color] ? 'class="' + classMap[color] + '"' : '';
 }
 
 async function buyRing(ringKey) {

@@ -264,6 +264,66 @@ function getRankMultiplier(user) {
         if (nRank) mult += (nRank.mult - 1);
     }
     
+    // Add Berserk multiplier
+    if (user && user.berserkRank && typeof BERSERK_RANKS !== 'undefined') {
+        const bkRank = BERSERK_RANKS.find(x => x.key === user.berserkRank);
+        if (bkRank) mult += (bkRank.mult - 1);
+    }
+    
+    // Add Chainsaw multiplier
+    if (user && user.chainsawRank && typeof CHAINSAW_RANKS !== 'undefined') {
+        const csRank = CHAINSAW_RANKS.find(x => x.key === user.chainsawRank);
+        if (csRank) mult += (csRank.mult - 1);
+    }
+    
+    // Add Death Note multiplier
+    if (user && user.deathnoteRank && typeof DEATHNOTE_RANKS !== 'undefined') {
+        const dnRank = DEATHNOTE_RANKS.find(x => x.key === user.deathnoteRank);
+        if (dnRank) mult += (dnRank.mult - 1);
+    }
+    
+    // Add Elfen multiplier
+    if (user && user.elfenRank && typeof ELFEN_RANKS !== 'undefined') {
+        const efRank = ELFEN_RANKS.find(x => x.key === user.elfenRank);
+        if (efRank) mult += (efRank.mult - 1);
+    }
+    
+    // Add Re:Zero multiplier
+    if (user && user.rezeroRank && typeof REZERO_RANKS !== 'undefined') {
+        const rzRank = REZERO_RANKS.find(x => x.key === user.rezeroRank);
+        if (rzRank) mult += (rzRank.mult - 1);
+    }
+    
+    // Add Rimuru multiplier
+    if (user && user.rimuruRank && typeof RIMURU_RANKS !== 'undefined') {
+        const rmRank = RIMURU_RANKS.find(x => x.key === user.rimuruRank);
+        if (rmRank) mult += (rmRank.mult - 1);
+    }
+    
+    // Add Bocchi multiplier
+    if (user && user.bocchiRank && typeof BOCCHI_RANKS !== 'undefined') {
+        const bcRank = BOCCHI_RANKS.find(x => x.key === user.bocchiRank);
+        if (bcRank) mult += (bcRank.mult - 1);
+    }
+    
+    // Add Vocaloid multiplier
+    if (user && user.vocaloidRank && typeof VOCALOID_RANKS !== 'undefined') {
+        const vcRank = VOCALOID_RANKS.find(x => x.key === user.vocaloidRank);
+        if (vcRank) mult += (vcRank.mult - 1);
+    }
+    
+    // Add Mushoku multiplier
+    if (user && user.mushokuRank && typeof MUSHOKU_RANKS !== 'undefined') {
+        const muRank = MUSHOKU_RANKS.find(x => x.key === user.mushokuRank);
+        if (muRank) mult += (muRank.mult - 1);
+    }
+    
+    // Add Flores multiplier
+    if (user && user.floresRank && typeof FLORES_RANKS !== 'undefined') {
+        const flRank = FLORES_RANKS.find(x => x.key === user.floresRank);
+        if (flRank) mult += (flRank.mult - 1);
+    }
+    
     return mult;
 }
 
