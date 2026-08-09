@@ -661,11 +661,11 @@ async function loadDashboard() {
     // Loan alert
     const loanAlertEl = document.getElementById('dash-loan-alert');
     if (loanAlertEl) {
-        if ((bankAccount.loan_active ?? bankAccount.loanActive) && Number(bankAccount.loan_amount ?? bankAccount.loanAmount || 0) > 0) {
+        if ((bankAccount.loan_active ?? bankAccount.loanActive) && Number(bankAccount.loan_amount ?? (bankAccount.loanAmount || 0)) > 0) {
             loanAlertEl.style.display = 'block';
             loanAlertEl.innerHTML = `
                 <i class="fa-solid fa-triangle-exclamation" style="color:var(--danger)"></i>
-                Tienes una deuda activa de <strong style="color:var(--gold)">${Number(bankAccount.loan_amount ?? bankAccount.loanAmount || 0).toLocaleString()} PPC</strong>.
+                Tienes una deuda activa de <strong style="color:var(--gold)">${Number(bankAccount.loan_amount ?? (bankAccount.loanAmount || 0)).toLocaleString()} PPC</strong>.
                 <a href="#" onclick="showPage('deudas')" style="color:var(--primary)">Pagar</a>
             `;
         } else {

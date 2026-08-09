@@ -430,7 +430,7 @@ async function loadLoans() {
             <div class="glass-card" style="border-color:var(--danger);">
                 <h3 style="color:var(--danger); font-family:'Orbitron',sans-serif; margin-bottom:12px;"><i class="fa-solid fa-circle-exclamation"></i> PRÉSTAMO ACTIVO DETECTADO</h3>
                 <div style="font-size:13px; margin-bottom:15px;">
-                    Tienes una deuda pendiente de <strong style="color:var(--gold); font-size:15px;">${Number(bankAccount.loan_amount ?? bankAccount.loanAmount || 0).toLocaleString()} PPC</strong>.<br>
+                    Tienes una deuda pendiente de <strong style="color:var(--gold); font-size:15px;">${Number(bankAccount.loan_amount ?? (bankAccount.loanAmount || 0)).toLocaleString()} PPC</strong>.<br>
                     Debes saldar tu deuda en la pestaña de <strong>Deudas</strong> para poder solicitar otro préstamo o realizar retiros especiales.
                 </div>
                 <button class="btn btn-danger" onclick="showPage('deudas')">Pagar Deuda de Préstamo</button>
@@ -517,7 +517,7 @@ async function loadDebts() {
             </div>
         `;
     } else {
-        const debt = Number(bankAccount.loan_amount ?? bankAccount.loanAmount || 0);
+        const debt = Number(bankAccount.loan_amount ?? (bankAccount.loanAmount || 0));
         debtContainer.innerHTML = `
             <div class="glass-card" style="border-color:var(--danger);">
                 <h3 style="color:var(--danger); font-family:'Orbitron',sans-serif; margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> DEUDA DE PRÉSTAMO ACTIVA</h3>
@@ -542,7 +542,7 @@ async function loadDebts() {
 
 async function payDebt(type) {
     if (!currentUser || !bankAccount || !window._db) return;
-    const debt = Number(bankAccount.loan_amount ?? bankAccount.loanAmount || 0);
+    const debt = Number(bankAccount.loan_amount ?? (bankAccount.loanAmount || 0));
     
     if (bankAccount.balance <= 0) {
         showToast('No tienes saldo de PPC para abonar', '#ff4466');
