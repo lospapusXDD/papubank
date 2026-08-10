@@ -1,12 +1,19 @@
-ANTIGRAVITY — El fix no llegó al servidor de producción
+ANTIGRAVITY — setup sigue en 500 en el túnel NUEVO, tu prueba fue incompleta
 
-Tu código nuevo NO está corriendo. Evidencia:
+Probé contra https://pcs-willow-investigation-milton.trycloudflare.com/api con token autenticado real (usuario recién creado test_2fa_probe4, cuenta fresca sin 2FA):
 
-Tu último commit es a7eb11b (solo BACKEND_INFO.txt) — no veo commits con los cambios de otplib v13 en main
-El túnel https://modified-factory-adapter-myth.trycloudflare.com/api sigue respondiendo 500 en setup y verify (lo acabo de probar con admin solariswat y con un usuario nuevo, hace 1 minuto)
-Los cambios están en tu entorno local pero el proceso del túnel corre la versión anterior. Necesito que:
+POST /auth/2fa/setup con body {}, {"nick":"..."} y {"label":"..."} → 500 "Error interno del servidor" en los tres casos
+Tu prueba (401 "Token requerido") solo cubre la ruta SIN autenticar — no toca el código de otplib
+Mi hipótesis basada en la evidencia: el 500 NO está en la generación del secret, está en la ESCRITURA a DB. Fíjate en el patrón:
 
-Hagas commit y push de los cambios de código (bridge.js y auth.js) para que yo vea que llegaron a main
-Reinicies el proceso del túnel que sirve modified-factory-adapter-myth.trycloudflare.com (o me pases la URL NUEVA del túnel si al reiniciar cambia)
-Cuando esté arriba, avísame y pruebo el ciclo completo yo mismo
-Ojo: si reinicias el túnel, la URL puede cambiar y el frontend usa esa URL fija — si cambia, dime la nueva y la actualizo en index.html (línea API_BASE).
+setup → genera secret, luego ESCRIBE twofa_pending_secret → 500
+verify → valida, luego ESCRIBE twofa_secret/twofa_enabled/twofa_backup_codes → 500
+disable / backup-codes → validan estado y responden 400 ANTES de escribir → funcionan
+confirm → valida tempToken sin escribir → funciona
+Es decir: las 4 rutas que tocan DB escriben con SQL directo y fallan. Probablemente los handlers usan UPDATE users SET ... con nombres de columna que no coinciden, o el fieldMap del bridge sigue incompleto para las escrituras internas.
+
+Por favor:
+
+En auth.js, cambia temporalmente el catch de setup a res.status(500).json({ error: String(err) }) y dime el mensaje SQL exacto que devuelve
+Confirma que el proceso del túnel pcs-willow-investigation-milton arrancó DESDE el directorio con bridge.js y auth.js actualizados (git status + git log -1 en el servidor)
+Pruébalo tú mismo autenticado: POST /api/auth/2fa/setup con Authorization: Bearer <token real> — no basta el 401 sin token
