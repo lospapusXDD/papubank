@@ -1,36 +1,19 @@
-ANTIGRAVITY — Implementar backend 2FA TOTP (Google Authenticator) + cleanup
+ANTIGRAVITY — setup sigue en 500 en el túnel NUEVO, tu prueba fue incompleta
 
-El frontend ya está listo y consume estos endpoints. Implementalos tal cual:
+Probé contra https://pcs-willow-investigation-milton.trycloudflare.com/api con token autenticado real (usuario recién creado test_2fa_probe4, cuenta fresca sin 2FA):
 
-1. Login modificado — POST /auth/login:
+POST /auth/2fa/setup con body {}, {"nick":"..."} y {"label":"..."} → 500 "Error interno del servidor" en los tres casos
+Tu prueba (401 "Token requerido") solo cubre la ruta SIN autenticar — no toca el código de otplib
+Mi hipótesis basada en la evidencia: el 500 NO está en la generación del secret, está en la ESCRITURA a DB. Fíjate en el patrón:
 
-Si el usuario tiene 2FA activado: responde { "twofaRequired": true, "tempToken": "..." } (SIN accessToken). tempToken: token firmado de un solo uso, expira en 5 min, vinculado al nick, max 5 intentos de verificación.
-Si no: respuesta normal como ahora.
-2. Confirmar 2FA — POST /auth/2fa/confirm body { "tempToken": "...", "code": "123456" }:
+setup → genera secret, luego ESCRIBE twofa_pending_secret → 500
+verify → valida, luego ESCRIBE twofa_secret/twofa_enabled/twofa_backup_codes → 500
+disable / backup-codes → validan estado y responden 400 ANTES de escribir → funcionan
+confirm → valida tempToken sin escribir → funciona
+Es decir: las 4 rutas que tocan DB escriben con SQL directo y fallan. Probablemente los handlers usan UPDATE users SET ... con nombres de columna que no coinciden, o el fieldMap del bridge sigue incompleto para las escrituras internas.
 
-Valida el código TOTP o un código de respaldo.
-Éxito → responde exactamente con la misma forma que /auth/login normal (accessToken, refreshToken, hash, campos del usuario).
-Error → 401 "Código inválido".
-3. Setup — POST /auth/2fa/setup (con auth header):
+Por favor:
 
-Genera secreto TOTP (usa otplib), lo guarda en users.twofa_secret como PENDIENTE.
-Responde { "secret": "BASE32...", "otpauthUrl": "otpauth://totp/PapusBank:nicksin...?secret=...&issuer=PapusBank" }.
-4. Activar — POST /auth/2fa/verify body { "code": "123456" }:
-
-Valida el código contra el secreto pendiente, marca twofa_enabled = true, genera 10 códigos de respaldo (guardalos hasheados con SHA-256 en users.twofa_backup_codes, ej. formato BACKUP-XXXX-XXXX), invalida el secreto pendiente.
-Responde { "backupCodes": ["BACKUP-XXXX-XXXX", ...10] } (SOLO se devuelven una vez).
-5. Desactivar — POST /auth/2fa/disable body { "code": "..." }:
-
-Requiere TOTP actual válido → twofa_enabled = false, borra secret y backup codes.
-6. Regenerar backups — POST /auth/2fa/backup-codes body { "code": "..." }:
-
-Requiere TOTP válido → genera 10 nuevos, responde { "backupCodes": [...] }.
-7. GET /users/:nick → incluir "twofa_enabled": true/false (el frontend lee el estado de ahí).
-
-8. Endpoints nuevos (POST /auth/2fa/setup, /auth/2fa/backup-codes, /auth/2fa/disable) → solo para usuario autenticado (JWT), solo sobre su propia cuenta.
-
-Notas de seguridad: guarda twofa_secret en texto plano en DB está bien para este proyecto; cada backup code se usa una sola vez (márcalo usado en DB); verifica siempre con otplib authenticator.verify({token, secret}) y tolerancia ±1 step.
-
-CLEANUP (fácil): borra el poll de prueba id 5 "Test de votacion" y las cuentas de prueba test_ranks_x y test_finger2 (users + bank_accounts).
-
-Además (sin prisa): incrementos atómicos en transferencias/splits (UPDATE ... SET balance = balance + $1 RETURNING balance en vez de GET→PUT) para matar la carrera de doble-click.
+En auth.js, cambia temporalmente el catch de setup a res.status(500).json({ error: String(err) }) y dime el mensaje SQL exacto que devuelve
+Confirma que el proceso del túnel pcs-willow-investigation-milton arrancó DESDE el directorio con bridge.js y auth.js actualizados (git status + git log -1 en el servidor)
+Pruébalo tú mismo autenticado: POST /api/auth/2fa/setup con Authorization: Bearer <token real> — no basta el 401 sin token
