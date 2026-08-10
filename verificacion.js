@@ -64,7 +64,11 @@ window.setupTwofa = async function() {
     try {
         const res = await apiFetch('POST', '/auth/2fa/setup', {});
         window._pendingTwofa = res;
-        const otpauth = res.otpauthUrl || res.otpauth || res.qrData || '';
+        let otpauth = res.otpauthUrl || res.otpauth || res.qrData || '';
+        if (otpauth && !otpauth.includes('algorithm=')) {
+            const sep = otpauth.includes('?') ? '&' : '?';
+            otpauth += sep + 'algorithm=SHA1&digits=6&period=30';
+        }
         body.innerHTML = `
             <p style="font-size:12px;color:var(--text-muted);line-height:1.7;margin-bottom:14px;">
                 <b style="color:var(--text-main);">1.</b> Abre <b>Google Authenticator</b> y escanea este código QR.<br>
