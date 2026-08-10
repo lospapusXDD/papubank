@@ -320,6 +320,51 @@ function closeMobileSidebar() {
 
 // ═══════════════════════════ AUTH ═══════════════════════════
 
+window.completeLogin = async function(res, nick) {
+    window._apiToken = res.accessToken;
+    localStorage.setItem('papubank_jwt', res.accessToken);
+    if (res.refreshToken) localStorage.setItem('papubank_refresh', res.refreshToken);
+
+    currentUser = { nick, hash: res.hash };
+    Object.assign(currentUser, Object.fromEntries(Object.entries(res || {}).filter(([, v]) => v != null)));
+    currentUser.nick = nick;
+    localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash: res.hash }));
+    localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash: res.hash }));
+
+    document.getElementById('auth-overlay').style.display = 'none';
+
+    await initBankAccount();
+    updateNavUI();
+    showPage('dashboard');
+
+    await loadRingsInventory();
+    if (typeof loadInventorySettings === 'function') await loadInventorySettings();
+    if (typeof initMediaPlayer === 'function') initMediaPlayer();
+    if (typeof initMatrix === 'function') initMatrix();
+    if (typeof loadSavedTheme === 'function') loadSavedTheme();
+    if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
+};
+
+window.resolveTwofaLogin = async function(nick, tempToken) {
+    for (let att = 0; att < 3; att++) {
+        const code = await showInputModal(
+            'Verificación de 2 Pasos',
+            att === 0 ? 'Código de 6 dígitos de tu app autenticadora' : 'Código incorrecto — intento ' + (att + 1) + '/3',
+            'text'
+        );
+        if (!code) return null;
+        try {
+            const conf = await apiFetch('POST', '/auth/2fa/confirm', { tempToken, code: String(code).trim() });
+            if (!conf.accessToken) throw new Error('Código inválido');
+            return conf;
+        } catch(e) {
+            showToast('Código 2FA incorrecto', '#ff4466');
+        }
+    }
+    showToast('Demasiados intentos — vuelve a intentar el login', '#ff4466');
+    return null;
+};
+
 window.doLogin = async function() {
     const nick = (document.getElementById('login-nick').value || '').trim().toLowerCase();
     const pass = document.getElementById('login-pass').value || '';
@@ -335,25 +380,18 @@ window.doLogin = async function() {
     try {
         const res = await apiFetch('POST', '/auth/login', { nick, password: pass });
 
-        window._apiToken = res.accessToken;
-        localStorage.setItem('papubank_jwt', res.accessToken);
-        localStorage.setItem('papubank_refresh', res.refreshToken);
+        if (res.twofaRequired || res.twofa_required) {
+            const conf = await resolveTwofaLogin(nick, res.tempToken);
+            if (!conf) {
+                errEl.textContent = 'Verificación 2FA cancelada';
+                btn.disabled = false; btn.textContent = 'INGRESAR AL BANCO';
+                return;
+            }
+            await completeLogin(conf, nick);
+            return;
+        }
 
-        currentUser = { nick, hash: res.hash };
-        Object.assign(currentUser, Object.fromEntries(Object.entries(res || {}).filter(([, v]) => v != null)));
-        currentUser.nick = nick;
-        localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash: res.hash }));
-        localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash: res.hash }));
-
-        document.getElementById('auth-overlay').style.display = 'none';
-
-        await initBankAccount();
-        updateNavUI();
-        showPage('dashboard');
-
-        if (typeof initMediaPlayer === 'function') initMediaPlayer();
-        if (typeof initMatrix === 'function') initMatrix();
-        if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
+        await completeLogin(res, nick);
 
     } catch(e) {
         console.error(e);
@@ -374,6 +412,8 @@ window.doLogout = function() {
     document.getElementById('login-nick').value = '';
     document.getElementById('login-pass').value = '';
     document.getElementById('login-error').textContent = '';
+    const loginBtn = document.getElementById('login-btn');
+    if (loginBtn) { loginBtn.disabled = false; loginBtn.textContent = 'INGRESAR AL BANCO'; }
     if (typeof stopMatrix === 'function') stopMatrix();
 };
 
@@ -456,32 +496,19 @@ async function tryAutoLogin() {
 
         try {
             const res = await apiFetch('POST', '/auth/login', { nick, hash });
-            window._apiToken = res.accessToken;
-            localStorage.setItem('papubank_jwt', res.accessToken);
-            if (res.refreshToken) localStorage.setItem('papubank_refresh', res.refreshToken);
 
-            currentUser = { nick, hash };
-            Object.assign(currentUser, Object.fromEntries(Object.entries(res || {}).filter(([, v]) => v != null)));
-            currentUser.nick = nick;
-            document.getElementById('auth-overlay').style.display = 'none';
+            if (res.twofaRequired || res.twofa_required) {
+                document.getElementById('auth-overlay').style.display = 'flex';
+                document.getElementById('login-nick').value = nick;
+                document.getElementById('login-pass').value = '';
+                document.getElementById('login-error').textContent = 'Ingresa el código de 2 pasos';
+                const conf = await resolveTwofaLogin(nick, res.tempToken);
+                if (!conf) return;
+                await completeLogin(conf, nick);
+                return;
+            }
 
-            const [bankData, userData] = await Promise.all([
-                apiFetch('GET', '/bank/' + nick),
-                apiFetch('GET', '/users/' + nick),
-                loadConfig()
-            ]);
-            bankAccount = bankData;
-            applyUserData(userData);
-            updateBalanceDisplays();
-            updateNavUI();
-            showPage('dashboard');
-
-            await loadRingsInventory();
-            if (typeof loadInventorySettings === 'function') await loadInventorySettings();
-            if (typeof initMediaPlayer === 'function') initMediaPlayer();
-            if (typeof initMatrix === 'function') initMatrix();
-            if (typeof loadSavedTheme === 'function') loadSavedTheme();
-            if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
+            await completeLogin(res, nick);
         } catch(e) {
             const isAuthErr = e && (String(e.message).includes('401') || String(e.message).includes('token') || String(e.message).includes('sesión'));
             if (isAuthErr) {

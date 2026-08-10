@@ -534,6 +534,32 @@ El backend NO está en este repo. Está en la PC Linux del usuario, manejado por
 - `extras.js` — profileRing reset, loadInventorySettings async
 - `godzilla.js` — balance_usd → pusdBalance
 
+### Sesión 21 — 2FA Google Authenticator (frontend) + fixes encuestas/préstamos/ranks
+
+**Backend (Antigravity, ya hecho):**
+- `is_admin` gate en `/admin/*` — jero tenía `rank:'admin'` pero `is_admin:false` → 403 (arreglado, re-login regenera JWT)
+- `bank_accounts.badges` columna JSONB añadida (Dedo de Sukuna / Omnitrix) — PUT con `badges` ya no da 500
+- Encuestas: `POST /polls/:id/vote` `{nick, option}` → 200 poll | 409 doble voto; `GET /polls/:id` → poll | 404; PUT ignora keys con puntos (`votes.0` no funciona)
+- Schema polls: `{id, question, options, created_by, createdBy, created_at, createdAt, votes:{"0":[nicks]}, votesRaw:{nick:idx}, participants[], totalVotes}`
+- `bank_accounts` préstamos son SNAKE_CASE (`loan_active`, `loan_amount`, `loan_date`) — camelCase en PUT → 500
+
+**Frontend (hecho esta sesión):**
+- `grantRankLocal(rankKey)` en app.js + llamado en las 16 funciones de compra de rango; `applyUserData` sincroniza `boughtRanks` del server — arregla "se cobra pero no se otorga" (Vocaloid, Berserk, Chainsaw, Deathnote, Elfen, Rezero, Rimuru, Bocchi, Mushoku)
+- Encuestas (social.js): `createPoll` envía `question`+`title`/`created_by`+`author` (backend exige `question`/`created_by`); render lee `question||title`, `created_by||author`, timestamp `created_at` con helper `pTime()`
+- Préstamos (banking.js + app.js): input `id="loan-amount"` (el código leía `loan-amount-input` que no existe → "monto inválido"); escrituras pasan a snake_case, lecturas con fallback `loan_active ?? (loanAmount || 0)`; RESET COMPLETO admin en snake_case
+- Votación (social.js `votePoll`): usa `POST /polls/:id/vote` con pre-check `votesRaw[nick] !== undefined` + manejo 409; se mantuvo contra el revert de Antigravity (5c5fca1) porque PUT con dotted keys está verificado que NO aplica
+- Fix SyntaxError crítico: `x ?? y || 0` sin paréntesis rompía todo el script (`missing ) after argument list` en banking.js:433/app.js:664 → `doLogin is not defined`). REGLA: `??` siempre con paréntesis si se combina con `||`
+- **2FA frontend completo**:
+  - `index.html`: script CDN `qrcodejs@1.0.0` (QR) + modal `#twofa-setup-modal`
+  - `app.js`: `completeLogin(res,nick)` (lógica post-login compartida por doLogin/tryAutoLogin/confirm), `resolveTwofaLogin(nick,tempToken)` (input modal, 3 intentos), doLogin/tryAutoLogin detectan `res.twofaRequired` → piden código → `POST /auth/2fa/confirm`; doLogout resetea botón login
+  - `verificacion.js`: tarjeta de estado (ACTIVADA/DESACTIVADA desde `currentUser.twofa_enabled`), `setupTwofa()` (setup → QR+secret+input → verify → backup codes), `regenerateTwofaCodes()`, `disableTwofa()` con confirm + código
+
+**Commits**: `e7a29b7` (grantRankLocal), `f08ade0` (merge BACKEND_INFO), `8681906` (encuestas+préstamos), `02f1070` (votePoll POST), `b067567` (merge keep votePoll vs revert Antigravity), `f93c907` (SyntaxError hotfix). Push a master Y main (merge origin/main primero).
+
+**PENDIENTE — backend 2FA (Antigravity)**: endpoints `POST /auth/2fa/setup` (secret + otpauthUrl), `POST /auth/2fa/verify` `{code}` → backup codes, `POST /auth/2fa/disable` `{code}`, `POST /auth/2fa/backup-codes` `{code}`, login devuelve `{twofaRequired:true, tempToken}` y `POST /auth/2fa/confirm` `{tempToken, code}` → misma shape que login. Frontend ya consume todos estos campos.
+**PENDIENTE — cleanup**: poll 5 "Test de votacion", cuentas `test_ranks_x`/`test_finger2`
+**PENDIENTE — deuda técnica**: incrementos atómicos (`balance = balance + $1`), `/inventory/buy` confía en price/currency del cliente, rutas de inversiones sin documentar, `owner/admin/mod/helper` no están en RANK_MULTIPLIERS (multiplican 1x)
+
 ---
 
 *Actualizar este archivo con cada cambio significativo.*

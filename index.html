@@ -14,6 +14,9 @@
 <!-- FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<!-- QR (2FA setup) -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
 <!-- Main Styles -->
 <link rel="stylesheet" href="style.css">
 
@@ -1626,6 +1629,20 @@
       <button class="btn btn-secondary" onclick="closeInputModal(false)"><i class="fa-solid fa-xmark"></i> Cancelar</button>
       <button class="btn btn-primary" onclick="closeInputModal(true)"><i class="fa-solid fa-check"></i> Aceptar</button>
     </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     2FA SETUP MODAL
+════════════════════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="twofa-setup-modal">
+  <div class="modal-card" style="max-width:460px;">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-shield-halved"></i> Verificación de 2 Pasos</h3>
+      <button class="btn-icon" onclick="closeTwofaSetup()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="twofa-setup-body"></div>
+    <div class="modal-footer" id="twofa-setup-footer"></div>
   </div>
 </div>
 
