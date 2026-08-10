@@ -435,7 +435,7 @@ window.doRegister = async function() {
 
     try {
         const hash = hashPass(pass, nick);
-        const res = await apiFetch('POST', '/auth/register', { nick, hash });
+        const res = await apiFetch('POST', '/auth/register', { nick, password: pass, hash });
 
         window._apiToken = res.accessToken || null;
         if (res.accessToken) localStorage.setItem('papubank_jwt', res.accessToken);
@@ -554,6 +554,7 @@ function applyUserData(u) {
     currentUser.karma = u.karma || currentUser.karma || 0;
     currentUser.profileRing = u.profileRing || u.profile_ring || currentUser.profileRing || null;
     currentUser.nickStyle = u.nickStyle || u.nick_style || currentUser.nickStyle || null;
+    currentUser.twofa_enabled = u.twofa_enabled || u.twofaEnabled || currentUser.twofa_enabled || false;
     if (Array.isArray(u.boughtRanks) || Array.isArray(u.bought_ranks)) {
         currentUser.boughtRanks = u.boughtRanks || u.bought_ranks || [];
     }
