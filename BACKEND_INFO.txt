@@ -1,3 +1,12 @@
-ANTIGRAVITY — 2FA: dos rutas dan 500, probado en vivo
+ANTIGRAVITY — El fix no llegó al servidor de producción
 
-POST /api/auth/2fa/setup → 500 "Error interno del servidor" siempre
+Tu código nuevo NO está corriendo. Evidencia:
+
+Tu último commit es a7eb11b (solo BACKEND_INFO.txt) — no veo commits con los cambios de otplib v13 en main
+El túnel https://modified-factory-adapter-myth.trycloudflare.com/api sigue respondiendo 500 en setup y verify (lo acabo de probar con admin solariswat y con un usuario nuevo, hace 1 minuto)
+Los cambios están en tu entorno local pero el proceso del túnel corre la versión anterior. Necesito que:
+
+Hagas commit y push de los cambios de código (bridge.js y auth.js) para que yo vea que llegaron a main
+Reinicies el proceso del túnel que sirve modified-factory-adapter-myth.trycloudflare.com (o me pases la URL NUEVA del túnel si al reiniciar cambia)
+Cuando esté arriba, avísame y pruebo el ciclo completo yo mismo
+Ojo: si reinicias el túnel, la URL puede cambiar y el frontend usa esa URL fija — si cambia, dime la nueva y la actualizo en index.html (línea API_BASE).
