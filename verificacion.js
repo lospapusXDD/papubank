@@ -70,10 +70,11 @@ window.setupTwofa = async function() {
                 <b style="color:var(--text-main);">1.</b> Abre <b>Google Authenticator</b> y escanea este código QR.<br>
                 <b style="color:var(--text-main);">2.</b> Ingresa el código de 6 dígitos que aparece en tu app.
             </p>
-            <div id="twofa-qr" style="display:flex;justify-content:center;margin-bottom:14px;"></div>
+            <div id="twofa-qr" style="display:flex;justify-content:center;margin-bottom:14px;background:white;padding:16px;border-radius:12px;"></div>
             <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:14px;">
                 ¿No puedes escanear? Ingresa esta clave manualmente:<br>
-                <span style="font-family:'Orbitron',sans-serif;letter-spacing:2px;color:var(--gold);font-size:13px;">${escHTML(res.secret || '')}</span>
+                <div style="font-family:'Courier New',monospace;font-size:14px;color:var(--gold);background:rgba(255,215,0,0.08);border:1px dashed rgba(255,215,0,0.3);border-radius:8px;padding:10px;margin:8px 0;letter-spacing:3px;word-break:break-all;cursor:pointer;" onclick="navigator.clipboard.writeText('${escHTML(res.secret || '')}');showToast('Clave copiada','var(--secondary)')" title="Clic para copiar">${escHTML(res.secret || '')}</div>
+                <span style="font-size:10px;opacity:0.6;">(clic para copiar)</span>
             </div>
             <div class="input-field" style="margin-bottom:4px;">
                 <label><i class="fa-solid fa-key"></i> Código de 6 dígitos</label>
@@ -87,9 +88,10 @@ window.setupTwofa = async function() {
             <button class="btn btn-primary" id="twofa-setup-ok" onclick="confirmTwofaSetup()"><i class="fa-solid fa-shield-halved"></i> Activar</button>
         `;
         if (typeof QRCode === 'function' && otpauth) {
-            new QRCode(document.getElementById('twofa-qr'), { text: otpauth, width: 180, height: 180 });
+            new QRCode(document.getElementById('twofa-qr'), { text: otpauth, width: 200, height: 200, colorDark: '#000000', colorLight: '#ffffff' });
         } else if (otpauth) {
-            document.getElementById('twofa-qr').innerHTML = '<a href="' + escHTML(otpauth) + '" target="_blank" style="font-size:11px;color:var(--primary);">Abrir enlace OTP</a>';
+            const encoded = encodeURIComponent(otpauth);
+            document.getElementById('twofa-qr').innerHTML = '<a href="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=' + encoded + '" target="_blank" style="font-size:11px;color:var(--primary);display:block;text-align:center;padding:20px;">Ver QR en nueva pestaña</a>';
         }
         document.getElementById('twofa-setup-code').focus();
     } catch(e) {
