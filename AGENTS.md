@@ -560,6 +560,23 @@ El backend NO está en este repo. Está en la PC Linux del usuario, manejado por
 **PENDIENTE — cleanup**: poll 5 "Test de votacion", cuentas `test_ranks_x`/`test_finger2`
 **PENDIENTE — deuda técnica**: incrementos atómicos (`balance = balance + $1`), `/inventory/buy` confía en price/currency del cliente, rutas de inversiones sin documentar, `owner/admin/mod/helper` no están en RANK_MULTIPLIERS (multiplican 1x)
 
+### Sesión 22 — 2FA backend implementado y VERIFICADO end-to-end
+
+**Backend (Antigravity, ya desplegado):**
+- Bugs 500 de setup/verify: (1) bridge mapeaba mal `twofapendingsecret` (camelCase sin guiones) y (2) otplib v13 ya no expone `authenticator` — ahora usa `generateSecret()`, `generateURI({label, issuer, secret})`, `verifySync({token, secret})`
+- El túnel viejo `modified-factory-adapter-myth` quedó pegado con código viejo → **NUEVA URL: `https://pcs-willow-investigation-milton.trycloudflare.com/api`** (actualizada en index.html API_BASE, commit `61fac36`)
+- `/auth/register` ahora exige `password` (ya no acepta solo `hash`) → frontend manda `{nick, password, hash}` (commit `c51ca3a`)
+- `GET /users/:nick` incluye `twofaEnabled`/`twofa_enabled`; backup codes guardados como `[{hash: sha256hex, used:bool, used_at}]` en `twofa_backup_codes`
+
+**Verificación completa (ciclo real probado con TOTP generado en PowerShell):**
+- register → login → setup (secret+otpauthUrl) → verify con TOTP (10 backup codes) → login devuelve `{twofaRequired:true, tempToken}` (JWT con `isTemp2FA:true`, sin accessToken) → confirm con TOTP → sesión completa → confirm con backup code → OK (marca `used:true`+`used_at`) → disable con TOTP → login normal → `twofa_enabled:false` ✓ TODO funciona
+- BACKUP format: `BACKUP-XXXX-XXXX`, un solo uso
+- **Ojo**: el backend tiene fallos transitorios con ráfagas de requests seguidos (500 o "Contraseña o hash requerido") — reintentar funciona; no es bug de la cuenta
+
+**Herramienta creada**: scripts PowerShell en `%TEMP%\opencode\` (test_2fa.ps1, cycle_full.ps1, bk_probe.ps1, bk_seq.ps1) — replican `hashPass` (djb2+FNV1a 32-bit con uint64, base36) y TOTP (HMAC-SHA1, counter int64 BIG-endian — ojo: `[BitConverter]::GetBytes` de int32 da 4 bytes y rompe el HMAC; `GetBytes([int64])` + Reverse). Validado contra RFC 4226 (c0=755224…c9=520489 ✓)
+
+**Commits**: `c51ca3a` (register password + twofa_enabled en applyUserData), `61fac36` (nueva URL túnel)
+
 ---
 
 *Actualizar este archivo con cada cambio significativo.*
