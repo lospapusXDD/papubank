@@ -9,7 +9,7 @@ if (typeof escHTML === 'undefined') {
 
 const papuPlaylist = [
     { file: 'i wanna be your boyfriend.mp3', title: 'I Wanna Be Your Boyfriend', artist: 'Hots Freaks',
-      lyrics: `[00:00.00]I Wanna Be Your Boyfriend — Hots Freaks` },
+      lyrics: `` },
 
     { file: 'nuts.mp3', title: 'nuts', artist: 'Lil Peep ft. Rainy Bear',
       lyrics: `[00:00.00]nuts — Lil Peep ft. Rainy Bear
@@ -388,7 +388,7 @@ function toggleFloatingLyrics() {
     if (floatingLyricsVisible) buildFloatingLyrics();
 }
 
-function parseLRC(lrcText) {
+function parseLRC(lrcText, skipTitle) {
     const lines = lrcText.split('\n');
     const result = [];
     for (const line of lines) {
@@ -399,7 +399,10 @@ function parseLRC(lrcText) {
             const ms  = parseInt(match[3].padEnd(3, '0'));
             const time = min * 60 + sec + ms / 1000;
             const text = match[4].trim();
-            if (text) result.push({ time, text });
+            if (text) {
+                if (skipTitle && time === 0 && /[—-]|_/.test(text) && result.length === 0) continue;
+                result.push({ time, text });
+            }
         }
     }
     result.sort((a, b) => a.time - b.time);
@@ -415,7 +418,7 @@ function buildFloatingLyrics() {
     const track = papuPlaylist[curPapuTrack];
     if (!track || !track.lyrics) { body.textContent = 'Sin letra disponible.'; _parsedLyricsCache = null; return; }
 
-    const parsed = parseLRC(track.lyrics);
+    const parsed = parseLRC(track.lyrics, true);
     _parsedLyricsCache = parsed;
     _currentLyricsIdx = -1;
 
