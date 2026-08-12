@@ -479,10 +479,11 @@ async function tryAutoLogin() {
     if (_autoLoginRunning) return;
     _autoLoginRunning = true;
     try {
-        const saved = localStorage.getItem(SESSION_KEY);
-        if (!saved) return;
-        const { nick, hash } = JSON.parse(saved);
-        if (!nick || !hash) return;
+        const savedJwt = localStorage.getItem('papubank_jwt');
+        const savedSession = localStorage.getItem(SESSION_KEY) || localStorage.getItem('papus_session_v2');
+        if (!savedSession) return;
+        const { nick } = JSON.parse(savedSession);
+        if (!nick) return;
 
         await new Promise(resolve => {
             let att = 0;
@@ -494,6 +495,34 @@ async function tryAutoLogin() {
             tick();
         });
 
+        if (savedJwt) {
+            try {
+                window._apiToken = savedJwt;
+                const userData = await apiFetch('GET', '/users/' + encodeURIComponent(nick));
+                if (userData && (userData.nick || userData.username)) {
+                    currentUser = { nick };
+                    Object.assign(currentUser, Object.fromEntries(Object.entries(userData).filter(([, v]) => v != null)));
+                    currentUser.nick = nick;
+                    document.getElementById('auth-overlay').style.display = 'none';
+                    await initBankAccount();
+                    updateNavUI();
+                    showPage('dashboard');
+                    await loadRingsInventory();
+                    if (typeof loadInventorySettings === 'function') await loadInventorySettings();
+                    if (typeof initMediaPlayer === 'function') initMediaPlayer();
+                    if (typeof initMatrix === 'function') initMatrix();
+                    if (typeof loadSavedTheme === 'function') loadSavedTheme();
+                    if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
+                    return;
+                }
+            } catch(e) {
+                window._apiToken = null;
+                localStorage.removeItem('papubank_jwt');
+            }
+        }
+
+        const { hash } = JSON.parse(savedSession);
+        if (!hash) return;
         try {
             const res = await apiFetch('POST', '/auth/login', { nick, hash });
 
@@ -513,6 +542,8 @@ async function tryAutoLogin() {
             const isAuthErr = e && (String(e.message).includes('401') || String(e.message).includes('token') || String(e.message).includes('sesión'));
             if (isAuthErr) {
                 localStorage.removeItem(SESSION_KEY);
+                localStorage.removeItem('papubank_jwt');
+                localStorage.removeItem('papus_session_v2');
             } else {
                 console.warn('Auto-login sin expulsar sesión:', e.message);
             }
