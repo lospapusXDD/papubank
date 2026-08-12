@@ -8,6 +8,9 @@ if (typeof escHTML === 'undefined') {
 }
 
 const papuPlaylist = [
+    { file: 'i wanna be your boyfriend.mp3', title: 'I Wanna Be Your Boyfriend', artist: 'Hots Freaks',
+      lyrics: `[00:00.00]I Wanna Be Your Boyfriend — Hots Freaks` },
+
     { file: 'nuts.mp3', title: 'nuts', artist: 'Lil Peep ft. Rainy Bear',
       lyrics: `[00:00.00]nuts — Lil Peep ft. Rainy Bear
 [00:03.00]I can see it in your eyes that you wanna get out
