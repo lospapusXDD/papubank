@@ -498,23 +498,24 @@ async function tryAutoLogin() {
         if (savedJwt) {
             try {
                 window._apiToken = savedJwt;
+                const bankData = await apiFetch('GET', '/bank/' + encodeURIComponent(nick));
                 const userData = await apiFetch('GET', '/users/' + encodeURIComponent(nick));
-                if (userData && (userData.nick || userData.username)) {
-                    currentUser = { nick };
-                    Object.assign(currentUser, Object.fromEntries(Object.entries(userData).filter(([, v]) => v != null)));
-                    currentUser.nick = nick;
-                    document.getElementById('auth-overlay').style.display = 'none';
-                    await initBankAccount();
-                    updateNavUI();
-                    showPage('dashboard');
-                    await loadRingsInventory();
-                    if (typeof loadInventorySettings === 'function') await loadInventorySettings();
-                    if (typeof initMediaPlayer === 'function') initMediaPlayer();
-                    if (typeof initMatrix === 'function') initMatrix();
-                    if (typeof loadSavedTheme === 'function') loadSavedTheme();
-                    if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
-                    return;
-                }
+                currentUser = { nick };
+                Object.assign(currentUser, Object.fromEntries(Object.entries(userData).filter(([, v]) => v != null)));
+                currentUser.nick = nick;
+                bankAccount = bankData;
+                document.getElementById('auth-overlay').style.display = 'none';
+                await loadConfig();
+                updateBalanceDisplays();
+                updateNavUI();
+                showPage('dashboard');
+                await loadRingsInventory();
+                if (typeof loadInventorySettings === 'function') await loadInventorySettings();
+                if (typeof initMediaPlayer === 'function') initMediaPlayer();
+                if (typeof initMatrix === 'function') initMatrix();
+                if (typeof loadSavedTheme === 'function') loadSavedTheme();
+                if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
+                return;
             } catch(e) {
                 window._apiToken = null;
                 localStorage.removeItem('papubank_jwt');
