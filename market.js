@@ -108,9 +108,9 @@ async function buyMarketItem(itemId, price) {
         // Log transaction
         await addTx({
             type: 'Compra Tienda',
+            from: currentUser.nick,
+            to: 'Tienda',
             amount: price,
-            receiver: 'Tienda',
-            sender: currentUser.nick,
             note: `Compra de item: ${item.name}`
         });
         
@@ -121,10 +121,12 @@ async function buyMarketItem(itemId, price) {
             if (itemId === 'bonus_100') {
                 const reward = Math.round(100 * mult);
                 updates.balance = window._fbIncrement(reward - price);
+                await addTx({ type: 'Recompensa Tienda', from: 'Tienda', to: currentUser.nick, amount: reward, note: `Item instantáneo: ${item.name} (×${mult.toFixed(2)})` });
                 showToast(`¡Bonus 100 PPC + multiplicador! Recibes ${reward.toLocaleString()} PPC (×${mult.toFixed(2)})`, '#00ffaa');
             } else if (itemId === 'bonus_500') {
                 const reward = Math.round(500 * mult);
                 updates.balance = window._fbIncrement(reward - price);
+                await addTx({ type: 'Recompensa Tienda', from: 'Tienda', to: currentUser.nick, amount: reward, note: `Item instantáneo: ${item.name} (×${mult.toFixed(2)})` });
                 showToast(`¡Bonus 500 PPC + multiplicador! Recibes ${reward.toLocaleString()} PPC (×${mult.toFixed(2)})`, '#00ffaa');
             } else if (itemId === 'sukuna_finger_item') {
                 const reward = Math.round(8000 * mult);
@@ -133,6 +135,7 @@ async function buyMarketItem(itemId, price) {
                 let badges = bankAccount.badges || [];
                 if (!badges.includes('maldito')) badges.push('maldito');
                 updates.badges = badges;
+                await addTx({ type: 'Recompensa Tienda', from: 'Tienda', to: currentUser.nick, amount: reward, note: `Item instantáneo: ${item.name} (×${mult.toFixed(2)})` });
                 showToast(`¡Dedo de Sukuna + multiplicador! Recibes ${reward.toLocaleString()} PPC (×${mult.toFixed(2)})`, '#00ffaa');
             }
         } else {
