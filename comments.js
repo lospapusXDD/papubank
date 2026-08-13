@@ -77,6 +77,17 @@ window.viewUserProfile = async function(nick) {
             const ri = RANKS[rk] || RANKS.user;
             rankEl.innerHTML = `<i class="${ri.icon}" style="color:${ri.color};"></i> ${ri.label}`;
         }
+        const coupleEl = document.getElementById('profile-view-couple');
+        if (coupleEl) {
+            coupleEl.innerHTML = u.parejaWith
+                ? `<div style="font-size:11px;margin-top:2px;"><i class="fa-solid fa-heart" style="color:#ff69b4;"></i> <span style="color:#ff69b4;">Pareja de ${escHTML(u.parejaWith)}</span></div>`
+                : '';
+        }
+        const coupleBtn = document.getElementById('profile-view-couple-btn');
+        if (coupleBtn) {
+            const canAsk = !u.parejaWith && nick !== currentUser.nick && !currentUser.parejaWith;
+            coupleBtn.style.display = canAsk ? 'block' : 'none';
+        }
         if (balEl) balEl.textContent = (a.balance || 0).toLocaleString('es') + ' PPC';
         if (karmaEl) {
             const karma = u.karma || 0;

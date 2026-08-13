@@ -577,6 +577,27 @@ El backend NO está en este repo. Está en la PC Linux del usuario, manejado por
 
 **Commits**: `c51ca3a` (register password + twofa_enabled en applyUserData), `61fac36` (nueva URL túnel)
 
+### Sesión 23 — Sistema de Parejas: Divorcio, Regalos, Retiro Seguro, Chat Privado, Racha, Aniversarios, Cumpleaños, Badge y Notificaciones
+
+**Frontend (commit del push master+main de esta sesión):**
+- flores.js:
+  - **Divorcio** (`floresDivorce`): confirmación + reparto 50/50 de la bóveda compartida. OJO: `_fbWriteBatch().update()` NO resuelve `{_op:'increment'}` → en batch se leen los saldos reales y se escriben valores ABSOLUTOS (como en floresDivorce). Los incrementos con `_fbIncrement` solo funcionan en `_fbUpdateDoc`.
+  - **Regalos** (`FLORES_GIFTS`, 5 items 500–25000 PPC): modal catálogo `showFloresGiftsModal`, `floresSendGift` (verifica saldo, cobra PPC, guarda en `vaults/{vaultId}/gifts`, registra tx, notifica), historial `loadFloresGifts`.
+  - **Retiro seguro**: `floresWithdraw` con monto > `FLORES_VAULT_SAFE_LIMIT` (100000) crea solicitud en `flores_withdrawals` (pending); la pareja aprueba (`floresApproveWithdrawal` — hace el movimiento), rechaza o cancela. UI: "Retiros por aprobar" + "Tus retiros en espera".
+  - **Racha de cartas** (`updateFloresLetterStreak`): streak diario en el doc vault (`streak`, `streakLast`, `streakBest`, `streakRewards`); premios al llegar a 3/7/14/30/60/90/180/365 días (`FLORES_STREAK_REWARDS`). Si se rompe (no escribiste ayer) reinicia a 1.
+  - **Chat de pareja privado** (`vaults/{vaultId}/chat`): burbujas en `loadFloresChat`, envío `floresSendChat`, polling cada 5s con `_floresChatTimer` SOLO mientras la página flores está activa.
+  - **Aniversarios** (`checkFloresAnniversaryBonus`): bono por cada mes cumplido (30 días → 250+50/mes, +10k por año). Se marca en `floresAnniversaryClaimed` (array m1,m2...). Se dispara al abrir la página flores.
+  - **Cumpleaños de la pareja**: banner con fecha (MONTHS_ES) y, si es hoy, bono de 15k una vez por año (`floresPartnerBirthdayClaimed`). Compatible con el `birthday` que asigna birthdays.js.
+  - **Notificaciones** (`floresNotify` → colección `notifications`, visible en página "Mensajes"): solicitud enviada, solicitud aceptada, carta, regalo, retiro por aprobar, aprobación, divorcio, cumpleaños.
+  - `floresRequestFromProfile(nick)` preselecciona el crush vía `_floresRequestTarget` en el modal de solicitud.
+- chat.js: badge 💕 "Pareja de X" junto al nick de cada mensaje (mapa construido con `getCachedUsers()`).
+- comments.js + index.html: el perfil muestra "💕 Pareja de X" (`#profile-view-couple`) y botón "Pedir Pareja" (`#profile-view-couple-btn`, visible solo si ambos no tienen pareja).
+- Bumps de caché: `flores.js?v=22`, `chat.js?v=22`, `comments.js?v=22`. Push a master Y main.
+
+**Colecciones nuevas:** `flores_withdrawals`, `vaults/{id}/gifts`, `vaults/{id}/chat`. Campos nuevos en users: `floresAnniversaryClaimed`, `floresPartnerBirthdayClaimed`. En vault: `streak`, `streakLast`, `streakBest`, `streakRewards`.
+
+**PENDIENTE:** el backend `notifications` actualmente NO filtra por destinatario en `loadVerificacionPage` (bandeja global). Si se quiere privacidad real, filtrar por `to === nick`.
+
 ---
 
 *Actualizar este archivo con cada cambio significativo.*

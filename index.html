@@ -1781,10 +1781,12 @@
         <div style="flex:1;">
           <div id="profile-view-nick" style="font-family:'Orbitron',sans-serif;font-weight:700;color:var(--primary);font-size:15px;"></div>
           <div id="profile-view-rank" style="font-size:11px;color:var(--text-muted);margin-top:2px;"></div>
+          <div id="profile-view-couple"></div>
           <div id="profile-view-balance" style="font-family:'Orbitron',sans-serif;color:var(--gold);font-size:13px;margin-top:2px;"></div>
           <div id="profile-view-karma" style="font-size:10px;color:var(--text-muted);margin-top:2px;"></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:6px;">
+          <button class="btn btn-primary" id="profile-view-couple-btn" style="font-size:10px;white-space:nowrap;display:none;" onclick="floresRequestFromProfile(window._viewProfileNick)" title="Enviar solicitud de pareja"><i class="fa-solid fa-heart"></i> Pedir Pareja</button>
           <button class="btn btn-success" style="font-size:10px;white-space:nowrap;background:rgba(0,255,170,0.15);border-color:rgba(0,255,170,0.4);color:var(--secondary);" onclick="giveKarma(window._viewProfileNick)" title="Dar +1 karma"><i class="fa-solid fa-heart"></i> +1 Karma</button>
           <button class="btn btn-danger" style="font-size:10px;white-space:nowrap;" onclick="reportUser(window._viewProfileNick)" title="Reportar a este usuario"><i class="fa-solid fa-flag"></i> Reportar</button>
         </div>
@@ -2019,9 +2021,9 @@
 <script src="market.js?v=21"></script>
 <script src="vault.js?v=18"></script>
 <script src="verificacion.js?v=18"></script>
-<script src="chat.js?v=18"></script>
+<script src="chat.js?v=22"></script>
   <script src="board.js?v=18"></script>
-  <script src="comments.js?v=18"></script>
+  <script src="comments.js?v=22"></script>
   <script src="social.js?v=21"></script>
   <script src="logros.js?v=18"></script>
   <script src="ben10.js?v=18"></script>
@@ -2037,7 +2039,7 @@
   <script src="bocchi.js?v=18"></script>
   <script src="vocaloid.js?v=18"></script>
   <script src="nanatsu.js?v=18"></script>
-  <script src="flores.js?v=18"></script>
+  <script src="flores.js?v=22"></script>
   <script src="exchange.js?v=20"></script>
   <script src="birthdays.js?v=18"></script>
   <script src="economy.js?v=18"></script>
