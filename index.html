@@ -527,7 +527,7 @@
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
             <h2 class="section-title" style="margin:0;"><i class="fa-solid fa-clock-rotate-left" style="color:var(--primary);"></i> Historial</h2>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <select class="form-control" id="tx-filter-type" style="width:auto;font-size:12px;" onchange="loadRecentTx()">
+              <select class="form-control" id="tx-filter-type" style="width:auto;font-size:12px;" onchange="resetTxPagination(); loadRecentTx()">
                 <option value="">Todos los tipos</option>
                 <option value="Transferencia">Transferencia</option>
                 <option value="Préstamo">Préstamo</option>
@@ -544,7 +544,7 @@
           <div id="history-tx-list">
             <div class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Cargando historial...</div>
           </div>
-          <button class="btn btn-secondary btn-full" style="margin-top:16px;font-size:12px;" id="load-more-tx-btn" onclick="loadMoreTx()" style="display:none;">
+          <button class="btn btn-secondary btn-full" style="margin-top:16px;font-size:12px;display:none;" id="load-more-tx-btn" onclick="loadMoreTx()">
             <i class="fa-solid fa-chevron-down"></i> Cargar más
           </button>
         </div>
@@ -1841,7 +1841,7 @@
 </div>
 
 <!-- Hidden Audio Element for Background Music -->
-<audio id="papu-bg-music" loop></audio>
+<audio id="papu-bg-music"></audio>
 
 <!-- ════════════════════════════════════════════════════════════
      FLOATING LYRICS PANEL
@@ -1849,7 +1849,13 @@
 <div id="floating-lyrics" style="display:none;">
   <div id="floating-lyrics-header">
     <span><i class="fa-solid fa-music"></i> Letra</span>
-    <button class="btn-icon" onclick="toggleFloatingLyrics()" style="font-size:12px;"><i class="fa-solid fa-xmark"></i></button>
+    <div style="display:flex;align-items:center;gap:4px;">
+      <span id="lyric-offset-display" title="Desfase de letra (la canción tiene intro)" style="font-size:11px;color:var(--text-muted);min-width:46px;text-align:center;">0.0s</span>
+      <button class="btn-icon" onclick="shiftLyrics(-0.5)" title="Atrasar letra 0.5s" style="font-size:12px;"><i class="fa-solid fa-minus"></i></button>
+      <button class="btn-icon" onclick="shiftLyrics(0.5)" title="Adelantar letra 0.5s" style="font-size:12px;"><i class="fa-solid fa-plus"></i></button>
+      <button class="btn-icon" onclick="resetLyricsOffset()" title="Reiniciar desfase" style="font-size:12px;"><i class="fa-solid fa-rotate-left"></i></button>
+      <button class="btn-icon" onclick="toggleFloatingLyrics()" style="font-size:12px;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
   </div>
   <div id="floating-lyrics-body"></div>
 </div>
@@ -2016,7 +2022,7 @@
 <script src="chat.js?v=18"></script>
   <script src="board.js?v=18"></script>
   <script src="comments.js?v=18"></script>
-  <script src="social.js?v=18"></script>
+  <script src="social.js?v=21"></script>
   <script src="logros.js?v=18"></script>
   <script src="ben10.js?v=18"></script>
   <script src="mha.js?v=18"></script>
@@ -2037,7 +2043,7 @@
   <script src="economy.js?v=18"></script>
   <script src="extras.js?v=20"></script>
   <script src="minigames.js?v=18"></script>
-<script src="media-player.js?v=18"></script>
+<script src="media-player.js?v=21"></script>
 <script src="app.js?v=20"></script>
 
 <!-- ════════════════════════════════════════════════════════════
@@ -2161,9 +2167,16 @@ function exportTxCSV() {
     if (!rows.length) { showToast('Sin transacciones para exportar', '#ff4466'); return; }
     let csv = 'Tipo,De,Para,Monto,Nota\n';
     rows.forEach(row => {
-        const cells = row.querySelectorAll('[data-csv]');
-        const line = Array.from(cells).map(c => '"' + c.dataset.csv + '"').join(',');
-        csv += line + '\n';
+        const q = (sel) => {
+            const el = row.querySelector(sel);
+            return el ? (el.dataset.csv ?? '') : '';
+        };
+        const type = q('.tx-type');
+        const de   = q('.tx-de');
+        const para = q('.tx-para');
+        const nota = q('.tx-nota');
+        const monto = q('.tx-amount');
+        csv += ['"' + type + '"', '"' + de + '"', '"' + para + '"', '"' + monto + '"', '"' + nota + '"'].join(',') + '\n';
     });
     const blob = new Blob([csv], { type: 'text/csv' });
     const url  = URL.createObjectURL(blob);

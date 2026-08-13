@@ -123,35 +123,25 @@ function selectTransferRecipient(nick, element) {
 
 function updateTransferPreview() {
     const amtInput = document.getElementById('transfer-amount');
-    const preview = document.getElementById('transfer-preview');
-    if (!amtInput || !preview || !currentUser) return;
-    
-    const amt = Math.floor(parseFloat(amtInput.value) || 0);
-    if (amt <= 0) {
-        preview.style.display = 'none';
-        return;
-    }
-    
+    if (!amtInput || !currentUser) return;
+
     const rankKey = getRankKey(currentUser);
     const noFeeEvent = (typeof hasActiveEvent === 'function' && hasActiveEvent('sin_comision'));
     const feeRate = (noFeeEvent || RANKS[rankKey].level >= 4) ? 0 : (bankConfig.fee / 100);
-    const fee = Math.floor(amt * feeRate);
-    const total = amt + fee;
-    
-    preview.style.display = 'block';
-    preview.innerHTML = `
-        <div style="margin-bottom: 4px;">Enviar: <strong style="color:var(--gold)">${amt.toLocaleString()} PPC</strong></div>
-        <div style="margin-bottom: 4px;">Comisión: <strong style="${fee > 0 ? 'color:var(--danger)' : 'color:var(--secondary)'}">${fee > 0 ? fee.toLocaleString() + ' PPC (2%)' : noFeeEvent ? 'GRATIS (Evento activo 🔥)' : 'GRATIS (Rango alto)'}</strong></div>
-        <div style="border-top: 1px solid var(--dark-border); padding-top: 4px; font-weight: bold;">
-            Total Deducido: ${total.toLocaleString()} PPC
-        </div>
-    `;
+
+    const feePctLabel = document.getElementById('fee-pct-label');
+    if (feePctLabel) {
+        if (noFeeEvent) feePctLabel.textContent = '0 (evento activo)';
+        else if (RANKS[rankKey].level >= 4) feePctLabel.textContent = '0 (rango alto)';
+        else feePctLabel.textContent = String(bankConfig.fee || 2);
+    }
 }
 
 async function doTransfer() {
     if (!bankAccount || !currentUser || !window._db) return;
     
-    const toNick = selectedTransferRecipient || document.getElementById('transfer-to').value;
+    const toSelect = document.getElementById('transfer-to');
+    const toNick = selectedTransferRecipient || (toSelect ? toSelect.value : '') || '';
     const amtInput = document.getElementById('transfer-amount');
     const amt = Math.floor(parseFloat(amtInput.value) || 0);
     const noteInput = document.getElementById('transfer-note');
@@ -188,7 +178,8 @@ async function doTransfer() {
 
         if (amtInput) amtInput.value = '';
         if (noteInput) noteInput.value = '';
-        document.getElementById('transfer-preview').style.display = 'none';
+        const previewEl = document.getElementById('transfer-preview');
+        if (previewEl) previewEl.style.display = 'none';
         selectedTransferRecipient = null;
 
         showToast(`¡${fmt(amt)} enviados a ${toNick}!`, '#00ff9d');
@@ -338,78 +329,140 @@ async function loadLeaderboard(filter) {
 // ═══════════════════════════ HISTORIAL RECIENTE ═══════════════════════════
 
 
+let _txPage = 0;
+const _TX_PAGE_SIZE = 15;
+
 async function loadRecentTx() {
     if (!currentUser) return;
     const container = document.getElementById('recent-tx-list');
-    if (!container) return;
-    
-    container.innerHTML = '<div class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Cargando movimientos...</div>';
-    
+    const historyContainer = document.getElementById('history-tx-list');
+    if (!container && !historyContainer) return;
+
+    const loading = '<div class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Cargando movimientos...</div>';
+    if (container) container.innerHTML = loading;
+    if (historyContainer) historyContainer.innerHTML = loading;
+
     try {
-        const db = window._db;
-        // Search transactions where user is sender or receiver
-        const snap = await window._fbGetDocs(window._fbQuery(
-            window._fbCollection(db, 'transactions'),
-            window._fbOrderBy('timestamp', 'desc'),
-            window._fbLimit(15)
-        ));
-        
-        container.innerHTML = '';
-        let count = 0;
-        
-        snap.forEach(doc => {
-            const tx = doc.data();
-            const isFromMe = tx.from === currentUser.nick;
-            const isToMe = tx.to === currentUser.nick;
-            
-            if (!isFromMe && !isToMe) return; // Filter client-side if query limits prevent compound indexing
-            if (count >= 15) return;
-            
-            count++;
-            const item = document.createElement('div');
-            item.className = 'glass-card';
-            item.style.padding = '12px 18px';
-            item.style.marginBottom = '10px';
-            item.style.display = 'flex';
-            item.style.justifyContent = 'space-between';
-            item.style.alignItems = 'center';
-            
-            const isIncome = isToMe && tx.from !== currentUser.nick;
-            const icon = isIncome ? 'fa-solid fa-arrow-down-long' : 'fa-solid fa-arrow-up-long';
-            const iconColor = isIncome ? 'var(--secondary)' : 'var(--danger)';
-            const prefix = isIncome ? '+' : '-';
-            
-            let dateStr = 'Reciente';
-            if (tx.timestamp) {
-                const date = tx.timestamp.toDate ? tx.timestamp.toDate() : new Date(tx.timestamp);
-                dateStr = date.toLocaleDateString('es') + ' ' + date.toLocaleTimeString('es', {hour: '2-digit', minute:'2-digit'});
-            }
-            
-            item.innerHTML = `
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <div style="width:30px; height:30px; border-radius:50%; background:rgba(0,0,0,0.2); display:flex; align-items:center; justify-content:center; color:${iconColor};">
-                        <i class="${icon}"></i>
-                    </div>
-                    <div>
-                        <div style="font-size:12px; font-weight:600;">${isIncome ? 'Recibido de ' + esc(tx.from) : 'Enviado a ' + esc(tx.to)}</div>
-                        <div style="font-size:10px; color:var(--text-muted);">${esc(tx.note) || 'Transferencia'}</div>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <div style="font-family:'Orbitron',sans-serif; font-size:13px; font-weight:bold; color:${iconColor};">${prefix}${Number(tx.amount || 0).toLocaleString()} PPC</div>
-                    <div style="font-size:9px; color:var(--text-muted);">${dateStr}</div>
-                </div>
-            `;
-            container.appendChild(item);
+        const data = await apiFetch('GET', '/transactions?limit=' + _TX_PAGE_SIZE + '&offset=' + (_txPage * _TX_PAGE_SIZE));
+        const txs = Array.isArray(data) ? data : (data.transactions || []);
+        const nick = currentUser.nick;
+        const mine = txs.filter(tx => {
+            const from = tx.from_nick ?? tx.from;
+            const to   = tx.to_nick ?? tx.to;
+            return from === nick || to === nick;
         });
-        
-        if (count === 0) {
-            container.innerHTML = '<div class="empty-msg">No tienes transferencias registradas todavía</div>';
+
+        const filterSel = document.getElementById('tx-filter-type');
+        const filterType = filterSel ? filterSel.value : '';
+        const filtered = filterType ? mine.filter(tx => (tx.type || '').toLowerCase() === filterType.toLowerCase()) : mine;
+
+        if (container) renderRecentTx(container, filtered);
+        if (historyContainer) {
+            renderHistoryTx(historyContainer, filtered);
+            const moreBtn = document.getElementById('load-more-tx-btn');
+            if (moreBtn) moreBtn.style.display = (filtered.length >= _TX_PAGE_SIZE) ? 'block' : 'none';
         }
     } catch(e) {
         console.error(e);
-        container.innerHTML = '<div class="empty-msg" style="color:var(--danger)">Error al cargar historial</div>';
+        const errMsg = '<div class="empty-msg" style="color:var(--danger)">Error al cargar historial</div>';
+        if (container) container.innerHTML = errMsg;
+        if (historyContainer) historyContainer.innerHTML = errMsg;
     }
+}
+
+function renderRecentTx(container, txs) {
+    container.innerHTML = '';
+    if (!txs.length) {
+        container.innerHTML = '<div class="empty-msg">No tienes transferencias registradas todavía</div>';
+        return;
+    }
+    txs.forEach(tx => {
+        const from = tx.from_nick ?? tx.from;
+        const to   = tx.to_nick ?? tx.to;
+        const isIncome = to === currentUser.nick && from !== currentUser.nick;
+        const icon = isIncome ? 'fa-solid fa-arrow-down-long' : 'fa-solid fa-arrow-up-long';
+        const iconColor = isIncome ? 'var(--secondary)' : 'var(--danger)';
+        const prefix = isIncome ? '+' : '-';
+
+        let dateStr = 'Reciente';
+        const ts = tx.created_at ?? tx.timestamp;
+        if (ts) {
+            const date = new Date(ts);
+            if (!isNaN(date)) dateStr = date.toLocaleDateString('es') + ' ' + date.toLocaleTimeString('es', {hour: '2-digit', minute:'2-digit'});
+        }
+
+        const item = document.createElement('div');
+        item.className = 'glass-card';
+        item.style.padding = '12px 18px';
+        item.style.marginBottom = '10px';
+        item.style.display = 'flex';
+        item.style.justifyContent = 'space-between';
+        item.style.alignItems = 'center';
+        item.innerHTML = `
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:30px; height:30px; border-radius:50%; background:rgba(0,0,0,0.2); display:flex; align-items:center; justify-content:center; color:${iconColor};">
+                    <i class="${icon}"></i>
+                </div>
+                <div>
+                    <div style="font-size:12px; font-weight:600;">${isIncome ? 'Recibido de ' + esc(from) : 'Enviado a ' + esc(to)}</div>
+                    <div style="font-size:10px; color:var(--text-muted);">${esc(tx.note) || 'Transferencia'} · ${esc(tx.type || 'Transferencia')}</div>
+                </div>
+            </div>
+            <div class="text-right">
+                <div style="font-family:'Orbitron',sans-serif; font-size:13px; font-weight:bold; color:${iconColor};">${prefix}${Number(tx.amount || 0).toLocaleString()} PPC</div>
+                <div style="font-size:9px; color:var(--text-muted);">${dateStr}</div>
+            </div>
+        `;
+        container.appendChild(item);
+    });
+}
+
+function renderHistoryTx(container, txs) {
+    container.innerHTML = '';
+    if (!txs.length) {
+        container.innerHTML = '<div class="empty-msg">No hay transacciones para este filtro</div>';
+        return;
+    }
+    txs.forEach(tx => {
+        const from = tx.from_nick ?? tx.from;
+        const to   = tx.to_nick ?? tx.to;
+        const isIncome = to === currentUser.nick && from !== currentUser.nick;
+
+        let dateStr = 'Reciente';
+        const ts = tx.created_at ?? tx.timestamp;
+        if (ts) {
+            const date = new Date(ts);
+            if (!isNaN(date)) dateStr = date.toLocaleDateString('es') + ' ' + date.toLocaleTimeString('es', {hour: '2-digit', minute:'2-digit'});
+        }
+
+        const row = document.createElement('div');
+        row.className = 'tx-row';
+        row.innerHTML = `
+            <div class="tx-icon" style="background:${isIncome ? 'rgba(0,255,170,0.1)' : 'rgba(255,68,102,0.1)'}; color:${isIncome ? 'var(--secondary)' : 'var(--danger)'};">
+                <i class="${isIncome ? 'fa-solid fa-arrow-down-long' : 'fa-solid fa-arrow-up-long'}"></i>
+            </div>
+            <div class="tx-details">
+                <div class="tx-type" data-csv="${esc(tx.type || 'Transferencia')}">${esc(tx.type || 'Transferencia')}</div>
+                <div class="tx-meta">${isIncome ? 'De ' + esc(from) : 'Para ' + esc(to)}${tx.note ? ' · ' + esc(tx.note) : ''}</div>
+                <span style="display:none" class="tx-de" data-csv="${esc(isIncome ? from : '')}"></span>
+                <span style="display:none" class="tx-para" data-csv="${esc(isIncome ? '' : to)}"></span>
+                <span style="display:none" class="tx-nota" data-csv="${esc(tx.note || '')}"></span>
+            </div>
+            <div class="tx-amount ${isIncome ? 'positive' : 'negative'}" data-csv="${Number(tx.amount || 0)}">
+                ${isIncome ? '+' : '-'}${Number(tx.amount || 0).toLocaleString()} PPC
+            </div>
+        `;
+        container.appendChild(row);
+    });
+}
+
+function loadMoreTx() {
+    _txPage++;
+    loadRecentTx();
+}
+
+function resetTxPagination() {
+    _txPage = 0;
 }
 
 // ═══════════════════════════ PRESTAMOS Y DEUDAS ═══════════════════════════

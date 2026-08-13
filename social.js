@@ -183,7 +183,8 @@ async function loadPolls() {
             const endsAt = created + POLL_DURATION_DAYS * 86400000;
             const ended = now > endsAt;
             const votedBy = (p.votes && p.votes[0] ? p.votes[0] : []).concat(p.votes && p.votes[1] ? p.votes[1] : []);
-            const myVote = p.votes && p.votes.findIndex(arr => Array.isArray(arr) && arr.includes(currentUser.nick));
+            const voteArrs = (p.votes && typeof p.votes === 'object') ? Object.values(p.votes).filter(Array.isArray) : [];
+            const myVote = voteArrs.findIndex(arr => arr.includes(currentUser.nick));
 
             const card = document.createElement('div');
             card.className = 'glass-card';

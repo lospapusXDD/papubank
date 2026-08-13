@@ -8,8 +8,49 @@ if (typeof escHTML === 'undefined') {
 }
 
 const papuPlaylist = [
-    { file: 'i wanna be your boyfriend.mp3', title: 'I Wanna Be Your Boyfriend', artist: 'Hots Freaks',
-      lyrics: `` },
+    { file: 'i wanna be your boyfriend.mp3', title: 'I Wanna Be Your Boyfriend', artist: 'Hot Freaks',
+      lyrics: `[00:00.18]I wanna be your boyfriend
+[00:04.28]I wanna be your boyfriend
+[00:08.16]I wanna be your boyfriend
+[00:12.03]I wanna be your boyfriend
+[00:15.53]Woo!
+[00:31.74]Ooh, I'm in love
+[00:33.27]It's a mystery
+[00:35.25]When I see you out at night
+[00:37.49]I start to get dizzy
+[00:39.98]Before I see you I pick out some things to say
+[00:43.43]Don't want to sound foolish and waste my chance away
+[00:47.46]Oh, I'm not gonna make the same mistakes
+[00:52.10]I'm not gonna run
+[00:55.87]Just pick the boy you like
+[00:59.88]I've got my home set
+[01:03.11]I wanna be your boyfriend
+[01:05.28]I wanna be your boyfriend
+[01:07.00]I wanna go on walks with you
+[01:09.05]I wanna have long talks with you
+[01:11.24]You can be my girlfriend
+[01:13.15]You can be my girlfriend
+[01:15.07]I'd compliment you frequently
+[01:17.07]I wanna treat you decently
+[01:19.04]La la la
+[01:27.17]Ooh, you're in demand
+[01:28.47]It's impossible
+[01:30.38]When I see you out at night
+[01:32.63]All the guys are crowding around
+[01:35.13]They're telling you the same things that I planned to say
+[01:38.48]I thought I was unique
+[01:40.46]Maybe I'm not that way
+[01:56.32]I wanna be your boyfriend
+[01:58.47]I wanna be your boyfriend
+[02:00.32]I wanna be your boyfriend
+[02:02.26]I wanna be your boyfriend
+[02:04.10]I wanna go on walks with you
+[02:06.17]I wanna have long talks with you
+[02:08.23]You can be my girlfriend
+[02:10.16]You can be my girlfriend
+[02:11.97]I'd compliment you frequently
+[02:13.92]I wanna treat you decently
+[02:16.00]La la la la la la la la la la la la la` },
 
     { file: 'nuts.mp3', title: 'nuts', artist: 'Lil Peep ft. Rainy Bear',
       lyrics: `[00:00.00]nuts — Lil Peep ft. Rainy Bear
@@ -412,6 +453,58 @@ function parseLRC(lrcText, skipTitle) {
 let _parsedLyricsCache = null;
 let _currentLyricsIdx  = -1;
 
+const DEFAULT_LYRIC_OFFSETS = {
+    'i wanna be your boyfriend.mp3': 0,
+    'nuts.mp3': 4.8,
+    'kissme.mp3': -2.5,
+    'harvey.mp3': 21.8,
+    'olvidar.mp3': 22,
+    'Intruso.mp3': 19.4,
+    'Lovers Rock.mp3': 4.4,
+    'MARETU_Unknown.mp3': 4,
+    'Meant To Be.mp3': -3,
+    'pupsies - misery. (Lyrics).mp3': 2,
+    'The Rare Occasions  Origami (Lyric Video).mp3': 5.8
+};
+
+function _lyricOffsetKey() {
+    const track = papuPlaylist[curPapuTrack];
+    return 'papu_lyric_offset_' + (track ? track.file : 'none');
+}
+
+function getLyricOffset() {
+    const key = _lyricOffsetKey();
+    const saved = localStorage.getItem(key);
+    if (saved !== null && saved !== '') return parseFloat(saved) || 0;
+    const track = papuPlaylist[curPapuTrack];
+    if (track && DEFAULT_LYRIC_OFFSETS.hasOwnProperty(track.file)) return DEFAULT_LYRIC_OFFSETS[track.file];
+    return 0;
+}
+
+function shiftLyrics(delta) {
+    const track = papuPlaylist[curPapuTrack];
+    if (!track || !track.lyrics) return;
+    const offset = Math.round((getLyricOffset() + delta) * 10) / 10;
+    localStorage.setItem(_lyricOffsetKey(), String(offset));
+    _refreshLyricOffsetDisplay();
+    _currentLyricsIdx = -1;
+    if (pAudio) syncLyrics(pAudio.currentTime);
+}
+
+function resetLyricsOffset() {
+    localStorage.removeItem(_lyricOffsetKey());
+    _refreshLyricOffsetDisplay();
+    _currentLyricsIdx = -1;
+    if (pAudio) syncLyrics(pAudio.currentTime);
+}
+
+function _refreshLyricOffsetDisplay() {
+    const el = document.getElementById('lyric-offset-display');
+    if (!el) return;
+    const off = getLyricOffset();
+    el.textContent = (off ? (off > 0 ? '+' : '') + off.toFixed(1) : '0.0') + 's';
+}
+
 function buildFloatingLyrics() {
     const body = document.getElementById('floating-lyrics-body');
     if (!body) return;
@@ -421,6 +514,7 @@ function buildFloatingLyrics() {
     const parsed = parseLRC(track.lyrics, true);
     _parsedLyricsCache = parsed;
     _currentLyricsIdx = -1;
+    _refreshLyricOffsetDisplay();
 
     body.innerHTML = parsed.map((line, i) =>
         `<div class="lyric-line" data-idx="${i}" style="padding:4px 0;transition:all 0.3s;color:var(--text-muted);font-size:13px;">${escHTML(line.text)}</div>`
@@ -430,9 +524,12 @@ function buildFloatingLyrics() {
 function syncLyrics(currentTime) {
     if (!floatingLyricsVisible || !_parsedLyricsCache || !_parsedLyricsCache.length) return;
 
+    const offset = getLyricOffset();
+    const t = currentTime - offset;
+
     let idx = -1;
     for (let i = _parsedLyricsCache.length - 1; i >= 0; i--) {
-        if (currentTime >= _parsedLyricsCache[i].time) { idx = i; break; }
+        if (t >= _parsedLyricsCache[i].time) { idx = i; break; }
     }
     if (idx === _currentLyricsIdx) return;
     _currentLyricsIdx = idx;

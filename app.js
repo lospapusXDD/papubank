@@ -208,7 +208,7 @@ function showPage(pageId) {
     switch (pageId) {
         case 'dashboard':   refreshBankAccount().then(loadDashboard);     break;
         case 'transfer':    refreshBankAccount().then(loadTransferUsers); break;
-        case 'history':     refreshBankAccount().then(loadRecentTx);      break;
+        case 'history':     if (typeof resetTxPagination === 'function') resetTxPagination(); refreshBankAccount().then(loadRecentTx); break;
         case 'market':      refreshBankAccount().then(renderMarket);      break;
         case 'leaderboard': refreshBankAccount().then(() => loadLeaderboard('users'));   break;
         case 'loans':       refreshBankAccount().then(loadLoans);         break;
