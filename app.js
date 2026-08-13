@@ -1565,7 +1565,8 @@ async function loadRankShop() {
         } else {
             canAfford = bal >= rank.price;
         }
-        const isOwned   = currentRankKey === rank.key;
+        const isOwned   = (currentUser.boughtRanks || []).includes(rank.key);
+        const isActive  = currentRankKey === rank.key;
         const card = document.createElement('div');
         card.className = 'glass-card';
         card.style.borderColor = isOwned ? rank.color : 'var(--dark-border)';
@@ -1581,7 +1582,7 @@ async function loadRankShop() {
                     <div style="font-weight:700;font-size:14px;color:${rank.color}">${rank.label}</div>
                     <div style="font-size:10px;color:var(--text-muted);">Multiplicador x${rank.mult}</div>
                 </div>
-                ${isOwned ? `<span class="badge-tag" style="margin-left:auto;background:${rank.color}20;color:${rank.color};border-color:${rank.color};">Actual</span>` : ''}
+                ${isActive ? `<span class="badge-tag" style="margin-left:auto;background:${rank.color}20;color:${rank.color};border-color:${rank.color};">Actual</span>` : isOwned ? `<span class="badge-tag" style="margin-left:auto;background:rgba(0,255,170,0.15);color:var(--secondary);border-color:var(--secondary);">✓ Adquirido</span>` : ''}
             </div>
             ${rank.price > 0 ? `
                 ${dualPrice ? `
@@ -1593,11 +1594,12 @@ async function loadRankShop() {
                 ` : `
                 <div style="font-family:'Orbitron',sans-serif;font-size:13px;color:var(--gold);margin-bottom:12px;font-weight:bold;">${rank.price.toLocaleString()} PPC</div>
                 `}
-                <button class="btn ${isOwned ? 'btn-secondary' : canAfford ? 'btn-primary' : 'btn-secondary'} btn-full"
-                    style="${!isOwned && !canAfford ? 'opacity:0.5;cursor:not-allowed;' : ''}"
-                    ${isOwned || !canAfford ? 'disabled' : `onclick="buyRank('${rank.key}')"`}>
-                    ${isOwned ? 'Rango actual' : canAfford ? 'Comprar rango' : 'Saldo Insuficiente'}
-                </button>
+                ${isActive
+                    ? `<button class="btn btn-secondary btn-full" disabled>Rango actual</button>`
+                    : isOwned
+                        ? `<button class="btn btn-primary btn-full" onclick="equipRank('${rank.key}')">Equipar (adquirido)</button>`
+                        : `<button class="btn ${canAfford ? 'btn-primary' : 'btn-secondary'} btn-full" style="${!canAfford ? 'opacity:0.5;cursor:not-allowed;' : ''}" ${!canAfford ? 'disabled' : `onclick="buyRank('${rank.key}')"`}>${canAfford ? 'Comprar rango' : 'Saldo Insuficiente'}</button>`
+                }
             ` : `<div style="font-size:11px;color:var(--text-muted);">Rango base — gratuito</div>`}
         `;
         container.appendChild(card);
@@ -1609,6 +1611,11 @@ async function buyRank(rankKey) {
 
     const rank = ALL_MYTH_RANKS[rankKey];
     if (!rank) return;
+
+    if ((currentUser.boughtRanks || []).includes(rankKey)) {
+        await equipRank(rankKey);
+        return;
+    }
 
     const requireBoth = (rank.gradeTier || 0) >= 3;
     const pusd = currentUser.pusdBalance || 0;
@@ -1673,6 +1680,19 @@ async function buyRank(rankKey) {
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
+}
+
+async function equipRank(rankKey) {
+    if (!currentUser || !window._db) return;
+    const rank = ALL_MYTH_RANKS[rankKey];
+    if (!rank) return;
+    const staffKeys = ['owner', 'admin', 'mod', 'helper'];
+    const newRank = staffKeys.includes(getRankKey(currentUser)) ? getRankKey(currentUser) : rankKey;
+    await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { rank: newRank });
+    currentUser.rank = newRank;
+    showToast(`Rango ${rank.label} equipado`, rank.color);
+    updateNavUI();
+    loadRankShop();
 }
 
 // ═══════════════════════════ FRIEREN PAGE ═══════════════════════════
@@ -1865,7 +1885,8 @@ async function loadJJKPage() {
     if (ranksContainer) {
         ranksContainer.innerHTML = '';
         JJK_RANKS.forEach(rank => {
-            const isOwned = currentUser.jjkRank === rank.key;
+            const isOwned = (currentUser.boughtRanks || []).includes(rank.key);
+            const isActive = currentUser.jjkRank === rank.key;
             const requireBoth = rank.gradeTier >= 3;
             let canAfford;
             if (requireBoth) {
@@ -1887,6 +1908,7 @@ async function loadJJKPage() {
                         <div style="font-weight:700;color:${rank.color};">${rank.label}</div>
                         <div style="font-size:10px;color:var(--text-muted);">${rank.grade} • +${Math.round(rank.mult * 100)}% Bonos</div>
                     </div>
+                    ${isActive ? `<span class="badge-tag" style="margin-left:auto;background:${rank.color}20;color:${rank.color};border-color:${rank.color};">Actual</span>` : isOwned ? `<span class="badge-tag" style="margin-left:auto;background:rgba(0,255,170,0.15);color:var(--secondary);border-color:var(--secondary);">✓ Adquirido</span>` : ''}
                 </div>
                 <p style="font-size:11px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;">${rank.desc}</p>
                 <div style="display:flex;gap:6px;margin-bottom:12px;">
@@ -1894,10 +1916,12 @@ async function loadJJKPage() {
                     <span style="font-size:11px;color:var(--gold);flex:1;text-align:center;padding:4px;background:rgba(251,191,36,0.1);border-radius:6px;font-family:'Orbitron',sans-serif;">$${rank.price_usd.toLocaleString()} P-USD</span>
                 </div>
                 ${requireBoth ? '<div style="font-size:9px;color:#f472b6;text-align:center;margin-bottom:8px;"><i class="fa-solid fa-link"></i> Requiere ambos pagos</div>' : ''}
-                <button class="btn btn-full ${isOwned ? 'btn-secondary' : canAfford ? 'btn-primary' : 'btn-secondary'}"
-                    ${isOwned || !canAfford ? `disabled style="opacity:0.6"` : `onclick="buyJJKRank('${rank.key}')"`}>
-                    <i class="${rank.icon}"></i> ${isOwned ? 'Rango Actual' : canAfford ? 'Hacerse Hechicero' : 'Saldo Insuficiente'}
-                </button>
+                ${isActive
+                    ? `<button class="btn btn-secondary btn-full" disabled><i class="${rank.icon}"></i> Rango Actual</button>`
+                    : isOwned
+                        ? `<button class="btn btn-primary btn-full" onclick="equipJJKRank('${rank.key}')"><i class="${rank.icon}"></i> Equipar (adquirido)</button>`
+                        : `<button class="btn btn-full ${canAfford ? 'btn-primary' : 'btn-secondary'}" ${!canAfford ? `disabled style="opacity:0.6"` : `onclick="buyJJKRank('${rank.key}')"`}><i class="${rank.icon}"></i> ${canAfford ? 'Hacerse Hechicero' : 'Saldo Insuficiente'}</button>`
+                }
             `;
             ranksContainer.appendChild(card);
         });
@@ -1914,6 +1938,13 @@ async function buyJJKRank(rankKey) {
     if (!currentUser || !bankAccount || !window._db) return;
 
     const rank = _jjkRankRegistry[rankKey];
+    if (!rank) return;
+
+    if ((currentUser.boughtRanks || []).includes(rankKey)) {
+        await equipJJKRank(rankKey);
+        return;
+    }
+
     const requireBoth = rank.gradeTier >= 3;
     let canAfford;
     if (requireBoth) {
@@ -1958,6 +1989,16 @@ async function buyJJKRank(rankKey) {
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
+}
+
+async function equipJJKRank(rankKey) {
+    if (!currentUser || !window._db) return;
+    const rank = _jjkRankRegistry[rankKey];
+    if (!rank) return;
+    await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { jjkRank: rankKey });
+    currentUser.jjkRank = rankKey;
+    showToast(`Rango ${rank.label} equipado`, rank.color);
+    loadJJKPage();
 }
 
 // JJK utility functions needed by minigames.js
