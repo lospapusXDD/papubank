@@ -1,13 +1,19 @@
-ANTIGRAVITY — QR 2FA: Google Authenticator no agrega la cuenta
+Bug P-USD en PapusBank — Exchange bloqueado para usuarios normales
 
-El QR escanea pero Google Authenticator no acepta la cuenta. La URL otpauth actual es:
-otpauth://totp/PapusBank:solariswat?secret=XXXX&issuer=PapusBank
+Los usuarios normales (ej. gabriel_nuevo) no pueden comprar P-USD en la página Exchange. Les aparece: Acceso restringido - solo administradores.
 
-Google Authenticator 2025+ requiere estos parámetros adicionales en la URL:
-otpauth://totp/PapusBank:solariswat?secret=XXXX&issuer=PapusBank&algorithm=SHA1&digits=6&period=30
+Causa raíz (ya verificada con sesión real):
 
-Por favor actualiza auth.js para que la ruta POST /auth/2fa/setup genere la URL con esos 3 parámetros extra.
+exchange.js usa POST /api/bank/burn para "Comprar P-USD" (PPC→P-USD) y POST /api/bank/mint para "Comprar PPC" (P-USD→PPC).
+El backend tiene ambos endpoints con gate admin-only (403). La Sesión 19 del AGENTS.md los documenta justamente "para exchange", así que el gate contradice el diseño.
+Fix requerido en el backend (Node.js/Express):
 
-También verifica que el bridge.js mapee correctamente todos los campos del 2FA (twofa_enabled, twofa_secret, twofa_pending_secret, twofa_backup_codes) tanto en lecturas como escrituras.
-
-Túnel activo: https://pcs-willow-investigation-milton.trycloudflare.com/api
+POST /api/bank/burn — permitir que cada usuario queme su propio PPC:
+Admin: puede quemar a cualquier cuenta (sin cambio).
+No-admin: solo si body.nick === token.nick. Validar amount > 0 y balance >= amount.
+Esto arregla "Comprar P-USD" para todos. Es seguro (solo destruye PPC propio, no crea dinero).
+POST /api/bank/mint — NO abrirlo libre a usuarios (imprimiría dinero infinito). Hacer mint atómico con descuento de P-USD:
+Admin: mint libre (sin cambio).
+No-admin: requiere body.pusdDeduct > 0 y body.nick === token.nick; en una transacción, verificar pusd_balance >= pusdDeduct, restarlo y sumar amount al balance del bank_account.
+Cuando esté listo, avísame y actualizo el frontend (exchange.js dejará de hacer el PUT pusdBalance separado).
+Pendiente de seguridad (para después): GET /api/users y GET /api/users/:nick son públicos y filtran el hash de todos (permite robar sesión vía login-by-hash). Exigir JWT en GET /users, GET /users/:nick y GET /bank_accounts.
