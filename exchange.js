@@ -116,12 +116,10 @@ async function exchangePUSDtoPPC(pusdAmount) {
             return false;
         }
         
-        await apiFetch('POST', '/bank/mint', { nick: currentUser.nick, amount: ppcAmount });
+        await apiFetch('POST', '/bank/mint', { nick: currentUser.nick, amount: ppcAmount, pusdDeduct: pusdAmount });
         
-        const newPusd = parseFloat((freshPusd - pusdAmount).toFixed(4));
-        await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: newPusd });
-        
-        currentUser.pusdBalance = newPusd;
+        const freshAfter = await apiFetch('GET', '/users/' + currentUser.nick);
+        currentUser.pusdBalance = parseFloat(freshAfter.pusdBalance) || 0;
         bankAccount = await apiFetch('GET', '/bank/' + currentUser.nick);
         
         showToast(`¡Convertido! ${formatPUSD(pusdAmount)} → ${formatPPC(ppcAmount)}`, '#00ffaa');
