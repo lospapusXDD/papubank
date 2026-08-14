@@ -343,6 +343,8 @@ window.completeLogin = async function(res, nick) {
     if (typeof initMatrix === 'function') initMatrix();
     if (typeof loadSavedTheme === 'function') loadSavedTheme();
     if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
+    if (typeof trackDailyStreak === 'function') await trackDailyStreak();
+    if (typeof checkSecretAchievements === 'function') checkSecretAchievements();
 };
 
 window.resolveTwofaLogin = async function(nick, tempToken) {
@@ -515,6 +517,8 @@ async function tryAutoLogin() {
                 if (typeof initMatrix === 'function') initMatrix();
                 if (typeof loadSavedTheme === 'function') loadSavedTheme();
                 if (typeof checkBirthdayBonus === 'function') checkBirthdayBonus();
+                if (typeof trackDailyStreak === 'function') await trackDailyStreak();
+                if (typeof checkSecretAchievements === 'function') checkSecretAchievements();
                 return;
             } catch(e) {
                 window._apiToken = null;
@@ -1220,7 +1224,7 @@ async function adminMint(nick) {
 
     try {
         await apiFetch('POST', '/bank/mint', { nick, amount: amt, reason });
-        delete _apiCache['GET:/bank/' + nick];
+        delete window._apiCache['GET:/bank/' + nick];
         showToast(`Mint de ${amt.toLocaleString()} PPC a ${nick} ✓`, '#00ffaa');
         loadAdminAccounts(true);
         if (nick === currentUser.nick) await refreshBankAccount();
@@ -1410,16 +1414,8 @@ async function adminViewHistory(nick) {
     modal.classList.add('active');
     try {
         const [loginSnap, snap] = await Promise.all([
-            window._fbGetDocs(window._fbQuery(
-                window._fbCollection(window._db, 'users', nick, 'logins'),
-                window._fbOrderBy('timestamp', 'desc'),
-                window._fbLimit(20)
-            )),
-            window._fbGetDocs(window._fbQuery(
-                window._fbCollection(window._db, 'transactions'),
-                window._fbOrderBy('timestamp', 'desc'),
-                window._fbLimit(200)
-            ))
+            window._fbGetDocs(window._fbCollection(window._db, 'users', nick, 'logins')),
+            window._fbGetDocs(window._fbCollection(window._db, 'transactions'))
         ]);
         body.innerHTML = '';
 
@@ -1506,9 +1502,11 @@ async function adminPayInterest() {
         const accSnap = await window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts'));
         let count = 0;
         const updates = [];
+        const accList = [];
+        accSnap.forEach(d => { accList.push({ id: d.id, data: d.data() }); });
 
-        for (const doc of accSnap.docs) {
-            const data = doc.data();
+        for (const doc of accList) {
+            const data = doc.data;
             const bal = data.balance || 0;
             if (bal <= 0) continue;
 
@@ -1523,7 +1521,7 @@ async function adminPayInterest() {
 
             const interest = Math.floor(bal * (bankConfig.interest / 100) * mult);
             if (interest > 0) {
-                updates.push({ ref: doc.ref, interest, nick: doc.id, mult });
+                updates.push({ ref: window._fbDoc(window._db, 'bank_accounts', doc.id), interest, nick: doc.id, mult });
                 count++;
             }
         }
@@ -2346,11 +2344,10 @@ async function godAirdropGlobal() {
         const snap = await window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts'));
         const batch = window._fbWriteBatch(window._db);
         snap.forEach(doc => {
-            batch.update(doc.ref, { balance: window._fbIncrement(amt) });
+            batch.update(window._fbDoc(window._db, 'bank_accounts', doc.id), { balance: (doc.data().balance || 0) + amt });
         });
         await batch.commit();
         showToast('Airdrop Global completado con éxito.', 'var(--primary)');
-        logAudit('SYSTEM', `Airdrop Global de ${amt} PPC a todos.`);
         loadAdminAccounts(true);
     } catch (e) {
         showToast('Error en Airdrop: ' + e.message, 'var(--danger)');
@@ -2369,11 +2366,10 @@ async function godEconomicCrisis() {
         snap.forEach(doc => {
             let b = doc.data().balance || 0;
             let newB = Math.floor(b * 0.90);
-            batch.update(doc.ref, { balance: newB });
+            batch.update(window._fbDoc(window._db, 'bank_accounts', doc.id), { balance: newB });
         });
         await batch.commit();
         showToast('La Crisis Económica ha golpeado.', 'var(--danger)');
-        logAudit('SYSTEM', 'Se aplicó Crisis Económica (-10%).');
         loadAdminAccounts(true);
     } catch(e) { console.error(e); }
 }
@@ -2389,11 +2385,10 @@ async function godEconomicBoom() {
         snap.forEach(doc => {
             let b = doc.data().balance || 0;
             let newB = Math.floor(b * 1.10);
-            batch.update(doc.ref, { balance: newB });
+            batch.update(window._fbDoc(window._db, 'bank_accounts', doc.id), { balance: newB });
         });
         await batch.commit();
         showToast('Boom Económico aplicado.', 'var(--primary)');
-        logAudit('SYSTEM', 'Se aplicó Boom Económico (+10%).');
         loadAdminAccounts(true);
     } catch(e) { console.error(e); }
 }
@@ -2407,7 +2402,7 @@ async function godFreezeAll() {
         const snap = await window._fbGetDocs(window._fbCollection(window._db, 'bank_accounts'));
         const batch = window._fbWriteBatch(window._db);
         snap.forEach(doc => {
-            batch.update(doc.ref, { frozen: true });
+            batch.update(window._fbDoc(window._db, 'bank_accounts', doc.id), { frozen: true });
         });
         await batch.commit();
         showToast('PÁNICO GLOBAL: TODAS LAS CUENTAS ESTÁN CONGELADAS.', 'var(--danger)');
@@ -2519,7 +2514,6 @@ async function godBankrupt(nick) {
         const docRef = window._fbDoc(window._db, 'bank_accounts', nick);
         await window._fbUpdateDoc(docRef, { balance: 0 });
         showToast(`${nick} está en bancarrota absoluta.`, 'var(--danger)');
-        logAudit('SYSTEM', `Bancarrota aplicada a ${nick}.`);
         loadAdminAccounts(true);
     } catch(e) { showToast('Error: ' + e.message, 'var(--danger)'); }
 }
@@ -2637,7 +2631,7 @@ async function godResetAllBalances() {
         const batch = window._fbWriteBatch(db);
         
         snap.forEach(doc => {
-            batch.update(doc.ref, {
+            batch.update(window._fbDoc(db, 'bank_accounts', doc.id), {
                 balance: 1000,
                 totalIn: 1000,
                 totalOut: 0,
@@ -2646,13 +2640,15 @@ async function godResetAllBalances() {
                 loan_amount: 0
             });
         });
-        
+
         const txSnap = await window._fbGetDocs(window._fbCollection(db, 'transactions'));
-        txSnap.forEach(doc => {
-            batch.delete(doc.ref);
-        });
+        const txIds = [];
+        txSnap.forEach(doc => { txIds.push(doc.id); });
 
         await batch.commit();
+        for (const txId of txIds) {
+            await window._fbDeleteDoc(window._fbDoc(db, 'transactions', txId));
+        }
         showToast('Base de datos reseteada a 1000 PPC.', 'var(--primary)');
         loadAdminAccounts(true);
     } catch(e) {
@@ -2680,7 +2676,7 @@ async function godRepairDatabase() {
             let tOut = parseInt(data.totalOut);
             if (isNaN(tOut) || tOut > 99999999999999) tOut = 0;
             
-            batch.update(doc.ref, {
+            batch.update(window._fbDoc(db, 'bank_accounts', doc.id), {
                 balance: bal,
                 totalIn: tIn,
                 totalOut: tOut

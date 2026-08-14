@@ -16,7 +16,7 @@ const PREMIUM_ACCOUNTS = [
 
 function getUserPremiumAccount(user) {
     if (!user) return null;
-    const balance = user.balance || 0;
+    const balance = (bankAccount && bankAccount.balance) || user.balance || 0;
     let best = null;
     for (const acc of PREMIUM_ACCOUNTS) {
         if (balance >= acc.minBalance) best = acc;
@@ -455,9 +455,9 @@ async function loadGiftRecipients() {
         const snap = await getCachedUsers();
         const options = ['<option value="">Selecciona un usuario...</option>'];
         snap.forEach(doc => {
-            const u = doc.data();
-            if (u.nick !== currentUser.nick) {
-                options.push(`<option value="${u.nick}">${u.nick}</option>`);
+            const nick = doc.id;
+            if (nick !== currentUser.nick) {
+                options.push(`<option value="${esc(nick)}">${esc(nick)}</option>`);
             }
         });
         select.innerHTML = options.join('');

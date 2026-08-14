@@ -236,7 +236,7 @@ async function loadPerfiles() {
             card.style.cssText = 'display:flex;align-items:center;gap:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s;';
             card.onclick = () => viewUserProfile(p.nick);
             card.innerHTML = `
-                <img src="${p.u.avatar || 'avt_gojo.jpg'}" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--dark-border);flex-shrink:0;">
+                <img src="${escHTML(p.u.avatar || 'avt_gojo.jpg')}" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--dark-border);flex-shrink:0;">
                 <div style="flex:1;min-width:0;">
                     <div style="font-family:'Orbitron',sans-serif;font-weight:700;color:var(--primary);font-size:14px;">${escHTML(p.nick)}</div>
                     <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">
@@ -290,16 +290,18 @@ window.loadAdminReports = async function() {
     modal.classList.add('active');
     body.innerHTML = '<div class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Cargando reports...</div>';
     try {
-        const snap = await window._fbGetDocs(window._fbQuery(
-            window._fbCollection(window._db, 'reports'),
-            window._fbOrderBy('created', 'desc'),
-            window._fbLimit(100)
-        ));
+        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'reports'));
         body.innerHTML = '';
         let count = 0;
-        snap.forEach(d => {
+        const reportList = [];
+        snap.forEach(d => { const r = d.data(); if (!r.resolved) reportList.push({ id: d.id, data: () => r }); });
+        reportList.sort((a, b) => {
+            const ta = a.data().created ? (a.data().created.toMillis ? a.data().created.toMillis() : new Date(a.data().created).getTime()) : 0;
+            const tb = b.data().created ? (b.data().created.toMillis ? b.data().created.toMillis() : new Date(b.data().created).getTime()) : 0;
+            return tb - ta;
+        });
+        reportList.slice(0, 100).forEach(d => {
             const r = d.data();
-            if (r.resolved) return;
             count++;
             let dateStr = '';
             if (r.created) {

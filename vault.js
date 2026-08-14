@@ -144,6 +144,7 @@ async function personalVaultDeposit() {
         showToast('Depósito a bóveda personal exitoso ✓', '#00ffaa');
         if (window.trackActivity) window.trackActivity('vault', amt);
         if (typeof checkAchievements === 'function') checkAchievements();
+        if (typeof refreshBankAccount === 'function') await refreshBankAccount();
         loadPersonalVault();
         if (window.loadDashboard) window.loadDashboard();
     } catch(e) { showToast('Error: ' + e.message, '#ff4466'); }
@@ -166,6 +167,7 @@ async function personalVaultWithdraw() {
         await addTx({ type: 'Bóveda Personal', from: 'Bóveda Personal', to: currentUser.nick, amount: amt, note: 'Retiro de bóveda personal' });
         input.value = '';
         showToast('Retiro de bóveda personal exitoso ✓', '#00ffaa');
+        if (typeof refreshBankAccount === 'function') await refreshBankAccount();
         loadPersonalVault();
         if (window.loadDashboard) window.loadDashboard();
     } catch(e) { showToast('Error: ' + e.message, '#ff4466'); }
@@ -184,6 +186,7 @@ async function claimVaultInterest() {
         });
         await logVaultOp('personal', currentUser.nick, 'interest', 'Banco', currentUser.nick, accrued, 'Interés diario ' + getVaultInterestRate(currentUser).toFixed(2) + '% de la bóveda personal');
         showToast('¡Reclamaste ' + accrued.toLocaleString() + ' PPC de intereses!', '#00ffaa');
+        if (typeof refreshBankAccount === 'function') await refreshBankAccount();
         loadPersonalVault();
     } catch(e) { showToast('Error: ' + e.message, '#ff4466'); }
 }
@@ -273,6 +276,7 @@ async function clanVaultDeposit() {
         await addTx({ type: 'Bóveda Clan', from: currentUser.nick, to: 'Bóveda del Clan', amount: amt, note: 'Depósito a la bóveda del clan' });
         input.value = '';
         showToast('¡Gracias por tu donación a la bóveda del clan!', '#00ffaa');
+        if (typeof refreshBankAccount === 'function') await refreshBankAccount();
         loadClanVault();
         if (window.loadDashboard) window.loadDashboard();
     } catch(e) { showToast('Error: ' + e.message, '#ff4466'); }
@@ -326,10 +330,12 @@ async function loadSharedVaults() {
 
     try {
         const db = window._db;
-        const q = window._fbQuery(window._fbCollection(db, 'vaults'), window._fbWhere('members', 'array-contains', currentUser.nick));
-        const snap = await window._fbGetDocs(q);
+        const snap = await window._fbGetDocs(window._fbCollection(db, 'vaults'));
         const vaults = [];
-        snap.forEach(d => vaults.push({ id: d.id, ...d.data() }));
+        snap.forEach(d => {
+            const v = d.data();
+            if (v && Array.isArray(v.members) && v.members.includes(currentUser.nick)) vaults.push({ id: d.id, ...v });
+        });
 
         let html = `
             <div class="glass-card" style="margin-bottom:20px;border-color:var(--primary);">

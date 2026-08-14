@@ -276,6 +276,7 @@ async function buyNanatsuRank(rankKey) {
         grantRankLocal(rankKey);
         showToast(`¡Ahora eres ${rank.label} — ${rank.sin}!`, rank.color);
         loadNanatsuPage();
+        checkNanatsuAchievements();
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }

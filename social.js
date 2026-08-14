@@ -19,16 +19,13 @@ async function loadInbox() {
     }
 
     try {
-        const snap = await window._fbGetDocs(window._fbQuery(
-            window._fbCollection(window._db, 'messages'),
-            window._fbWhere('participants', 'array-contains', currentUser.nick),
-            window._fbLimit(300)
-        ));
+        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'messages'));
         const msgs = [];
         snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
 
         const convos = {};
         msgs.forEach(m => {
+            if (m.from !== currentUser.nick && m.to !== currentUser.nick) return;
             const partner = m.from === currentUser.nick ? m.to : m.from;
             if (!convos[partner]) convos[partner] = [];
             convos[partner].push(m);
@@ -78,11 +75,7 @@ async function openConversation(partner) {
     body.innerHTML = '<div class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Cargando...</div>';
 
     try {
-        const snap = await window._fbGetDocs(window._fbQuery(
-            window._fbCollection(window._db, 'messages'),
-            window._fbWhere('participants', 'array-contains', currentUser.nick),
-            window._fbLimit(500)
-        ));
+        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'messages'));
         const msgs = [];
         snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
         msgs.sort((a, b) => (a.timestamp ? (a.timestamp.toMillis ? a.timestamp.toMillis() : new Date(a.timestamp).getTime()) : 0) - (b.timestamp ? (b.timestamp.toMillis ? b.timestamp.toMillis() : new Date(b.timestamp).getTime()) : 0));
@@ -182,8 +175,8 @@ async function loadPolls() {
             const created = pTime(p) || now;
             const endsAt = created + POLL_DURATION_DAYS * 86400000;
             const ended = now > endsAt;
-            const votedBy = (p.votes && p.votes[0] ? p.votes[0] : []).concat(p.votes && p.votes[1] ? p.votes[1] : []);
             const voteArrs = (p.votes && typeof p.votes === 'object') ? Object.values(p.votes).filter(Array.isArray) : [];
+            const votedBy = voteArrs.reduce((acc, arr) => acc.concat(arr), []);
             const myVote = voteArrs.findIndex(arr => arr.includes(currentUser.nick));
 
             const card = document.createElement('div');
@@ -408,12 +401,9 @@ async function loadTopSemanal() {
     container.innerHTML = '<div class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Cargando ranking semanal...</div>';
     const week = getWeekKey();
     try {
-        const snap = await window._fbGetDocs(window._fbQuery(
-            window._fbCollection(window._db, 'weekly_activity'),
-            window._fbWhere('week', '==', week)
-        ));
+        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'weekly_activity'));
         const rows = [];
-        snap.forEach(d => rows.push({ nick: d.data().nick, count: d.data().count || 0 }));
+        snap.forEach(d => { if (d.data().week === week) rows.push({ nick: d.data().nick, count: d.data().count || 0 }); });
         rows.sort((a, b) => b.count - a.count);
 
         const [userSnap] = [await window._fbGetDocs(window._fbCollection(window._db, 'users'))];
@@ -435,7 +425,7 @@ async function loadTopSemanal() {
             el.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:8px;' + (isMine ? 'border-color:var(--primary);' : '');
             el.innerHTML = `
                 <div style="width:36px;text-align:center;font-family:'Orbitron',sans-serif;font-weight:900;color:${idx === 0 ? 'var(--gold)' : 'var(--text-muted)'};font-size:13px;">${posLabel}</div>
-                <img src="${u.avatar || 'avt_gojo.jpg'}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--dark-border);">
+                <img src="${escHTML(u.avatar || 'avt_gojo.jpg')}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--dark-border);">
                 <div style="flex:1;">
                     <div style="font-size:13px;font-weight:700;color:${isMine ? 'var(--primary)' : 'var(--text-main)'};">${escHTML(r.nick)} ${isMine ? '<span style="font-size:9px;background:var(--primary);color:#000;padding:1px 5px;border-radius:3px;">TÚ</span>' : ''}</div>
                     <div style="font-size:10px;color:var(--text-muted);">${(r.count || 0)} acciones esta semana</div>

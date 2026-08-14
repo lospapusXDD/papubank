@@ -152,7 +152,7 @@ function spinReel(id, em, delay) {
     
     setTimeout(function() {
         inn.style.transition = 'transform ' + (0.5 + delay * 0.15) + 's cubic-bezier(.4,0,.2,1)';
-        inn.style.transform = 'translateY(-' + (12 * 38) + 'px)';
+        inn.style.transform = 'translateY(-' + (12 * 90) + 'px)';
     }, 50 + delay * 80);
 }
 
@@ -220,6 +220,8 @@ async function playSlots() {
         res.className = 'jjk-result-box jjk-result-lose';
         res.textContent = `Sin combinación — perdiste ${bet.toLocaleString('es')} PPC.`;
     }
+    
+    if (typeof trackMinigameResult === 'function') trackMinigameResult(jackpot || triple || pair);
     
     btn.disabled = false;
     if (bi) bi.value = '';
@@ -303,6 +305,8 @@ async function pickFinger(idx) {
         res.textContent = `Caja equivocada. El dedo estaba en la caja ${_jjkFingerPos + 1}. Perdiste ${_jjkFingerBet.toLocaleString('es')} PPC.`;
     }
     
+    if (typeof trackMinigameResult === 'function') trackMinigameResult(idx === _jjkFingerPos);
+    
     await updateJJKStats({
         fingerWins: wins,
         gamesPlayed: gp,
@@ -376,6 +380,8 @@ async function playCurse() {
         res.className = 'jjk-result-box jjk-result-lose';
         res.textContent = `Fallaste. Nivel de energía maldita era ${actual}. Tu elección: ${_jjkCurseSelected}. Perdiste ${bet.toLocaleString('es')} PPC.`;
     }
+    
+    if (typeof trackMinigameResult === 'function') trackMinigameResult(diff === 0 || diff === 1);
     
     btn.disabled = false;
     if (bi) bi.value = '';
@@ -467,6 +473,8 @@ async function playBattle() {
         res.className = 'jjk-result-box jjk-result-lose';
         res.textContent = `DERROTA. ${enemy.name} superó tu fuerza. Mejora tu grado de Hechicero JJK.`;
     }
+    
+    if (typeof trackMinigameResult === 'function') trackMinigameResult(ph > eh || eh <= 0);
     
     await updateJJKStats({
         battleWins: bw,

@@ -249,6 +249,8 @@ async function checkAchievements() {
         const a = accSnap.exists() ? accSnap.data() : {};
         const unlocked = u.logros || [];
 
+        if (typeof checkSecretAchievements === 'function') checkSecretAchievements();
+
         let investments = 0;
         try {
             const invSnap = await window._fbGetDocs(window._fbCollection(db, 'bank_accounts', nick, 'investments'));

@@ -359,7 +359,7 @@ async function adminAssignCouple(user1, user2, startDate) {
         });
 
         await batch.commit();
-        logAudit(currentUser.nick, `Pareja asignada: ${user1} + ${user2}`);
+        if (typeof logAudit === 'function') logAudit(currentUser.nick, `Pareja asignada: ${user1} + ${user2}`);
         return true;
     } catch(e) {
         console.error('Error assigning couple:', e);
@@ -529,7 +529,7 @@ async function loadFloresLetters(partner) {
         const letters = [];
         snap.forEach(d => {
             const data = d.data();
-            letters.push({ ...data, date: data.timestamp ? data.timestamp.toDate() : new Date() });
+            letters.push({ ...data, date: data.timestamp ? (data.timestamp.toDate ? data.timestamp.toDate() : new Date(data.timestamp)) : new Date() });
         });
         letters.sort((a, b) => b.date - a.date);
 
@@ -1112,7 +1112,11 @@ async function checkFloresAnniversaryBonus() {
     const months = Math.floor(days / 30);
     if (months < 1) return;
 
-    const claimed = currentUser.floresAnniversaryClaimed || [];
+    let claimed = currentUser.floresAnniversaryClaimed || [];
+    try {
+        const userSnap = await window._fbGetDoc(window._fbDoc(window._db, 'users', currentUser.nick));
+        if (userSnap.exists()) claimed = userSnap.data().floresAnniversaryClaimed || [];
+    } catch(e) {}
     const newly = [];
     for (let m = 1; m <= months; m++) {
         const key = 'm' + m;
@@ -1151,7 +1155,8 @@ async function loadFloresPartnerBirthday(partner) {
         const d = new Date(bd);
         const today = new Date();
         const isToday = today.getMonth() === d.getMonth() && today.getDate() === d.getDate();
-        const claimed = currentUser.floresPartnerBirthdayClaimed === String(today.getFullYear());
+        const meSnap = await window._fbGetDoc(window._fbDoc(window._db, 'users', currentUser.nick));
+        const claimed = meSnap.exists() ? (meSnap.data().floresPartnerBirthdayClaimed === String(today.getFullYear())) : false;
 
         el.innerHTML = isToday
             ? `<div style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(0,0,0,0));border:1px solid rgba(236,72,153,0.4);border-radius:12px;padding:14px;text-align:center;margin-bottom:15px;">
@@ -1173,6 +1178,8 @@ async function claimFloresPartnerBirthday(partner) {
     const year = String(new Date().getFullYear());
     if (currentUser.floresPartnerBirthdayClaimed === year) { showToast('Ya reclamaste el bono de este año', '#ff69b4'); return; }
     try {
+        const meSnap = await window._fbGetDoc(window._fbDoc(window._db, 'users', currentUser.nick));
+        if (meSnap.exists() && meSnap.data().floresPartnerBirthdayClaimed === year) { showToast('Ya reclamaste el bono de este año', '#ff69b4'); return; }
         await window._fbUpdateDoc(window._fbDoc(window._db, 'bank_accounts', currentUser.nick), { balance: window._fbIncrement(FLORES_PARTNER_BIRTHDAY_BONUS) });
         await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { floresPartnerBirthdayClaimed: year });
         currentUser.floresPartnerBirthdayClaimed = year;

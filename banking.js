@@ -183,12 +183,15 @@ async function doTransfer() {
         selectedTransferRecipient = null;
 
         showToast(`¡${fmt(amt)} enviados a ${toNick}!`, '#00ff9d');
+        try { await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { failedTransferStreak: 0 }); } catch(e) {}
         if (window.trackActivity) window.trackActivity('transfer', amt);
         if (typeof checkAchievements === 'function') checkAchievements();
         await refreshBankAccount();
         await loadTransferUsers();
         if (window.loadDashboard) window.loadDashboard();
     } catch(e) {
+        try { await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { failedTransferStreak: window._fbIncrement(1) }); } catch(e2) {}
+        if (typeof checkSecretAchievements === 'function') checkSecretAchievements();
         showToast('Error: ' + e.message, '#ff4466');
     } finally {
         btn.disabled = false;

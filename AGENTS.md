@@ -652,6 +652,41 @@ El backend NO está en este repo. Está en la PC Linux del usuario, manejado por
 
 **Datos útiles**: admins actuales: `solariswat` (owner), `sami`, `jero`. `gabriel_nuevo`: `is_admin:false`, `rank:'mrbeast'`, `pusdBalance:100.00`, 2FA off. Tunnel actual: `https://pcs-willow-investigation-milton.trycloudflare.com/api`.
 
+### Sesión 25 — AUDITORÍA MASIVA DE BUGS (10 agentes en paralelo) + DECISIÓN: fin de updates
+
+**DECISIÓN DEL PROYECTO**: PapusBank ya NO recibe más updates de contenido/features. Solo parches de bugs de ahora en adelante. Si preguntan la razón: "ya no hay nada más que meter sin sobrexplotar la página". Comunicado enviado al grupo. **No agregar features nuevas en sesiones futuras.**
+
+**Auditoría**: 10 agentes revisaron TODO el proyecto (app.js, banking.js, economy.js, exchange.js, market.js, vault.js, flores.js, chat.js, comments.js, social.js, media-player.js, logros.js, board.js, birthdays.js, clan-features.js, minigames.js, verificacion.js, 13 fandoms, index.html, style.css, extras.js). **31 bugs parcheados** (parches mínimos, regla de oro: no romper nada más):
+
+**app.js (10)**: `adminMint` `_apiCache` sin `window.`; `adminPayInterest` usaba `accSnap.docs` con `.data()/.ref` que el bridge no expone → recolectar con forEach; 6 funciones god (`godAirdropGlobal`, `godEconomicCrisis`, `godEconomicBoom`, `godFreezeAll`, `godResetAllBalances`, `godRepairDatabase`) usaban `doc.ref` inválido en batch → usar `window._fbDoc(...)` + valores ABSOLUTOS en batch (nada de `_op`); `godResetAllBalances` llamaba `batch.delete` inexistente → `_fbDeleteDoc`; `adminViewHistory` usaba stubs `_fbQuery/_fbOrderBy/_fbLimit` (devuelven `''`) → `_fbGetDocs` directo; 4 llamadas a `logAudit` inexistente ELIMINADAS (flores.js:362 ya estaba protegida con `typeof`).
+
+**IMPORTANTE (bridge)**: `_fbQuery`, `_fbWhere`, `_fbOrderBy`, `_fbLimit` son STUBS que devuelven `''` en index.html:2004-2007 → cualquier query con ellos hace `GET /` y falla → SIEMPRE fetch de colección completa + filtro client-side. `_fbWriteBatch` NO tiene `.delete`. Los docs del bridge NO tienen `.data()` ni `.ref` (solo `{id, data}` o via forEach callback).
+
+**economy.js (2)**: `loadGiftRecipients` leía `u.nick` (undefined) → usar `doc.id` (podías regalarte a ti mismo + value="undefined"); `getUserPremiumAccount` comparaba contra `user.balance` (no existe en users) → usar `bankAccount.balance` con fallback.
+
+**vault.js (1)**: `loadSharedVaults` usaba stubs `_fbQuery/_fbWhere` → bóvedas compartidas NUNCA se listaban → fetch directo `_fbGetDocs('vaults')` + filtro client-side por members.
+**market.js (1)**: `card.style.justify` (propiedad inválida) → `justifyContent`.
+
+**flores.js (4)**: cartas con `.toDate()` sin guard (bridge escribe ISO string) → patrón `x.toDate ? x.toDate() : new Date(x)`; **BONO DE ANIVERSARIO re-otorgable infinito** (leía `currentUser.floresAnniversaryClaimed` que applyUserData nunca hidrata) → leer del doc de DB; **BONO DE CUMPLEAÑOS DE PAREJA re-otorgable cada recarga** (15k PPC) → leer del doc de DB + doble-check en claim; `logAudit` protegido con `typeof`.
+
+**comments.js (2) + social.js (4)**: XSS avatar sin escapar en `loadPerfiles` y `loadTopSemanal` → `escHTML()`; `loadInbox`, `openConversation`, `loadTopSemanal`, `loadAdminReports` usaban stubs `_fbQuery/_fbWhere/_fbOrderBy/_fbLimit` → mensajes/ranking/reports NUNCA mostraban datos → fetch directo + filtro/orden client-side; **poll de 3 opciones** sumaba >100% (`votedBy` solo leía votes[0] y votes[1]) → derivar de voteArrs.
+
+**media-player.js (3)**: icono mini-player nunca se sincronizaba (selector `.play-toggle i` agarraba el botón del full player) → `#play-btn i`; bucle `requestAnimationFrame(drawFull)` sin guardar ID → no se podía detener al pausar + bucles acumulados → guardar en `fullCanvas._raf` y cancelar en `_stopFakeVisualizer`; listeners `ended`/`timeupdate` DUPLICADOS tras logout→login (la canción saltaba 2 pistas) → guard `pAudio._papuInit`.
+
+**minigames.js (1)**: slots aterrizaban en símbolo equivocado — `spinReel` usaba `12*38` pero CSS `.slot-reel-item` es 90px → `12*90`.
+
+**nanatsu.js (1)**: `checkNanatsuAchievements` NUNCA era llamada → logros de Nanatsu inalcanzables → llamarla en `buyNanatsuRank` (como godzilla).
+
+**index.html (4+1)**: ID duplicado `page-loans` → `page-loans-economy`; ID duplicado `nav-loans` → `nav-loans-economy`; 2 atributos `style` duplicados (`transfer-recipient-banner`, `loan-preview`) → fusionados; **`filterTransferUsers` llamada en oninput pero NUNCA definida** → agregada junto a `clearTransferRecipient` (filtra `.user-select-card` por texto del nick).
+
+**Sin bugs**: chat.js, board.js, logros.js, birthdays.js, clan-features.js, verificacion.js, extras.js, style.css, ben10.js, mha.js, godzilla.js, chainsaw.js, mushoku.js, deathnote.js, berserk.js, elfen.js, rezero.js, rimuru.js, bocchi.js, vocaloid.js, banking.js (solo revisado), exchange.js.
+
+**Cache bumps**: app.js?v=22, market.js?v=22, vault.js?v=19, comments.js?v=23, social.js?v=22, nanatsu.js?v=19, flores.js?v=23, economy.js?v=19, minigames.js?v=19, media-player.js?v=22.
+
+**PENDIENTE (no parcheado, sin crash — requiere decisión)**: `loans-max-display` y `active-loan-container` NO existen en index.html (loadLoans tiene guards, no crashea pero el aviso de préstamo activo no se muestra). Backend `vault_ops` no existe → historial de bóvedas siempre "Sin movimientos aún" (try/catch lo traga).
+
+**Verificación**: node encontrado en `C:\Users\saidm\AppData\Local\ms-playwright-go\1.57.0\node.exe` — `node --check` PASA en los 31 JS.
+
 ---
 
 *Actualizar este archivo con cada cambio significativo.*

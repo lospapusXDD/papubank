@@ -5,14 +5,24 @@
 /* ─────────── LOGROS SECRETOS ─────────── */
 
 const SECRET_ACHIEVEMENTS = [
-    { id: 'secret_whale',     icon: 'fa-solid fa-water',      name: 'Ballena',           desc: 'Acumula 1,000,000,000 PPC en total',           reward: 500000,  secret: true },
-    { id: 'secret_noob',      icon: 'fa-solid fa-baby',       name: 'Noob Supremo',      desc: 'Falla 10 transferencias seguidas',             reward: 1000,    secret: true },
-    { id: 'secret_night',     icon: 'fa-solid fa-moon',       name: 'Vampiro',           desc: 'Inicia sesión entre 2AM y 5AM',               reward: 5000,    secret: true },
-    { id: 'secret_streak7',   icon: 'fa-solid fa-fire',       name: 'Racha de 7 Días',   desc: 'Inicia sesión 7 días seguidos',                reward: 10000,   secret: true },
-    { id: 'secret_streak30',  icon: 'fa-solid fa-fire-flame-curved', name: 'Racha de 30 Días', desc: 'Inicia sesión 30 días seguidos',          reward: 50000,   secret: true },
-    { id: 'secret_gambler',   icon: 'fa-solid fa-dice',       name: 'Gambler',           desc: 'Gana 50 minijuegos seguidos',                 reward: 25000,   secret: true },
-    { id: 'secret_social',    icon: 'fa-solid fa-users',      name: 'Social Butterfly',  desc: 'Envía 100 mensajes privados',                 reward: 8000,    secret: true },
-    { id: 'secret_investor',  icon: 'fa-solid fa-chart-pie',  name: 'Warren Buffett',     desc: 'Tiene 10 inversiones activas simultáneamente', reward: 30000,   secret: true }
+    { id: 'secret_whale',        icon: 'fa-solid fa-water',              name: 'Ballena',              desc: 'Acumula 1,000,000,000 PPC en total',                reward: 500000,   secret: true },
+    { id: 'secret_whale2',       icon: 'fa-solid fa-water-ladder',       name: 'Leviatán',             desc: 'Acumula 10,000,000,000 PPC en total',               reward: 5000000,  secret: true },
+    { id: 'secret_rich',         icon: 'fa-solid fa-vault',              name: 'Acaparador',           desc: 'Alcanza 500,000,000 PPC en tu cuenta',              reward: 250000,   secret: true },
+    { id: 'secret_noob',         icon: 'fa-solid fa-baby',               name: 'Noob Supremo',         desc: 'Falla 10 transferencias seguidas',                  reward: 1000,     secret: true },
+    { id: 'secret_night',        icon: 'fa-solid fa-moon',               name: 'Vampiro',              desc: 'Inicia sesión entre 2AM y 5AM',                     reward: 5000,     secret: true },
+    { id: 'secret_night_streak', icon: 'fa-solid fa-moon-crescent',      name: 'Insomne',              desc: 'Inicia sesión 5 noches seguidas (2AM-5AM)',         reward: 40000,    secret: true },
+    { id: 'secret_streak7',      icon: 'fa-solid fa-fire',               name: 'Racha de 7 Días',      desc: 'Inicia sesión 7 días seguidos',                     reward: 10000,    secret: true },
+    { id: 'secret_streak30',     icon: 'fa-solid fa-fire-flame-curved',  name: 'Racha de 30 Días',     desc: 'Inicia sesión 30 días seguidos',                    reward: 50000,    secret: true },
+    { id: 'secret_streak100',    icon: 'fa-solid fa-fire-flame-simple',  name: 'Inmortal',             desc: 'Inicia sesión 100 días seguidos',                   reward: 250000,   secret: true },
+    { id: 'secret_gambler',      icon: 'fa-solid fa-dice',               name: 'Gambler',              desc: 'Gana 50 minijuegos seguidos',                       reward: 25000,    secret: true },
+    { id: 'secret_minigame',     icon: 'fa-solid fa-dice-d6',            name: 'Imán de Suerte',       desc: 'Gana 200 minijuegos en total',                      reward: 100000,   secret: true },
+    { id: 'secret_social',       icon: 'fa-solid fa-users',              name: 'Social Butterfly',     desc: 'Envía 100 mensajes privados',                       reward: 8000,     secret: true },
+    { id: 'secret_investor',     icon: 'fa-solid fa-chart-pie',          name: 'Warren Buffett',       desc: 'Tiene 10 inversiones activas simultáneamente',      reward: 30000,    secret: true },
+    { id: 'secret_tx1000',       icon: 'fa-solid fa-bolt',               name: 'Rey de Transacciones', desc: 'Realiza 1,000 transacciones',                       reward: 75000,    secret: true },
+    { id: 'secret_lv50',         icon: 'fa-solid fa-crown',              name: 'Leyenda del Clan',     desc: 'Alcanza el nivel 50',                               reward: 100000,   secret: true },
+    { id: 'secret_vault',        icon: 'fa-solid fa-landmark-dome',      name: 'Tesoro del Olvido',    desc: 'Guarda 100,000,000 PPC en tu bóveda',               reward: 200000,   secret: true },
+    { id: 'secret_karma',        icon: 'fa-solid fa-heart-circle-check', name: 'Alma Pura',            desc: 'Recibe 1,000 karmas',                               reward: 50000,    secret: true },
+    { id: 'secret_kyc3',         icon: 'fa-solid fa-id-card',            name: 'Identidad Real',       desc: 'Completa la verificación KYC nivel 3',              reward: 25000,    secret: true }
 ];
 
 /* ─────────── TEMAS PERSONALIZABLES ─────────── */
@@ -375,25 +385,52 @@ function getRingHTML(user) {
 /* ─────────── CHECK SECRET ACHIEVEMENTS ─────────── */
 
 async function checkSecretAchievements() {
-    if (!currentUser) return;
+    if (!currentUser || !window._db) return;
 
     try {
-        const userData = await apiFetch('GET', '/users/' + currentUser.nick);
-        const accData = await apiFetch('GET', '/bank/' + currentUser.nick);
-        const earned = userData.secretAchievements || [];
-        
+        const db = window._db;
+        const nick = currentUser.nick;
+        const [userSnap, accSnap] = await Promise.all([
+            window._fbGetDoc(window._fbDoc(db, 'users', nick)),
+            window._fbGetDoc(window._fbDoc(db, 'bank_accounts', nick))
+        ]);
+        const u = userSnap.exists() ? userSnap.data() : {};
+        const a = accSnap.exists() ? accSnap.data() : {};
+        const earned = u.secretAchievements || [];
+
+        let investments = 0;
+        try {
+            const invSnap = await window._fbGetDocs(window._fbCollection(db, 'bank_accounts', nick, 'investments'));
+            investments = invSnap.size;
+        } catch(e) {}
+
+        const hour = new Date().getHours();
         const newly = [];
-        
+
         for (const ach of SECRET_ACHIEVEMENTS) {
             if (earned.includes(ach.id)) continue;
-            
-            if (ach.id === 'secret_whale' && (accData.totalIn || 0) >= 1000000000) newly.push(ach);
-            if (ach.id === 'secret_night') {
-                const hour = new Date().getHours();
-                if (hour >= 2 && hour < 5) newly.push(ach);
+            let ok = false;
+            switch (ach.id) {
+                case 'secret_whale':        ok = (a.totalIn || 0) >= 1000000000; break;
+                case 'secret_whale2':       ok = (a.totalIn || 0) >= 10000000000; break;
+                case 'secret_rich':         ok = (a.balance || 0) >= 500000000; break;
+                case 'secret_noob':         ok = (u.failedTransferStreak || 0) >= 10; break;
+                case 'secret_night':        ok = (hour >= 2 && hour < 5); break;
+                case 'secret_night_streak': ok = (u.nightStreak || 0) >= 5; break;
+                case 'secret_streak7':      ok = (u.loginStreak || 0) >= 7; break;
+                case 'secret_streak30':     ok = (u.loginStreak || 0) >= 30; break;
+                case 'secret_streak100':    ok = (u.loginStreak || 0) >= 100; break;
+                case 'secret_gambler':      ok = (u.mgStreak || 0) >= 50; break;
+                case 'secret_minigame':     ok = (u.mgWins || 0) >= 200; break;
+                case 'secret_social':       ok = (u.pmSent || 0) >= 100; break;
+                case 'secret_investor':     ok = investments >= 10; break;
+                case 'secret_tx1000':       ok = (a.txCount || 0) >= 1000; break;
+                case 'secret_lv50':         ok = (u.level || 0) >= 50; break;
+                case 'secret_vault':        ok = (a.vaultBalance || 0) >= 100000000; break;
+                case 'secret_karma':        ok = (u.karma || 0) >= 1000; break;
+                case 'secret_kyc3':         ok = (a.kycLevel || 0) >= 3; break;
             }
-            if (ach.id === 'secret_streak7' && (userData.loginStreak || 0) >= 7) newly.push(ach);
-            if (ach.id === 'secret_streak30' && (userData.loginStreak || 0) >= 30) newly.push(ach);
+            if (ok) newly.push(ach);
         }
 
         if (!newly.length) return;
@@ -401,18 +438,86 @@ async function checkSecretAchievements() {
         let totalReward = 0;
         for (const ach of newly) totalReward += ach.reward;
 
-        const mult = (typeof getRankMultiplier === 'function') ? getRankMultiplier(currentUser) : 1;
+        const mult = (typeof getRankMultiplier === 'function') ? getRankMultiplier(u) : 1;
         const finalReward = Math.round(totalReward * mult);
 
-        await apiFetch('POST', '/bank/mint', { nick: currentUser.nick, amount: finalReward, reason: 'Logro Secreto' });
-        await apiFetch('PUT', '/users/' + currentUser.nick, {
-            secretAchievements: [...earned, ...newly.map(x => x.id)]
+        await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', nick), { balance: window._fbIncrement(finalReward) });
+        await window._fbUpdateDoc(window._fbDoc(db, 'users', nick), {
+            secretAchievements: window._fbArrayUnion(...newly.map(x => x.id))
         });
+        currentUser.secretAchievements = [...earned, ...newly.map(x => x.id)];
+        try {
+            await window._fbAddDoc(window._fbCollection(db, 'transactions'), {
+                from: 'Sistema', to: nick, amount: finalReward,
+                type: 'Logro Secreto', note: 'Logros Secretos: ' + newly.map(x => x.name).join(', ') + ` (×${mult.toFixed(2)})`,
+                timestamp: window._fbServerTimestamp()
+            });
+        } catch(e) {}
 
-        showToast('🔮 ¡Logro Secreto: ' + newly.map(x => x.name).join(', ') + '! +' + finalReward.toLocaleString() + ' PPC', '#9b59b6');
+        showToast('🔮 ¡Logro Secreto: ' + newly.map(x => x.name).join(', ') + '! +' + finalReward.toLocaleString() + ' PPC (×' + mult.toFixed(2) + ')', '#9b59b6');
+        loadSecretsPage();
     } catch(e) {
         console.error('Error checking secret achievements:', e);
     }
+}
+
+function _dateStr(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+async function trackDailyStreak() {
+    if (!currentUser || !window._db) return;
+    try {
+        const db = window._db;
+        const snap = await window._fbGetDoc(window._fbDoc(db, 'users', currentUser.nick));
+        const u = snap.exists() ? snap.data() : {};
+        const now = new Date();
+        const today = _dateStr(now);
+        const yesterday = _dateStr(new Date(now.getTime() - 86400000));
+        const hour = now.getHours();
+        const isNight = (hour >= 2 && hour < 5);
+
+        let loginStreak = u.loginStreak || 0;
+        if (u.lastLoginDate !== today) {
+            loginStreak = (u.lastLoginDate === yesterday) ? loginStreak + 1 : 1;
+        }
+
+        let nightStreak = u.nightStreak || 0;
+        const lastNight = u.lastNightDate || '';
+        if (isNight) {
+            if (lastNight === yesterday) nightStreak += 1;
+            else if (lastNight !== today) nightStreak = 1;
+        }
+
+        await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), {
+            loginStreak: loginStreak,
+            lastLoginDate: today,
+            nightStreak: nightStreak,
+            lastNightDate: isNight ? today : lastNight
+        });
+        currentUser.loginStreak = loginStreak;
+        currentUser.nightStreak = nightStreak;
+    } catch(e) {}
+}
+
+async function trackMinigameResult(win) {
+    if (!currentUser || !window._db) return;
+    try {
+        const db = window._db;
+        const userRef = window._fbDoc(db, 'users', currentUser.nick);
+        if (win) {
+            await window._fbUpdateDoc(userRef, {
+                mgStreak: window._fbIncrement(1),
+                mgWins: window._fbIncrement(1)
+            });
+            currentUser.mgStreak = (currentUser.mgStreak || 0) + 1;
+            currentUser.mgWins = (currentUser.mgWins || 0) + 1;
+        } else {
+            await window._fbUpdateDoc(userRef, { mgStreak: 0 });
+            currentUser.mgStreak = 0;
+        }
+        if (win && typeof checkSecretAchievements === 'function') checkSecretAchievements();
+    } catch(e) {}
 }
 
 /* ─────────── LOAD FUNCTIONS ─────────── */
@@ -428,13 +533,22 @@ async function loadRingsPage() {
     if (container) renderProfileRings(container);
 }
 
-function loadSecretsPage() {
+async function loadSecretsPage() {
     const container = document.getElementById('secrets-grid');
     if (!container) return;
-    
+
+    let unlocked = currentUser?.secretAchievements || [];
+    try {
+        if (currentUser && window._db) {
+            const snap = await window._fbGetDoc(window._fbDoc(window._db, 'users', currentUser.nick));
+            if (snap.exists()) unlocked = snap.data().secretAchievements || [];
+        }
+    } catch(e) {}
+    const unlockedSet = new Set(unlocked);
+
     let html = '<div class="grid-container">';
     SECRET_ACHIEVEMENTS.forEach(ach => {
-        const isUnlocked = currentUser?.secretAchievements?.includes(ach.id);
+        const isUnlocked = unlockedSet.has(ach.id);
         html += `
             <div class="glass-card" style="border-color:${isUnlocked ? 'var(--secondary)' : 'var(--dark-border)'};${isUnlocked ? 'box-shadow:0 0 10px rgba(0,255,170,0.2);' : ''}">
                 <div style="text-align:center;margin-bottom:10px;">

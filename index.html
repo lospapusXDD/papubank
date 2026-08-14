@@ -217,7 +217,7 @@
       <a href="#" class="sidebar-link" id="nav-premium" onclick="showPage('premium'); return false;">
         <i class="fa-solid fa-crown"></i><span>Cuentas Premium</span>
       </a>
-      <a href="#" class="sidebar-link" id="nav-loans" onclick="showPage('loans'); return false;">
+      <a href="#" class="sidebar-link" id="nav-loans-economy" onclick="showPage('loans'); return false;">
         <i class="fa-solid fa-hand-holding-dollar"></i><span>Préstamos</span>
       </a>
       <a href="#" class="sidebar-link" id="nav-stocks" onclick="showPage('stocks'); return false;">
@@ -487,7 +487,7 @@
           </div>
 
           <!-- Selected recipient banner -->
-          <div id="transfer-recipient-banner" style="display:none;" class="glass-card" style="background:rgba(0,212,255,0.06);border-color:var(--primary);padding:12px;margin-bottom:15px;">
+          <div id="transfer-recipient-banner" style="display:none;background:rgba(0,212,255,0.06);border-color:var(--primary);padding:12px;margin-bottom:15px;" class="glass-card">
             <div style="display:flex;align-items:center;gap:10px;">
               <img id="transfer-recipient-avatar" src="avt_gojo.jpg" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);">
               <div>
@@ -624,7 +624,7 @@
             <input class="form-control" id="loan-amount" type="number" min="100" placeholder="Ingresa el monto..." oninput="calcLoanPreview()">
           </div>
 
-          <div id="loan-preview" style="display:none;" class="glass-card" style="background:rgba(0,212,255,0.05);border-color:var(--primary);">
+          <div id="loan-preview" style="display:none;background:rgba(0,212,255,0.05);border-color:var(--primary);" class="glass-card">
             <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
               <span style="color:var(--text-muted);font-size:12px;">Monto solicitado</span>
               <span id="loan-preview-amount" style="font-weight:700;"></span>
@@ -1065,7 +1065,7 @@
     </section>
 
     <!-- ════════ PAGE: PRÉSTAMOS ════════ -->
-    <section class="page" id="page-loans">
+    <section class="page" id="page-loans-economy">
       <div class="page-inner">
         <div class="glass-card" style="margin-bottom:20px;text-align:center;background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,0,0,0));border-color:rgba(0,212,255,0.3);">
           <div style="font-size:40px;color:var(--primary);margin-bottom:10px;"><i class="fa-solid fa-hand-holding-dollar"></i></div>
@@ -2018,13 +2018,13 @@
 ════════════════════════════════════════════════════════════ -->
 <script src="clan-features.js?v=18"></script>
 <script src="banking.js?v=20"></script>
-<script src="market.js?v=21"></script>
-<script src="vault.js?v=18"></script>
+<script src="market.js?v=22"></script>
+<script src="vault.js?v=19"></script>
 <script src="verificacion.js?v=18"></script>
 <script src="chat.js?v=22"></script>
   <script src="board.js?v=18"></script>
-  <script src="comments.js?v=22"></script>
-  <script src="social.js?v=21"></script>
+  <script src="comments.js?v=23"></script>
+  <script src="social.js?v=22"></script>
   <script src="logros.js?v=18"></script>
   <script src="ben10.js?v=18"></script>
   <script src="mha.js?v=18"></script>
@@ -2038,15 +2038,15 @@
   <script src="rimuru.js?v=18"></script>
   <script src="bocchi.js?v=18"></script>
   <script src="vocaloid.js?v=18"></script>
-  <script src="nanatsu.js?v=18"></script>
-  <script src="flores.js?v=22"></script>
+  <script src="nanatsu.js?v=19"></script>
+  <script src="flores.js?v=23"></script>
   <script src="exchange.js?v=23"></script>
   <script src="birthdays.js?v=18"></script>
-  <script src="economy.js?v=18"></script>
+  <script src="economy.js?v=19"></script>
   <script src="extras.js?v=20"></script>
-  <script src="minigames.js?v=18"></script>
-<script src="media-player.js?v=21"></script>
-<script src="app.js?v=21"></script>
+  <script src="minigames.js?v=19"></script>
+<script src="media-player.js?v=22"></script>
+<script src="app.js?v=22"></script>
 
 <!-- ════════════════════════════════════════════════════════════
      INLINE HELPERS (small things that need DOM)
@@ -2065,6 +2065,16 @@ function togglePassVis() {
 function clearTransferRecipient() {
     selectedTransferRecipient = null;
     document.getElementById('transfer-recipient-banner').style.display = 'none';
+}
+
+// Filter transfer user grid
+function filterTransferUsers(query) {
+    const q = (query || '').trim().toLowerCase();
+    document.querySelectorAll('.user-select-card').forEach(card => {
+        const nameEl = card.querySelector('.user-select-name');
+        const name = nameEl ? nameEl.textContent.toLowerCase() : '';
+        card.style.display = name.indexOf(q) === -1 ? 'none' : '';
+    });
 }
 
 // Admin helpers wired to modals

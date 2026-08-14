@@ -58,7 +58,7 @@ function renderMarket() {
         card.className = 'glass-card text-center';
         card.style.display = 'flex';
         card.style.flexDirection = 'column';
-        card.style.justify = 'space-between';
+        card.style.justifyContent = 'space-between';
 
         card.innerHTML = `
             <div style="font-size: 32px; color: var(--primary); margin-bottom: 12px;">

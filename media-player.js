@@ -319,6 +319,8 @@ let lyricsVisible = false;
 function initMediaPlayer() {
     pAudio = document.getElementById('papu-bg-music');
     if (!pAudio) return;
+    if (pAudio._papuInit) return;
+    pAudio._papuInit = true;
 
     // Auto-advance to next track when current ends
     pAudio.addEventListener('ended', () => {
@@ -604,7 +606,7 @@ function renderPlaylist() {
 /* ── UI helpers ─────────────────────────────── */
 
 function _syncPlayButton(playing) {
-    const btn = document.querySelector('.play-toggle i');
+    const btn = document.querySelector('#play-btn i');
     if (btn) btn.className = playing ? 'fas fa-pause' : 'fas fa-play';
     const fullBtn = document.getElementById('full-play-btn');
     if (fullBtn) fullBtn.innerHTML = playing ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
@@ -646,7 +648,7 @@ function _startFakeVisualizer() {
         if (!fullCanvas._drawing) {
             fullCanvas._drawing = true;
             function drawFull() {
-                requestAnimationFrame(drawFull);
+                fullCanvas._raf = requestAnimationFrame(drawFull);
                 ctx.clearRect(0, 0, fullCanvas.width, fullCanvas.height);
                 const bars = 24;
                 const barW = (fullCanvas.width / bars) * 0.6;
@@ -673,6 +675,7 @@ function _stopFakeVisualizer() {
     }
     const fullCanvas = document.getElementById('full-wave-canvas');
     if (fullCanvas) {
+        if (fullCanvas._raf) { cancelAnimationFrame(fullCanvas._raf); fullCanvas._raf = null; }
         fullCanvas.getContext('2d').clearRect(0, 0, fullCanvas.width, fullCanvas.height);
         fullCanvas._drawing = false;
     }
