@@ -1,19 +1,9 @@
-Bug P-USD en PapusBank — Exchange bloqueado para usuarios normales
+Hey Antigravity, tengo 3 bugs del backend que necesito que arregles:
 
-Los usuarios normales (ej. gabriel_nuevo) no pueden comprar P-USD en la página Exchange. Les aparece: Acceso restringido - solo administradores.
+1. GET /transactions devuelve 403 "solo administradores" para usuarios normales. Necesitan ver SU propio historial. Ábrelo para que cualquier usuario logueado pueda leer sus propias transacciones (filtrando por from/to = nick del JWT).
 
-Causa raíz (ya verificada con sesión real):
+2. GET /users/sofii devuelve 500. Otros usuarios sí funcionan. Revisa si hay algún dato corrupto en ese doc.
 
-exchange.js usa POST /api/bank/burn para "Comprar P-USD" (PPC→P-USD) y POST /api/bank/mint para "Comprar PPC" (P-USD→PPC).
-El backend tiene ambos endpoints con gate admin-only (403). La Sesión 19 del AGENTS.md los documenta justamente "para exchange", así que el gate contradice el diseño.
-Fix requerido en el backend (Node.js/Express):
+3. GET /profiles/:nick/comments devuelve 404. El endpoint no existe. Necesito que crees GET /profiles/:nick/comments que devuelva los comentarios de perfil de ese usuario.
 
-POST /api/bank/burn — permitir que cada usuario queme su propio PPC:
-Admin: puede quemar a cualquier cuenta (sin cambio).
-No-admin: solo si body.nick === token.nick. Validar amount > 0 y balance >= amount.
-Esto arregla "Comprar P-USD" para todos. Es seguro (solo destruye PPC propio, no crea dinero).
-POST /api/bank/mint — NO abrirlo libre a usuarios (imprimiría dinero infinito). Hacer mint atómico con descuento de P-USD:
-Admin: mint libre (sin cambio).
-No-admin: requiere body.pusdDeduct > 0 y body.nick === token.nick; en una transacción, verificar pusd_balance >= pusdDeduct, restarlo y sumar amount al balance del bank_account.
-Cuando esté listo, avísame y actualizo el frontend (exchange.js dejará de hacer el PUT pusdBalance separado).
-Pendiente de seguridad (para después): GET /api/users y GET /api/users/:nick son públicos y filtran el hash de todos (permite robar sesión vía login-by-hash). Exigir JWT en GET /users, GET /users/:nick y GET /bank_accounts.
+Gracias 🙏
