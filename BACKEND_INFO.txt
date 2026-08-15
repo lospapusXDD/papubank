@@ -1,30 +1,14 @@
-Integración de la web del clan (lospapusxdd) al backend de PapusBank — campos nuevos + chat separado
+El túnel de Cloudflare responde pero da error 530 (código 1033). Eso significa que el túnel está levantado, pero el backend no está respondiendo desde la máquina donde corre el servidor.
 
-La web del clan (lospapusxdd) se está integrando al backend de PapusBank (antes usaba Firebase). Ya funciona: login JWT compartido con PapusBank, registro, votos de toxicidad con polls, panel admin con roles. Faltan 2 cosas:
+Verificá en la PC donde corre el backend:
 
-1. Columnas nuevas en la tabla users (perfil de integrante del clan):
+¿El servidor está corriendo? Después del corte de luz puede no haberse iniciado solo. Abrí una terminal y ejecutalo de nuevo (ej: node server.js o el comando que uses). Fijate que no tire errores.
+¿En qué puerto escucha? El túnel apunta a localhost:PUERTO. Si el servidor escucha en un puerto distinto al que apunta cloudflared, da este error. Probalo con:
+curl http://localhost:PUERTO/api/users
+Si responde con {"error":"Token requerido"} (401) o algo similar, el servidor está OK.
 
-El frontend ya manda estos campos con PUT /api/users/:nick, pero hoy el backend responde {ok:true} y LOS DESCARTA porque no son columnas. Agregar columnas:
+¿El túnel apunta al puerto correcto? Debe ser algo como:
+cloudflared tunnel --url http://localhost:PUERTO
+con el mismo puerto del punto 2.
 
-nick_roblox (varchar) — nick de Roblox del integrante
-cumple (varchar) — cumpleaños (ej: "1 de Octubre")
-comida (varchar) — comida favorita
-personajes (varchar) — personajes favoritos
-titulo (varchar) — título en el ranking (ej: "God of Combos")
-desc (text) — descripción corta del integrante
-onboarded (boolean, default false) — marca que completó su perfil
-deaths (int, default 0) — muertes del clan (solo admin la edita)
-Aceptar AMBOS formatos como los otros campos (camelCase nickRoblox y snake_case nick_roblox) y devolver ambos en las respuestas. El gate actual de PUT /users/:nick ya es correcto: no-admin solo edita su propio doc, admin edita cualquiera.
-
-2. Chat separado del clan — colección clan_chat:
-
-GET /api/clan_chat — mensajes ordenados por timestamp asc, formato [{id, nick, msg, timestamp}]. Abierto con JWT.
-POST /api/clan_chat — body {msg}, el nick sale del JWT, timestamp automático. msg máx 200 chars, no vacío.
-DELETE /api/clan_chat/:id — solo admin.
-Mismo estilo que /api/chat pero en tabla aparte (el chat del banco NO se mezcla).
-
-Bonus (menor): en GET /users/:nick el JSON viene con claves duplicadas (mushokuRank y mushokurank juntas) — rompe parsers estrictos. Si podés, unificalas.
-
-Cuando esté listo, avisame y conecto el chat del clan al frontend (ya quedó preparado).
-
-Mandalo. Cuando Antigravity confirme las columnas y clan_chat, conecto el chat y queda todo funcionando. 👍
+Cuando curl http://localhost:PUERTO/api/users responda, el error 530 desaparece y la página funciona. Avisame cuando esté listo.
