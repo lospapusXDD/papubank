@@ -1,9 +1,30 @@
-Hey Antigravity, tengo 3 bugs del backend que necesito que arregles:
+Integración de la web del clan (lospapusxdd) al backend de PapusBank — campos nuevos + chat separado
 
-1. GET /transactions devuelve 403 "solo administradores" para usuarios normales. Necesitan ver SU propio historial. Ábrelo para que cualquier usuario logueado pueda leer sus propias transacciones (filtrando por from/to = nick del JWT).
+La web del clan (lospapusxdd) se está integrando al backend de PapusBank (antes usaba Firebase). Ya funciona: login JWT compartido con PapusBank, registro, votos de toxicidad con polls, panel admin con roles. Faltan 2 cosas:
 
-2. GET /users/sofii devuelve 500. Otros usuarios sí funcionan. Revisa si hay algún dato corrupto en ese doc.
+1. Columnas nuevas en la tabla users (perfil de integrante del clan):
 
-3. GET /profiles/:nick/comments devuelve 404. El endpoint no existe. Necesito que crees GET /profiles/:nick/comments que devuelva los comentarios de perfil de ese usuario.
+El frontend ya manda estos campos con PUT /api/users/:nick, pero hoy el backend responde {ok:true} y LOS DESCARTA porque no son columnas. Agregar columnas:
 
-Gracias 🙏
+nick_roblox (varchar) — nick de Roblox del integrante
+cumple (varchar) — cumpleaños (ej: "1 de Octubre")
+comida (varchar) — comida favorita
+personajes (varchar) — personajes favoritos
+titulo (varchar) — título en el ranking (ej: "God of Combos")
+desc (text) — descripción corta del integrante
+onboarded (boolean, default false) — marca que completó su perfil
+deaths (int, default 0) — muertes del clan (solo admin la edita)
+Aceptar AMBOS formatos como los otros campos (camelCase nickRoblox y snake_case nick_roblox) y devolver ambos en las respuestas. El gate actual de PUT /users/:nick ya es correcto: no-admin solo edita su propio doc, admin edita cualquiera.
+
+2. Chat separado del clan — colección clan_chat:
+
+GET /api/clan_chat — mensajes ordenados por timestamp asc, formato [{id, nick, msg, timestamp}]. Abierto con JWT.
+POST /api/clan_chat — body {msg}, el nick sale del JWT, timestamp automático. msg máx 200 chars, no vacío.
+DELETE /api/clan_chat/:id — solo admin.
+Mismo estilo que /api/chat pero en tabla aparte (el chat del banco NO se mezcla).
+
+Bonus (menor): en GET /users/:nick el JSON viene con claves duplicadas (mushokuRank y mushokurank juntas) — rompe parsers estrictos. Si podés, unificalas.
+
+Cuando esté listo, avisame y conecto el chat del clan al frontend (ya quedó preparado).
+
+Mandalo. Cuando Antigravity confirme las columnas y clan_chat, conecto el chat y queda todo funcionando. 👍
