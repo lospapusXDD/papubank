@@ -36,8 +36,8 @@ async function loadInbox() {
         if (!partners.length) container.innerHTML = '<div class="empty-msg">Aún no tienes conversaciones. Envía el primer mensaje ✉️</div>';
 
         partners.sort((a, b) => {
-            const lastA = convos[a].reduce((mx, m) => Math.max(mx, m.timestamp ? (m.timestamp.toMillis ? m.timestamp.toMillis() : new Date(m.timestamp).getTime()) : 0), 0);
-            const lastB = convos[b].reduce((mx, m) => Math.max(mx, m.timestamp ? (m.timestamp.toMillis ? m.timestamp.toMillis() : new Date(m.timestamp).getTime()) : 0), 0);
+            const lastA = convos[a].reduce((mx, m) => Math.max(mx, msgTime(m.timestamp)), 0);
+            const lastB = convos[b].reduce((mx, m) => Math.max(mx, msgTime(m.timestamp)), 0);
             return lastB - lastA;
         });
 
@@ -78,7 +78,7 @@ async function openConversation(partner) {
         const snap = await window._fbGetDocs(window._fbCollection(window._db, 'messages'));
         const msgs = [];
         snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
-        msgs.sort((a, b) => (a.timestamp ? (a.timestamp.toMillis ? a.timestamp.toMillis() : new Date(a.timestamp).getTime()) : 0) - (b.timestamp ? (b.timestamp.toMillis ? b.timestamp.toMillis() : new Date(b.timestamp).getTime()) : 0));
+        msgs.sort((a, b) => msgTime(a.timestamp) - msgTime(b.timestamp));
         const conv = msgs.filter(m => (m.from === currentUser.nick && m.to === partner) || (m.from === partner && m.to === currentUser.nick));
 
         // Marcar como leídos
@@ -91,8 +91,8 @@ async function openConversation(partner) {
         conv.forEach(m => {
             const mine = m.from === currentUser.nick;
             let dateStr = '';
-            if (m.timestamp) {
-                const dt = m.timestamp.toDate ? m.timestamp.toDate() : new Date(m.timestamp);
+            const dt = msgDate(m.timestamp);
+            if (dt) {
                 dateStr = dt.toLocaleTimeString('es', {hour:'2-digit',minute:'2-digit'}) + ' ' + dt.toLocaleDateString('es');
             }
             const el = document.createElement('div');
@@ -147,9 +147,20 @@ window.closePM = function() {
     if (modal) modal.classList.remove('active');
 };
 
+function msgTime(ts) {
+    return ts ? (ts.toMillis ? ts.toMillis() : new Date(ts).getTime()) : 0;
+}
+function msgDate(ts) {
+    return ts ? (ts.toDate ? ts.toDate() : new Date(ts)) : null;
+}
+
 /* ─────────────── ENCUESTAS DEL CLAN ─────────────── */
 const POLL_REWARD_PPC = 100;
 const POLL_DURATION_DAYS = 7;
+
+function pTime(p) {
+    return p.created_at ? new Date(p.created_at).getTime() : (p.created ? (p.created.toMillis ? p.created.toMillis() : new Date(p.created).getTime()) : 0);
+}
 
 async function loadPolls() {
     if (!currentUser || !window._db) return;
@@ -168,7 +179,6 @@ async function loadPolls() {
         if (!polls.length) container.innerHTML = '<div class="empty-msg">No hay encuestas aún. ¡Pide al admin que cree una!</div>';
 
         const now = Date.now();
-        const pTime = (p) => p.created_at ? new Date(p.created_at).getTime() : (p.created ? (p.created.toMillis ? p.created.toMillis() : new Date(p.created).getTime()) : 0);
         polls.sort((a, b) => pTime(b) - pTime(a));
 
         polls.forEach(p => {
@@ -187,8 +197,9 @@ async function loadPolls() {
                 const voters = (p.votes && p.votes[idx]) || [];
                 const pct = votedBy.length ? Math.round((voters.length / votedBy.length) * 100) : 0;
                 const isMine = Array.isArray(voters) && voters.includes(currentUser.nick);
+                const safePollId = escHTML(p.id).replace(/'/g, "'");
                 optsHtml += `
-                    <button class="btn btn-secondary" style="width:100%;text-align:left;margin-bottom:8px;font-size:12px;${ended || myVote >= 0 ? 'cursor:default;' : ''}" onclick="${ended || myVote >= 0 ? '' : "votePoll('" + p.id + "'," + idx + ")"}">
+                    <button class="btn btn-secondary" style="width:100%;text-align:left;margin-bottom:8px;font-size:12px;${ended || myVote >= 0 ? 'cursor:default;' : ''}" onclick="${ended || myVote >= 0 ? '' : "votePoll('" + safePollId + "'," + idx + ")"}">
                         <div style="display:flex;justify-content:space-between;align-items:center;">
                             <span>${escHTML(opt)} ${isMine ? '<span style="color:var(--secondary);font-size:10px;">(tu voto)</span>' : ''}</span>
                             <span style="color:var(--gold);font-size:11px;">${voters.length} · ${pct}%</span>
@@ -216,7 +227,7 @@ async function votePoll(pollId, optionIdx) {
         const pollSnap = await window._fbGetDoc(pollRef);
         if (!pollSnap.exists()) return;
         const p = pollSnap.data();
-        const created = p.created_at ? new Date(p.created_at).getTime() : (p.created ? (p.created.toMillis ? p.created.toMillis() : new Date(p.created).getTime()) : Date.now());
+        const created = pTime(p) || Date.now();
         if (Date.now() > created + POLL_DURATION_DAYS * 86400000) { showToast ? showToast('La encuesta ya terminó', '#ff4466') : alert('Terminada'); return; }
         const votesRaw = p.votesRaw || {};
         if (votesRaw[currentUser.nick] !== undefined) { showToast ? showToast('Ya votaste en esta encuesta', '#ffd700') : alert('Ya votaste'); return; }
@@ -246,7 +257,7 @@ async function checkPollRewards(polls) {
 
     for (const p of polls) {
         if (given[p.id]) continue;
-        const created = p.created_at ? new Date(p.created_at).getTime() : (p.created ? (p.created.toMillis ? p.created.toMillis() : new Date(p.created).getTime()) : 0);
+        const created = pTime(p);
         if (now <= created + POLL_DURATION_DAYS * 86400000) continue;
         const participants = p.participants || [];
         if (!participants.includes(currentUser.nick)) continue;
@@ -280,8 +291,8 @@ async function createPoll() {
     if (opt3) options.push(opt3);
     try {
         await window._fbAddDoc(window._fbCollection(window._db, 'polls'), {
-            title: title, question: title, options: options, votes: {}, participants: [],
-            author: currentUser.nick, created_by: currentUser.nick, created: window._fbServerTimestamp()
+            question: title, options: options, votes: {}, participants: [],
+            created_by: currentUser.nick, created: window._fbServerTimestamp()
         });
         ['poll-title-input','poll-opt1-input','poll-opt2-input','poll-opt3-input'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
         showToast ? showToast('Encuesta creada ✓', '#00ffaa') : alert('Creada');
@@ -406,7 +417,7 @@ async function loadTopSemanal() {
         snap.forEach(d => { if (d.data().week === week) rows.push({ nick: d.data().nick, count: d.data().count || 0 }); });
         rows.sort((a, b) => b.count - a.count);
 
-        const [userSnap] = [await window._fbGetDocs(window._fbCollection(window._db, 'users'))];
+        const userSnap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
         const usersMap = {};
         userSnap.forEach(d => usersMap[d.id] = d.data());
 
@@ -420,12 +431,14 @@ async function loadTopSemanal() {
             if (idx === 0) posLabel = '👑 #1';
             else if (idx === 1) posLabel = '🥈 #2';
             else if (idx === 2) posLabel = '🥉 #3';
+            const rawAvatar = u.avatar || 'avt_gojo.jpg';
+            const safeAvatar = (rawAvatar.startsWith('http') && !rawAvatar.startsWith('https://')) ? 'avt_gojo.jpg' : escHTML(rawAvatar);
             const el = document.createElement('div');
             el.className = 'glass-card';
             el.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:8px;' + (isMine ? 'border-color:var(--primary);' : '');
             el.innerHTML = `
                 <div style="width:36px;text-align:center;font-family:'Orbitron',sans-serif;font-weight:900;color:${idx === 0 ? 'var(--gold)' : 'var(--text-muted)'};font-size:13px;">${posLabel}</div>
-                <img src="${escHTML(u.avatar || 'avt_gojo.jpg')}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--dark-border);">
+                <img src="${safeAvatar}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--dark-border);">
                 <div style="flex:1;">
                     <div style="font-size:13px;font-weight:700;color:${isMine ? 'var(--primary)' : 'var(--text-main)'};">${escHTML(r.nick)} ${isMine ? '<span style="font-size:9px;background:var(--primary);color:#000;padding:1px 5px;border-radius:3px;">TÚ</span>' : ''}</div>
                     <div style="font-size:10px;color:var(--text-muted);">${(r.count || 0)} acciones esta semana</div>

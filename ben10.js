@@ -138,12 +138,11 @@ async function buyBen10Rank(rankKey) {
 
     try {
         const db = window._db;
-        const updates = { balance: window._fbIncrement(-rank.price) };
         if (needsBoth) {
             await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - rank.price_usd });
             currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
         }
-        await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), updates);
+        await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), { balance: window._fbIncrement(-rank.price) });
         await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { ben10Rank: rankKey, boughtRanks: window._fbArrayUnion(rankKey) });
         currentUser.ben10Rank = rankKey;
         grantRankLocal(rankKey);
@@ -167,13 +166,13 @@ async function buyOmnitrixItem(itemId) {
 
     try {
         const db = window._db;
-        let badges = bankAccount.badges || [];
-        if (!badges.includes(item.badge)) badges.push(item.badge);
+        const badge = item.badge;
         await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), {
             balance: window._fbIncrement(item.reward - item.price),
-            badges: badges
+            badges: window._fbArrayUnion(badge)
         });
-        bankAccount.badges = badges;
+        if (!bankAccount.badges) bankAccount.badges = [];
+        if (!bankAccount.badges.includes(badge)) bankAccount.badges.push(badge);
         // Multiplier bonuses for higher tiers
         if (item.id === 'ultimatrix') {
             // Could add a multiplier field to bankAccount, but keeping simple

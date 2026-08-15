@@ -640,7 +640,7 @@ async function floresWithdraw(partner) {
         }
 
         // Retiro seguro: montos grandes requieren aprobación de la pareja
-        if (amt > FLORES_VAULT_SAFE_LIMIT) {
+        if (amt >= FLORES_VAULT_SAFE_LIMIT) {
             const ok = await showConfirm('Retiro Seguro 🔐', `Retirar <strong>${amt.toLocaleString()} PPC</strong> supera el límite seguro de <strong>${FLORES_VAULT_SAFE_LIMIT.toLocaleString()} PPC</strong>.<br><br><strong>${partner}</strong> deberá aprobar la solicitud antes de que se efectúe.`, 'Solicitar');
             if (!ok) return;
             await window._fbAddDoc(window._fbCollection(window._db, 'flores_withdrawals'), {
@@ -918,7 +918,7 @@ async function loadFloresGifts(partner) {
         const gifts = [];
         snap.forEach(d => {
             const x = d.data();
-            gifts.push({ ...x, date: x.timestamp ? new Date(x.timestamp) : new Date() });
+            gifts.push({ ...x, date: x.timestamp ? (x.timestamp.toDate ? x.timestamp.toDate() : new Date(x.timestamp)) : new Date() });
         });
         gifts.sort((a, b) => b.date - a.date);
 
@@ -1152,7 +1152,7 @@ async function loadFloresPartnerBirthday(partner) {
         const bd = snap.exists() ? (snap.data().birthday || null) : null;
         if (!bd) { el.innerHTML = ''; return; }
 
-        const d = new Date(bd);
+        const d = bd.toDate ? bd.toDate() : new Date(bd);
         const today = new Date();
         const isToday = today.getMonth() === d.getMonth() && today.getDate() === d.getDate();
         const meSnap = await window._fbGetDoc(window._fbDoc(window._db, 'users', currentUser.nick));
@@ -1225,7 +1225,7 @@ async function loadFloresChat(partner) {
         const msgs = [];
         snap.forEach(d => {
             const x = d.data();
-            msgs.push({ ...x, date: x.timestamp ? new Date(x.timestamp) : new Date() });
+            msgs.push({ ...x, date: x.timestamp ? (x.timestamp.toDate ? x.timestamp.toDate() : new Date(x.timestamp)) : new Date() });
         });
         msgs.sort((a, b) => a.date - b.date);
 

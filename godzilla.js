@@ -39,7 +39,7 @@ const GODZILLA_ACHIEVEMENTS = [
     { id: 'first_godzilla', icon: 'fa-solid fa-radiation', name: 'Primer Rugido', desc: 'Compra tu primer rango de Godzilla.', reward: 2000 },
     { id: 'collect_5_gz', icon: 'fa-solid fa-dragon', name: 'Cinco Formas', desc: 'Obtén 5 rangos de Godzilla.', reward: 15000 },
     { id: 'collect_15_gz', icon: 'fa-solid fa-crown', name: 'Rey de los Monstruos', desc: 'Obtén 15 rangos de Godzilla.', reward: 50000 },
-    { id: 'collect_all_gz', icon: 'fa-solid fa-skull-crossbones', name: 'Dios del Caos', desc: 'Colecciona los 30 rangos.', reward: 250000 },
+    { id: 'collect_all_gz', icon: 'fa-solid fa-skull-crossbones', name: 'Dios del Caos', desc: 'Colecciona todos los rangos.', reward: 250000 },
     { id: 'hakaishin_rank', icon: 'fa-solid fa-skull-crossbones', name: 'Hakaishin Supremo', desc: 'Alcanza el rango Godzilla Hakaishin.', reward: 300000 },
     { id: 'destroyah_rank', icon: 'fa-solid fa-hat-wizard', name: 'El Más Cheto', desc: 'Alcanza el rango Destoroyah.', reward: 300000 },
     { id: 'king_kaiju', icon: 'fa-solid fa-hand-fist', name: 'Rey de los Kaijus', desc: 'Obtén 5 rangos de la categoría Kaijus.', reward: 100000 }
@@ -64,7 +64,7 @@ async function loadGodzillaPage() {
         GODZILLA_RANKS.forEach(rank => {
             const isOwned = currentUser.godzillaRank === rank.key;
             const canAffordPPC = bankAccount.balance >= rank.price;
-            const balanceUsd = parseFloat(currentUser.pusdBalance) || 0;
+            const balanceUsd = currentUser.pusdBalance || 0;
             const canAffordUSD = balanceUsd >= rank.price_usd;
             const needsBoth = rank.gradeTier >= 3;
             const canAfford = needsBoth ? (canAffordPPC && canAffordUSD) : canAffordPPC;
@@ -111,12 +111,11 @@ async function buyGodzillaRank(rankKey) {
 
     try {
         const db = window._db;
-        const updates = { balance: window._fbIncrement(-rank.price) };
-        await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), updates);
         if (needsBoth) {
             await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - rank.price_usd });
             currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
         }
+        await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), { balance: window._fbIncrement(-rank.price) });
         await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { godzillaRank: rankKey, boughtRanks: window._fbArrayUnion(rankKey) });
         currentUser.godzillaRank = rankKey;
         grantRankLocal(rankKey);

@@ -217,9 +217,6 @@
       <a href="#" class="sidebar-link" id="nav-premium" onclick="showPage('premium'); return false;">
         <i class="fa-solid fa-crown"></i><span>Cuentas Premium</span>
       </a>
-      <a href="#" class="sidebar-link" id="nav-loans-economy" onclick="showPage('loans'); return false;">
-        <i class="fa-solid fa-hand-holding-dollar"></i><span>Préstamos</span>
-      </a>
       <a href="#" class="sidebar-link" id="nav-stocks" onclick="showPage('stocks'); return false;">
         <i class="fa-solid fa-chart-line"></i><span>Bolsa</span>
       </a>
@@ -498,6 +495,17 @@
             </div>
           </div>
 
+          <!-- Hidden select for banking.js compatibility -->
+          <select id="transfer-to" style="display:none;"></select>
+          <div id="transfer-preview" style="display:none;"></div>
+
+          <!-- Bill Split placeholders (for banking.js guards) -->
+          <div id="split-users-grid" style="display:none;"></div>
+          <div id="split-participants-summary" style="display:none;"></div>
+          <button id="split-confirm-btn" style="display:none;"></button>
+          <input id="split-amount" type="number" style="display:none;" />
+          <input id="split-desc" type="text" style="display:none;" />
+
           <!-- Amount + Note -->
           <div class="form-group">
             <label class="form-label"><i class="fa-solid fa-coins"></i> Cantidad (PPC)</label>
@@ -616,8 +624,11 @@
             <i class="fa-solid fa-circle-info"></i>
             Tasa de interés: <strong id="loan-interest-label">2</strong>% mensual.
             Máximo préstamo: <strong id="loan-max-label">10,000</strong> PPC.
+            <span id="loans-max-display" style="display:none;"></span>
             Solo puedes tener 1 préstamo activo a la vez.
           </div>
+
+          <div id="active-loan-container"></div>
 
           <div class="form-group">
             <label class="form-label"><i class="fa-solid fa-coins"></i> Monto a solicitar (PPC)</label>
@@ -1886,7 +1897,7 @@
   const API_BASE = 'https://pcs-willow-investigation-milton.trycloudflare.com/api';
   window._apiToken = localStorage.getItem('papubank_jwt') || null;
 
-  window.window._apiCache = {};
+  window._apiCache = {};
   const CACHE_TTL = 60000;
 
   async function apiFetch(method, path, body) {
