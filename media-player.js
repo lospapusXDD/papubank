@@ -326,12 +326,11 @@ function initMediaPlayer() {
     pAudio.addEventListener('ended', () => {
         curPapuTrack = (curPapuTrack + 1) % papuPlaylist.length;
         loadPapuTrack(curPapuTrack);
-        // Keep playing after auto-advance
-        pAudio.play().then(() => {
-            pIsPlaying = true;
+        // loadPapuTrack already calls play() if pIsPlaying; just sync UI
+        if (pIsPlaying) {
             _syncPlayButton(true);
             _startFakeVisualizer();
-        }).catch(() => {});
+        }
     });
 
     // Sync lyrics to playback position
@@ -623,6 +622,7 @@ function _startFakeVisualizer() {
         if (!canvas._drawing) {
             canvas._drawing = true;
             function draw() {
+                if (!canvas._drawing) return;
                 pVisualizerAF = requestAnimationFrame(draw);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 const bars = 12;
@@ -648,6 +648,7 @@ function _startFakeVisualizer() {
         if (!fullCanvas._drawing) {
             fullCanvas._drawing = true;
             function drawFull() {
+                if (!fullCanvas._drawing) return;
                 fullCanvas._raf = requestAnimationFrame(drawFull);
                 ctx.clearRect(0, 0, fullCanvas.width, fullCanvas.height);
                 const bars = 24;

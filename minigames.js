@@ -190,7 +190,7 @@ async function playSlots() {
     spinReel(1, r1, 1);
     spinReel(2, r2, 2);
     
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise(r => setTimeout(r, 1100));
     
     const st = currentUser.jjkStats || {};
     const gp = st.gamesPlayed || [];
@@ -414,7 +414,8 @@ async function playBattle() {
     }
     
     const jr = getJJKRankData();
-    const pp = jr ? (20 + jr.gradeTier * 20) : 20;
+    const gt = (jr && typeof jr.gradeTier === 'number') ? jr.gradeTier : 0;
+    const pp = 20 + gt * 20;
     
     const enemy = BATTLE_ENEMIES[Math.floor(Math.random() * BATTLE_ENEMIES.length)];
     
@@ -423,9 +424,9 @@ async function playBattle() {
     const bpn = document.getElementById('bp-name');
     const ben = document.getElementById('be-name');
     
-    if (bpe) bpe.innerHTML = `<i class="${jr ? jr.icon : 'fa-solid fa-user-ninja'}"></i>`;
+    if (bpe) bpe.innerHTML = `<i class="${(jr && jr.icon) ? jr.icon : 'fa-solid fa-user-ninja'}"></i>`;
     if (bee) bee.innerHTML = `<i class="${enemy.emoji}"></i>`;
-    if (bpn) bpn.textContent = jr ? jr.label.toUpperCase() : 'TU';
+    if (bpn) bpn.textContent = (jr && jr.label) ? jr.label.toUpperCase() : 'TU';
     if (ben) ben.textContent = enemy.name.toUpperCase();
     
     const bpHp = document.getElementById('bp-hp');

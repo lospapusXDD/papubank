@@ -71,7 +71,7 @@ window.viewUserProfile = async function(nick) {
         const u = userSnap.exists() ? userSnap.data() : {};
         const a = accSnap.exists() ? accSnap.data() : {};
 
-        if (avEl) avEl.src = u.avatar || 'avt_gojo.jpg';
+        if (avEl) avEl.src = escHTML(u.avatar || 'avt_gojo.jpg');
         if (rankEl) {
             const rk = getRankKey(u);
             const ri = RANKS[rk] || RANKS.user;
@@ -319,8 +319,8 @@ window.loadAdminReports = async function() {
                 <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">Por <strong style="color:var(--primary);">${escHTML(r.reporter || '?')}</strong></div>
                 <p style="font-size:12px;color:var(--text-main);line-height:1.5;margin:0 0 10px;">"${escHTML(r.reason || '')}"</p>
                 <div style="display:flex;gap:8px;">
-                    <button class="btn btn-secondary" style="font-size:10px;padding:4px 10px;" onclick="resolveReport('${d.id}')"><i class="fa-solid fa-check"></i> Resuelto</button>
-                    <button class="btn btn-danger" style="font-size:10px;padding:4px 10px;" onclick="deleteReport('${d.id}')"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                    <button class="btn btn-secondary" style="font-size:10px;padding:4px 10px;" onclick="resolveReport('${d.id.replace(/'/g, "\\'")}')"><i class="fa-solid fa-check"></i> Resuelto</button>
+                    <button class="btn btn-danger" style="font-size:10px;padding:4px 10px;" onclick="deleteReport('${d.id.replace(/'/g, "\\'")}')"><i class="fa-solid fa-trash"></i> Eliminar</button>
                 </div>
             `;
             body.appendChild(el);

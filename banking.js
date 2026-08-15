@@ -584,7 +584,7 @@ async function loadDebts() {
                     </div>
                     <div>
                         <div style="font-size:11px; color:var(--text-muted);">Tu Saldo Actual</div>
-                        <div style="font-size:16px; font-weight:bold; color:var(--primary); font-family:'Orbitron',sans-serif;">${bankAccount.balance.toLocaleString()} PPC</div>
+                        <div style="font-size:16px; font-weight:bold; color:var(--primary); font-family:'Orbitron',sans-serif;">${Number(bankAccount.balance).toLocaleString()} PPC</div>
                     </div>
                 </div>
                 <div style="display:flex; gap:10px;">
@@ -742,8 +742,8 @@ async function loadMyInvestments() {
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
                     <div>
-                        <strong style="color:var(--gold); font-size:15px;">${inv.amount.toLocaleString()} PPC</strong>
-                        <div style="font-size:10px; color:var(--text-muted);">Retorno estimado: ${inv.expectedReturn.toLocaleString()} PPC (+${inv.rate}%)</div>
+                        <strong style="color:var(--gold); font-size:15px;">${Number(inv.amount).toLocaleString()} PPC</strong>
+                        <div style="font-size:10px; color:var(--text-muted);">Retorno estimado: ${Number(inv.expectedReturn).toLocaleString()} PPC (+${inv.rate}%)</div>
                     </div>
                     <div class="text-right">
                         <span class="badge-tag" style="background:${isClaimable ? 'rgba(0, 255, 170, 0.15); color:var(--secondary);' : 'rgba(255, 215, 0, 0.15); color:var(--gold);'}">

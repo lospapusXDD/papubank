@@ -91,7 +91,7 @@ window.setupTwofa = async function() {
             <button class="btn btn-secondary" onclick="closeTwofaSetup()"><i class="fa-solid fa-xmark"></i> Cancelar</button>
             <button class="btn btn-primary" id="twofa-setup-ok" onclick="confirmTwofaSetup()"><i class="fa-solid fa-shield-halved"></i> Activar</button>
         `;
-        if (typeof QRCode === 'function' && otpauth) {
+        if (typeof QRCode !== 'undefined' && otpauth) {
             new QRCode(document.getElementById('twofa-qr'), { text: otpauth, width: 200, height: 200, colorDark: '#000000', colorLight: '#ffffff' });
         } else if (otpauth) {
             const encoded = encodeURIComponent(otpauth);

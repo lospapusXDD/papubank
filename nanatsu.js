@@ -258,9 +258,9 @@ async function buyNanatsuRank(rankKey) {
     try {
         const db = window._db;
         if (paymentMethod === 'both') {
-            await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), { balance: window._fbIncrement(-rank.price) });
             await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - rank.price_usd });
             currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
+            await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), { balance: window._fbIncrement(-rank.price) });
             await addTx({ type: 'Rango Nanatsu', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Pecado Capital: ${rank.label} (${rank.sin}) — ${rank.price.toLocaleString()} PPC + $${rank.price_usd} P-USD` });
         } else if (paymentMethod === 'usd') {
             await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - rank.price_usd });
@@ -315,12 +315,13 @@ function getNanatsuMultiplier(base) {
 async function checkNanatsuAchievements() {
     if (!currentUser || !window._db) return;
     const earned = currentUser.nanatsuAchievements || [];
+    const nanatsuRankKeys = NANATSU_RANKS.map(r => r.key);
     for (const ach of NANATSU_ACHIEVEMENTS) {
         if (earned.includes(ach.id)) continue;
         let ok = false;
         if (ach.id === 'first_nanatsu' && currentUser.nanatsuRank) ok = true;
-        if (ach.id === 'collect_3' && (currentUser.boughtRanks || []).filter(r => ['meliodas','diane','ban','king','gowther','merlin','escanor'].includes(r)).length >= 3) ok = true;
-        if (ach.id === 'collect_7' && (currentUser.boughtRanks || []).filter(r => ['meliodas','diane','ban','king','gowther','merlin','escanor'].includes(r)).length >= 7) ok = true;
+        if (ach.id === 'collect_3' && (currentUser.boughtRanks || []).filter(r => nanatsuRankKeys.includes(r)).length >= 3) ok = true;
+        if (ach.id === 'collect_7' && (currentUser.boughtRanks || []).filter(r => nanatsuRankKeys.includes(r)).length >= 7) ok = true;
         if (ach.id === 'escanor_rank' && currentUser.nanatsuRank === 'escanor') ok = true;
 
         if (ok) {

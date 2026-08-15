@@ -1,6 +1,6 @@
 /* Board de mensajes público del clan */
-async function loadBoard() {
-    const container = document.getElementById('board-content');
+async function loadBoardPage() {
+    const container = document.getElementById('board-list');
     if (!container || !window._db) return;
     container.innerHTML = '<div class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Cargando board...</div>';
     try {
@@ -28,9 +28,13 @@ async function loadBoard() {
     } catch(e) { container.innerHTML = '<div class="empty-msg" style="color:var(--danger);">Error: ' + (e.message || '') + '</div>'; }
 }
 
-async function postToBoard() {
+async function loadPosts() {
+    return loadBoardPage();
+}
+
+async function createPost() {
     if (!currentUser || !window._db) return;
-    const titleInput = document.getElementById('board-title');
+    const titleInput = document.getElementById('board-input');
     const bodyInput = document.getElementById('board-body');
     const title = (titleInput ? titleInput.value : '').trim();
     const body = (bodyInput ? bodyInput.value : '').trim();
@@ -45,7 +49,16 @@ async function postToBoard() {
             await window._fbUpdateDoc(window._fbDoc(window._db, 'users', currentUser.nick), { boardPosts: window._fbIncrement(1) });
         } catch(e) {}
         showToast ? showToast('Anuncio publicado ✓', '#00ffaa') : alert('Publicado');
-        loadBoard();
+        loadBoardPage();
         if (typeof checkAchievements === 'function') checkAchievements();
+    } catch(e) { showToast ? showToast('Error: ' + e.message, '#ff4466') : alert('Error'); }
+}
+
+async function deletePost(postId) {
+    if (!checkAdminPermission()) { showToast ? showToast('Solo admins', '#ff4466') : alert('Solo admins'); return; }
+    try {
+        await window._fbDeleteDoc(window._fbDoc(window._db, 'board', postId));
+        showToast ? showToast('Anuncio eliminado', '#00ffaa') : alert('Eliminado');
+        loadBoardPage();
     } catch(e) { showToast ? showToast('Error: ' + e.message, '#ff4466') : alert('Error'); }
 }

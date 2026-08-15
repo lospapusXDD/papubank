@@ -8,7 +8,7 @@ const BIRTHDAY_BONUS = 50000; // PPC bonus en tu cumple
 /* ─────────── LOAD PAGE ─────────── */
 
 async function loadBirthdaysPage() {
-    const container = document.getElementById('birthdays-container');
+    const container = document.getElementById('birthday-list');
     if (!container) return;
 
     try {
@@ -112,7 +112,7 @@ async function loadBirthdaysPage() {
                             <div style="font-weight:700;color:var(--primary);font-size:13px;">${b.nick} ${isToday ? '🎉' : ''}</div>
                             <div style="font-size:10px;color:var(--text-muted);">${month} ${day} ${isToday ? '— ¡HOY!' : ''}</div>
                         </div>
-                        ${isAdmin ? `<button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="removeBirthday('${b.nick}')"><i class="fa-solid fa-trash"></i></button>` : ''}
+                        ${isAdmin ? `<button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="deleteBirthday('${b.nick}')"><i class="fa-solid fa-trash"></i></button>` : ''}
                     </div>
                 `;
             });
@@ -129,9 +129,9 @@ async function loadBirthdaysPage() {
                     </h3>
                     <p style="font-size:11px;color:var(--text-muted);margin-bottom:12px;">Asigna cumpleaños a los usuarios del clan.</p>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                        <input class="form-control" id="bd-admin-nick" type="text" placeholder="Nick del usuario" style="flex:1;min-width:120px;">
-                        <input class="form-control" id="bd-admin-date" type="date" style="flex:1;min-width:140px;">
-                        <button class="btn btn-primary" onclick="adminSetBirthday()">
+                        <input class="form-control" id="birthday-input" type="text" placeholder="Nick del usuario" style="flex:1;min-width:120px;">
+                        <input class="form-control" id="birthday-date" type="date" style="flex:1;min-width:140px;">
+                        <button class="btn btn-primary" id="assign-btn" onclick="assignBirthday()">
                             <i class="fa-solid fa-check"></i> Asignar
                         </button>
                     </div>
@@ -145,11 +145,11 @@ async function loadBirthdaysPage() {
     }
 }
 
-/* ─────────── ADMIN: SET BIRTHDAY ─────────── */
+/* ─────────── ADMIN: ASSIGN BIRTHDAY ─────────── */
 
-async function adminSetBirthday() {
-    const nickInput = document.getElementById('bd-admin-nick');
-    const dateInput = document.getElementById('bd-admin-date');
+async function assignBirthday() {
+    const nickInput = document.getElementById('birthday-input');
+    const dateInput = document.getElementById('birthday-date');
     const nick = (nickInput?.value || '').trim();
     const dateVal = dateInput?.value;
 
@@ -171,9 +171,9 @@ async function adminSetBirthday() {
     }
 }
 
-/* ─────────── ADMIN: REMOVE BIRTHDAY ─────────── */
+/* ─────────── ADMIN: DELETE BIRTHDAY ─────────── */
 
-async function removeBirthday(nick) {
+async function deleteBirthday(nick) {
     const ok = await showConfirm('Eliminar cumpleaño', `¿Eliminar el cumpleaño de ${nick}?`);
     if (!ok) return;
 

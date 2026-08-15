@@ -689,4 +689,43 @@ El backend NO está en este repo. Está en la PC Linux del usuario, manejado por
 
 ---
 
+### Sesión 26 — AUDITORÍA EXHAUSTIVA (20 AGENTES EN PARALELO) + BACKEND FIXES (Antigravity)
+
+**Auditoría**: 20 agentes revisaron TODO el proyecto cubriendo cada zona (app.js, banking.js, economy.js, exchange.js, market.js, vault.js, flores.js, chat.js, comments.js, social.js, media-player.js, logros.js, board.js, birthdays.js, clan-features.js, minigames.js, verificacion.js, extras.js, 13 fandoms, index.html, style.css). **87 bugs reales parcheados** (parches mínimos, regla de oro: no romper nada más):
+
+**Categorías principales:**
+- XSS / inyección JS (14): `onclick` sin escapar, avatars sin validar, mensajes sin `escHTML`
+- `parseFloat/Number` faltante (11): `pusdBalance` string del backend en comparaciones/aritmética
+- `_fbQuery`/`_fbWhere` stubs (9): `GET /` en vez de query real → `_fbGetDocs` directo + filtro client-side
+- Atomicidad PPC/P-USD (8): PPC deducido ANTES de verificar/cobrar P-USD
+- JWT/Auth 403/401 (5): endpoints `/transactions`, `/users/:nick`, `/burn`, `/mint` con gates admin-only
+- Booleanos string `"false"` (4): `if (acc.frozen)` con `"false"` truthy → `isTrue()`
+- XSS avatars `javascript:` (4): `src` sin validar esquema `https://`
+- `_fbWriteBatch` + `_op:increment` (3): batch no resuelve increment → valores absolutos
+- IDs DOM faltantes/duplicados (7): `loans-max-display`, `nav-loans`, `filterTransferUsers` no definido
+- Logros no llamados (3): `checkNanatsuAchievements`, `checkJJKAchievements` (4/5), `loadInventorySettings`
+- Timers sin `clearInterval` (3): chat polling, stock prices, media player RAF
+- Typos/código muerto (5): `Corta.dragones`, `getRezeroRankMultiplier`, `_jjkDomainSelected`
+
+**Archivos modificados (parches aplicados):**
+app.js, banking.js, economy.js, exchange.js, market.js, vault.js, flores.js, chat.js, comments.js, social.js, media-player.js, logros.js, board.js, birthdays.js, clan-features.js, minigames.js, verificacion.js, extras.js, ben10.js, mha.js, godzilla.js, nanatsu.js, chainsaw.js, mushoku.js, deathnote.js, berserk.js, elfen.js, rezero.js, rimuru.js, bocchi.js, vocaloid.js, index.html
+
+**Cache bumps `?v=` actualizados en index.html** (10 archivos: app.js?v=22, market.js?v=22, vault.js?v=19, comments.js?v=23, social.js?v=22, nanatsu.js?v=19, flores.js?v=23, economy.js?v=19, minigames.js?v=19, media-player.js?v=22)
+
+**Backend fixes (Antigravity — ya desplegados):**
+1. **GET /transactions** → abierto para usuarios (filtra por from/to = nick del JWT); antes 403 "solo administradores"
+2. **GET /users/:nick** → 500 en usuarios específicos corregido (datos corruptos limpiados)
+3. **GET /profiles/:nick/comments** → endpoint creado
+4. **GET /users** y **GET /bank_accounts** → ahora exigen JWT (antes públicos con hash expuesto)
+5. **POST /bank/burn** y **POST /bank/mint** → gates corregidos (self-burn abierto, mint atómico con `pusdDeduct`)
+
+**PENDIENTES (sin crash, requieren decisión):**
+- `loans-max-display` / `active-loan-container` IDs faltantes en HTML (guards en banking.js evitan crash)
+- `vault_ops` collection no existe en backend → historial bóvedas "Sin movimientos aún"
+- `loadInventorySettings` hydration de `floresAnniversaryClaimed` / `floresPartnerBirthdayClaimed` (parcheado en applyUserData)
+
+**Verificación**: `node --check` PASA en los 31 JS. Sintaxis limpia, 0 errores.
+
+---
+
 *Actualizar este archivo con cada cambio significativo.*

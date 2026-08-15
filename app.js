@@ -5,6 +5,7 @@ const SESSION_KEY = 'papusbank_session_v1';
 let currentUser   = null;
 window._cacheUsers = null; window._cacheUsersTs = 0;
 window._cacheAccounts = null; window._cacheAccountsTs = 0;
+window._apiCache = {};
 async function getCachedUsers() { const now=Date.now(); if(window._cacheUsers && window._cacheUsersTs > now-60000) return window._cacheUsers; const s=await window._fbGetDocs(window._fbCollection(window._db,'users')); window._cacheUsers=s; window._cacheUsersTs=now; return s; }
 async function getCachedAccounts() { const now=Date.now(); if(window._cacheAccounts && window._cacheAccountsTs > now-60000) return window._cacheAccounts; const s=await window._fbGetDocs(window._fbCollection(window._db,'bank_accounts')); window._cacheAccounts=s; window._cacheAccountsTs=now; return s; }
 let bankAccount   = null;
@@ -587,6 +588,8 @@ function applyUserData(u) {
     currentUser.vocaloidRank = u.vocaloidRank || u.vocaloid_rank || u.vocaloidrank || null;
     currentUser.mushokuRank = u.mushokuRank || u.mushoku_rank || u.mushokurank || null;
     currentUser.floresRank = u.floresRank || u.flores_rank || u.floresrank || null;
+    currentUser.floresAnniversaryClaimed = u.floresAnniversaryClaimed || u.flores_anniversary_claimed || [];
+    currentUser.floresPartnerBirthdayClaimed = u.floresPartnerBirthdayClaimed || u.flores_partner_birthday_claimed || null;
     currentUser.karma = u.karma || currentUser.karma || 0;
     currentUser.profileRing = u.profileRing || u.profile_ring || currentUser.profileRing || null;
     currentUser.nickStyle = u.nickStyle || u.nick_style || currentUser.nickStyle || null;
@@ -1169,11 +1172,13 @@ function renderAdminAccounts(accSnap, usersMap) {
         const rankInfo = RANKS[rankKey] || RANKS.mortal_m;
 
         const row = document.createElement('tr');
+        const safeNick = escHTML(nick);
+        const safeAvatar = escHTML(user.avatar || 'avt_gojo.jpg');
         row.innerHTML = `
             <td>
                 <div style="display:flex;align-items:center;gap:8px;">
-                    <img src="${user.avatar || 'avt_gojo.jpg'}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
-                    <strong>${nick}</strong>
+                    <img src="${safeAvatar}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
+                    <strong>${safeNick}</strong>
                 </div>
             </td>
             <td style="font-family:'Orbitron',sans-serif;color:var(--gold);">${(acc.balance||0).toLocaleString()} PPC</td>
@@ -1191,10 +1196,10 @@ function renderAdminAccounts(accSnap, usersMap) {
                 <button class="btn btn-danger" style="font-size:9px;padding:4px 8px;" onclick="adminBurn('${nick}')"><i class="fa-solid fa-minus"></i> Burn PPC</button>
                 <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--gold);color:var(--gold);" onclick="adminMintPUSD('${nick}')"><i class="fa-solid fa-plus"></i> Mint P-USD</button>
                 <button class="btn btn-danger" style="font-size:9px;padding:4px 8px;border-color:var(--gold);color:var(--gold);" onclick="adminBurnPUSD('${nick}')"><i class="fa-solid fa-minus"></i> Burn P-USD</button>
-                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="adminToggleFreeze('${nick}', ${acc.frozen ? 'false' : 'true'})">
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;" onclick="adminToggleFreeze('${nick}', ${acc.frozen ? false : true})">
                     <i class="fa-solid fa-${acc.frozen ? 'lock-open' : 'lock'}"></i> ${acc.frozen ? 'Descongelar' : 'Congelar'}
                 </button>
-                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:#d946ef;color:#d946ef;" onclick="adminToggleBan('${nick}', ${user.banned ? 'false' : 'true'})">
+                <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:#d946ef;color:#d946ef;" onclick="adminToggleBan('${nick}', ${user.banned ? false : true})">
                     <i class="fa-solid fa-${user.banned ? 'unlock' : 'ban'}"></i> ${user.banned ? 'Desbanear' : 'Banear'}
                 </button>
                 <button class="btn btn-secondary" style="font-size:9px;padding:4px 8px;border-color:var(--gold);color:var(--gold);" onclick="adminSetBalance('${nick}')"><i class="fa-solid fa-coins"></i> Editar Saldo</button>
@@ -2084,10 +2089,11 @@ async function loadParejaPage() {
         return;
     }
 
+    const safePartner = escHTML(partner);
     container.innerHTML = `
         <div class="glass-card" style="max-width:600px;margin:0 auto 20px auto;text-align:center;border-color:var(--danger);">
             <div style="font-size:48px;margin-bottom:12px;color:var(--danger);"><i class="fa-solid fa-heart"></i></div>
-            <h2 style="font-family:'Orbitron',sans-serif;color:var(--danger);margin-bottom:5px;">Pareja con <span style="color:var(--gold);">${partner}</span></h2>
+            <h2 style="font-family:'Orbitron',sans-serif;color:var(--danger);margin-bottom:5px;">Pareja con <span style="color:var(--gold);">${safePartner}</span></h2>
             <p style="font-size:12px;color:var(--text-muted);">Bóveda compartida y beneficios activos.</p>
         </div>
         <div class="grid-container">
@@ -2096,7 +2102,7 @@ async function loadParejaPage() {
                 <div class="form-group">
                     <textarea class="form-control" id="love-letter-input" rows="4" placeholder="Escribe tu carta aquí..."></textarea>
                 </div>
-                <button class="btn btn-primary btn-full" onclick="sendLoveLetter('${partner}')">
+                <button class="btn btn-primary btn-full" onclick="sendLoveLetter('${safePartner}')">
                     <i class="fa-solid fa-paper-plane"></i> Enviar Carta
                 </button>
             </div>
@@ -2243,7 +2249,7 @@ async function withdrawFromParejaVault(partner) {
         if (input) input.value = '';
         showToast('Retiro exitoso ✓', '#00ffaa');
         loadSharedVault(partner);
-        if (window.loadDashboard) window.loadDashboard();
+        loadDashboard();
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
@@ -2252,7 +2258,8 @@ async function withdrawFromParejaVault(partner) {
 async function depositToVault(partner) {
     if (!currentUser || !bankAccount || !window._db) return;
     const amtInput = document.getElementById('vault-deposit-amount');
-    const amt = Math.floor(parseFloat(amtInput?.value || 0));
+    const rawVal = amtInput?.value || '';
+    const amt = Math.floor(parseFloat(rawVal) || 0);
     if (amt <= 0) { showToast('Ingresa un monto válido', '#ff4466'); return; }
     if (bankAccount.balance < amt) { showToast('Saldo insuficiente', '#ff4466'); return; }
 
@@ -2274,7 +2281,7 @@ async function depositToVault(partner) {
         await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), { balance: window._fbIncrement(-amt) });
         await addTx({ type: 'Bóveda', from: currentUser.nick, to: 'Bóveda Compartida', amount: amt, note: `Depósito a bóveda con ${partner}` });
 
-        showToast(`¡Depositaste ${fmt(amt)} a la bóveda compartida!`, '#ff69b4');
+        showToast(`¡Depositaste ${formatMoney(amt)} a la bóveda compartida!`, '#ff69b4');
         if (amtInput) amtInput.value = '';
         loadSharedVault(partner);
     } catch(e) {

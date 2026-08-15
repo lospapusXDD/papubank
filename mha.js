@@ -82,12 +82,11 @@ async function buyMhaRank(rankKey) {
 
     try {
         const db = window._db;
-        const updates = { balance: window._fbIncrement(-rank.price) };
-        await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), updates);
         if (needsBoth) {
             await apiFetch('PUT', '/users/' + currentUser.nick, { pusdBalance: (currentUser.pusdBalance || 0) - rank.price_usd });
             currentUser.pusdBalance = (currentUser.pusdBalance || 0) - rank.price_usd;
         }
+        await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', currentUser.nick), { balance: window._fbIncrement(-rank.price) });
         await window._fbUpdateDoc(window._fbDoc(db, 'users', currentUser.nick), { mhaRank: rankKey, boughtRanks: window._fbArrayUnion(rankKey) });
         currentUser.mhaRank = rankKey;
         grantRankLocal(rankKey);
