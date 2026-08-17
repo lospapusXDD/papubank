@@ -122,7 +122,6 @@ async function buyGodzillaRank(rankKey) {
         await addTx({ type: 'Rango Godzilla', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Forma Godzilla: ${rank.label}${needsBoth ? ` (+${rank.price_usd} P-USD)` : ''}` });
         showToast(`¡${rank.label.toUpperCase()} DESPIERTA!`, rank.color);
         loadGodzillaPage();
-        if (typeof checkAchievements === 'function') checkAchievements();
         checkGodzillaAchievements();
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');

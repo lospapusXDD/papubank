@@ -149,7 +149,6 @@ async function buyBen10Rank(rankKey) {
         await addTx({ type: 'Rango Ben 10', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Transformación Omnitrix: ${rank.label}${needsBoth ? ` (+${rank.price_usd} P-USD)` : ''}` });
         showToast(`¡AHORA ERES ${rank.label.toUpperCase()}!`, rank.color);
         loadBen10Page();
-        if (typeof checkAchievements === 'function') checkAchievements();
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }

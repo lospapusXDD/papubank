@@ -93,7 +93,6 @@ async function buyMhaRank(rankKey) {
         await addTx({ type: 'Rango MHA', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Quirk MHA: ${rank.label}${needsBoth ? ` (+${rank.price_usd} P-USD)` : ''}` });
         showToast(`¡${rank.label.toUpperCase()}! ¡PLUS ULTRA!`, rank.color);
         loadMhaPage();
-        if (typeof checkAchievements === 'function') checkAchievements();
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');
     }
