@@ -268,10 +268,10 @@ function getRankMultiplier(user) {
                 mult += f.additive ? found.mult : (found.mult - 1);
             }
         }
-        if (user && user.boughtRanks && Array.isArray(user.boughtRanks) && f.registry) {
+        if (user && user.boughtRanks && Array.isArray(user.boughtRanks) && (f.registry && Object.keys(f.registry).length || f.arr && f.arr.length)) {
             for (const br of user.boughtRanks) {
-                const found = f.registry[br];
-                if (found && !owned.has(f.name + ':' + br)) {
+                const found = f.registry[br] || (f.arr && f.arr.find(x => x.key === br));
+                    if (found && !owned.has(f.name + ':' + br)) {
                     owned.add(f.name + ':' + br);
                     mult += f.additive ? found.mult : (found.mult - 1);
                 }
