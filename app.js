@@ -265,7 +265,15 @@ function showPage(pageId) {
         case 'rimuru':      loadRimuruPage();    break;
         case 'bocchi':      loadBocchiPage();    break;
         case 'vocaloid':    loadVocaloidPage();  break;
-        case 'jjk':         loadJJKPage();       break;
+        case 'jjk':         loadJjkPage();       break;
+        case 'onepiece':    loadOnepiecePage();  break;
+        case 'bluelock':    loadBluelockPage();  break;
+        case 'marvel':      loadMarvelPage();    break;
+        case 'naruto':      loadNarutoPage();    break;
+        case 'dragonball':  loadDragonballPage(); break;
+        case 'aot':         loadAotPage();       break;
+        case 'demonslayer': loadDemonslayerPage(); break;
+        case 'hunterxhunter': loadHunterxhunterPage(); break;
         case 'admin':       if (checkAdminPermission()) loadAdmin(); break;
         case 'birthdays':   loadBirthdaysPage(); break;
     }
@@ -597,6 +605,14 @@ function applyUserData(u) {
     currentUser.vocaloidRank = u.vocaloidRank || u.vocaloid_rank || u.vocaloidrank || null;
     currentUser.mushokuRank = u.mushokuRank || u.mushoku_rank || u.mushokurank || null;
     currentUser.floresRank = u.floresRank || u.flores_rank || u.floresrank || null;
+    currentUser.onepieceRank = u.onepieceRank || u.onepiece_rank || u.onepiecerank || null;
+    currentUser.bluelockRank = u.bluelockRank || u.bluelock_rank || u.bluelockrank || null;
+    currentUser.marvelRank = u.marvelRank || u.marvel_rank || u.marvelrank || null;
+    currentUser.narutoRank = u.narutoRank || u.naruto_rank || u.narutorank || null;
+    currentUser.dragonballRank = u.dragonballRank || u.dragonball_rank || u.dragonballrank || null;
+    currentUser.aotRank = u.aotRank || u.aot_rank || u.aotrank || null;
+    currentUser.demonslayerRank = u.demonslayerRank || u.demonslayer_rank || u.demonslayerrank || null;
+    currentUser.hunterxhunterRank = u.hunterxhunterRank || u.hunterxhunter_rank || u.hunterxhunterrank || null;
     currentUser.floresAnniversaryClaimed = u.floresAnniversaryClaimed || u.flores_anniversary_claimed || [];
     currentUser.floresPartnerBirthdayClaimed = u.floresPartnerBirthdayClaimed || u.flores_partner_birthday_claimed || null;
     currentUser.karma = u.karma || currentUser.karma || 0;
