@@ -199,7 +199,16 @@ function showPage(pageId) {
         rezero: '<i class="fa-solid fa-redo"></i> Re:Zero',
         rimuru: '<i class="fa-solid fa-droplet"></i> Rimuru Tempest',
         bocchi: '<i class="fa-solid fa-guitar"></i> Bocchi the Rock!',
-        vocaloid: '<i class="fa-solid fa-headphones"></i> Vocaloids'
+        vocaloid: '<i class="fa-solid fa-headphones"></i> Vocaloids',
+        onepiece: '<i class="fa-solid fa-skull-crossbones"></i> One Piece',
+        bluelock: '<i class="fa-solid fa-futbol"></i> Blue Lock',
+        marvel: '<i class="fa-solid fa-shield-halved"></i> Marvel',
+        naruto: '<i class="fa-solid fa-fire"></i> Naruto Shippuden',
+        dragonball: '<i class="fa-solid fa-bolt"></i> Dragon Ball Z',
+        aot: '<i class="fa-solid fa-skull"></i> Attack on Titan',
+        demonslayer: '<i class="fa-solid fa-khanda"></i> Demon Slayer',
+        hunterxhunter: '<i class="fa-solid fa-crosshairs"></i> Hunter x Hunter',
+        jjk: '<i class="fa-solid fa-fire"></i> Jujutsu Kaisen'
     };
 
     const pageTitle = document.getElementById('page-header-title');

@@ -282,6 +282,30 @@
       <a href="#" class="sidebar-link" id="nav-vocaloid" onclick="showPage('vocaloid'); return false;">
         <i class="fa-solid fa-headphones"></i><span>Vocaloids</span>
       </a>
+      <a href="#" class="sidebar-link" id="nav-onepiece" onclick="showPage('onepiece'); return false;">
+        <i class="fa-solid fa-skull-crossbones"></i><span>One Piece</span>
+      </a>
+      <a href="#" class="sidebar-link" id="nav-bluelock" onclick="showPage('bluelock'); return false;">
+        <i class="fa-solid fa-futbol"></i><span>Blue Lock</span>
+      </a>
+      <a href="#" class="sidebar-link" id="nav-marvel" onclick="showPage('marvel'); return false;">
+        <i class="fa-solid fa-shield-halved"></i><span>Marvel</span>
+      </a>
+      <a href="#" class="sidebar-link" id="nav-naruto" onclick="showPage('naruto'); return false;">
+        <i class="fa-solid fa-fire"></i><span>Naruto Shippuden</span>
+      </a>
+      <a href="#" class="sidebar-link" id="nav-dragonball" onclick="showPage('dragonball'); return false;">
+        <i class="fa-solid fa-bolt"></i><span>Dragon Ball Z</span>
+      </a>
+      <a href="#" class="sidebar-link" id="nav-aot" onclick="showPage('aot'); return false;">
+        <i class="fa-solid fa-skull"></i><span>Attack on Titan</span>
+      </a>
+      <a href="#" class="sidebar-link" id="nav-demonslayer" onclick="showPage('demonslayer'); return false;">
+        <i class="fa-solid fa-khanda"></i><span>Demon Slayer</span>
+      </a>
+      <a href="#" class="sidebar-link" id="nav-hunterxhunter" onclick="showPage('hunterxhunter'); return false;">
+        <i class="fa-solid fa-crosshairs"></i><span>Hunter x Hunter</span>
+      </a>
       <a href="#" class="sidebar-link" id="nav-media" onclick="showPage('media'); return false;">
         <i class="fa-solid fa-music"></i><span>Reproductor</span>
       </a>
@@ -1481,6 +1505,123 @@
       </div>
     </section>
 
+    <!-- ════════ PAGE: ONE PIECE ════════ -->
+    <section class="page" id="page-onepiece">
+      <div class="page-inner">
+        <div class="glass-card text-center" style="margin-bottom:20px;background:linear-gradient(135deg,rgba(220,38,38,0.08),rgba(0,0,0,0));border-color:rgba(220,38,38,0.3);">
+          <div style="font-size:40px;color:#dc2626;margin-bottom:10px;"><i class="fa-solid fa-skull-crossbones"></i></div>
+          <h2 style="font-family:'Orbitron',sans-serif;color:#dc2626;">One Piece</h2>
+          <p style="font-size:12px;color:var(--text-muted);">Tripulacion actual: <strong id="onepiece-current-rank" style="color:#dc2626;">Sin tripulacion</strong></p>
+        </div>
+        <h3 class="section-title" style="font-size:14px;"><i class="fa-solid fa-ship" style="color:#dc2626;"></i> Tripulacion del Sombrero de Paja</h3>
+        <div id="onepiece-ranks-grid" class="grid-container"></div>
+      </div>
+    </section>
+
+    <!-- ════════ PAGE: BLUE LOCK ════════ -->
+    <section class="page" id="page-bluelock">
+      <div class="page-inner">
+        <div class="glass-card text-center" style="margin-bottom:20px;background:linear-gradient(135deg,rgba(34,211,238,0.08),rgba(0,0,0,0));border-color:rgba(34,211,238,0.3);">
+          <div style="font-size:40px;color:#22d3ee;margin-bottom:10px;"><i class="fa-solid fa-futbol"></i></div>
+          <h2 style="font-family:'Orbitron',sans-serif;color:#22d3ee;">Blue Lock</h2>
+          <p style="font-size:12px;color:var(--text-muted);">Striker actual: <strong id="bluelock-current-rank" style="color:#22d3ee;">Sin striker</strong></p>
+        </div>
+        <h3 class="section-title" style="font-size:14px;"><i class="fa-solid fa-futbol" style="color:#22d3ee;"></i> Strikers Disponibles</h3>
+        <div id="bluelock-ranks-grid" class="grid-container"></div>
+      </div>
+    </section>
+
+    <!-- ════════ PAGE: MARVEL ════════ -->
+    <section class="page" id="page-marvel">
+      <div class="page-inner">
+        <div class="glass-card text-center" style="margin-bottom:20px;background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(0,0,0,0));border-color:rgba(239,68,68,0.3);">
+          <div style="font-size:40px;color:#ef4444;margin-bottom:10px;"><i class="fa-solid fa-shield-halved"></i></div>
+          <h2 style="font-family:'Orbitron',sans-serif;color:#ef4444;">Marvel (MCU)</h2>
+          <p style="font-size:12px;color:var(--text-muted);">Vengador actual: <strong id="marvel-current-rank" style="color:#ef4444;">Sin poderes</strong></p>
+        </div>
+        <h3 class="section-title" style="font-size:14px;"><i class="fa-solid fa-shield" style="color:#ef4444;"></i> Vengadores Disponibles</h3>
+        <div id="marvel-ranks-grid" class="grid-container"></div>
+      </div>
+    </section>
+
+    <!-- ════════ PAGE: NARUTO ════════ -->
+    <section class="page" id="page-naruto">
+      <div class="page-inner">
+        <div class="glass-card text-center" style="margin-bottom:20px;background:linear-gradient(135deg,rgba(249,115,22,0.08),rgba(0,0,0,0));border-color:rgba(249,115,22,0.3);">
+          <div style="font-size:40px;color:#f97316;margin-bottom:10px;"><i class="fa-solid fa-fire"></i></div>
+          <h2 style="font-family:'Orbitron',sans-serif;color:#f97316;">Naruto Shippuden</h2>
+          <p style="font-size:12px;color:var(--text-muted);">Ninja actual: <strong id="naruto-current-rank" style="color:#f97316;">Sin ninjutsu</strong></p>
+        </div>
+        <h3 class="section-title" style="font-size:14px;"><i class="fa-solid fa-shuriken" style="color:#f97316;"></i> Ninjas Disponibles</h3>
+        <div id="naruto-ranks-grid" class="grid-container"></div>
+      </div>
+    </section>
+
+    <!-- ════════ PAGE: DRAGON BALL ════════ -->
+    <section class="page" id="page-dragonball">
+      <div class="page-inner">
+        <div class="glass-card text-center" style="margin-bottom:20px;background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(0,0,0,0));border-color:rgba(239,68,68,0.3);">
+          <div style="font-size:40px;color:#ef4444;margin-bottom:10px;"><i class="fa-solid fa-bolt"></i></div>
+          <h2 style="font-family:'Orbitron',sans-serif;color:#ef4444;">Dragon Ball Z</h2>
+          <p style="font-size:12px;color:var(--text-muted);">Guerrero actual: <strong id="dragonball-current-rank" style="color:#ef4444;">Sin poder</strong></p>
+        </div>
+        <h3 class="section-title" style="font-size:14px;"><i class="fa-solid fa-fire" style="color:#ef4444;"></i> Guerreros Disponibles</h3>
+        <div id="dragonball-ranks-grid" class="grid-container"></div>
+      </div>
+    </section>
+
+    <!-- ════════ PAGE: ATTACK ON TITAN ════════ -->
+    <section class="page" id="page-aot">
+      <div class="page-inner">
+        <div class="glass-card text-center" style="margin-bottom:20px;background:linear-gradient(135deg,rgba(100,116,139,0.08),rgba(0,0,0,0));border-color:rgba(100,116,139,0.3);">
+          <div style="font-size:40px;color:#64748b;margin-bottom:10px;"><i class="fa-solid fa-skull"></i></div>
+          <h2 style="font-family:'Orbitron',sans-serif;color:#64748b;">Attack on Titan</h2>
+          <p style="font-size:12px;color:var(--text-muted);">Soldado actual: <strong id="aot-current-rank" style="color:#64748b;">Sin rango</strong></p>
+        </div>
+        <h3 class="section-title" style="font-size:14px;"><i class="fa-solid fa-shield" style="color:#64748b;"></i> Legion de Exploracion</h3>
+        <div id="aot-ranks-grid" class="grid-container"></div>
+      </div>
+    </section>
+
+    <!-- ════════ PAGE: DEMON SLAYER ════════ -->
+    <section class="page" id="page-demonslayer">
+      <div class="page-inner">
+        <div class="glass-card text-center" style="margin-bottom:20px;background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(0,0,0,0));border-color:rgba(239,68,68,0.3);">
+          <div style="font-size:40px;color:#ef4444;margin-bottom:10px;"><i class="fa-solid fa-khanda"></i></div>
+          <h2 style="font-family:'Orbitron',sans-serif;color:#ef4444;">Demon Slayer</h2>
+          <p style="font-size:12px;color:var(--text-muted);">Cazador actual: <strong id="demonslayer-current-rank" style="color:#ef4444;">Sin respiracion</strong></p>
+        </div>
+        <h3 class="section-title" style="font-size:14px;"><i class="fa-solid fa-khanda" style="color:#ef4444;"></i> Cazadores de Demonios</h3>
+        <div id="demonslayer-ranks-grid" class="grid-container"></div>
+      </div>
+    </section>
+
+    <!-- ════════ PAGE: HUNTER X HUNTER ════════ -->
+    <section class="page" id="page-hunterxhunter">
+      <div class="page-inner">
+        <div class="glass-card text-center" style="margin-bottom:20px;background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(0,0,0,0));border-color:rgba(34,197,94,0.3);">
+          <div style="font-size:40px;color:#22c55e;margin-bottom:10px;"><i class="fa-solid fa-crosshairs"></i></div>
+          <h2 style="font-family:'Orbitron',sans-serif;color:#22c55e;">Hunter x Hunter</h2>
+          <p style="font-size:12px;color:var(--text-muted);">Cazador actual: <strong id="hunterxhunter-current-rank" style="color:#22c55e;">Sin rango</strong></p>
+        </div>
+        <h3 class="section-title" style="font-size:14px;"><i class="fa-solid fa-crosshairs" style="color:#22c55e;"></i> Cazadores Disponibles</h3>
+        <div id="hunterxhunter-ranks-grid" class="grid-container"></div>
+      </div>
+    </section>
+
+    <!-- ════════ PAGE: JUJUTSU KAISEN ════════ -->
+    <section class="page" id="page-jjk">
+      <div class="page-inner">
+        <div class="glass-card text-center" style="margin-bottom:20px;background:linear-gradient(135deg,rgba(34,211,238,0.08),rgba(0,0,0,0));border-color:rgba(34,211,238,0.3);">
+          <div style="font-size:40px;color:#22d3ee;margin-bottom:10px;"><i class="fa-solid fa-fire"></i></div>
+          <h2 style="font-family:'Orbitron',sans-serif;color:#22d3ee;">Jujutsu Kaisen</h2>
+          <p style="font-size:12px;color:var(--text-muted);">Hechicero actual: <strong id="jjk-current-rank" style="color:#22d3ee;">Sin rango</strong></p>
+        </div>
+        <h3 class="section-title" style="font-size:14px;"><i class="fa-solid fa-fire" style="color:#22d3ee;"></i> Hechiceros Disponibles</h3>
+        <div id="jjk-ranks-grid" class="grid-container"></div>
+      </div>
+    </section>
+
     <!-- ════════ PAGE: ADMIN (GOD MODE) ════════ -->
     <section class="page" id="page-admin">
       <div class="page-inner">
@@ -2049,6 +2190,15 @@
   <script src="rimuru.js?v=18"></script>
   <script src="bocchi.js?v=18"></script>
   <script src="vocaloid.js?v=18"></script>
+  <script src="onepiece.js?v=1"></script>
+  <script src="bluelock.js?v=1"></script>
+  <script src="marvel.js?v=1"></script>
+  <script src="naruto.js?v=1"></script>
+  <script src="dragonball.js?v=1"></script>
+  <script src="aot.js?v=1"></script>
+  <script src="demonslayer.js?v=1"></script>
+  <script src="hunterxhunter.js?v=1"></script>
+  <script src="jjk.js?v=1"></script>
   <script src="nanatsu.js?v=19"></script>
   <script src="flores.js?v=23"></script>
   <script src="exchange.js?v=23"></script>
