@@ -1,14 +1,14 @@
-El túnel de Cloudflare responde pero da error 530 (código 1033). Eso significa que el túnel está levantado, pero el backend no está respondiendo desde la máquina donde corre el servidor.
+Fix backend PapusBank — columna secret_achievements no persiste (probe 2026-08-23 con sofii/wazaopa8):
 
-Verificá en la PC donde corre el backend:
+Evidencia:
+- GET /users/sofii no devuelve secretAchievements ni secret_achievements (ambos undefined)
+- PUT /users/sofii {secretAchievements:['secret_whale']} → 200 {"ok":true} pero GET sigue sin el campo
+- PUT {karma:999} sí persiste → whitelist ignora secretAchievements
+- sofii: total_in=2048254557 (>=1B Ballena), balance=31B, earned=[] siempre → otorga Ballena en cada refresh
 
-¿El servidor está corriendo? Después del corte de luz puede no haberse iniciado solo. Abrí una terminal y ejecutalo de nuevo (ej: node server.js o el comando que uses). Fijate que no tire errores.
-¿En qué puerto escucha? El túnel apunta a localhost:PUERTO. Si el servidor escucha en un puerto distinto al que apunta cloudflared, da este error. Probalo con:
-curl http://localhost:PUERTO/api/users
-Si responde con {"error":"Token requerido"} (401) o algo similar, el servidor está OK.
+Fix:
+1. SQL: ALTER TABLE users ADD COLUMN IF NOT EXISTS secret_achievements JSONB DEFAULT '[]';
+2. En PUT /api/users/:nick agregar al whitelist: secretAchievements y secret_achievements (mapear camelCase→snake_case como con nick_color/boughtRanks). Asegurar que GET /users/:nick devuelva ambos (como hace con boughtRanks/bought_ranks).
+3. Verificar que GET /users/sofii después del fix devuelva "secret_achievements":["secret_whale"] y que un segundo PUT con otro logro haga arrayUnion correcto.
 
-¿El túnel apunta al puerto correcto? Debe ser algo como:
-cloudflared tunnel --url http://localhost:PUERTO
-con el mismo puerto del punto 2.
-
-Cuando curl http://localhost:PUERTO/api/users responda, el error 530 desaparece y la página funciona. Avisame cuando esté listo.
+Commit frontend workaround ya pusheado a4ca910 (extras.js v22 lee earnedRaw||secret_achievements + fallback via transactions), pero el fix backend es el permanente.
