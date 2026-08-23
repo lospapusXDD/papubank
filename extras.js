@@ -397,7 +397,21 @@ async function checkSecretAchievements() {
         ]);
         const u = userSnap.exists() ? userSnap.data() : {};
         const a = accSnap.exists() ? accSnap.data() : {};
-        const earned = u.secretAchievements || u.secret_achievements || [];
+        const earnedRaw = u.secretAchievements || u.secret_achievements || [];
+        // Fallback dedupe via transactions (backend column secret_achievements no persiste - ver probe sofii 2026-08-23)
+        let txEarned = [];
+        try {
+            const txSnap = await window._fbGetDocs(window._fbCollection(db, 'transactions'));
+            txSnap.forEach(d => {
+                const t = d.data();
+                if (t.to === nick && t.type === 'Logro Secreto' && t.note) {
+                    for (const ach of SECRET_ACHIEVEMENTS) {
+                        if (t.note.includes(ach.name) && !txEarned.includes(ach.id)) txEarned.push(ach.id);
+                    }
+                }
+            });
+        } catch(e) {}
+        const earned = [...new Set([...earnedRaw, ...txEarned])];
 
         let investments = 0;
         try {
