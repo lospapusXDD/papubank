@@ -124,6 +124,92 @@ const RANKS = {
     godzilla_gvk:     { label:'Godzilla vs Kong', icon:'fa-solid fa-hand-fist', color:'#a78bfa', level:16, cls:'rank-godzilla' },
     godzilla_minus1:  { label:'Godzilla Minus One', icon:'fa-solid fa-skull', color:'#9d4edd', level:17, cls:'rank-godzilla' },
     godzilla_earth:   { label:'Godzilla Earth',   icon:'fa-solid fa-earth-americas', color:'#22c55e', level:17, cls:'rank-godzilla' },
+    // One Piece
+    op_usopp: { label:'Usopp', icon:'fa-solid fa-crosshairs', color:'#f59e0b', level:12, cls:'rank-onepiece' },
+    op_nami: { label:'Nami', icon:'fa-solid fa-cloud-sun', color:'#f97316', level:12, cls:'rank-onepiece' },
+    op_sanji: { label:'Sanji', icon:'fa-solid fa-fire', color:'#ef4444', level:13, cls:'rank-onepiece' },
+    op_zoro: { label:'Zoro', icon:'fa-solid fa-khanda', color:'#22c55e', level:14, cls:'rank-onepiece' },
+    op_luffy: { label:'Luffy', icon:'fa-solid fa-skull-crossbones', color:'#dc2626', level:14, cls:'rank-onepiece' },
+    op_jinbe: { label:'Jinbe', icon:'fa-solid fa-water', color:'#0ea5e9', level:15, cls:'rank-onepiece' },
+    op_robin: { label:'Robin', icon:'fa-solid fa-book-open', color:'#8b5cf6', level:15, cls:'rank-onepiece' },
+    op_franky: { label:'Franky', icon:'fa-solid fa-robot', color:'#3b82f6', level:15, cls:'rank-onepiece' },
+    op_brook: { label:'Brook', icon:'fa-solid fa-music', color:'#a855f7', level:16, cls:'rank-onepiece' },
+    op_chopper: { label:'Chopper', icon:'fa-solid fa-paw', color:'#ec4899', level:16, cls:'rank-onepiece' },
+    // Blue Lock
+    bl_kunigami: { label:'Kunigami', icon:'fa-solid fa-bolt', color:'#ef4444', level:12, cls:'rank-bluelock' },
+    bl_chigiri: { label:'Chigiri', icon:'fa-solid fa-person-running', color:'#f472b6', level:12, cls:'rank-bluelock' },
+    bl_bachira: { label:'Bachira', icon:'fa-solid fa-dragon', color:'#facc15', level:13, cls:'rank-bluelock' },
+    bl_rin: { label:'Rin Itoshi', icon:'fa-solid fa-skull', color:'#6366f1', level:14, cls:'rank-bluelock' },
+    bl_shidou: { label:'Shidou', icon:'fa-solid fa-fire-flame-curved', color:'#ef4444', level:14, cls:'rank-bluelock' },
+    bl_isagi: { label:'Isagi', icon:'fa-solid fa-eye', color:'#22d3ee', level:15, cls:'rank-bluelock' },
+    bl_kaiser: { label:'Kaiser', icon:'fa-solid fa-crown', color:'#818cf8', level:15, cls:'rank-bluelock' },
+    bl_noel: { label:'Noel Noa', icon:'fa-solid fa-trophy', color:'#fbbf24', level:16, cls:'rank-bluelock' },
+    bl_lavinho: { label:'Lavinho', icon:'fa-solid fa-music', color:'#a78bfa', level:16, cls:'rank-bluelock' },
+    bl_gagamaru: { label:'Gagamaru', icon:'fa-solid fa-shield', color:'#6ee7b7', level:16, cls:'rank-bluelock' },
+    // Marvel
+    marvel_hawkeye: { label:'Hawkeye', icon:'fa-solid fa-bullseye', color:'#a855f7', level:12, cls:'rank-marvel' },
+    marvel_widow: { label:'Black Widow', icon:'fa-solid fa-spider', color:'#ef4444', level:12, cls:'rank-marvel' },
+    marvel_falcon: { label:'Falcon', icon:'fa-solid fa-dove', color:'#64748b', level:13, cls:'rank-marvel' },
+    marvel_spiderman: { label:'Spider-Man', icon:'fa-solid fa-spider', color:'#ef4444', level:14, cls:'rank-marvel' },
+    marvel_thor: { label:'Thor', icon:'fa-solid fa-bolt', color:'#3b82f6', level:14, cls:'rank-marvel' },
+    marvel_ironman: { label:'Iron Man', icon:'fa-solid fa-robot', color:'#ef4444', level:15, cls:'rank-marvel' },
+    marvel_cap: { label:'Cap America', icon:'fa-solid fa-shield', color:'#3b82f6', level:15, cls:'rank-marvel' },
+    marvel_strange: { label:'Dr. Strange', icon:'fa-solid fa-hat-wizard', color:'#f97316', level:15, cls:'rank-marvel' },
+    marvel_hulk: { label:'Hulk', icon:'fa-solid fa-hand-fist', color:'#22c55e', level:16, cls:'rank-marvel' },
+    marvel_thanos: { label:'Thanos', icon:'fa-solid fa-gem', color:'#a855f7', level:17, cls:'rank-marvel' },
+    // Naruto
+    naruto_hinata: { label:'Hinata', icon:'fa-solid fa-heart', color:'#a78bfa', level:12, cls:'rank-naruto' },
+    naruto_shikamaru: { label:'Shikamaru', icon:'fa-solid fa-chess', color:'#60a5fa', level:12, cls:'rank-naruto' },
+    naruto_kakashi: { label:'Kakashi', icon:'fa-solid fa-eye', color:'#94a3b8', level:13, cls:'rank-naruto' },
+    naruto_gaara: { label:'Gaara', icon:'fa-solid fa-mountain', color:'#f97316', level:14, cls:'rank-naruto' },
+    naruto_sasuke: { label:'Sasuke', icon:'fa-solid fa-bolt', color:'#6366f1', level:14, cls:'rank-naruto' },
+    naruto_jiraiya: { label:'Jiraiya', icon:'fa-solid fa-hat-wizard', color:'#ef4444', level:15, cls:'rank-naruto' },
+    naruto_madara: { label:'Madara', icon:'fa-solid fa-skull', color:'#dc2626', level:15, cls:'rank-naruto' },
+    naruto_hashirama: { label:'Hashirama', icon:'fa-solid fa-tree', color:'#22c55e', level:16, cls:'rank-naruto' },
+    naruto_naruto: { label:'Naruto', icon:'fa-solid fa-flame', color:'#f97316', level:16, cls:'rank-naruto' },
+    naruto_itzachi: { label:'Itachi', icon:'fa-solid fa-crow', color:'#7c3aed', level:17, cls:'rank-naruto' },
+    // Dragon Ball
+    db_yamcha: { label:'Yamcha', icon:'fa-solid fa-baseball', color:'#f59e0b', level:12, cls:'rank-dragonball' },
+    db_krillin: { label:'Krillin', icon:'fa-solid fa-sun', color:'#fbbf24', level:12, cls:'rank-dragonball' },
+    db_piccolo: { label:'Piccolo', icon:'fa-solid fa-hand', color:'#22c55e', level:13, cls:'rank-dragonball' },
+    db_vegeta: { label:'Vegeta', icon:'fa-solid fa-crown', color:'#3b82f6', level:15, cls:'rank-dragonball' },
+    db_gohan: { label:'Gohan', icon:'fa-solid fa-graduation-cap', color:'#a78bfa', level:15, cls:'rank-dragonball' },
+    db_goku: { label:'Goku', icon:'fa-solid fa-fire', color:'#ef4444', level:16, cls:'rank-dragonball' },
+    db_broly: { label:'Broly', icon:'fa-solid fa-bolt', color:'#22c55e', level:16, cls:'rank-dragonball' },
+    db_beerus: { label:'Beerus', icon:'fa-solid fa-ghost', color:'#7c3aed', level:16, cls:'rank-dragonball' },
+    db_frieza: { label:'Freezer', icon:'fa-solid fa-skull', color:'#a855f7', level:17, cls:'rank-dragonball' },
+    // Attack on Titan
+    aot_sasha: { label:'Sasha', icon:'fa-solid fa-drumstick-bite', color:'#f59e0b', level:12, cls:'rank-aot' },
+    aot_conny: { label:'Conny', icon:'fa-solid fa-person-running', color:'#60a5fa', level:12, cls:'rank-aot' },
+    aot_jean: { label:'Jean', icon:'fa-solid fa-horse', color:'#94a3b8', level:13, cls:'rank-aot' },
+    aot_levi: { label:'Levi', icon:'fa-solid fa-skull', color:'#64748b', level:14, cls:'rank-aot' },
+    aot_hange: { label:'Hange', icon:'fa-solid fa-flask', color:'#f97316', level:15, cls:'rank-aot' },
+    aot_erwin: { label:'Erwin', icon:'fa-solid fa-flag', color:'#ef4444', level:15, cls:'rank-aot' },
+    aot_mikasa: { label:'Mikasa', icon:'fa-solid fa-shield', color:'#dc2626', level:16, cls:'rank-aot' },
+    aot_reiner: { label:'Reiner', icon:'fa-solid fa-shield-halved', color:'#78350f', level:16, cls:'rank-aot' },
+    aot_eren: { label:'Eren', icon:'fa-solid fa-bolt', color:'#22c55e', level:16, cls:'rank-aot' },
+    aot_ymir: { label:'Ymir Fritz', icon:'fa-solid fa-crown', color:'#a855f7', level:17, cls:'rank-aot' },
+    // Demon Slayer
+    ds_mitsuri: { label:'Mitsuri', icon:'fa-solid fa-heart', color:'#f472b6', level:12, cls:'rank-demonslayer' },
+    ds_muirai: { label:'Muichiro', icon:'fa-solid fa-cloud', color:'#94a3b8', level:12, cls:'rank-demonslayer' },
+    ds_zenitsu: { label:'Zenitsu', icon:'fa-solid fa-bolt', color:'#fbbf24', level:13, cls:'rank-demonslayer' },
+    ds_inosuke: { label:'Inosuke', icon:'fa-solid fa-paw', color:'#60a5fa', level:14, cls:'rank-demonslayer' },
+    ds_tanjiro: { label:'Tanjiro', icon:'fa-solid fa-fire', color:'#ef4444', level:14, cls:'rank-demonslayer' },
+    ds_rengoku: { label:'Rengoku', icon:'fa-solid fa-flame', color:'#f97316', level:15, cls:'rank-demonslayer' },
+    ds_giyu: { label:'Giyu', icon:'fa-solid fa-water', color:'#3b82f6', level:15, cls:'rank-demonslayer' },
+    ds_urokodaki: { label:'Urokodaki', icon:'fa-solid fa-mask', color:'#6b7280', level:15, cls:'rank-demonslayer' },
+    ds_kokushibo: { label:'Kokushibo', icon:'fa-solid fa-eye', color:'#7c3aed', level:16, cls:'rank-demonslayer' },
+    ds_muzan: { label:'Muzan', icon:'fa-solid fa-skull', color:'#a855f7', level:17, cls:'rank-demonslayer' },
+    // Hunter x Hunter
+    hxh_kurapika: { label:'Kurapika', icon:'fa-solid fa-link', color:'#ef4444', level:12, cls:'rank-hxh' },
+    hxh_leorio: { label:'Leorio', icon:'fa-solid fa-stethoscope', color:'#3b82f6', level:12, cls:'rank-hxh' },
+    hxh_killua: { label:'Killua', icon:'fa-solid fa-bolt', color:'#a78bfa', level:13, cls:'rank-hxh' },
+    hxh_gon: { label:'Gon', icon:'fa-solid fa-hand-fist', color:'#22c55e', level:14, cls:'rank-hxh' },
+    hxh_alluka: { label:'Alluka', icon:'fa-solid fa-gamepad', color:'#ec4899', level:15, cls:'rank-hxh' },
+    hxh_meruem: { label:'Meruem', icon:'fa-solid fa-chess-king', color:'#f97316', level:15, cls:'rank-hxh' },
+    hxh_netero: { label:'Netero', icon:'fa-solid fa-pray', color:'#64748b', level:16, cls:'rank-hxh' },
+    hxh_chrollo: { label:'Chrollo', icon:'fa-solid fa-book', color:'#7c3aed', level:16, cls:'rank-hxh' },
+    hxh_ging: { label:'Ging', icon:'fa-solid fa-mountain', color:'#f59e0b', level:17, cls:'rank-hxh' },
 };
 
 const RANK_MULTIPLIERS = {
@@ -221,7 +307,7 @@ function getRankKey(user) {
     if (user.nick === 'emilio' || user.nick === 'solariswat' || user.nick === 'insanlj5') return 'owner';
     if (user.rank && RANKS[user.rank]) return user.rank;
     if (user.admin) return 'admin';
-    const best = ['ben10Rank', 'ben10rank', 'mhaRank', 'mharank', 'godzillaRank', 'godzillarank', 'frierenRank', 'frierenrank', 'nanatsuRank', 'nanatsurank', 'jjkRank', 'jjkrank']
+    const best = ['ben10Rank', 'ben10rank', 'mhaRank', 'mharank', 'godzillaRank', 'godzillarank', 'frierenRank', 'frierenrank', 'nanatsuRank', 'nanatsurank', 'jjkRank', 'jjkrank', 'onepieceRank', 'onepiecerank', 'bluelockRank', 'bluelockrank', 'marvelRank', 'marvelrank', 'narutoRank', 'narutorank', 'dragonballRank', 'dragonballrank', 'aotRank', 'aotrank', 'demonslayerRank', 'demonslayerrank', 'hunterxhunterRank', 'hunterxhunterrank']
         .map(f => user[f])
         .filter(k => k && RANKS[k])
         .sort((a, b) => RANKS[b].level - RANKS[a].level)[0];
@@ -256,6 +342,14 @@ function getRankMultiplier(user) {
         { field: 'vocaloidRank',low: 'vocaloidrank', arr: typeof VOCALOID_RANKS !== 'undefined' ? VOCALOID_RANKS : [], registry: typeof _vocaloidRankRegistry !== 'undefined' ? _vocaloidRankRegistry : {}, name: 'vocaloid' },
         { field: 'mushokuRank', low: 'mushokurank',  arr: typeof MUSHOKU_RANKS !== 'undefined' ? MUSHOKU_RANKS : [], registry: typeof _mushokuRankRegistry !== 'undefined' ? _mushokuRankRegistry : {}, name: 'mushoku' },
         { field: 'floresRank',  low: 'floresrank',   arr: typeof FLORES_RANKS !== 'undefined' ? FLORES_RANKS : [], registry: typeof _floresRankRegistry !== 'undefined' ? _floresRankRegistry : {}, name: 'flores' },
+        { field: 'onepieceRank', low: 'onepiecerank', arr: typeof ONEPIECE_RANKS !== 'undefined' ? ONEPIECE_RANKS : [], registry: {}, name: 'onepiece' },
+        { field: 'bluelockRank', low: 'bluelockrank', arr: typeof BLUELOCK_RANKS !== 'undefined' ? BLUELOCK_RANKS : [], registry: {}, name: 'bluelock' },
+        { field: 'marvelRank',   low: 'marvelrank',   arr: typeof MARVEL_RANKS !== 'undefined' ? MARVEL_RANKS : [], registry: {}, name: 'marvel' },
+        { field: 'narutoRank',   low: 'narutorank',   arr: typeof NARUTO_RANKS !== 'undefined' ? NARUTO_RANKS : [], registry: {}, name: 'naruto' },
+        { field: 'dragonballRank', low: 'dragonballrank', arr: typeof DRAGONBALL_RANKS !== 'undefined' ? DRAGONBALL_RANKS : [], registry: {}, name: 'dragonball' },
+        { field: 'aotRank',      low: 'aotrank',      arr: typeof AOT_RANKS !== 'undefined' ? AOT_RANKS : [], registry: {}, name: 'aot' },
+        { field: 'demonslayerRank', low: 'demonslayerrank', arr: typeof DEMONSLAYER_RANKS !== 'undefined' ? DEMONSLAYER_RANKS : [], registry: {}, name: 'demonslayer' },
+        { field: 'hunterxhunterRank', low: 'hunterxhunterrank', arr: typeof HXH_RANKS !== 'undefined' ? HXH_RANKS : [], registry: {}, name: 'hunterxhunter' },
     ];
 
     const owned = new Set();

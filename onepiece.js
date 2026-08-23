@@ -88,7 +88,7 @@ async function buyOnepieceRank(rankKey) {
         currentUser.onepieceRank = rankKey;
         grantRankLocal(rankKey);
         await addTx({ type: 'Rango One Piece', from: currentUser.nick, to: 'Banco', amount: rank.price, note: `Tripulación: ${rank.label}${needsBoth ? ` (+${rank.price_usd} P-USD)` : ''}` });
-        showToast(`¡${rank.label.toUpperCase()}! ¡Vamos a ser el Rey de los Piratas!', rank.color);
+        showToast(`¡${rank.label.toUpperCase()}! ¡Vamos a ser el Rey de los Piratas!`, rank.color);
         loadOnepiecePage();
     } catch(e) {
         showToast('Error: ' + e.message, '#ff4466');

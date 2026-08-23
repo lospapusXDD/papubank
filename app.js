@@ -207,8 +207,7 @@ function showPage(pageId) {
         dragonball: '<i class="fa-solid fa-bolt"></i> Dragon Ball Z',
         aot: '<i class="fa-solid fa-skull"></i> Attack on Titan',
         demonslayer: '<i class="fa-solid fa-khanda"></i> Demon Slayer',
-        hunterxhunter: '<i class="fa-solid fa-crosshairs"></i> Hunter x Hunter',
-        jjk: '<i class="fa-solid fa-fire"></i> Jujutsu Kaisen'
+        hunterxhunter: '<i class="fa-solid fa-crosshairs"></i> Hunter x Hunter'
     };
 
     const pageTitle = document.getElementById('page-header-title');
@@ -265,7 +264,7 @@ function showPage(pageId) {
         case 'rimuru':      loadRimuruPage();    break;
         case 'bocchi':      loadBocchiPage();    break;
         case 'vocaloid':    loadVocaloidPage();  break;
-        case 'jjk':         loadJjkPage();       break;
+        case 'jjk':         loadJJKPage();       break;
         case 'onepiece':    loadOnepiecePage();  break;
         case 'bluelock':    loadBluelockPage();  break;
         case 'marvel':      loadMarvelPage();    break;

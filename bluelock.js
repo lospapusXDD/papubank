@@ -12,7 +12,7 @@ const BLUELOCK_RANKS = [
     { key:'bl_kaiser',     label:'Kaiser',      icon:'fa-solid fa-crown',         color:'#818cf8', price:45000000,   price_usd:1500, gradeTier:2, mult:4,      desc:'El emperador. Kaiser Impact: el tiro más rápido del mundo.' },
     { key:'bl_noel',       label:'Noel Noa',    icon:'fa-solid fa-trophy',        color:'#fbbf24', price:60000000,   price_usd:2000, gradeTier:3, mult:5,      desc:'El número 1 mundial. La leyenda viva del fútbol egoísta.' },
     { key:'bl_lavinho',    label:'Lavinho',     icon:'fa-solid fa-music',         color:'#a78bfa', price:75000000,   price_usd:2500, gradeTier:3, mult:6,      desc:'El maestro del dribling. Samba football. La elegancia hecha gol.' },
-    { key:'bl Jaune',      label:'Gagamaru',    icon:'fa-solid fa-shield',        color:'#6ee7b7', price:90000000,   price_usd:3000, gradeTier:3, mult:7,      desc:'El portero salvaje. Reflejos de gato. Nadie le mete gol fácil.' },
+    { key:'bl_gagamaru',   label:'Gagamaru',    icon:'fa-solid fa-shield',        color:'#6ee7b7', price:90000000,   price_usd:3000, gradeTier:3, mult:7,      desc:'El portero salvaje. Reflejos de gato. Nadie le mete gol fácil.' },
 ];
 
 async function loadBluelockPage() {
