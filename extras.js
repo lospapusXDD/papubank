@@ -386,7 +386,8 @@ function getRingHTML(user) {
 
 async function checkSecretAchievements() {
     if (!currentUser || !window._db) return;
-
+    if (window._checkingSecret) return;
+    window._checkingSecret = true;
     try {
         const db = window._db;
         const nick = currentUser.nick;
@@ -396,7 +397,7 @@ async function checkSecretAchievements() {
         ]);
         const u = userSnap.exists() ? userSnap.data() : {};
         const a = accSnap.exists() ? accSnap.data() : {};
-        const earned = u.secretAchievements || [];
+        const earned = u.secretAchievements || u.secret_achievements || [];
 
         let investments = 0;
         try {
@@ -411,24 +412,24 @@ async function checkSecretAchievements() {
             if (earned.includes(ach.id)) continue;
             let ok = false;
             switch (ach.id) {
-                case 'secret_whale':        ok = (a.totalIn || 0) >= 1000000000; break;
-                case 'secret_whale2':       ok = (a.totalIn || 0) >= 10000000000; break;
-                case 'secret_rich':         ok = (a.balance || 0) >= 500000000; break;
-                case 'secret_noob':         ok = (u.failedTransferStreak || 0) >= 10; break;
+                case 'secret_whale':        ok = ((a.totalIn || a.total_in || 0) >= 1000000000); break;
+                case 'secret_whale2':       ok = ((a.totalIn || a.total_in || 0) >= 10000000000); break;
+                case 'secret_rich':         ok = ((a.balance || 0) >= 500000000); break;
+                case 'secret_noob':         ok = ((u.failedTransferStreak || u.failed_transfer_streak || 0) >= 10); break;
                 case 'secret_night':        ok = (hour >= 2 && hour < 5); break;
-                case 'secret_night_streak': ok = (u.nightStreak || 0) >= 5; break;
-                case 'secret_streak7':      ok = (u.loginStreak || 0) >= 7; break;
-                case 'secret_streak30':     ok = (u.loginStreak || 0) >= 30; break;
-                case 'secret_streak100':    ok = (u.loginStreak || 0) >= 100; break;
-                case 'secret_gambler':      ok = (u.mgStreak || 0) >= 50; break;
-                case 'secret_minigame':     ok = (u.mgWins || 0) >= 200; break;
-                case 'secret_social':       ok = (u.pmSent || 0) >= 100; break;
+                case 'secret_night_streak': ok = ((u.nightStreak || u.night_streak || 0) >= 5); break;
+                case 'secret_streak7':      ok = ((u.loginStreak || u.login_streak || 0) >= 7); break;
+                case 'secret_streak30':     ok = ((u.loginStreak || u.login_streak || 0) >= 30); break;
+                case 'secret_streak100':    ok = ((u.loginStreak || u.login_streak || 0) >= 100); break;
+                case 'secret_gambler':      ok = ((u.mgStreak || u.mg_streak || 0) >= 50); break;
+                case 'secret_minigame':     ok = ((u.mgWins || u.mg_wins || 0) >= 200); break;
+                case 'secret_social':       ok = ((u.pmSent || u.pm_sent || 0) >= 100); break;
                 case 'secret_investor':     ok = investments >= 10; break;
-                case 'secret_tx1000':       ok = (a.txCount || 0) >= 1000; break;
-                case 'secret_lv50':         ok = (u.level || 0) >= 50; break;
-                case 'secret_vault':        ok = (a.vaultBalance || 0) >= 100000000; break;
-                case 'secret_karma':        ok = (u.karma || 0) >= 1000; break;
-                case 'secret_kyc3':         ok = (a.kycLevel || 0) >= 3; break;
+                case 'secret_tx1000':       ok = ((a.txCount || a.tx_count || 0) >= 1000); break;
+                case 'secret_lv50':         ok = ((u.level || 0) >= 50); break;
+                case 'secret_vault':        ok = ((a.vaultBalance || a.vault_balance || 0) >= 100000000); break;
+                case 'secret_karma':        ok = ((u.karma || 0) >= 1000); break;
+                case 'secret_kyc3':         ok = ((a.kycLevel || a.kyc_level || 0) >= 3); break;
             }
             if (ok) newly.push(ach);
         }
@@ -442,10 +443,11 @@ async function checkSecretAchievements() {
         const finalReward = Math.round(totalReward * mult);
 
         await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', nick), { balance: window._fbIncrement(finalReward) });
+        const newEarned = [...earned, ...newly.map(x => x.id)];
         await window._fbUpdateDoc(window._fbDoc(db, 'users', nick), {
-            secretAchievements: window._fbArrayUnion(...newly.map(x => x.id))
+            secretAchievements: newEarned
         });
-        currentUser.secretAchievements = [...earned, ...newly.map(x => x.id)];
+        currentUser.secretAchievements = newEarned;
         try {
             await window._fbAddDoc(window._fbCollection(db, 'transactions'), {
                 from: 'Sistema', to: nick, amount: finalReward,
@@ -458,6 +460,8 @@ async function checkSecretAchievements() {
         loadSecretsPage();
     } catch(e) {
         console.error('Error checking secret achievements:', e);
+    } finally {
+        window._checkingSecret = false;
     }
 }
 
@@ -537,11 +541,14 @@ async function loadSecretsPage() {
     const container = document.getElementById('secrets-grid');
     if (!container) return;
 
-    let unlocked = currentUser?.secretAchievements || [];
+    let unlocked = currentUser?.secretAchievements || currentUser?.secret_achievements || [];
     try {
         if (currentUser && window._db) {
             const snap = await window._fbGetDoc(window._fbDoc(window._db, 'users', currentUser.nick));
-            if (snap.exists()) unlocked = snap.data().secretAchievements || [];
+            if (snap.exists()) {
+                const d = snap.data();
+                unlocked = d.secretAchievements || d.secret_achievements || [];
+            }
         }
     } catch(e) {}
     const unlockedSet = new Set(unlocked);
