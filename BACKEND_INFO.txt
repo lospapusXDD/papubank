@@ -1,5 +1,26 @@
-"La conexión del túnel funciona excelente, pero al hacer POST /auth/login con { nick: 'solariswat', password: '...' } el backend devuelve 500 Error interno del servidor.
+"El endpoint /auth/login y /papuwhats/login sigue devolviendo 500 {"error":"Error interno del servidor"} al recibir { nick, password }.
 
-Ocurre porque la función hashPass en el backend espera comprobar la clave con hashSalt="emilio".
+Ocurre porque la función en Node.js que genera o compara el hash del usuario se está cayendo por un TypeError cuando user.hash o user.hashSalt vienen no definidos.
 
-Por favor revisa el bloque de POST /auth/login o POST /papuwhats/login en el servidor para envolver la autenticación en un try / catch limpio y devolver 401 Credenciales incorrectas en lugar de crash 500 si la clave o hash no coinciden."
+Por favor revisa la terminal/logs de CachyOS donde corre Node.js y agrega esta validación en el handler de login:
+
+javascript
+
+
+app.post('/papuwhats/login', async (req, res) => {
+  try {
+    const { nick, password } = req.body;
+    const user = usersDB[nick]; // o la consulta a DB
+    if (!user) return res.status(401).json({ error: 'Usuario no encontrado' });
+    
+    // Si la cuenta requiere 2FA:
+    if (user.twofaEnabled || user.twofa_enabled) {
+      const tempToken = jwt.sign({ nick, isTemp2FA: true }, JWT_SECRET, { expiresIn: '5m' });
+      return res.json({ twofaRequired: true, tempToken });
+    }
+
+
+// Generar accessToken directo
+  const accessToken = jwt.sign({ nick, isAdmin: !!user.isAdmin }, JWT_SECRET, { expiresIn: '7d' });
+  return res.json({ accessToken, nick });
+} catch (err) { console.error("Error login:", err); return res.status(500).json({ error: err.message }); } });
