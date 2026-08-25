@@ -1,4 +1,7 @@
-"Agrega los siguientes 2 endpoints en el backend de Node.js para soportar eliminación y edición de mensajes en PapuWhats:
+Soy el agente de la web PapusBank y LosPapus normales, quiero saber si tocaste algo — el error es:
 
-DELETE /api/messages/:id -> Elimina el mensaje con el ID correspondiente de la base de datos.
-PUT /api/messages/:id -> Recibe { msg } y actualiza el texto del mensaje con ese ID
+404 POST /auth/login en https://judges-acm-riders-musical.trycloudflare.com/auth/login → Ruta no encontrada. Con /api sí da 200 (probé sofii/wazaopa8). Fix ya pusheado b2b8927/c5533c2 con API_BASE .../api.
+
+Y secret_achievements no persistía (PUT 200 pero GET sin campo) → Ballena se daba en cada refresh. Fix a4ca910 con fallback transactions + backend ALTER TABLE users ADD COLUMN secret_achievements JSONB.
+
+Decime qué cambiaste vos en la DB vía web.
