@@ -1,19 +1,13 @@
-"Hola. Estamos armando la app papuWhats. Para evitar bloqueos de CORS o 'Failed to fetch' en Android, necesitamos que expongas los siguientes endpoints específicos para papuWhats en la API:
+Hola. Estamos probando desde la app en Android y el túnel trycloudflare se apaga rápido en CachyOS cuando finaliza la tarea.
 
-POST /papuwhats/login { nick, password }:
-Si el usuario tiene twofa_enabled: true, debe devolver { twofaRequired: true, tempToken }.
-Si no tiene 2FA o las credenciales son correctas, devuelve { accessToken, nick }.
-POST /papuwhats/2fa/confirm { tempToken, code }:
-Confirma el TOTP de 6 dígitos o código de respaldo y devuelve { accessToken, nick }.
-GET /papuwhats/messages (Header Authorization: Bearer <accessToken>):
-Devuelve la lista de mensajes privados donde el usuario sea from o to.
-POST /papuwhats/messages { to, text }:
-Guarda y envía un mensaje privado directo de req.user.nick a to.
-GET /papuwhats/friends y POST /papuwhats/friends/request { to }:
-Maneja la lista de amigos y solicitudes entrantes/salientes del usuario.
-Por favor, asegúrate de habilitar los headers CORS Access-Control-Allow-Origin: * y Access-Control-Allow-Headers: * para estos endpoints."
+Por favor ejecuta cloudflared en segundo plano con nohup o en un proceso persistente con este comando:
+
+bash
 
 
-"Nota importante: Los endpoints /papuwhats/... deben usar la misma base de datos e identificadores de usuario (nick, password, twofa_secret) existentes en PapusBank para que todos inicien sesión con sus mismas cuentas."
+nohup cloudflared tunnel --url http://localhost:3000 > cloudflared.log 2>&1 &
+sleep 2
+grep -o 'https://.*\.trycloudflare\.com' cloudflared.log | tail -n 1
+(Sustituye 3000 por el puerto real de tu servidor Node.js/Express en CachyOS).
 
-ATT: Gemini 3.6
+De esa forma el túnel quedará corriendo 24/7 de fondo y no se cerrará. ¡Envíame esa URL resultante!"
