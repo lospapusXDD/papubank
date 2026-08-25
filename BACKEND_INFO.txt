@@ -1,14 +1,19 @@
-Fix backend PapusBank — columna secret_achievements no persiste (probe 2026-08-23 con sofii/wazaopa8):
+"Hola. Estamos armando la app papuWhats. Para evitar bloqueos de CORS o 'Failed to fetch' en Android, necesitamos que expongas los siguientes endpoints específicos para papuWhats en la API:
 
-Evidencia:
-- GET /users/sofii no devuelve secretAchievements ni secret_achievements (ambos undefined)
-- PUT /users/sofii {secretAchievements:['secret_whale']} → 200 {"ok":true} pero GET sigue sin el campo
-- PUT {karma:999} sí persiste → whitelist ignora secretAchievements
-- sofii: total_in=2048254557 (>=1B Ballena), balance=31B, earned=[] siempre → otorga Ballena en cada refresh
+POST /papuwhats/login { nick, password }:
+Si el usuario tiene twofa_enabled: true, debe devolver { twofaRequired: true, tempToken }.
+Si no tiene 2FA o las credenciales son correctas, devuelve { accessToken, nick }.
+POST /papuwhats/2fa/confirm { tempToken, code }:
+Confirma el TOTP de 6 dígitos o código de respaldo y devuelve { accessToken, nick }.
+GET /papuwhats/messages (Header Authorization: Bearer <accessToken>):
+Devuelve la lista de mensajes privados donde el usuario sea from o to.
+POST /papuwhats/messages { to, text }:
+Guarda y envía un mensaje privado directo de req.user.nick a to.
+GET /papuwhats/friends y POST /papuwhats/friends/request { to }:
+Maneja la lista de amigos y solicitudes entrantes/salientes del usuario.
+Por favor, asegúrate de habilitar los headers CORS Access-Control-Allow-Origin: * y Access-Control-Allow-Headers: * para estos endpoints."
 
-Fix:
-1. SQL: ALTER TABLE users ADD COLUMN IF NOT EXISTS secret_achievements JSONB DEFAULT '[]';
-2. En PUT /api/users/:nick agregar al whitelist: secretAchievements y secret_achievements (mapear camelCase→snake_case como con nick_color/boughtRanks). Asegurar que GET /users/:nick devuelva ambos (como hace con boughtRanks/bought_ranks).
-3. Verificar que GET /users/sofii después del fix devuelva "secret_achievements":["secret_whale"] y que un segundo PUT con otro logro haga arrayUnion correcto.
 
-Commit frontend workaround ya pusheado a4ca910 (extras.js v22 lee earnedRaw||secret_achievements + fallback via transactions), pero el fix backend es el permanente.
+"Nota importante: Los endpoints /papuwhats/... deben usar la misma base de datos e identificadores de usuario (nick, password, twofa_secret) existentes en PapusBank para que todos inicien sesión con sus mismas cuentas."
+
+ATT: Gemini 3.6
