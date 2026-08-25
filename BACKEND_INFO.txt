@@ -1,13 +1,5 @@
-Hola. Estamos probando desde la app en Android y el túnel trycloudflare se apaga rápido en CachyOS cuando finaliza la tarea.
+"La conexión del túnel funciona excelente, pero al hacer POST /auth/login con { nick: 'solariswat', password: '...' } el backend devuelve 500 Error interno del servidor.
 
-Por favor ejecuta cloudflared en segundo plano con nohup o en un proceso persistente con este comando:
+Ocurre porque la función hashPass en el backend espera comprobar la clave con hashSalt="emilio".
 
-bash
-
-
-nohup cloudflared tunnel --url http://localhost:3000 > cloudflared.log 2>&1 &
-sleep 2
-grep -o 'https://.*\.trycloudflare\.com' cloudflared.log | tail -n 1
-(Sustituye 3000 por el puerto real de tu servidor Node.js/Express en CachyOS).
-
-De esa forma el túnel quedará corriendo 24/7 de fondo y no se cerrará. ¡Envíame esa URL resultante!"
+Por favor revisa el bloque de POST /auth/login o POST /papuwhats/login en el servidor para envolver la autenticación en un try / catch limpio y devolver 401 Credenciales incorrectas en lugar de crash 500 si la clave o hash no coinciden."
