@@ -62,6 +62,19 @@ async function addTx(opts) {
 // ═══════════════════════════ TRANSFERS ═══════════════════════════
 
 let selectedTransferRecipient = null;
+let transferMode = 'all';
+
+async function setTransferMode(mode) {
+    transferMode = mode;
+    const btnAll = document.getElementById('transfer-mode-all');
+    const btnFriends = document.getElementById('transfer-mode-friends');
+    if (btnAll) btnAll.className = mode === 'all' ? 'btn btn-primary' : 'btn btn-secondary';
+    if (btnFriends) btnFriends.className = mode === 'friends' ? 'btn btn-primary' : 'btn btn-secondary';
+    selectedTransferRecipient = null;
+    const banner = document.getElementById('transfer-recipient-banner');
+    if (banner) banner.style.display = 'none';
+    await loadTransferUsers();
+}
 
 async function loadTransferUsers() {
     if (!currentUser) return;
@@ -71,6 +84,43 @@ async function loadTransferUsers() {
     grid.innerHTML = '<div class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Cargando usuarios...</div>';
     
     try {
+        if (transferMode === 'friends') {
+            // PapuWhats friends mode
+            const token = window._apiToken || localStorage.getItem('papubank_jwt');
+            const res = await fetch(PAPUWHATS_BASE + '/papuwhats/friends', { headers: token ? { 'Authorization': 'Bearer ' + token } : {} });
+            const data = await res.json();
+            const friends = data.friends || [];
+            grid.innerHTML = '';
+            if (friends.length === 0) {
+                grid.innerHTML = '<div class="empty-msg">No tienes amigos en PapuWhats aún. ¡Agrega amigos en la app!</div>';
+                const select = document.getElementById('transfer-to');
+                if (select) select.innerHTML = '<option value="">-- Sin amigos --</option>';
+                return;
+            }
+            const snap = await getCachedUsers();
+            const userMap = {};
+            snap.forEach(doc => { userMap[doc.id] = doc.data(); });
+            friends.forEach(f => {
+                const nick = typeof f === 'string' ? f : (f.nick || f.nick1 === currentUser.nick ? f.nick2 : f.nick1 || f.username || '');
+                if (!nick || nick === currentUser.nick) return;
+                const user = userMap[nick] || { avatar: 'avt_gojo.jpg' };
+                const card = document.createElement('div');
+                card.className = `user-select-card ${selectedTransferRecipient === nick ? 'selected' : ''}`;
+                card.onclick = () => selectTransferRecipient(nick, card);
+                const avatarSrc = user.avatar ? user.avatar : 'avt_gojo.jpg';
+                card.innerHTML = `<img class="user-select-avatar" src="${esc(avatarSrc)}" alt="${esc(nick)}"><div class="user-select-name">${esc(nick)} <span style="font-size:10px;color:var(--secondary)">♥</span></div>`;
+                grid.appendChild(card);
+            });
+            const select = document.getElementById('transfer-to');
+            if (select) {
+                select.innerHTML = '<option value="">-- Elige amigo --</option>';
+                friends.forEach(f => {
+                    const nick = typeof f === 'string' ? f : (f.nick || f.nick1 === currentUser.nick ? f.nick2 : f.nick1 || '');
+                    if (nick && nick !== currentUser.nick) select.innerHTML += `<option value="${esc(nick)}" ${selectedTransferRecipient === nick ? 'selected' : ''}>${esc(nick)} ♥</option>`;
+                });
+            }
+            return;
+        }
         const snap = await getCachedUsers();
         grid.innerHTML = '';
         
@@ -174,7 +224,8 @@ async function doTransfer() {
     btn.textContent = 'Enviando...';
 
     try {
-        await apiFetch('POST', '/bank/transfer', { to: toNick, amount: amt, note: note || `Transferencia de ${currentUser.nick}` });
+        const endpoint = transferMode === 'friends' ? '/bank/transfer-friend' : '/bank/transfer';
+        await apiFetch('POST', endpoint, { to: toNick, amount: amt, note: note || `Transferencia de ${currentUser.nick}` });
 
         if (amtInput) amtInput.value = '';
         if (noteInput) noteInput.value = '';

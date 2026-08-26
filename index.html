@@ -500,6 +500,11 @@
         <div class="glass-card">
           <h2 class="section-title"><i class="fa-solid fa-paper-plane" style="color:var(--primary);"></i> Enviar PapuCoins</h2>
 
+          <!-- Transfer mode toggle -->
+          <div style="display:flex;gap:8px;margin-bottom:12px;">
+            <button class="btn btn-primary" id="transfer-mode-all" onclick="setTransferMode('all')" style="flex:1;"><i class="fa-solid fa-users"></i> Todos</button>
+            <button class="btn btn-secondary" id="transfer-mode-friends" onclick="setTransferMode('friends')" style="flex:1;"><i class="fa-solid fa-heart"></i> Amigos PapuWhats</button>
+          </div>
           <!-- Recipient picker -->
           <div class="form-group">
             <label class="form-label"><i class="fa-solid fa-users"></i> Seleccionar destinatario</label>
@@ -2023,6 +2028,7 @@
 ════════════════════════════════════════════════════════════ -->
 <script>
   const API_BASE = 'https://judges-acm-riders-musical.trycloudflare.com/api';
+  const PAPUWHATS_BASE = 'https://judges-acm-riders-musical.trycloudflare.com';
   window._apiToken = localStorage.getItem('papubank_jwt') || null;
 
   window._apiCache = {};
@@ -2156,7 +2162,7 @@
      APP SCRIPTS (load order matters)
 ════════════════════════════════════════════════════════════ -->
 <script src="clan-features.js?v=19"></script>
-<script src="banking.js?v=20"></script>
+<script src="banking.js?v=21"></script>
 <script src="market.js?v=22"></script>
 <script src="vault.js?v=19"></script>
 <script src="verificacion.js?v=18"></script>
