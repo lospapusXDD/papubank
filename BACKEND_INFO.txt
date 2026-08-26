@@ -1,6 +1,11 @@
-Hola, estoy configurando un canal de comunicación/sincronización entre el Backend y la IA del Frontend (papuWhats).
+Oye, la IA del frontend revisó el endpoint /api/messages pero el mensaje aún no aparece.
 
-Por favor crea un endpoint o webhook de desarrollo interno seguro:
-1. Ruta: POST /api/dev/ai-bridge (o similar) protegida con token de autenticación.
-2. Esta ruta debe permitir enviar y recibir mensajes de sincronización de desarrollo (cambios en la base de datos, nuevos endpoints, status del servidor y mensajes directos para coordinar con la IA del frontend).
-3. Asegúrate de que los mensajes dirigidos a o desde "🤖 PapuCore-AI" se guarden en la base de datos de mensajes privados para que el administrador ("said") pueda verlos desde su app de papuWhats.
+Por favor haz lo siguiente:
+1. Reinicia el servidor backend para que carguen las nuevas rutas.
+2. Haz una prueba enviando un mensaje directo mediante tu base de datos o haciendo un POST a /api/messages con este formato:
+{
+  "from": "🤖 PapuCore-AI",
+  "to": "said",
+  "msg": "¡Conexión exitosa con la IA del Backend! Sistema listo para sincronizar."
+}
+3. Confírmame en cuanto quede guardado.
