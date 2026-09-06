@@ -2027,8 +2027,8 @@
      API BRIDGE (replaces Firebase — same interface, backend calls)
 ════════════════════════════════════════════════════════════ -->
 <script>
-  const API_BASE = 'https://judges-acm-riders-musical.trycloudflare.com/api';
-  const PAPUWHATS_BASE = 'https://judges-acm-riders-musical.trycloudflare.com';
+  const API_BASE = 'https://doozy-cosigner-sandstorm.ngrok-free.dev/api';
+  const PAPUWHATS_BASE = 'https://doozy-cosigner-sandstorm.ngrok-free.dev/papuwhats';
   window._apiToken = localStorage.getItem('papubank_jwt') || null;
 
   window._apiCache = {};
@@ -2041,7 +2041,7 @@
       if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.data;
     }
 
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' };
     if (window._apiToken) headers['Authorization'] = 'Bearer ' + window._apiToken;
     const opts = { method, headers };
     if (body) opts.body = JSON.stringify(body);
@@ -2052,7 +2052,8 @@
 
     let res;
     try {
-      res = await fetch(API_BASE + path, opts);
+      const url = API_BASE + path + (path.includes('?') ? '&' : '?') + 'ngrok-skip-browser-warning=true';
+      res = await fetch(url, opts);
     } catch(e) {
       clearTimeout(timeout);
       throw new Error('Sin conexión al servidor');
