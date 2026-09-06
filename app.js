@@ -417,7 +417,8 @@ window.doLogin = async function() {
         const msg = String(e.message || '');
         const data = e.data || {};
         const reason = e.reason || data.reason || '';
-        if (e.status === 403 || data.banned === true || /baneado|Acceso denegado|Anticheat/i.test(msg) || reason) {
+        const isBan = e.status === 403 || data.banned === true || /baneado|Acceso denegado|Anticheat|Cuenta Suspendida/i.test(msg) || /baneado|Acceso denegado|Anticheat/i.test(reason);
+        if (isBan) {
             const title = data.title || null;
             const banReason = reason || data.reason || msg.replace('Acceso denegado','').replace(':','').trim() || 'Anticheats detected';
             const isPermanent = data.isPermanent === true || !data.expiresAt;
