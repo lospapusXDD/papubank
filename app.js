@@ -440,11 +440,11 @@ function showBanModal(nick, reason, duration, miniInfo, title) {
     set('ban-modal-user', nick || 'Desconocido');
     set('ban-modal-reason', reason || 'Anticheats detected');
     set('ban-modal-duration', duration || 'Permanente');
-    set('ban-modal-appeal', 'NO');
+    set('ban-modal-appeal', 'NO DISPONIBLE');
     set('ban-modal-info', miniInfo || 'mensaje automatico deteccion anticheat');
     if (title) {
-        const titleEl = modal.querySelector('[style*="SANCIONADO"]');
-        if (titleEl) titleEl.textContent = '✦ ' + title.toUpperCase() + ' ✦';
+        const titleEl = document.getElementById('ban-modal-title');
+        if (titleEl) titleEl.textContent = title;
     }
     modal.style.display='flex';
 }

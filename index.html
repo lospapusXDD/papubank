@@ -129,20 +129,27 @@
   </div>
 </div>
 
-<!-- ===== BAN MODAL (cuando el usuario esta baneado) ===== -->
-<div id="ban-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:999999;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
-  <div style="background:#0f172a;border:1px solid #ef4444;border-radius:16px;padding:28px 24px;max-width:420px;width:92%;text-align:center;box-shadow:0 20px 60px rgba(239,68,68,0.4);">
-    <div style="font-size:42px;margin-bottom:8px;">🚫</div>
-    <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:18px;color:#ef4444;letter-spacing:1px;">✦ SANCIONADO ✦</div>
-    <div style="margin-top:14px;text-align:left;background:rgba(255,255,255,0.04);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:14px;line-height:1.7;font-size:13px;color:#e5e7eb;">
-      <div>▫️ <b>Usuario baneado:</b> <span id="ban-modal-user" style="color:#fff;">-</span></div>
-      <div>▫️ <b>Razón:</b> <span id="ban-modal-reason" style="color:#fecaca;">-</span></div>
-      <div>▫️ <b>Duración:</b> <span id="ban-modal-duration">Permanente</span></div>
-      <div>▫️ <b>Apelación:</b> <span id="ban-modal-appeal">NO</span></div>
-      <div>▫️ <b>Mini info:</b> <span id="ban-modal-info" style="color:#fda4af;">-</span></div>
+<!-- ===== BAN MODAL PROFESIONAL (sin emojis) ===== -->
+<div id="ban-modal" style="display:none;position:fixed;inset:0;background:rgba(8,12,20,0.88);z-index:999999;align-items:center;justify-content:center;backdrop-filter:blur(6px);">
+  <div style="background:#0f172a;border:1px solid rgba(239,68,68,0.35);border-radius:14px;padding:0;max-width:440px;width:92%;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.5);">
+    <div style="background:linear-gradient(135deg,#1e293b,#0f172a);border-bottom:1px solid rgba(239,68,68,0.3);padding:18px 24px;display:flex;align-items:center;gap:12px;">
+      <div style="width:38px;height:38px;border-radius:8px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);display:flex;align-items:center;justify-content:center;color:#ef4444;font-size:16px;"><i class="fa-solid fa-shield-halved"></i></div>
+      <div style="text-align:left;">
+        <div id="ban-modal-title" style="font-family:'Orbitron',sans-serif;font-weight:800;font-size:13px;color:#f8fafc;letter-spacing:0.8px;text-transform:uppercase;">Cuenta Suspendida</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Acceso restringido por el sistema</div>
+      </div>
+      <button onclick="document.getElementById('ban-modal').style.display='none'" style="margin-left:auto;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;width:30px;height:30px;border-radius:6px;cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    <div style="margin-top:10px;font-size:10px;color:#64748b;">─────────────── ⋆ ⋅☆⋅ ⋆ ───────────────</div>
-    <button onclick="document.getElementById('ban-modal').style.display='none'" style="margin-top:16px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border:none;padding:10px 28px;border-radius:8px;cursor:pointer;font-weight:800;letter-spacing:0.5px;">CERRAR</button>
+    <div style="padding:20px 24px;">
+      <div style="display:grid;gap:10px;font-size:13px;">
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);"><span style="color:#94a3b8;">Usuario</span><span id="ban-modal-user" style="color:#f1f5f9;font-weight:600;">-</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);"><span style="color:#94a3b8;">Motivo</span><span id="ban-modal-reason" style="color:#fecaca;font-weight:600;text-align:right;max-width:220px;">-</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);"><span style="color:#94a3b8;">Duración</span><span id="ban-modal-duration" style="color:#e2e8f0;">Permanente</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);"><span style="color:#94a3b8;">Apelación</span><span id="ban-modal-appeal" style="color:#f87171;font-weight:700;">NO DISPONIBLE</span></div>
+        <div style="margin-top:6px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.18);border-radius:8px;padding:10px 12px;"><div style="font-size:11px;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">Detalle</div><div id="ban-modal-info" style="font-size:12px;color:#fecaca;line-height:1.5;">-</div></div>
+      </div>
+      <button onclick="document.getElementById('ban-modal').style.display='none'" style="margin-top:18px;width:100%;background:linear-gradient(135deg,#334155,#1e293b);border:1px solid rgba(255,255,255,0.1);color:#f1f5f9;padding:11px;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px;letter-spacing:0.3px;">Entendido</button>
+    </div>
   </div>
 </div>
 
