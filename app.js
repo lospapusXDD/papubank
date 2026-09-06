@@ -414,10 +414,31 @@ window.doLogin = async function() {
 
     } catch(e) {
         console.error(e);
+        const msg = String(e.message || '');
+        const reason = e.reason || '';
+        if (e.status === 403 || /baneado|Acceso denegado|Anticheat/i.test(msg) || reason) {
+            const banReason = reason || msg.replace('Acceso denegado','').replace(':','').trim() || 'Anticheats detected';
+            showBanModal(nick, banReason, 'Permanente', 'mensaje automatico deteccion anticheat');
+            errEl.textContent = '🚫 Cuenta sancionada';
+            btn.disabled = false; btn.textContent = 'INGRESAR AL BANCO';
+            return;
+        }
         errEl.textContent = e.message || 'Error de conexión';
         btn.disabled = false; btn.textContent = 'INGRESAR AL BANCO';
     }
 };
+
+function showBanModal(nick, reason, duration, miniInfo) {
+    const modal = document.getElementById('ban-modal');
+    if (!modal) return;
+    const set = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
+    set('ban-modal-user', nick || 'Desconocido');
+    set('ban-modal-reason', reason || 'Anticheats detected');
+    set('ban-modal-duration', duration || 'Permanente');
+    set('ban-modal-appeal', 'NO');
+    set('ban-modal-info', miniInfo || 'mensaje automatico deteccion anticheat');
+    modal.style.display='flex';
+}
 
 window.doLogout = function() {
     localStorage.removeItem(SESSION_KEY);
