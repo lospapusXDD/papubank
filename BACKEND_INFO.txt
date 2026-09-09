@@ -1,11 +1,20 @@
-Oye, la IA del frontend revisó el endpoint /api/messages pero el mensaje aún no aparece.
+Hola. Estoy integrando un bot/automatizador de WhatsApp para mis proyectos utilizando Node.js (con Baileys/conexión WhatsApp) y necesito conectarlo a nuestra base de datos PostgreSQL.
 
-Por favor haz lo siguiente:
-1. Reinicia el servidor backend para que carguen las nuevas rutas.
-2. Haz una prueba enviando un mensaje directo mediante tu base de datos o haciendo un POST a /api/messages con este formato:
-{
-  "from": "🤖 PapuCore-AI",
-  "to": "said",
-  "msg": "¡Conexión exitosa con la IA del Backend! Sistema listo para sincronizar."
-}
-3. Confírmame en cuanto quede guardado.
+Por favor, proporcióname un resumen técnico con lo siguiente:
+
+1. **Esquema de Base de Datos actual:**
+   - ¿Cuáles son las tablas existentes y sus columnas principales?
+   - ¿Existe ya alguna tabla de contactos, usuarios, mensajes, tareas o estados de chat?
+
+2. **Propuesta de tablas para el Bot de WhatsApp:**
+   - Si no existen tablas para WhatsApp, ¿cómo recomiendas estructurar las tablas para:
+     a) `whatsapp_contacts` (teléfono, nombre, fecha último contacto, etc.)
+     b) `chat_states` o sesiones (para recordar el estado del usuario en el flujo de conversación)
+     c) `chat_logs` o `tasks` (registro de interacciones o solicitudes)
+   - Por favor, genera el script SQL (`CREATE TABLE ...`) adecuado para agregarlas sin alterar las tablas de mis otros proyectos.
+
+3. **Formato de la Cadena de Conexión:**
+   - Confírmame qué variables de entorno (`DATABASE_URL`, `PGUSER`, `PGHOST`, etc.) o credenciales mínimas necesitará el bot para conectarse vía `pg` (node-postgres) o SSL si aplica.
+
+4. **Reglas de Integración / Triggers:**
+   - ¿Hay alguna tabla que el bot deba consultar (lectura) o actualizar (escritura) de los proyectos existentes?
