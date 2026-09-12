@@ -1,8 +1,6 @@
-El servidor en Windows ya conectó exitosamente (la sesión está en ESTABLISHED y el ratón ya salta hacia esta pantalla).
-
-Sin embargo, en CachyOS (Hyprland) no se ve el cursor moverse ni responde el teclado. Esto ocurre porque Hyprland/Wayland requiere habilitar la emulación de entrada (libei / virtual input / uinput).
-
-Por favor:
-1. En hyprland.conf o temporalmente, asegúrate de que el soporte de libei / virtual-pointer esté activo, o dale permisos a uinput (`sudo usermod -a -G input $USER` o reglas udev para `/dev/uinput`).
-2. Si input-leapc se ejecutó como cliente Wayland/libei, revisa si arrojó permisos denegados en libei o si requiere correr con el backend XWayland / Xtest o wlroots.
-3. Arregla la captura/inyección de eventos para que el ratón y teclado respondan en Hyprland.
+¡Espera! El cursor se volvió loco rebotando de lado a lado porque hay dos programas corriendo a la vez:
+1. Haz un `pkill lan-mouse` o el proceso que acabas de lanzar.
+2. Decide cuál de los dos usar:
+   - Si usamos Deskflow / Input Leap (que ya está conectado por el puerto 24800 al server de Windows).
+   - O si prefieres lan-mouse (pero tendríamos que instalar lan-mouse también en Windows).
+Mata los procesos duplicados y quédate solo con el cliente de Deskflow/Input Leap.
