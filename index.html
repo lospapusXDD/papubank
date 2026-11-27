@@ -18,7 +18,7 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
 <!-- Main Styles -->
-<link rel="stylesheet" href="css/style.css?v=2">
+<link rel="stylesheet" href="css/style.css?v=3">
 
 <!-- Manifest (PWA) -->
 <link rel="manifest" href="manifest.json">
@@ -1337,7 +1337,7 @@
         </div>
 
         <!-- Main Player -->
-        <div class="glass-card" style="margin-bottom:20px;text-align:center;">
+        <div class="glass-card" id="full-player-card" style="margin-bottom:20px;text-align:center;">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Reproduciendo ahora</div>
           <div id="full-player-track-title" style="font-size:20px;font-weight:700;color:var(--text-main);margin-bottom:4px;">—</div>
           <div id="full-player-track-artist" style="font-size:14px;color:var(--text-muted);margin-bottom:20px;">—</div>
@@ -1347,6 +1347,18 @@
             <button class="btn btn-secondary" id="full-next-btn" onclick="nextPapuSong()"><i class="fa-solid fa-forward-step"></i></button>
           </div>
           <canvas id="full-wave-canvas" style="width:100%;max-width:400px;height:60px;border-radius:8px;background:rgba(0,0,0,0.2);"></canvas>
+          <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);"><div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;">🎨 Skins del Reproductor</div><div id="player-skin-bar" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;"></div></div>
+        </div>
+
+        <!-- Featured Community Song -->
+        <div class="glass-card" style="margin-bottom:20px;border-color:rgba(251,191,36,0.3);">
+          <h3 class="section-title" style="font-size:14px;margin-bottom:10px;"><i class="fa-solid fa-star" style="color:var(--gold);"></i> Canción Destacada del Clan</h3>
+          <div id="featured-song-box" style="padding:10px;border-radius:10px;background:rgba(251,191,36,0.06);margin-bottom:12px;">Cargando...</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <select id="featured-song-select" class="form-control" style="flex:1;min-width:180px;font-size:12px;"></select>
+            <input id="featured-song-msg" type="text" class="form-control" placeholder="Dedicatoria o mensaje..." style="flex:1;min-width:160px;font-size:12px;">
+            <button class="btn btn-primary" onclick="requestFeaturedSong()" style="font-size:11px;white-space:nowrap;"><i class="fa-solid fa-star"></i> Destacar (5,000 PPC)</button>
+          </div>
         </div>
 
         <!-- Lyrics Panel -->
@@ -1794,6 +1806,7 @@
           <div id="profile-view-nick" style="font-family:'Orbitron',sans-serif;font-weight:700;color:var(--primary);font-size:15px;"></div>
           <div id="profile-view-rank" style="font-size:11px;color:var(--text-muted);margin-top:2px;"></div>
           <div id="profile-view-couple"></div>
+          <div id="profile-view-anthem"></div>
           <div id="profile-view-balance" style="font-family:'Orbitron',sans-serif;color:var(--gold);font-size:13px;margin-top:2px;"></div>
           <div id="profile-view-karma" style="font-size:10px;color:var(--text-muted);margin-top:2px;"></div>
         </div>
@@ -2038,12 +2051,12 @@ window.resolveAvatar = function(av) {
 </script>
 <script src="js/core/clan-features.js?v=19"></script>
 <script src="js/core/banking.js?v=20"></script>
-<script src="js/core/market.js?v=23"></script>
+<script src="js/core/market.js?v=24"></script>
 <script src="js/core/vault.js?v=19"></script>
 <script src="js/core/verificacion.js?v=18"></script>
 <script src="js/social/chat.js?v=24"></script>
   <script src="js/social/board.js?v=20"></script>
-  <script src="js/social/comments.js?v=24"></script>
+  <script src="js/social/comments.js?v=25"></script>
   <script src="js/social/social.js?v=25"></script>
   <script src="js/social/logros.js?v=18"></script>
   <script src="js/fandoms/ben10.js?v=18"></script>
@@ -2059,13 +2072,13 @@ window.resolveAvatar = function(av) {
   <script src="js/fandoms/bocchi.js?v=18"></script>
   <script src="js/fandoms/vocaloid.js?v=18"></script>
   <script src="js/fandoms/nanatsu.js?v=19"></script>
-  <script src="js/social/flores.js?v=23"></script>
+  <script src="js/social/flores.js?v=24"></script>
   <script src="js/core/exchange.js?v=23"></script>
   <script src="js/social/birthdays.js?v=18"></script>
   <script src="js/core/economy.js?v=19"></script>
   <script src="js/social/extras.js?v=22"></script>
   <script src="js/social/minigames.js?v=20"></script>
-<script src="js/social/media-player.js?v=22"></script>
+<script src="js/social/media-player.js?v=23"></script>
 <script src="js/core/app.js?v=23"></script>
 
 <!-- ════════════════════════════════════════════════════════════

@@ -83,6 +83,18 @@ window.viewUserProfile = async function(nick) {
                 ? `<div style="font-size:11px;margin-top:2px;"><i class="fa-solid fa-heart" style="color:#ff69b4;"></i> <span style="color:#ff69b4;">Pareja de ${escHTML(u.parejaWith)}</span></div>`
                 : '';
         }
+        const anthemEl = document.getElementById('profile-view-anthem');
+        if (anthemEl) {
+            const anthemFile = u.profileAnthem || '';
+            const anthemTrack = (typeof papuPlaylist !== 'undefined' && anthemFile) ? papuPlaylist.find(t => t.file === anthemFile) : null;
+            anthemEl.innerHTML = anthemTrack
+                ? `<div style="display:flex;align-items:center;gap:8px;margin-top:6px;padding:6px 10px;border-radius:8px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25);font-size:11px;">
+                    <i class="fa-solid fa-music" style="color:var(--primary);"></i>
+                    <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escHTML(anthemTrack.title)} — ${escHTML(anthemTrack.artist)}</span>
+                    <button class="btn btn-primary" onclick="if(typeof playTrackByFile==='function') playTrackByFile('${anthemTrack.file.replace(/'/g, "\\\\'")}')" style="font-size:10px;padding:2px 8px;"><i class="fa-solid fa-play"></i></button>
+                   </div>`
+                : '';
+        }
         const coupleBtn = document.getElementById('profile-view-couple-btn');
         if (coupleBtn) {
             const canAsk = !u.parejaWith && nick !== currentUser.nick && !currentUser.parejaWith;

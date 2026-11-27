@@ -41,7 +41,11 @@ const MARKET_ITEMS = [
     { id:'six_eyes_item', name:'Ojos de Seis Ojos', icon:'fa-solid fa-eye', price:9000, desc:'Revela las estadísticas completas de cualquier usuario por 24 horas.', type:'utility' },
     { id:'reverse_cursed_item', name:'Técnica Invertida', icon:'fa-solid fa-heart-pulse', price:4500, desc:'Recupera el 60% de tu última pérdida en minijuegos (máx 2000 PPC).', type:'utility' },
     { id:'black_flash', name:'Black Flash', icon:'fa-solid fa-bolt-lightning', price:5000, desc:'Multiplica por 1.8x tu próxima ganancia en cualquier minijuego. Un solo uso.', type:'boost' },
-    { id:'curtain_item', name:'Cortina Maldita', icon:'fa-solid fa-mask', price:2000, desc:'Oculta tu saldo del leaderboard por 48 horas. Nadie sabrá cuánto tienes.', type:'utility' }
+    { id:'curtain_item', name:'Cortina Maldita', icon:'fa-solid fa-mask', price:2000, desc:'Oculta tu saldo del leaderboard por 48 horas. Nadie sabrá cuánto tienes.', type:'utility' },
+    { id:'skin_vinyl', name:'Skin Reproductor: Vinilo', icon:'fa-solid fa-record-vinyl', price:25000, desc:'Skin retro de vinilo giratorio para el reproductor de música.', type:'cosmetic' },
+    { id:'skin_cassette', name:'Skin Reproductor: Cassette', icon:'fa-solid fa-tape', price:35000, desc:'Skin estilo cassette clásico de los 90s para el reproductor.', type:'cosmetic' },
+    { id:'skin_miku', name:'Skin Reproductor: Miku Cyber', icon:'fa-solid fa-headphones', price:50000, desc:'Skin neón turquesa Hatsune Miku para tu reproductor.', type:'cosmetic' },
+    { id:'skin_party', name:'Skin Reproductor: Modo Fiesta', icon:'fa-solid fa-wand-sparkles', price:100000, desc:'Borde RGB animado estilo fiesta para el reproductor.', type:'cosmetic' }
 ];
 
 let _marketCategoryFilter = '';
@@ -161,6 +165,9 @@ async function buyMarketItem(itemId, price) {
         }
         
         await window._fbUpdateDoc(docRef, updates);
+        if (itemId.startsWith('skin_') && typeof unlockPlayerSkin === 'function') {
+            unlockPlayerSkin(itemId.replace('skin_', ''));
+        }
         showToast(`¡Compraste ${item.name} con éxito!`, '#00ffaa');
         if (window.trackActivity) window.trackActivity('shop', price);
         if (typeof checkAchievements === 'function') checkAchievements();

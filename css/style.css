@@ -2495,3 +2495,40 @@ body {
     .glass-card { padding: 10px !important; }
     #mini-player { max-height: 50px; }
 }
+
+/* ── Player Skins (Feature 6) ───────────────────── */
+.player-skin-vinyl {
+    background: radial-gradient(circle at center, rgba(25,25,35,0.95) 0%, rgba(10,10,16,0.98) 100%) !important;
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 25px rgba(245,158,11,0.2) !important;
+}
+.player-skin-vinyl .play-toggle {
+    background: conic-gradient(#111, #333, #111, #444, #111) !important;
+    border: 3px solid #f59e0b !important;
+    color: #f59e0b !important;
+    animation: spinVinyl 6s linear infinite;
+}
+@keyframes spinVinyl { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.player-skin-cassette {
+    background: linear-gradient(135deg, rgba(45,25,15,0.95), rgba(20,12,8,0.98)) !important;
+    border: 2px dashed #fb923c !important;
+    box-shadow: 0 0 20px rgba(251,146,60,0.2) !important;
+}
+
+.player-skin-miku {
+    background: linear-gradient(135deg, rgba(0,40,38,0.92), rgba(5,15,25,0.96)) !important;
+    border-color: #39C5BB !important;
+    box-shadow: 0 0 28px rgba(57,197,187,0.3) !important;
+}
+
+.player-skin-party {
+    border: 2px solid #ec4899 !important;
+    animation: partyBorder 3s linear infinite;
+}
+@keyframes partyBorder {
+    0%   { box-shadow: 0 0 24px rgba(236,72,153,0.45); border-color: #ec4899; }
+    33%  { box-shadow: 0 0 24px rgba(0,212,255,0.45);  border-color: #00d4ff; }
+    66%  { box-shadow: 0 0 24px rgba(0,255,170,0.45);  border-color: #00ffaa; }
+    100% { box-shadow: 0 0 24px rgba(236,72,153,0.45); border-color: #ec4899; }
+}

@@ -567,18 +567,24 @@ async function loadFloresVault(partner) {
 
         let balance = 0;
         let streak = 0;
+        let coupleSong = '';
         if (vaultSnap.exists()) {
             const v = vaultSnap.data();
             balance = v.balance || 0;
             streak = v.streak || 0;
+            coupleSong = v.coupleSong || '';
         }
+        const songTrack = (typeof papuPlaylist !== 'undefined' && coupleSong) ? papuPlaylist.find(t => t.file === coupleSong) : null;
+        const songOpts = (typeof papuPlaylist !== 'undefined' ? papuPlaylist : []).map(t =>
+            `<option value="${escHTML(t.file)}" ${t.file === coupleSong ? 'selected' : ''}>${escHTML(t.title)} — ${escHTML(t.artist)}</option>`
+        ).join('');
 
         container.innerHTML = `
             <div style="text-align:center;margin-bottom:15px;">
                 <div style="font-size:28px;font-family:'Orbitron',sans-serif;color:var(--gold);">${balance.toLocaleString()} PPC</div>
                 ${streak > 0 ? `<div style="font-size:11px;color:#ff69b4;margin-top:4px;"><i class="fa-solid fa-fire"></i> Racha de cartas: <strong>${streak} días</strong></div>` : ''}
             </div>
-            <div style="display:flex;gap:8px;">
+            <div style="display:flex;gap:8px;margin-bottom:14px;">
                 <button class="btn btn-primary" onclick="floresDeposit('${partner}')" style="flex:1;font-size:11px;">
                     <i class="fa-solid fa-arrow-down"></i> Depositar
                 </button>
@@ -586,9 +592,32 @@ async function loadFloresVault(partner) {
                     <i class="fa-solid fa-arrow-up"></i> Retirar
                 </button>
             </div>
+            <div style="padding:10px;border-radius:10px;background:rgba(255,105,180,0.08);border:1px solid rgba(255,105,180,0.25);">
+                <div style="font-size:11px;font-weight:700;color:#ff69b4;margin-bottom:6px;"><i class="fa-solid fa-music"></i> Nuestra Canción ${songTrack ? `— ${escHTML(songTrack.title)}` : ''}</div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                    <select id="flores-couple-song-select" class="form-control" style="flex:1;font-size:11px;padding:6px;">${songOpts}</select>
+                    <button class="btn btn-secondary" onclick="floresSetCoupleSong('${partner}')" style="font-size:11px;padding:6px 10px;" title="Guardar canción de pareja"><i class="fa-solid fa-floppy-disk"></i></button>
+                    ${songTrack ? `<button class="btn btn-primary" onclick="if(typeof playTrackByFile==='function') playTrackByFile('${songTrack.file.replace(/'/g, "\\\\'")}')" style="font-size:11px;padding:6px 10px;" title="Reproducir"><i class="fa-solid fa-play"></i></button>` : ''}
+                </div>
+            </div>
         `;
     } catch(e) {
         container.innerHTML = '<div class="empty-msg" style="color:var(--danger)">Error al cargar bóveda</div>';
+    }
+}
+
+async function floresSetCoupleSong(partner) {
+    if (!currentUser || !window._db) return;
+    const sel = document.getElementById('flores-couple-song-select');
+    const file = sel ? sel.value : '';
+    if (!file) return;
+    try {
+        const vaultId = [currentUser.nick, partner].sort().join('_');
+        await window._fbUpdateDoc(window._fbDoc(window._db, 'vaults', vaultId), { coupleSong: file });
+        showToast('💕 Canción de pareja guardada', '#ff69b4');
+        loadFloresVault(partner);
+    } catch (e) {
+        showToast('Error: ' + e.message, '#ff4466');
     }
 }
 
