@@ -4,7 +4,7 @@
 
 const RIMURU_RANKS = [
     {
-        key: 'rimuru_slime',
+        key: 'rimuru_slime', img: 'assets/images/ranks/rimuru_rimuru_slime.jpg',
         label: 'Rimuru (Slime)',
         icon: 'fa-solid fa-droplet',
         weapon: 'Slime',
@@ -18,7 +18,7 @@ const RIMURU_RANKS = [
         grade: 'E'
     },
     {
-        key: 'shion',
+        key: 'shion', img: 'assets/images/ranks/rimuru_shion.jpg',
         label: 'Shion',
         icon: 'fa-solid fa-khanda',
         weapon: 'Knife',
@@ -32,7 +32,7 @@ const RIMURU_RANKS = [
         grade: 'D'
     },
     {
-        key: 'benimaru',
+        key: 'benimaru', img: 'assets/images/ranks/rimuru_benimaru.jpg',
         label: 'Benimaru',
         icon: 'fa-solid fa-fire',
         weapon: 'Flame',
@@ -46,7 +46,7 @@ const RIMURU_RANKS = [
         grade: 'B'
     },
     {
-        key: 'milim',
+        key: 'milim', img: 'assets/images/ranks/rimuru_milim.jpg',
         label: 'Milim Nava',
         icon: 'fa-solid fa-burst',
         weapon: 'Destruction',
@@ -60,7 +60,7 @@ const RIMURU_RANKS = [
         grade: 'A'
     },
     {
-        key: 'guy',
+        key: 'guy', img: 'assets/images/ranks/rimuru_guy.jpg',
         label: 'Guy Crimson',
         icon: 'fa-solid fa-gem',
         weapon: 'Ruby',
@@ -74,7 +74,7 @@ const RIMURU_RANKS = [
         grade: 'A'
     },
     {
-        key: 'rimuru_true',
+        key: 'rimuru_true', img: 'assets/images/ranks/rimuru_rimuru_true.jpg',
         label: 'Rimuru (True Demon Lord)',
         icon: 'fa-solid fa-crown',
         weapon: 'Demon Lord',
@@ -88,7 +88,7 @@ const RIMURU_RANKS = [
         grade: 'S'
     },
     {
-        key: 'rimuru_awakened',
+        key: 'rimuru_awakened', img: 'assets/images/ranks/rimuru_rimuru_awakened.jpg',
         label: 'Rimuru (Awakened)',
         icon: 'fa-solid fa-star',
         weapon: 'Ultimate',
@@ -152,7 +152,8 @@ function loadRimuruPage() {
         html += `
             <div class="glass-card" style="border-color:${isOwned ? rank.color : 'var(--dark-border)'};${isOwned ? 'box-shadow:0 0 15px ' + rank.color + '40;' : ''}">
                 <div style="text-align:center;margin-bottom:12px;">
-                    <i class="${rank.icon}" style="font-size:28px;color:${rank.color};"></i>
+                    <img src="${rank.img || ''}" alt="${rank.label}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid ${rank.color};background:${rank.color}15;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div style="display:none;width:72px;height:72px;border-radius:50%;background:${rank.color}15;border:2px solid ${rank.color};align-items:center;justify-content:center;color:${rank.color};font-size:28px;margin:0 auto;"><i class="${rank.icon}"></i></div>
                 </div>
                 <h4 style="font-family:'Orbitron',sans-serif;color:${rank.color};text-align:center;margin-bottom:8px;">${rank.label}</h4>
                 <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-bottom:10px;">${rank.desc}</p>

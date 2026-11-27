@@ -4,7 +4,7 @@
 
 const VOCALOID_RANKS = [
     {
-        key: 'luka',
+        key: 'luka', img: 'assets/images/ranks/vocaloid_luka.jpg',
         label: 'Megurine Luka',
         icon: 'fa-solid fa-music',
         weapon: 'Mic',
@@ -18,7 +18,7 @@ const VOCALOID_RANKS = [
         grade: 'E'
     },
     {
-        key: 'kaito',
+        key: 'kaito', img: 'assets/images/ranks/vocaloid_kaito.jpg',
         label: 'KAITO',
         icon: 'fa-solid fa-microphone',
         weapon: 'Scarf',
@@ -32,7 +32,7 @@ const VOCALOID_RANKS = [
         grade: 'D'
     },
     {
-        key: 'meiko',
+        key: 'meiko', img: 'assets/images/ranks/vocaloid_meiko.jpg',
         label: 'MEIKO',
         icon: 'fa-solid fa-martini-glass-citrus',
         weapon: 'Bottle',
@@ -46,7 +46,7 @@ const VOCALOID_RANKS = [
         grade: 'B'
     },
     {
-        key: 'rin',
+        key: 'rin', img: 'assets/images/ranks/vocaloid_rin.jpg',
         label: 'Kagamine Rin',
         icon: 'fa-solid fa-bow',
         weapon: 'Ribbon',
@@ -60,7 +60,7 @@ const VOCALOID_RANKS = [
         grade: 'A'
     },
     {
-        key: 'len',
+        key: 'len', img: 'assets/images/ranks/vocaloid_len.jpg',
         label: 'Kagamine Len',
         icon: 'fa-solid fa-bow',
         weapon: 'Ribbon',
@@ -74,7 +74,7 @@ const VOCALOID_RANKS = [
         grade: 'A'
     },
     {
-        key: 'teto',
+        key: 'teto', img: 'assets/images/ranks/vocaloid_teto.jpg',
         label: 'Kasane Teto',
         icon: 'fa-solid fa-bolt',
         weapon: 'Twin Drills',
@@ -88,7 +88,7 @@ const VOCALOID_RANKS = [
         grade: 'A'
     },
     {
-        key: 'miku',
+        key: 'miku', img: 'assets/images/ranks/vocaloid_miku.jpg',
         label: 'Hatsune Miku',
         icon: 'fa-solid fa-headphones',
         weapon: 'Leek',
@@ -102,7 +102,7 @@ const VOCALOID_RANKS = [
         grade: 'S'
     },
     {
-        key: 'virtual',
+        key: 'virtual', img: 'assets/images/ranks/vocaloid_virtual.jpg',
         label: 'Virtual Diva Suprema',
         icon: 'fa-solid fa-crown',
         weapon: 'Concert',
@@ -166,7 +166,8 @@ function loadVocaloidPage() {
         html += `
             <div class="glass-card" style="border-color:${isOwned ? rank.color : 'var(--dark-border)'};${isOwned ? 'box-shadow:0 0 15px ' + rank.color + '40;' : ''}">
                 <div style="text-align:center;margin-bottom:12px;">
-                    <i class="${rank.icon}" style="font-size:28px;color:${rank.color};"></i>
+                    <img src="${rank.img || ''}" alt="${rank.label}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid ${rank.color};background:${rank.color}15;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div style="display:none;width:72px;height:72px;border-radius:50%;background:${rank.color}15;border:2px solid ${rank.color};align-items:center;justify-content:center;color:${rank.color};font-size:28px;margin:0 auto;"><i class="${rank.icon}"></i></div>
                 </div>
                 <h4 style="font-family:'Orbitron',sans-serif;color:${rank.color};text-align:center;margin-bottom:8px;">${rank.label}</h4>
                 <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-bottom:10px;">${rank.desc}</p>

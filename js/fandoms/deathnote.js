@@ -4,7 +4,7 @@
 
 const DEATHNOTE_RANKS = [
     {
-        key: 'light',
+        key: 'light', img: 'assets/images/ranks/deathnote_light.jpg',
         label: 'Light Yagami',
         icon: 'fa-solid fa-book',
         weapon: 'Death Note',
@@ -18,7 +18,7 @@ const DEATHNOTE_RANKS = [
         grade: 'E'
     },
     {
-        key: 'misa',
+        key: 'misa', img: 'assets/images/ranks/deathnote_misa.jpg',
         label: 'Misa Amane',
         icon: 'fa-solid fa-heart',
         weapon: 'Rem\'s Wings',
@@ -32,7 +32,7 @@ const DEATHNOTE_RANKS = [
         grade: 'D'
     },
     {
-        key: 'L',
+        key: 'L', img: 'assets/images/ranks/deathnote_L.jpg',
         label: 'L Lawliet',
         icon: 'fa-solid fa-chess-knight',
         weapon: 'Magnifier',
@@ -46,7 +46,7 @@ const DEATHNOTE_RANKS = [
         grade: 'B'
     },
     {
-        key: 'ryuk',
+        key: 'ryuk', img: 'assets/images/ranks/deathnote_ryuk.jpg',
         label: 'Ryuk',
         icon: 'fa-solid fa-skull',
         weapon: 'Golden Apple',
@@ -60,7 +60,7 @@ const DEATHNOTE_RANKS = [
         grade: 'A'
     },
     {
-        key: 'near',
+        key: 'near', img: 'assets/images/ranks/deathnote_near.jpg',
         label: 'Near',
         icon: 'fa-solid fa-puzzle-piece',
         weapon: 'Puzzle',
@@ -74,7 +74,7 @@ const DEATHNOTE_RANKS = [
         grade: 'A'
     },
     {
-        key: 'kira',
+        key: 'kira', img: 'assets/images/ranks/deathnote_kira.jpg',
         label: 'Kira',
         icon: 'fa-solid fa-crown',
         weapon: 'Death Note',
@@ -88,7 +88,7 @@ const DEATHNOTE_RANKS = [
         grade: 'S'
     },
     {
-        key: 'shinigami',
+        key: 'shinigami', img: 'assets/images/ranks/deathnote_shinigami.jpg',
         label: 'Shinigami King',
         icon: 'fa-solid fa-bone',
         weapon: 'Throne',
@@ -152,7 +152,8 @@ function loadDeathnotePage() {
         html += `
             <div class="glass-card" style="border-color:${isOwned ? rank.color : 'var(--dark-border)'};${isOwned ? 'box-shadow:0 0 15px ' + rank.color + '40;' : ''}">
                 <div style="text-align:center;margin-bottom:12px;">
-                    <i class="${rank.icon}" style="font-size:28px;color:${rank.color};"></i>
+                    <img src="${rank.img || ''}" alt="${rank.label}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid ${rank.color};background:${rank.color}15;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div style="display:none;width:72px;height:72px;border-radius:50%;background:${rank.color}15;border:2px solid ${rank.color};align-items:center;justify-content:center;color:${rank.color};font-size:28px;margin:0 auto;"><i class="${rank.icon}"></i></div>
                 </div>
                 <h4 style="font-family:'Orbitron',sans-serif;color:${rank.color};text-align:center;margin-bottom:8px;">${rank.label}</h4>
                 <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-bottom:10px;">${rank.desc}</p>

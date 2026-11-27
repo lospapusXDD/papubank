@@ -4,7 +4,7 @@
 
 const BERSERK_RANKS = [
     {
-        key: 'guts',
+        key: 'guts', img: 'assets/images/ranks/berserk_guts.jpg',
         label: 'Guts',
         icon: 'fa-solid fa-hand-fist',
         weapon: 'Dragonslayer',
@@ -18,7 +18,7 @@ const BERSERK_RANKS = [
         grade: 'E'
     },
     {
-        key: 'casca',
+        key: 'casca', img: 'assets/images/ranks/berserk_casca.jpg',
         label: 'Casca',
         icon: 'fa-solid fa-shield-halved',
         weapon: 'Sword',
@@ -32,7 +32,7 @@ const BERSERK_RANKS = [
         grade: 'D'
     },
     {
-        key: 'griffith',
+        key: 'griffith', img: 'assets/images/ranks/berserk_griffith.jpg',
         label: 'Griffith',
         icon: 'fa-solid fa-feather-pointed',
         weapon: 'Hawk',
@@ -46,7 +46,7 @@ const BERSERK_RANKS = [
         grade: 'B'
     },
     {
-        key: 'skull_knight',
+        key: 'skull_knight', img: 'assets/images/ranks/berserk_skull_knight.jpg',
         label: 'Skull Knight',
         icon: 'fa-solid fa-skull-crossbones',
         weapon: 'Sword of Actuation',
@@ -60,7 +60,7 @@ const BERSERK_RANKS = [
         grade: 'A'
     },
     {
-        key: 'ganishka',
+        key: 'ganishka', img: 'assets/images/ranks/berserk_ganishka.jpg',
         label: 'Ganishka',
         icon: 'fa-solid fa-cloud-bolt',
         weapon: 'Fog',
@@ -74,7 +74,7 @@ const BERSERK_RANKS = [
         grade: 'A'
     },
     {
-        key: 'femto',
+        key: 'femto', img: 'assets/images/ranks/berserk_femto.jpg',
         label: 'Femto',
         icon: 'fa-solid fa-dove',
         weapon: 'Behelit',
@@ -88,7 +88,7 @@ const BERSERK_RANKS = [
         grade: 'S'
     },
     {
-        key: 'god_hand',
+        key: 'god_hand', img: 'assets/images/ranks/berserk_god_hand.jpg',
         label: 'God Hand',
         icon: 'fa-solid fa-hand-sparkles',
         weapon: 'Divine',
@@ -152,7 +152,8 @@ function loadBerserkPage() {
         html += `
             <div class="glass-card" style="border-color:${isOwned ? rank.color : 'var(--dark-border)'};${isOwned ? 'box-shadow:0 0 15px ' + rank.color + '40;' : ''}">
                 <div style="text-align:center;margin-bottom:12px;">
-                    <i class="${rank.icon}" style="font-size:28px;color:${rank.color};"></i>
+                    <img src="${rank.img || ''}" alt="${rank.label}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid ${rank.color};background:${rank.color}15;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div style="display:none;width:72px;height:72px;border-radius:50%;background:${rank.color}15;border:2px solid ${rank.color};align-items:center;justify-content:center;color:${rank.color};font-size:28px;margin:0 auto;"><i class="${rank.icon}"></i></div>
                 </div>
                 <h4 style="font-family:'Orbitron',sans-serif;color:${rank.color};text-align:center;margin-bottom:8px;">${rank.label}</h4>
                 <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-bottom:10px;">${rank.desc}</p>

@@ -13,7 +13,7 @@ const NANATSU_RANKS = [
         price_usd: 100,
         gradeTier: 1,
         mult: 1.5,
-        img: 'nanatsu_diane.jpg',
+        img: 'assets/images/ranks/nanatsu_diane.jpg',
         desc: 'Gigante del clan de los gigantes. Creation manipula la tierra. Gideon es un martillo de guerra de 2200 lbs.',
         grade: 'S'
     },
@@ -29,7 +29,7 @@ const NANATSU_RANKS = [
         price_usd: 200,
         gradeTier: 1,
         mult: 2,
-        img: 'nanatsu_ban.jpg',
+        img: 'assets/images/ranks/nanatsu_ban.jpg',
         desc: 'Inmortal por la Fuente de la Juventud. Snatch roba objetos y fuerza física. Courechouse es un bastón sagrado de 4 secciones.',
         grade: 'S'
     },
@@ -45,7 +45,7 @@ const NANATSU_RANKS = [
         price_usd: 350,
         gradeTier: 1,
         mult: 2.5,
-        img: 'nanatsu_king.jpg',
+        img: 'assets/images/ranks/nanatsu_king.jpg',
         desc: 'Rey de las Hadas. Disaster controla vida/muerte. Chastiefol es una lanza espiritual con 10 formas diferentes.',
         grade: 'S'
     },
@@ -61,7 +61,7 @@ const NANATSU_RANKS = [
         price_usd: 650,
         gradeTier: 2,
         mult: 3,
-        img: 'nanatsu_gowther.jpg',
+        img: 'assets/images/ranks/nanatsu_gowther.jpg',
         desc: 'Muñeco creado por un mago. Invasion manipula memorias y almas. Herritt son arcos gemelos de luz.',
         grade: 'S'
     },
@@ -77,7 +77,7 @@ const NANATSU_RANKS = [
         price_usd: 1100,
         gradeTier: 2,
         mult: 4,
-        img: 'nanatsu_meliodas.jpg',
+        img: 'assets/images/ranks/nanatsu_meliodas.jpg',
         desc: 'Capitán de los 7 Pecados Capitales. Full Counter refleja cualquier ataque mágico. Lostvayne crea clones físicos.',
         grade: 'S'
     },
@@ -93,7 +93,7 @@ const NANATSU_RANKS = [
         price_usd: 1800,
         gradeTier: 3,
         mult: 5,
-        img: 'nanatsu_merlin.jpg',
+        img: 'assets/images/ranks/nanatsu_merlin.jpg',
         desc: 'La mejor maga de Britania. Infinity mantiene hechizos eternamente. Aldan revela y controla todo.',
         grade: 'SS'
     },
@@ -109,7 +109,7 @@ const NANATSU_RANKS = [
         price_usd: 2700,
         gradeTier: 3,
         mult: 7,
-        img: 'nanatsu_escanor.jpg',
+        img: 'assets/images/ranks/nanatsu_escanor.jpg',
         desc: 'El más fuerte de día. Sunshine crece con el sol. Rhitta es un hacha divina que almacena calor solar.',
         grade: 'SSS'
     }

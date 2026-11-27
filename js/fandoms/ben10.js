@@ -3,21 +3,21 @@
    ════════════════════════════════════════════════════════════ */
 
 const BEN10_RANKS = [
-    { key:'ben10_heatblast',   label:'Heatblast',     icon:'fa-solid fa-fire',        color:'#ff7b3d', cls:'rank-ben10', price:2000000,    price_usd:100,   gradeTier:1, mult:1.5, desc:'El alien de fuego original. Calor extremo de estrella.' },
-    { key:'ben10_wildmutt',    label:'Wildmutt',      icon:'fa-solid fa-paw',         color:'#d4a017', cls:'rank-ben10', price:3000000,    price_usd:120,   gradeTier:1, mult:1.6, desc:'Bestia sin ojos, olfato letal. El cazador del Omnitrix.' },
-    { key:'ben10_greymatter',  label:'Grey Matter',   icon:'fa-solid fa-brain',       color:'#5eead4', cls:'rank-ben10', price:4000000,    price_usd:150,   gradeTier:1, mult:1.8, desc:'Un cerebro de 1 petabyte en un cuerpo diminuto.' },
-    { key:'ben10_diamondhead', label:'Diamondhead',   icon:'fa-solid fa-gem',         color:'#4dd6ff', cls:'rank-ben10', price:5000000,    price_usd:200,   gradeTier:1, mult:2,   desc:'Cristal indestructible capaz de lanzar dagas de diamante.' },
-    { key:'ben10_rippjaws',    label:'Ripjaws',       icon:'fa-solid fa-fish-fins',   color:'#2dd4bf', cls:'rank-ben10', price:7000000,    price_usd:250,   gradeTier:1, mult:2.2, desc:'Mandíbulas de tiburón. Aterrador dentro y fuera del agua.' },
-    { key:'ben10_xlr8',        label:'XLR8',          icon:'fa-solid fa-bolt',        color:'#7b68ee', cls:'rank-ben10', price:10000000,   price_usd:350,   gradeTier:2, mult:2.5, desc:'El alien más veloz del universo. Imposible de alcanzar.' },
-    { key:'ben10_stinkfly',    label:'Stinkfly',      icon:'fa-solid fa-bug',         color:'#4ade80', cls:'rank-ben10', price:12000000,   price_usd:420,   gradeTier:2, mult:2.7, desc:'Vuela y dispara asfalto pestilente. Tu peor pesadilla aérea.' },
-    { key:'ben10_fourarms',    label:'Four Arms',     icon:'fa-solid fa-dumbbell',    color:'#ff4d4d', cls:'rank-ben10', price:18000000,   price_usd:600,   gradeTier:2, mult:3,   desc:'Cuatro brazos, fuerza teton. El brutal del equipo.' },
-    { key:'ben10_upgrade',     label:'Upgrade',       icon:'fa-solid fa-robot',       color:'#22c55e', cls:'rank-ben10', price:24000000,   price_usd:800,   gradeTier:2, mult:3.5, desc:'Tecnología líquida. Se fusiona con cualquier máquina.' },
-    { key:'ben10_ghostfreak',  label:'Ghostfreak',    icon:'fa-solid fa-ghost',       color:'#a56eff', cls:'rank-ben10', price:30000000,   price_usd:1000,  gradeTier:2, mult:4,   desc:'Fantasma interdimensional. Se esconde en tu sombra.' },
-    { key:'ben10_cannonbolt',  label:'Cannonbolt',    icon:'fa-solid fa-bowling-ball',color:'#fbbf24', cls:'rank-ben10', price:40000000,   price_usd:1300,  gradeTier:2, mult:4.5, desc:'Se enrolla y arrasa todo a su paso. Bola de destrucción.' },
-    { key:'ben10_waybig',      label:'Way Big',       icon:'fa-solid fa-meteor',      color:'#ff6b81', cls:'rank-ben10', price:50000000,   price_usd:1650,  gradeTier:3, mult:5,   desc:'Gigante cósmico de 200 metros. Destruye ciudades.' },
-    { key:'ben10_swampfire',   label:'Swampfire',     icon:'fa-solid fa-seedling',    color:'#86efac', cls:'rank-ben10', price:65000000,   price_usd:2150,  gradeTier:3, mult:5.5, desc:'Fuego y plantas en un solo alien. Regeneración infinita.' },
-    { key:'ben10_humungousaur',label:'Humungousaur',  icon:'fa-solid fa-dragon',     color:'#4ade80', cls:'rank-ben10', price:80000000,   price_usd:2650,  gradeTier:3, mult:6.5, desc:'Crece hasta 60 metros. Fuerza bruta nivel apocalipsis.' },
-    { key:'ben10_alienx',      label:'Alien X',       icon:'fa-solid fa-star',        color:'#b0c4de', cls:'rank-ben10', price:90000000,   price_usd:3000,  gradeTier:3, mult:7,   desc:'Poder de reescribir la realidad. El más fuerte del Omnitrix.' },
+    { key:'ben10_heatblast', img: 'assets/images/ranks/ben10_heatblast.jpg',   label:'Heatblast',     icon:'fa-solid fa-fire',        color:'#ff7b3d', cls:'rank-ben10', price:2000000,    price_usd:100,   gradeTier:1, mult:1.5, desc:'El alien de fuego original. Calor extremo de estrella.' },
+    { key:'ben10_wildmutt', img: 'assets/images/ranks/ben10_wildmutt.jpg',    label:'Wildmutt',      icon:'fa-solid fa-paw',         color:'#d4a017', cls:'rank-ben10', price:3000000,    price_usd:120,   gradeTier:1, mult:1.6, desc:'Bestia sin ojos, olfato letal. El cazador del Omnitrix.' },
+    { key:'ben10_greymatter', img: 'assets/images/ranks/ben10_greymatter.jpg',  label:'Grey Matter',   icon:'fa-solid fa-brain',       color:'#5eead4', cls:'rank-ben10', price:4000000,    price_usd:150,   gradeTier:1, mult:1.8, desc:'Un cerebro de 1 petabyte en un cuerpo diminuto.' },
+    { key:'ben10_diamondhead', img: 'assets/images/ranks/ben10_diamondhead.jpg', label:'Diamondhead',   icon:'fa-solid fa-gem',         color:'#4dd6ff', cls:'rank-ben10', price:5000000,    price_usd:200,   gradeTier:1, mult:2,   desc:'Cristal indestructible capaz de lanzar dagas de diamante.' },
+    { key:'ben10_rippjaws', img: 'assets/images/ranks/ben10_rippjaws.jpg',    label:'Ripjaws',       icon:'fa-solid fa-fish-fins',   color:'#2dd4bf', cls:'rank-ben10', price:7000000,    price_usd:250,   gradeTier:1, mult:2.2, desc:'Mandíbulas de tiburón. Aterrador dentro y fuera del agua.' },
+    { key:'ben10_xlr8', img: 'assets/images/ranks/ben10_xlr8.jpg',        label:'XLR8',          icon:'fa-solid fa-bolt',        color:'#7b68ee', cls:'rank-ben10', price:10000000,   price_usd:350,   gradeTier:2, mult:2.5, desc:'El alien más veloz del universo. Imposible de alcanzar.' },
+    { key:'ben10_stinkfly', img: 'assets/images/ranks/ben10_stinkfly.jpg',    label:'Stinkfly',      icon:'fa-solid fa-bug',         color:'#4ade80', cls:'rank-ben10', price:12000000,   price_usd:420,   gradeTier:2, mult:2.7, desc:'Vuela y dispara asfalto pestilente. Tu peor pesadilla aérea.' },
+    { key:'ben10_fourarms', img: 'assets/images/ranks/ben10_fourarms.jpg',    label:'Four Arms',     icon:'fa-solid fa-dumbbell',    color:'#ff4d4d', cls:'rank-ben10', price:18000000,   price_usd:600,   gradeTier:2, mult:3,   desc:'Cuatro brazos, fuerza teton. El brutal del equipo.' },
+    { key:'ben10_upgrade', img: 'assets/images/ranks/ben10_upgrade.jpg',     label:'Upgrade',       icon:'fa-solid fa-robot',       color:'#22c55e', cls:'rank-ben10', price:24000000,   price_usd:800,   gradeTier:2, mult:3.5, desc:'Tecnología líquida. Se fusiona con cualquier máquina.' },
+    { key:'ben10_ghostfreak', img: 'assets/images/ranks/ben10_ghostfreak.jpg',  label:'Ghostfreak',    icon:'fa-solid fa-ghost',       color:'#a56eff', cls:'rank-ben10', price:30000000,   price_usd:1000,  gradeTier:2, mult:4,   desc:'Fantasma interdimensional. Se esconde en tu sombra.' },
+    { key:'ben10_cannonbolt', img: 'assets/images/ranks/ben10_cannonbolt.jpg',  label:'Cannonbolt',    icon:'fa-solid fa-bowling-ball',color:'#fbbf24', cls:'rank-ben10', price:40000000,   price_usd:1300,  gradeTier:2, mult:4.5, desc:'Se enrolla y arrasa todo a su paso. Bola de destrucción.' },
+    { key:'ben10_waybig', img: 'assets/images/ranks/ben10_waybig.jpg',      label:'Way Big',       icon:'fa-solid fa-meteor',      color:'#ff6b81', cls:'rank-ben10', price:50000000,   price_usd:1650,  gradeTier:3, mult:5,   desc:'Gigante cósmico de 200 metros. Destruye ciudades.' },
+    { key:'ben10_swampfire', img: 'assets/images/ranks/ben10_swampfire.jpg',   label:'Swampfire',     icon:'fa-solid fa-seedling',    color:'#86efac', cls:'rank-ben10', price:65000000,   price_usd:2150,  gradeTier:3, mult:5.5, desc:'Fuego y plantas en un solo alien. Regeneración infinita.' },
+    { key:'ben10_humungousaur', img: 'assets/images/ranks/ben10_humungousaur.jpg',label:'Humungousaur',  icon:'fa-solid fa-dragon',     color:'#4ade80', cls:'rank-ben10', price:80000000,   price_usd:2650,  gradeTier:3, mult:6.5, desc:'Crece hasta 60 metros. Fuerza bruta nivel apocalipsis.' },
+    { key:'ben10_alienx', img: 'assets/images/ranks/ben10_alienx.jpg',      label:'Alien X',       icon:'fa-solid fa-star',        color:'#b0c4de', cls:'rank-ben10', price:90000000,   price_usd:3000,  gradeTier:3, mult:7,   desc:'Poder de reescribir la realidad. El más fuerte del Omnitrix.' },
 ];
 
 const BEN10_ITEMS = [
@@ -68,8 +68,11 @@ async function loadBen10Page() {
             const canAfford = needsBoth ? (canAffordPPC && canAffordUSD) : canAffordPPC;
             ranksGrid.innerHTML += `
                 <div class="glass-card" style="border-color:${isOwned ? rank.color : 'var(--dark-border)'};">
-                    <div style="width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:${rank.color}22;border:2px solid ${rank.color};margin-bottom:10px;">
-                        <i class="${rank.icon}" style="color:${rank.color};font-size:20px;"></i>
+                    <div style="text-align:center;margin-bottom:10px;">
+                        <img src="${rank.img || ''}" alt="${rank.label}" style="width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid ${rank.color};background:${rank.color}22;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div style="display:none;width:68px;height:68px;border-radius:50%;align-items:center;justify-content:center;background:${rank.color}22;border:2px solid ${rank.color};margin:0 auto;">
+                            <i class="${rank.icon}" style="color:${rank.color};font-size:24px;"></i>
+                        </div>
                     </div>
                     <div style="font-weight:700;color:${rank.color};">${rank.label}</div>
                     <div style="font-size:10px;color:var(--text-muted);margin:6px 0 10px;">${rank.desc}<br>Multiplicador +${Math.round((rank.mult - 1) * 100)}%</div>

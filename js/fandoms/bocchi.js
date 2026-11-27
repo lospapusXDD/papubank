@@ -4,7 +4,7 @@
 
 const BOCCHI_RANKS = [
     {
-        key: 'bocchi',
+        key: 'bocchi', img: 'assets/images/ranks/bocchi_bocchi.jpg',
         label: 'Hitori Gotoh',
         icon: 'fa-solid fa-guitar',
         weapon: 'Guitar',
@@ -18,7 +18,7 @@ const BOCCHI_RANKS = [
         grade: 'E'
     },
     {
-        key: 'kita',
+        key: 'kita', img: 'assets/images/ranks/bocchi_kita.jpg',
         label: 'Kita Ikuyo',
         icon: 'fa-solid fa-microphone',
         weapon: 'Mic',
@@ -32,7 +32,7 @@ const BOCCHI_RANKS = [
         grade: 'D'
     },
     {
-        key: 'ryo',
+        key: 'ryo', img: 'assets/images/ranks/bocchi_ryo.jpg',
         label: 'Yamada Ryo',
         icon: 'fa-solid fa-drum',
         weapon: 'Bass',
@@ -46,7 +46,7 @@ const BOCCHI_RANKS = [
         grade: 'B'
     },
     {
-        key: 'nijika',
+        key: 'nijika', img: 'assets/images/ranks/bocchi_nijika.jpg',
         label: 'Ijichi Nijika',
         icon: 'fa-solid fa-drum',
         weapon: 'Drums',
@@ -60,7 +60,7 @@ const BOCCHI_RANKS = [
         grade: 'A'
     },
     {
-        key: 'kessoku',
+        key: 'kessoku', img: 'assets/images/ranks/bocchi_kessoku.jpg',
         label: 'Kessoku Band (full)',
         icon: 'fa-solid fa-music',
         weapon: 'Band',
@@ -74,7 +74,7 @@ const BOCCHI_RANKS = [
         grade: 'S'
     },
     {
-        key: 'legend',
+        key: 'legend', img: 'assets/images/ranks/bocchi_legend.jpg',
         label: 'Leyenda del Guitar Hero',
         icon: 'fa-solid fa-trophy',
         weapon: 'Star',
@@ -138,7 +138,8 @@ function loadBocchiPage() {
         html += `
             <div class="glass-card" style="border-color:${isOwned ? rank.color : 'var(--dark-border)'};${isOwned ? 'box-shadow:0 0 15px ' + rank.color + '40;' : ''}">
                 <div style="text-align:center;margin-bottom:12px;">
-                    <i class="${rank.icon}" style="font-size:28px;color:${rank.color};"></i>
+                    <img src="${rank.img || ''}" alt="${rank.label}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid ${rank.color};background:${rank.color}15;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div style="display:none;width:72px;height:72px;border-radius:50%;background:${rank.color}15;border:2px solid ${rank.color};align-items:center;justify-content:center;color:${rank.color};font-size:28px;margin:0 auto;"><i class="${rank.icon}"></i></div>
                 </div>
                 <h4 style="font-family:'Orbitron',sans-serif;color:${rank.color};text-align:center;margin-bottom:8px;">${rank.label}</h4>
                 <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-bottom:10px;">${rank.desc}</p>

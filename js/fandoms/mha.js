@@ -3,16 +3,16 @@
    ════════════════════════════════════════════════════════════ */
 
 const MHA_RANKS = [
-    { key:'mha_uraraka',   label:'Uraraka',       icon:'fa-solid fa-star',        color:'#ff69b4', cls:'rank-mha', price:2000000,    price_usd:100,   gradeTier:1, mult:1.5, desc:'Gravedad Cero. Flota, papu, flota. La heroína del espacio.' },
-    { key:'mha_iida',      label:'Iida',          icon:'fa-solid fa-gauge-high',  color:'#4ade80', cls:'rank-mha', price:4000000,    price_usd:150,   gradeTier:1, mult:1.75, desc:'Motor en las piernas. Corre como rayo, llega siempre a tiempo.' },
-    { key:'mha_todoroki',  label:'Todoroki',      icon:'fa-solid fa-snowflake',   color:'#60a5fa', cls:'rank-mha', price:8000000,    price_usd:280,   gradeTier:1, mult:2,   desc:'Hielo y fuego. La mitad de su corazón es puro calor.' },
-    { key:'mha_bakugo',    label:'Bakugo',        icon:'fa-solid fa-fire',        color:'#fb923c', cls:'rank-mha', price:15000000,   price_usd:500,   gradeTier:2, mult:2.5, desc:'Explosión. Orgulloso, agresivo y el rey de las detonaciones.' },
-    { key:'mha_deku',      label:'Deku',          icon:'fa-solid fa-bolt',        color:'#22c55e', cls:'rank-mha', price:25000000,   price_usd:850,   gradeTier:2, mult:3,   desc:'One For All. El sucesor del símbolo de la paz.' },
-    { key:'mha_aizawa',    label:'Eraser Head',   icon:'fa-solid fa-eye',         color:'#6b7280', cls:'rank-mha', price:35000000,   price_usd:1150,  gradeTier:2, mult:3.5, desc:'Borrado de quirks. El héroe pro que nunca duerme.' },
-    { key:'mha_endevor',   label:'Endeavor',      icon:'fa-solid fa-flame',       color:'#ff6b3d', cls:'rank-mha', price:45000000,   price_usd:1500,  gradeTier:2, mult:4,   desc:'Hellflame. El héroe número 1 del presente.' },
-    { key:'mha_allmight',  label:'All Might',     icon:'fa-solid fa-dove',        color:'#ffd700', cls:'rank-mha', price:60000000,   price_usd:2000,  gradeTier:3, mult:5,   desc:'Símbolo de la Paz. ¡AQUÍ ESTOY! PLUS ULTRA!' },
-    { key:'mha_shigaraki', label:'Shigaraki',     icon:'fa-solid fa-hand',        color:'#9d4edd', cls:'rank-mha', price:75000000,   price_usd:2500,  gradeTier:3, mult:6,   desc:'Decay. El líder de la Liga de Villanos.' },
-    { key:'mha_allforone', label:'All For One',   icon:'fa-solid fa-skull',       color:'#4a1d96', cls:'rank-mha', price:90000000,   price_usd:3000,  gradeTier:3, mult:7,   desc:'El rey de los quirks robados. La sombra detrás de todo.' },
+    { key:'mha_uraraka', img: 'assets/images/ranks/mha_uraraka.jpg',   label:'Uraraka',       icon:'fa-solid fa-star',        color:'#ff69b4', cls:'rank-mha', price:2000000,    price_usd:100,   gradeTier:1, mult:1.5, desc:'Gravedad Cero. Flota, papu, flota. La heroína del espacio.' },
+    { key:'mha_iida', img: 'assets/images/ranks/mha_iida.jpg',      label:'Iida',          icon:'fa-solid fa-gauge-high',  color:'#4ade80', cls:'rank-mha', price:4000000,    price_usd:150,   gradeTier:1, mult:1.75, desc:'Motor en las piernas. Corre como rayo, llega siempre a tiempo.' },
+    { key:'mha_todoroki', img: 'assets/images/ranks/mha_todoroki.jpg',  label:'Todoroki',      icon:'fa-solid fa-snowflake',   color:'#60a5fa', cls:'rank-mha', price:8000000,    price_usd:280,   gradeTier:1, mult:2,   desc:'Hielo y fuego. La mitad de su corazón es puro calor.' },
+    { key:'mha_bakugo', img: 'assets/images/ranks/mha_bakugo.jpg',    label:'Bakugo',        icon:'fa-solid fa-fire',        color:'#fb923c', cls:'rank-mha', price:15000000,   price_usd:500,   gradeTier:2, mult:2.5, desc:'Explosión. Orgulloso, agresivo y el rey de las detonaciones.' },
+    { key:'mha_deku', img: 'assets/images/ranks/mha_deku.jpg',      label:'Deku',          icon:'fa-solid fa-bolt',        color:'#22c55e', cls:'rank-mha', price:25000000,   price_usd:850,   gradeTier:2, mult:3,   desc:'One For All. El sucesor del símbolo de la paz.' },
+    { key:'mha_aizawa', img: 'assets/images/ranks/mha_aizawa.jpg',    label:'Eraser Head',   icon:'fa-solid fa-eye',         color:'#6b7280', cls:'rank-mha', price:35000000,   price_usd:1150,  gradeTier:2, mult:3.5, desc:'Borrado de quirks. El héroe pro que nunca duerme.' },
+    { key:'mha_endevor', img: 'assets/images/ranks/mha_endevor.jpg',   label:'Endeavor',      icon:'fa-solid fa-flame',       color:'#ff6b3d', cls:'rank-mha', price:45000000,   price_usd:1500,  gradeTier:2, mult:4,   desc:'Hellflame. El héroe número 1 del presente.' },
+    { key:'mha_allmight', img: 'assets/images/ranks/mha_allmight.jpg',  label:'All Might',     icon:'fa-solid fa-dove',        color:'#ffd700', cls:'rank-mha', price:60000000,   price_usd:2000,  gradeTier:3, mult:5,   desc:'Símbolo de la Paz. ¡AQUÍ ESTOY! PLUS ULTRA!' },
+    { key:'mha_shigaraki', img: 'assets/images/ranks/mha_shigaraki.jpg', label:'Shigaraki',     icon:'fa-solid fa-hand',        color:'#9d4edd', cls:'rank-mha', price:75000000,   price_usd:2500,  gradeTier:3, mult:6,   desc:'Decay. El líder de la Liga de Villanos.' },
+    { key:'mha_allforone', img: 'assets/images/ranks/mha_allforone.jpg', label:'All For One',   icon:'fa-solid fa-skull',       color:'#4a1d96', cls:'rank-mha', price:90000000,   price_usd:3000,  gradeTier:3, mult:7,   desc:'El rey de los quirks robados. La sombra detrás de todo.' },
 ];
 
 async function loadMhaPage() {
@@ -41,8 +41,11 @@ async function loadMhaPage() {
             const tierLabel = needsBoth ? 'Requiere ambos pagos' : rank.gradeTier === 2 ? 'Solo PPC' : 'Solo PPC';
             ranksGrid.innerHTML += `
                 <div class="glass-card" style="border-color:${isOwned ? rank.color : 'var(--dark-border)'};">
-                    <div style="width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:${rank.color}22;border:2px solid ${rank.color};margin-bottom:10px;">
-                        <i class="${rank.icon}" style="color:${rank.color};font-size:20px;"></i>
+                    <div style="text-align:center;margin-bottom:10px;">
+                        <img src="${rank.img || ''}" alt="${rank.label}" style="width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid ${rank.color};background:${rank.color}22;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div style="display:none;width:68px;height:68px;border-radius:50%;align-items:center;justify-content:center;background:${rank.color}22;border:2px solid ${rank.color};margin:0 auto;">
+                            <i class="${rank.icon}" style="color:${rank.color};font-size:24px;"></i>
+                        </div>
                     </div>
                     <div style="font-weight:700;color:${rank.color};">${rank.label}</div>
                     <div style="font-size:10px;color:var(--text-muted);margin:6px 0 10px;">${rank.desc}<br>Multiplicador +${Math.round((rank.mult - 1) * 100)}%</div>

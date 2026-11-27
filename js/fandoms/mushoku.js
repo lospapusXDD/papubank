@@ -4,7 +4,7 @@
 
 const MUSHOKU_RANKS = [
     {
-        key: 'rudeus',
+        key: 'rudeus', img: 'assets/images/ranks/mushoku_rudeus.jpg',
         label: 'Rudeus Greyrat',
         icon: 'fa-solid fa-hat-wizard',
         weapon: 'La Magia Más Fuerte',
@@ -18,7 +18,7 @@ const MUSHOKU_RANKS = [
         grade: 'E'
     },
     {
-        key: 'eris',
+        key: 'eris', img: 'assets/images/ranks/mushoku_eris.jpg',
         label: 'Eris Boreas Greyrat',
         icon: 'fa-solid fa-shield-halved',
         weapon: 'Espada Roja',
@@ -32,7 +32,7 @@ const MUSHOKU_RANKS = [
         grade: 'D'
     },
     {
-        key: 'sylphie',
+        key: 'sylphie', img: 'assets/images/ranks/mushoku_sylphie.jpg',
         label: 'Sylphiette',
         icon: 'fa-solid fa-feather',
         weapon: 'Magia del Viento',
@@ -46,7 +46,7 @@ const MUSHOKU_RANKS = [
         grade: 'B'
     },
     {
-        key: 'roxanne',
+        key: 'roxanne', img: 'assets/images/ranks/mushoku_roxanne.jpg',
         label: 'Roxy Migurdia',
         icon: 'fa-solid fa-magic',
         weapon: 'Magia del Demonio',
@@ -60,7 +60,7 @@ const MUSHOKU_RANKS = [
         grade: 'A'
     },
     {
-        key: 'orsted',
+        key: 'orsted', img: 'assets/images/ranks/mushoku_orsted.jpg',
         label: 'Orsted',
         icon: 'fa-solid fa-dragon',
         weapon: 'Dragon God Aura',
@@ -74,7 +74,7 @@ const MUSHOKU_RANKS = [
         grade: 'SS'
     },
     {
-        key: 'laplace',
+        key: 'laplace', img: 'assets/images/ranks/mushoku_laplace.jpg',
         label: 'Laplace Demon',
         icon: 'fa-solid fa-skull-crossbones',
         weapon: 'Magia Demoníaca',
@@ -137,7 +137,8 @@ function loadMushokuPage() {
         html += `
             <div class="glass-card" style="border-color:${isOwned ? rank.color : 'var(--dark-border)'};${isOwned ? 'box-shadow:0 0 15px ' + rank.color + '40;' : ''}">
                 <div style="text-align:center;margin-bottom:12px;">
-                    <i class="${rank.icon}" style="font-size:28px;color:${rank.color};"></i>
+                    <img src="${rank.img || ''}" alt="${rank.label}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid ${rank.color};background:${rank.color}15;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div style="display:none;width:72px;height:72px;border-radius:50%;background:${rank.color}15;border:2px solid ${rank.color};align-items:center;justify-content:center;color:${rank.color};font-size:28px;margin:0 auto;"><i class="${rank.icon}"></i></div>
                 </div>
                 <h4 style="font-family:'Orbitron',sans-serif;color:${rank.color};text-align:center;margin-bottom:8px;">${rank.label}</h4>
                 <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-bottom:10px;">${rank.desc}</p>

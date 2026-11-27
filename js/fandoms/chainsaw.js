@@ -4,7 +4,7 @@
 
 const CHAINSAW_RANKS = [
     {
-        key: 'denji',
+        key: 'denji', img: 'assets/images/ranks/chainsaw_denji.jpg',
         label: 'Denji',
         icon: 'fa-solid fa-chainsaw',
         weapon: 'Chainsaw Man',
@@ -18,7 +18,7 @@ const CHAINSAW_RANKS = [
         grade: 'E'
     },
     {
-        key: 'power',
+        key: 'power', img: 'assets/images/ranks/chainsaw_power.jpg',
         label: 'Power',
         icon: 'fa-solid fa-skull',
         weapon: 'Blood Hammer',
@@ -32,7 +32,7 @@ const CHAINSAW_RANKS = [
         grade: 'D'
     },
     {
-        key: 'makima',
+        key: 'makima', img: 'assets/images/ranks/chainsaw_makima.jpg',
         label: 'Makima',
         icon: 'fa-solid fa-spider',
         weapon: 'Control Chains',
@@ -46,7 +46,7 @@ const CHAINSAW_RANKS = [
         grade: 'B'
     },
     {
-        key: 'aki',
+        key: 'aki', img: 'assets/images/ranks/chainsaw_aki.jpg',
         label: 'Aki Hayakawa',
         icon: 'fa-solid fa-bolt',
         weapon: 'Future Devil Contract',
@@ -60,7 +60,7 @@ const CHAINSAW_RANKS = [
         grade: 'A'
     },
     {
-        key: 'quanxi',
+        key: 'quanxi', img: 'assets/images/ranks/chainsaw_quanxi.jpg',
         label: 'Quanxi',
         icon: 'fa-solid fa-wind',
         weapon: 'Crossbows of Light',
@@ -74,7 +74,7 @@ const CHAINSAW_RANKS = [
         grade: 'A'
     },
     {
-        key: 'reze',
+        key: 'reze', img: 'assets/images/ranks/chainsaw_reze.jpg',
         label: 'Reze',
         icon: 'fa-solid fa-bomb',
         weapon: 'Bomb Hybrid',
@@ -88,7 +88,7 @@ const CHAINSAW_RANKS = [
         grade: 'S'
     },
     {
-        key: 'darkness',
+        key: 'darkness', img: 'assets/images/ranks/chainsaw_darkness.jpg',
         label: 'Darkness Devil',
         icon: 'fa-solid fa-moon',
         weapon: 'Darkness Blade',
@@ -151,7 +151,8 @@ function loadChainsawPage() {
         html += `
             <div class="glass-card" style="border-color:${isOwned ? rank.color : 'var(--dark-border)'};${isOwned ? 'box-shadow:0 0 15px ' + rank.color + '40;' : ''}">
                 <div style="text-align:center;margin-bottom:12px;">
-                    <i class="${rank.icon}" style="font-size:28px;color:${rank.color};"></i>
+                    <img src="${rank.img || ''}" alt="${rank.label}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid ${rank.color};background:${rank.color}15;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div style="display:none;width:72px;height:72px;border-radius:50%;background:${rank.color}15;border:2px solid ${rank.color};align-items:center;justify-content:center;color:${rank.color};font-size:28px;margin:0 auto;"><i class="${rank.icon}"></i></div>
                 </div>
                 <h4 style="font-family:'Orbitron',sans-serif;color:${rank.color};text-align:center;margin-bottom:8px;">${rank.label}</h4>
                 <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-bottom:10px;">${rank.desc}</p>
