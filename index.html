@@ -31,7 +31,7 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
 <!-- Main Styles -->
-<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/style.css?v=4">
 
 <!-- Manifest (PWA) -->
 <link rel="manifest" href="manifest.json">
@@ -1984,7 +1984,15 @@
     const col = ref.replace(/^\/+|\/+$/g, '');
     try {
       const arr = await apiFetch('GET', '/' + col);
-      const raw = Array.isArray(arr) ? arr : (arr.items || Object.entries(arr).map(([id, d]) => ({ id, ...d })));
+      let raw;
+      if (Array.isArray(arr)) {
+        raw = arr;
+      } else if (arr && typeof arr === 'object') {
+        const arrProp = arr.items || arr[col] || Object.values(arr).find(v => Array.isArray(v));
+        raw = arrProp || Object.entries(arr).map(([id, d]) => (d && typeof d === 'object' ? { id, ...d } : { id, value: d }));
+      } else {
+        raw = [];
+      }
       const docs = raw.map(d => ({ ...d, id: d.id || d.nick || d.email || String(Math.random()) }));
       return { forEach: (cb) => docs.forEach((d) => cb({ id: d.id, data: () => d, ref: d.id })), size: docs.length, docs };
     } catch(e) { return { forEach: () => {}, size: 0, docs: [] }; }
@@ -2056,10 +2064,10 @@
 ════════════════════════════════════════════════════════════ -->
 <script>
 window.resolveAvatar = function(av) {
-  if (!av) return 'assets/avatars/avt_gojo.jpg';
+  if (!av || av === '👤') return 'assets/avatars/avt_gojo.jpg';
   if (av.startsWith('http') || av.startsWith('data:') || av.includes('/')) return av;
   if (av.startsWith('avt_')) return 'assets/avatars/' + av;
-  return av;
+  return 'assets/avatars/avt_gojo.jpg';
 };
 </script>
 <script src="js/core/clan-features.js?v=19"></script>
@@ -2092,7 +2100,7 @@ window.resolveAvatar = function(av) {
   <script src="js/social/extras.js?v=22"></script>
   <script src="js/social/minigames.js?v=20"></script>
 <script src="js/social/media-player.js?v=23"></script>
-<script src="js/core/app.js?v=23"></script>
+<script src="js/core/app.js?v=24"></script>
 
 <!-- ════════════════════════════════════════════════════════════
      INLINE HELPERS (small things that need DOM)

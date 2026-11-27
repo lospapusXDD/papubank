@@ -2000,6 +2000,8 @@ body {
 }
 .profile-avatar-wrap { position: relative; flex-shrink: 0; }
 .profile-avatar-img {
+    position: relative;
+    z-index: 2;
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -2013,6 +2015,8 @@ body {
     border-radius: 50%;
     border: 2px dashed rgba(0,212,255,0.3);
     animation: spin 12s linear infinite;
+    z-index: 0;
+    pointer-events: none;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .profile-info { flex: 1; min-width: 0; }

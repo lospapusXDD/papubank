@@ -803,7 +803,7 @@ async function loadProfile() {
                 vid.loop = true;
                 vid.muted = true;
                 vid.playsInline = true;
-                vid.style.cssText = 'width:120px;height:120px;border-radius:50%;object-fit:cover;';
+                vid.style.cssText = 'position:relative;z-index:2;width:120px;height:120px;border-radius:50%;object-fit:cover;';
                 parent.insertBefore(vid, avatarEl);
                 avatarEl.style.display = 'none';
             }
@@ -824,9 +824,9 @@ async function loadProfile() {
             const ringDiv = document.createElement('div');
             ringDiv.className = 'profile-ring-overlay';
             if (ringData.color === 'rainbow') {
-                ringDiv.style.cssText = 'position:absolute;inset:-4px;border-radius:50%;border:4px solid transparent;background:linear-gradient(#030914,#030914) padding-box,linear-gradient(90deg,red,orange,yellow,green,blue,violet) border-box;animation:ringRotate 3s linear infinite;pointer-events:none;z-index:1;';
+                ringDiv.style.cssText = 'position:absolute;inset:-4px;border-radius:50%;border:4px solid transparent;background:linear-gradient(#030914,#030914) padding-box,linear-gradient(90deg,red,orange,yellow,green,blue,violet) border-box;animation:ringRotate 3s linear infinite;pointer-events:none;z-index:0;';
             } else {
-                ringDiv.style.cssText = 'position:absolute;inset:-4px;border-radius:50%;border:4px solid ' + ringData.color + ';pointer-events:none;z-index:1;box-shadow:0 0 10px ' + ringData.color + '60;';
+                ringDiv.style.cssText = 'position:absolute;inset:-4px;border-radius:50%;border:4px solid ' + ringData.color + ';pointer-events:none;z-index:0;box-shadow:0 0 10px ' + ringData.color + '60;';
             }
             ringWrap.style.position = 'relative';
             ringWrap.appendChild(ringDiv);
