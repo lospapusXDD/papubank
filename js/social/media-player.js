@@ -23,7 +23,7 @@ const papuPlaylist = [
 [00:47.46]Oh, I'm not gonna make the same mistakes
 [00:52.10]I'm not gonna run
 [00:55.87]Just pick the boy you like
-[00:59.88]I've got my home set
+[00:59.88]I've got my hopes set
 [01:03.11]I wanna be your boyfriend
 [01:05.28]I wanna be your boyfriend
 [01:07.00]I wanna go on walks with you
@@ -66,14 +66,14 @@ const papuPlaylist = [
 [00:23.50]Yeah, I just wanna feel alive
 [00:26.00]Baby, take your time
 [00:28.00]Smokin' on this loud, woah
-[00:30.50]Girl u know u make my cold heart warm wit a touch
-[00:33.00]One kiss then we fuckin I just can't get enough
-[00:35.50]Put it on me that's the best part baby the trust
-[00:38.00]Trust me I got nuthin for u other than love
-[00:40.50]I remember eatin pussy on the back of the bus
-[00:43.00]I remember gettin nookie till the sun came up
-[00:45.50]All the places that u took me no one came wit us
-[00:48.00]Same hoes overlook me now they on my nuts
+[00:30.50]Girl, you know you make my cold heart warm with a touch
+[00:33.00]One kiss, then we fuckin', I just can't get enough
+[00:35.50]Put it on me, that's the best part, baby, the trust
+[00:38.00]Trust me, I got nothin' for you other than love
+[00:40.50]I remember eatin' pussy on the back of the bus
+[00:43.00]I remember gettin' nookie 'til the sun came up
+[00:45.50]All the places that you took me, no one came with us
+[00:48.00]Same hoes overlook me, now they on my nuts
 [00:50.50]Yeah, I just wanna hear the sound
 [00:53.00]Drive our Camaros out of town
 [00:55.50]Baby, we could leave right now, woah
@@ -100,11 +100,11 @@ const papuPlaylist = [
 [00:38.00]You said you're scared, I'll let you down
 [00:40.50]Just stick around, and you'll find out
 [00:43.00]But don't you wanna make me proud?
-[00:45.50]Cause I'm so proud, baby, I'm so proud of you
+[00:45.50]'Cause I'm so proud, baby, I'm so proud of you
 [00:48.00]Do I stress you out? Can I help you out?
 [00:50.50]Does it turn you on when I turn you around?
 [00:53.00]Can we make a scene? Can you make it loud?
-[00:55.50]Cause I'm so proud, baby, I'm so proud of you` },
+[00:55.50]'Cause I'm so proud, baby, I'm so proud of you` },
 
     { file: 'harvey.mp3', title: 'Harvey', artist: "HER'S",
       lyrics: `[00:00.00]Harvey — HER'S
@@ -141,7 +141,7 @@ const papuPlaylist = [
 [00:22.50]Durmiendo solo en tu cama
 [00:25.00]Tus golpes matan, sé que me dolerán
 [00:27.50]Pero tus palabras duelen más
-[00:30.00]Piénsalas, dame el golpe que me remplace
+[00:30.00]Piénsalas, dame el golpe que me reemplace
 [00:32.50]Ya no sientes nada
 [00:35.00]Y en este cuarto solo quede yo
 [00:37.50]Si digo que no te quiero
@@ -172,27 +172,27 @@ const papuPlaylist = [
 [00:46.00]Los míos lo adoptan, lo arropan
 [00:48.50]De lo que despoje se apropia
 [00:51.00]Felices, yo triste
-[00:53.50]Intruso me desapareciste!` },
+[00:53.50]¡Intruso me desapareciste!` },
 
     { file: 'Lovers Rock.mp3', title: 'Lovers Rock', artist: 'TV Girl',
       lyrics: `[00:00.00]Lovers Rock — TV Girl
 [00:06.00]Are you sick of me?
 [00:08.50]Would you like to be?
-[00:11.00]I'm tryin' to tell you somethin'
-[00:13.50]Somethin' that I already said
+[00:11.00]I'm trying to tell you something
+[00:13.50]Something that I already said
 [00:16.00]You like a pretty boy
 [00:18.50]With a pretty voice
-[00:21.00]Who is tryin' to sell you somethin'
-[00:23.50]Somethin' that you already have
+[00:21.00]Who is trying to sell you something
+[00:23.50]Something that you already have
 [00:26.00]But if you're too drunk to drive, and the music is right
 [00:29.50]She might let you stay, but just for the night
 [00:32.00]And if she grabs for your hand, and drags you along
 [00:34.50]She might want a kiss before the end of this song
 [00:37.00]Because love can burn like a cigarette
-[00:39.50]And leave you alone with nothin'
-[00:42.00]And leave you alone with nothin'
+[00:39.50]And leave you alone with nothing
+[00:42.00]And leave you alone with nothing
 [00:44.50]While the others talked
-[00:47.00]We were listenin' to Lover's Rock
+[00:47.00]We were listening to Lovers Rock
 [00:49.50]In her bedroom, in her bedroom
 [00:52.00]And if you start to kiss
 [00:54.50]And the record skips
@@ -243,11 +243,11 @@ const papuPlaylist = [
 [00:43.00]I'm not sure but I will stick with you
 [00:45.50]I will stick with you
 [00:48.00]I will stick with you
-[00:50.50]Tofu Kiss, I'm shot and hit
+[00:50.50]Doughnut kiss, I'm shot and hit
 [00:53.00]If the target is your lips
 [00:55.50]When you go, I'll throw a fit
 [00:58.00]But when I get home, I'll call you in a bit
-[01:00.50]TGI Fridays on Thursday night
+[01:00.50]TGI Friday's on Thursday night
 [01:03.00]We tried our hardest to be polite
 [01:05.50]We got caught in between a matching disease
 [01:08.00]And I have this thing for you
@@ -268,7 +268,7 @@ const papuPlaylist = [
 [00:17.00]I love you so much that it's dripping
 [00:19.50]Dripping from my arms and such
 [00:22.00]I'm sorry, I know I'm too much
-[00:24.50]To love, to trust, I'm nothing, but
+[00:24.50]To love, to trust, I'm nothing but
 [00:27.00]I miss that kind of misery
 [00:29.50]The kind where you are nice to me
 [00:32.00]But only in the evening
@@ -310,7 +310,7 @@ const papuPlaylist = [
 [00:54.00]I'll face the night` },
 
     { file: 'A-Wall - Loverboy (Who Got You Smiling Like That) Official Music Video Prod. bleu jetta.mp3', title: 'Loverboy (Who Got You Smiling Like That)', artist: 'A-Wall',
-      lyrics: `[00:00.00]ご視聴ありがとうございました
+      lyrics: `[00:00.00]Loverboy (Who Got You Smiling Like That) — A-Wall
 [00:30.00]Yeah you can call me lover boy
 [00:32.42]They say I throw my heart around
 [00:36.38]And you can be my lover girl
@@ -323,12 +323,13 @@ const papuPlaylist = [
 [01:02.06]Kill the light, so baby close your eyes
 [01:06.06]The way you're looking at me
 [01:08.06]You got me mesmerized
-[01:10.06]Something I can't escapeFeel like I'm lost in spaceYou got tht that good lovin' Girl if you leave me I might throw my heart away
-[01:20.08]You know my heart can't take a break Nothing will ever be the same
-[01:28.08]We'll meet again some other day Oh yeah
+[01:10.06]Something I can't escape, feel like I'm lost in space
+[01:14.08]You got that good lovin', girl if you leave me I might throw my heart away
+[01:20.08]You know my heart can't take a break, nothing will ever be the same
+[01:28.08]We'll meet again some other day, oh yeah
 [01:34.08]Oh yeah, it's such a shame
 [01:36.48]Somehow the love came to an end
-[01:40.28]You started talking to a tool
+[01:40.28]You started talking to a fool
 [01:44.42]You're telling lies to all your friends
 [01:48.44]But you know damn well it should be me
 [01:52.52]But I'm moving on, doing my best
@@ -337,25 +338,25 @@ const papuPlaylist = [
 [02:06.24]Kill the light, so baby close your eyes
 [02:11.12]The way you're looking at me, you got me mesmerized
 [02:15.00]Something I can't escape, feel like I'm lost in space
-[02:19.14]You got that good loving, girl if you leave me I might throw my heart away
-[02:24.42]You know my heart can't take the break Nothing will ever be the same We'll meet again some other day
+[02:19.14]You got that good lovin', girl if you leave me I might throw my heart away
+[02:24.42]You know my heart can't take a break, nothing will ever be the same, we'll meet again some other day
 [02:37.15]Oh yeah, oh yeah
-[02:55.15]Kill the light, so baby close your eyes The way you're looking at me, you got me mesmerized
-[03:02.15]Something I can't escape, feel like I'm lost in space You got that good lovin', girl if you leave me I might throw my heart away
-[03:12.15]You know my heart can't take a break Nothing will ever be the same
+[02:55.15]Kill the light, so baby close your eyes, the way you're looking at me, you got me mesmerized
+[03:02.15]Something I can't escape, feel like I'm lost in space, you got that good lovin', girl if you leave me I might throw my heart away
+[03:12.15]You know my heart can't take a break, nothing will ever be the same
 [03:21.15]We'll meet again some other day
 [03:24.45]Oh yeah, oh yeah
 [03:27.85]Kill the light, so baby close your eyes
 [03:31.11]The way you're looking at me, you got me mesmerized
 [03:35.01]Something I can't escape, feel like I'm lost in space
-[03:39.13]You got that good loving, girl if you leave me on my throne I'll throw my heart away You know my heart can't take a break Nothing will ever be the same
-[03:52.47]Won't meet again so much again
+[03:39.13]You got that good lovin', girl if you leave me I might throw my heart away, you know my heart can't take a break, nothing will ever be the same
+[03:52.47]We'll meet again some other day
 [04:10.23]Say what you need, if you want I can leave
 [04:16.25]Makes no difference to me, I don't blame you
-[04:19.61]Oh get the fuck out my face, I don't have much to say
-[04:24.09]No you can't get away, I don't blame you
+[04:19.61]Oh, get the fuck out my face, I don't have much to say
+[04:24.09]No, you can't get away, I don't blame you
 [04:27.49]When I'm stuck in my cell, I just talk to myself
-[04:31.97]No I made my own hell, I don't blame you
+[04:31.97]No, I made my own hell, I don't blame you
 [04:35.31]Go ahead and say what you need, if you want I can leave
 [04:39.87]It makes no difference to me, I don't blame you
 [04:43.27]I'm solo, yeah
@@ -375,52 +376,56 @@ const papuPlaylist = [
 [00:38.90]Hay perfume de mujer brotando aquí
 [00:46.26]El conjuro de un cuento de amor ya me atrapó, lo puedo sentir
 [00:54.20]Y por las noches puedo sentir su calor
-[01:04.20]Su dulce magia me hace perder la raz Y de mis sue creo que un d escap Para esconderse dentro de mi coraz
+[01:04.20]Su dulce magia me hace perder la razón
+[01:11.20]Y de mis sueños creo que un día escapó
+[01:18.20]Para esconderse dentro de mi corazón
 [01:40.77]¿Cómo escapar? Nada real, no importa conocer
 [01:51.19]Solo esperaré hasta dormir
 [02:00.89]Estoy aquí frente al gran espejo para convencer
 [02:07.21]A los duendes que dirán cómo llegar
 [02:14.21]Aprenderé el hechizo ideal
 [02:18.21]Que junte los sueños con la realidad
-[02:25.21]Y por las noches puedo sentir su calor Su dulce magia me hace perder la raz
+[02:25.21]Y por las noches puedo sentir su calor
+[02:32.21]Su dulce magia me hace perder la razón
 [02:41.53]Y de mis sueños creo que un día escapó
 [02:48.53]Para esconderse dentro de mi corazón
 [03:18.53]Por las noches puedo sentir su calor
-[03:41.41]Su dulce magia me hace perder la raz Y de mis sue creo que un d escap
+[03:41.41]Su dulce magia me hace perder la razón
+[03:48.41]Y de mis sueños creo que un día escapó
 [03:58.30]Para esconderse dentro de mi corazón
-[04:12.30]Tú listas en mis sueños
+[04:12.30]Tú vivas en mis sueños
 [04:19.30]¡Oh no!
 [04:27.30]Dentro de mi corazón
 [04:42.30]¡Gracias!` },
 
     { file: 'Bunbury - El Triste (Videoclip Oficial).mp3', title: 'El Triste', artist: 'Bunbury',
-      lyrics: `[00:00.00]Катриня
-[00:30.00]Субтитры сделал DimaTorzok
-[01:00.00]se ti los colores de gris hoy todo es soledad
-[01:20.08]No sé si vuelvo a verte después, no sé qué de mi vida será.
-[01:32.08]sin el dulcero azul de tu ser que no me alumbraría.
-[01:46.34]Hoy quiero saborear mi dolor, no pido compasión ni piedad.
+      lyrics: `[00:00.00]El Triste — Bunbury
+[00:30.00]
+[01:00.00]Veo ti los colores de gris, hoy todo es soledad
+[01:20.08]No sé si vuelvo a verte después, no sé qué de mi vida será
+[01:32.08]Sin el dulcero azul de tu ser que no me alumbraría
+[01:46.34]Hoy quiero saborear mi dolor, no pido compasión ni piedad
 [01:59.34]La historia de este amor se escribió para la eternidad
-[02:11.70]Qu triste todos dicen que soy que siempre estoy hablando de ti no saben que pensando en tu amor en tu amor
+[02:11.70]Qué triste, todos dicen que soy, que siempre estoy hablando de ti, no saben que pensando en tu amor, en tu amor
 [02:35.40]He podido ayudarme a vivir
 [02:41.40]He podido ayudarme a vivir
 [02:48.40]Oh, oh, oh, oh
 [02:59.40]Hoy quiero saborear mi dolor
 [03:17.20]No pido compasión ni piedad
-[03:25.14]La historia de este amor se escribi para la eternidad Qu triste todos dicen que soy que siempre estoy hablando de ti
+[03:25.14]La historia de este amor se escribió para la eternidad, qué triste, todos dicen que soy, que siempre estoy hablando de ti
 [03:50.60]No saben que pensando en tu amor, en tu amor
 [03:59.92]He podido ayudarme a vivir
 [04:04.78]He podido ayudarme a vivir
 [04:11.44]He podido ayudarme a vivir
-[04:20.60]¡Suscríbete al canal!
-[04:50.60]Gracias.` },
+[04:20.60]
+[04:50.60]` },
 
     { file: 'CALL THE DOCTOR.mp3', title: 'CALL THE DOCTOR', artist: 'MiPlaylist',
       lyrics: `[00:00.00]Doctor x2
 [00:08.40]Come with me
 [00:10.08]Doctor x2
 [00:18.68]Come with me
-[00:19.80]Call the doctor, Call the doctor
+[00:19.80]Call the doctor, call the doctor
 [00:22.18]Must be something
 [00:23.20]Come with me
 [00:24.44]He's a monster
@@ -431,14 +436,14 @@ const papuPlaylist = [
 [00:32.68]He's a motherfucking monster
 [00:34.68]But I love him, yeah I love him
 [00:39.58]He's right on stars
-[00:41.82]Tell you're his own form of art
+[00:41.82]Tell you he's on form of art
 [00:44.32]He's doing his part
-[00:46.66]Cause he's winning my heart
+[00:46.66]'Cause he's winning my heart
 [00:49.36]There were no sparks
 [00:51.14]Just we get the light fire
 [00:52.16]Bring me through the dark
 [00:53.44]And oh he's doing his part
-[00:56.60]Cause he's running my heart
+[00:56.60]'Cause he's running my heart
 [00:58.04]And the blood is a human
 [00:59.32]Just a monster
 [01:00.44]I know he's what I'm
@@ -449,12 +454,12 @@ const papuPlaylist = [
 [01:10.94]I'm a monster, I'm a monster
 [01:13.32]I'm a monster, what do I want you?
 [01:16.18]Please tell me, please tell me
-[01:18.58]You a monster you a monster You a motherfucking monster You love him you love him You the one I love you I love you Doctor Doctor Doctor Doctor Doctor Doctor
-[01:32.23]Call the Doctor, Doctor, Doctor, Doctor, Doctor, Doctor, Doctor, Doctor
+[01:18.58]You a monster, you a monster, you a motherfucking monster, you love him, you love him, you the one I love you, I love you, Doctor, Doctor, Doctor, Doctor, Doctor, Doctor
+[01:32.23]Call the doctor, doctor, doctor, doctor, doctor, doctor, doctor, doctor
 [01:36.89]Run with me
-[01:38.01]Doctor, Doctor, Doctor, Doctor
+[01:38.01]Doctor, doctor, doctor, doctor
 [01:40.63]Doesn't really know how to try
-[01:42.11]Cause the doctor is a place, the doctor is worth
+[01:42.11]'Cause the doctor is a place, the doctor is worth
 [01:44.83]Don't get it, you never lost, and run with me
 [01:47.77]I look like it's covered, shut up while I tell you
 [01:51.17]How much you can't get this side, get this place, get the way
@@ -466,7 +471,7 @@ const papuPlaylist = [
 [02:07.33]Maybe you're sending me, you know
 [02:10.05]I'll find you, not the fucking, I'm the fucking, you know
 [02:14.37]He's weak, he's fresh, he doesn't really know how to dress
-[02:41.29]He's a beast, he's a weird
+[02:41.29]He's a beast, he's weird
 [02:43.69]He never looks in the mirror` },
 
     { file: 'Cicada.mp3', title: 'Cicada', artist: 'MiPlaylist',
@@ -474,11 +479,11 @@ const papuPlaylist = [
 [00:18.24]Whenever there's a lull between the void
 [00:21.86]You feel the silence, languid on the couch
 [00:25.62]Think I need to figure this one out
-[00:28.56]I'm last beneath your cloud
+[00:28.56]I'm lost beneath your cloud
 [00:31.04]Can I keep my two feet on the ground?
 [00:34.78]Wait me, I'll love you tomorrow
 [00:37.22]You leave me breathless and hollow
-[00:39.92]Lately, my tough fail to swallow
+[00:39.92]Lately, my thoughts fail to swallow
 [00:42.60]But I'll try to compose
 [00:44.58]I could be, I suppose, someone you should get to know
 [00:48.32]I could be, I suppose, someone you should get to know
@@ -486,7 +491,7 @@ const papuPlaylist = [
 [01:09.56]Caught in a stitch of what could be
 [01:12.20]Careful life time's not what it seems
 [01:14.90]To shake this one off and dance with me
-[01:17.62]We dancing through the house I think we need to figure this one out Shaking like I lose sleep from the spout I think we need to think on this one Wait leave I love you tomorrow
+[01:17.62]We're dancing through the house I think we need to figure this one out, shaking like I lose sleep from the drought I think we need to think on this one, wait leave I love you tomorrow
 [01:31.14]You leave, leave breathless and hollow
 [01:33.86]Lately, the tough fail to swallow
 [01:36.54]But I'll try to compose
@@ -498,12 +503,11 @@ const papuPlaylist = [
 [02:19.72]But outside of the boys
 [02:22.14]I could be, I suppose, someone you should get to know
 [02:25.60]I could be, I suppose, someone you should get to know
-[02:31.48]Someone you should get to know
-[02:46.94]Thank you.` },
+[02:31.48]Someone you should get to know` },
 
     { file: 'Everytime We Touch (Radio Edit).mp3', title: 'Everytime We Touch', artist: 'MiPlaylist',
       lyrics: `[00:00.00]I still hear your voice when you sleep next to me
-[00:08.42]I still feel your touch in my dream
+[00:08.42]I still feel your touch in my dreams
 [00:15.00]Forgive me my weakness, but I don't know why
 [00:22.16]Without you it's hard to survive
 [00:27.00]Cause every time we touch, I get this feeling
@@ -514,8 +518,8 @@ const papuPlaylist = [
 [00:45.36]And every time we kiss, I reach for the sky
 [00:48.86]Can't you hear my heartbeat slow?
 [00:51.30]I can't let you go, want you in my life
-[00:55.68]I'm not a man
-[01:25.68]Your arms are my castle your heart is my sky
+[00:55.68]I'm alive
+[01:25.68]Your arms are my castle, your heart is my sky
 [01:44.92]They wipe away tears that I cry
 [01:50.72]The good and the bad times, we've been through them all
 [01:58.52]You make me rise when I fall
@@ -525,16 +529,16 @@ const papuPlaylist = [
 [02:14.40]I want this to last, need you by my side
 [02:18.40]Cause every time we touch, I feel the static
 [02:21.70]And every time we kiss, I reach for the sky
-[02:25.18]Can't you hear my heartbeat so I can't let you go
-[02:29.34]Want you in my life
+[02:25.18]Can't you hear my heartbeat slow?
+[02:29.34]I can't let you go, want you in my life
 [02:55.18]Cause every time we touch, I get this feeling
-[03:02.30]And every time we kiss, I swear I can fly
+[03:02.30]And every time we kiss, I swear I could fly
 [03:05.74]Can't you feel my heart beat fast?
 [03:08.48]I want this to last
 [03:10.00]Need you by my side` },
 
     { file: 'Hello Juliet.mp3', title: 'Hello Juliet', artist: 'MiPlaylist',
-      lyrics: `[00:00.00]Hello, hello, Julia
+      lyrics: `[00:00.00]Hello, hello, Juliet
 [00:30.00]I know the things I should have said
 [00:37.00]Hello, hello, Juliet
 [00:44.00]I know, I know, I know
@@ -542,13 +546,13 @@ const papuPlaylist = [
 [00:57.00]Let me make it right, just wait for me
 [01:04.30]We can start this crash and then proceed
 [01:10.80]Till I lose it all, you slip from me
-[01:18.46]Hello, hello, Julia
-[01:22.16]I know the things that shut upside
+[01:18.46]Hello, hello, Juliet
+[01:22.16]I know the things that shut me down
 [01:29.54]I know, I know it's you in the eye
-[01:36.70]I know I know I know Let me in again I need your place
+[01:36.70]I know, I know, I know, let me in again, I need your place
 [01:52.84]Don't you make me back, I'm on my knees
 [02:00.12]I love you, I love you
-[02:30.12]Hello, hello, Julia
+[02:30.12]Hello, hello, Juliet
 [03:00.12]I know the things that you're your side
 [03:06.06]Hello, hello, Juliet
 [03:12.32]I know, I know, I know` },
@@ -560,7 +564,7 @@ const papuPlaylist = [
 [00:45.00]And we've waited for so long for this moment to come
 [00:54.00]We're so anxious to be together
 [00:58.00]Together in death
-[01:04.00]Won't you die tonight for you?
+[01:04.00]Won't you die tonight for me?
 [01:08.00]Baby, join me in air
 [01:12.00]Won't you die?
 [01:16.00]Baby, join me in air
@@ -568,7 +572,7 @@ const papuPlaylist = [
 [01:25.78]Join me, yeah
 [01:28.78]This world is a cruel place and way
 [01:37.12]Only to lose
-[01:40.16]So before life tears us apart Let death bless me with you Won you die tonight for me
+[01:40.16]So before life tears us apart, let death bless me with you. Won't you die tonight for me?
 [01:54.37]Baby, you're in me
 [01:58.37]Four years old
 [02:02.37]Baby, you're in me
@@ -605,7 +609,9 @@ const papuPlaylist = [
 [01:16.68]El utilizar el medio y llegar
 [01:21.54]A lo desconocido
 [01:25.02]Sentirla al lado mío
-[01:27.98]Y decir que todo est peor que al igual que ella mi esperanza se muri La quiero abrazar que todo sea igual mi vida ya es tan gris que el dolor jam se marchar
+[01:27.98]Y decir que todo está peor que al igual que ella mi esperanza se murió
+[01:38.14]La quiero abrazar que todo sea igual
+[01:43.46]Mi vida ya es tan gris que el dolor jamás se marchará
 [01:50.71]Me debería de acordar, debo yo recordar
 [01:55.07]Y sentirse mejor es mejor no creer en el amor
 [01:59.69]Así como le hago yo
@@ -617,7 +623,7 @@ const papuPlaylist = [
 [02:57.09]Que aquí todo está peor
 [03:02.87]Que al igual que ella, mi voluntad también murió
 [03:08.33]La quiero saludar, a su oído suspirar
-[03:13.99]Que mientras yo la extraño, mi vida desvanece más
+[03:13.99]Que mientras yo la extraño, mi vida se desvanece más
 [03:27.09]Gracias.` },
 
     { file: 'Narcisista por Excelencia.mp3', title: 'Narcisista por Excelencia', artist: 'MiPlaylist',
@@ -636,9 +642,9 @@ const papuPlaylist = [
 [01:19.82]Disfraz, disfraz, narcisista artificial
 [01:25.02]Disfraz, disfraz
 [01:29.52]Es mental
-[01:42.64]Cómo me peinar esta noche
+[01:42.64]Cómo me peinaré esta noche
 [01:45.52]Qué ropa me combinará mejor
-[01:48.64]Tener tu inter Convertirlo en amor Quisiera poder saber qu piensas ver bien o acaso me dio mal
+[01:48.64]Tener tu interés, convertirlo en amor, quisiera poder saber qué piensas, ver bien o acaso me vio mal
 [02:00.63]Sé que es patético, pero en mí es normal
 [02:05.35]Suponiendo que en la gente la belleza es natural
 [02:11.95]Pues belleza es la palabra que aún no logro concretar
@@ -679,15 +685,19 @@ const papuPlaylist = [
 [00:52.72]You like me and I like you
 [00:53.96]Say, how do you, do you, do?
 [00:55.62]How do you, do you, do?
-[00:58.98]It so easy when you want to make a friend When the sun is shining in a distant land There a certain feeling that surrounds your mind And you feel like you could dance When you going to the south of Africa
+[00:58.98]It's so easy when you want to make a friend
+[01:01.42]When the sun is shining in a distant land
+[01:04.46]There's a certain feeling that surrounds your mind
+[01:07.12]And you feel like you could dance
+[01:09.90]When you're going to the south of Africa
 [01:33.83]To America or to Australia
-[01:36.59]You'll be people of our colors and all kinds
+[01:36.59]You'll see people of all colors and all kinds
 [01:39.63]Everybody understands
-[01:41.39]How do you do it?
+[01:41.39]How do you do?
 [01:43.99]You like me and I like you
 [01:45.25]Come and take me by the hand
 [01:46.71]Cause I wanna be your friend
-[01:48.07]How do you do it?
+[01:48.07]How do you do?
 [01:49.55]You like me and I like you
 [01:50.85]Say how do you do you do?
 [01:52.23]How do you do, you do, how do you do
@@ -719,13 +729,13 @@ const papuPlaylist = [
 [00:38.80]Was pulled by other youngsters
 [00:41.76]And my unwielded
 [00:43.60]Was short and driven with the earth
-[00:47.68]Cause I don't see what they see
-[00:50.72]Where's that the stare at me?
+[00:47.68]'Cause I don't see what they see
+[00:50.72]Where's that they stare at me?
 [00:53.76]I see a window, a limit, a limit, not at all
 [01:23.76]If you could borrow
 [01:28.58]After
 [01:29.28]To carry on
-[01:31.40]To that day Until I believe In my days Anymore To it a common ocean A patch of water
+[01:31.40]To that day until I believe in my days anymore
 [01:43.76]I was singing
 [01:45.12]But it's not what you signed up for
 [02:02.56]I'm sure there won't always be sunshine
@@ -735,8 +745,8 @@ const papuPlaylist = [
 [02:21.44]I'm sure there won't always be sunshine
 [02:26.54]I see the world always in sunshine
 [02:32.54]For you, it's been smiling to repeat my mind
-[02:38.54]I could could cry for the unseen
-[02:41.54]Look at I've been missing
+[02:38.54]I could cry for the unseen
+[02:41.54]Look at what I've been missing
 [02:44.54]Gotta shine in seconds
 [02:47.54]Like five, breaking
 [02:50.54]You think you're over, you're burning
@@ -746,7 +756,7 @@ const papuPlaylist = [
     { file: 'Paparazzi (Dubstep) (Sped Up - Nightcore).mp3', title: 'Paparazzi (Dubstep) (Sped Up / Nightcore)', artist: 'MiPlaylist',
       lyrics: `[00:00.00]We are the crowd
 [00:07.66]We're coming out
-[00:09.18]Got my flash on his true
+[00:09.18]Got my flash on it's true
 [00:10.74]Need the picture of you
 [00:12.38]It's so magical
 [00:13.66]We'd be so fantastical
@@ -758,45 +768,45 @@ const papuPlaylist = [
 [00:26.56]Ready for those flashing lights
 [00:29.62]Cause you know what baby I am
 [00:31.60]I'm your biggest fan, I'll follow you until you love me
-[00:35.30]Paparazzi, baby there's no other super star
-[00:40.02]You know that I'm free, paparazzi
-[00:43.66]I'm gonna fall behind, but I won't stop until everybody's mine
+[00:35.30]Paparazzi, baby there's no other superstar
+[00:40.02]You know that I'll be, paparazzi
+[00:43.66]I'm gonna follow behind, but I won't stop until everybody's mine
 [00:49.16]Baby, you'll be feeling the chase, you know until you love me
 [00:54.02]Paparazzi, paparazzi
 [00:59.62]I'll be your girl, backstage at your show
 [01:05.26]Tell the rules and get us
-[01:06.88]Yeah, cause you're my backstar in between the sets
-[01:10.10]Eyeliner and cigarettes Shadow is burnt yellow dancing we turn My lashes are dry purple tears you sick all you don have a risk
+[01:06.88]Yeah, cause you're my backstage boy between the sets
+[01:10.10]Eyeliner and cigarettes
 [01:22.64]Loving you is a child we've been
 [01:25.56]Cause you're all about the ice
-[01:27.48]I'm your biggest boy, I follow you, I tell you know me
-[01:31.38]Purple, purple, I see
-[01:33.64]Baby, there's no other superstar you know that I'll be
-[01:37.58]Purple, purple, I see
-[01:39.90]Promise I'll be kind, but I'll stop until everybody's blind
-[01:45.26]Baby, you'll be paying a chase, you don't until you love me
-[01:50.12]Papa, Papa, let me see
+[01:27.48]I'm your biggest fan, I follow you, I love you so, baby
+[01:31.38]Paparazzi, baby
+[01:33.64]Baby there's no other superstar you know that I'll be
+[01:37.58]Paparazzi, baby
+[01:39.90]Promise I'll be kind, but I won't stop until everybody's blind
+[01:45.26]Baby, you'll be paying the chase, you don't stop until you love me
+[01:50.12]Papa, papa, let me see
 [01:52.42]Be your girl, we dance in the studio
 [01:55.44]Snap, snap, do that shit on the radio
-[01:58.60]Don't stop, don't let you run
+[01:58.60]Don't stop, don't let it run
 [02:01.50]We're a plastic bottle
-[02:03.38]I'm your biggest boy, I'll follow you until you love me
-[02:08.80]Papa, Papa Ritchie
-[02:11.08]Baby, there's no other soup
+[02:03.38]I'm your biggest fan, I'll follow you until you love me
+[02:08.80]Papa, papa, paparazzi
+[02:11.08]Baby, there's no other superstar
 [02:13.10]I start in all that I'll be
-[02:14.98]Papa, Papa Ritchie
+[02:14.98]Papa, papa, paparazzi
 [02:17.34]Promise I'll be fine
-[02:19.54]But I'll stop until I'm going to die
+[02:19.54]But I won't stop until I'm going to die
 [02:22.64]Baby, you'll be famous
 [02:25.24]If you don't tell you love me
-[02:27.50]Papa, Papa Ritchie` },
+[02:27.50]Papa, papa, paparazzi` },
 
     { file: 'Procedimientos para Llegar a un Comun Acuerdo.mp3', title: 'Procedimientos para Llegar a un Común Acuerdo', artist: 'MiPlaylist',
       lyrics: `[00:00.00]Yo sé que soy poco superficial
 [00:06.80]Y que me manejo en la promiscuidad
 [00:12.80]Sé que quieres yo también
 [00:15.16]Te pongo a saber cómo me fijas bien
-[00:18.36]Sé que eres prudencia en el de la vida
+[00:18.36]Sé que eres prudencia en el día de la vida
 [00:20.86]Y con elegancia ya te lo haré
 [00:25.00]Sé que me quieres tener
 [00:28.36]Y yo te prometo, promesa no hablarte de amor
@@ -807,11 +817,11 @@ const papuPlaylist = [
 [01:00.58]Tengo que verte, te tienes que saber
 [01:03.06]Que igual no estaré a la mesa
 [01:06.02]Creo que solo te quiero para una vez
-[01:09.38]Pero sabes que no es esta la madre
+[01:09.38]Pero sabes que no es esta la manera
 [01:13.10]Sé que me quieres tener
 [01:16.62]Y yo te prometo, prometelo en el teléfono
 [01:23.68]Me quieres tener, tu cuerpo es como una alcibe instrumentaria
-[01:31.88]Lo quiero con todo respeto bajen Senza la opresi en ti
+[01:31.88]Lo quiero con todo respeto, bajen senza la opresi en ti
 [01:53.82]Senza, no tengo nada así
 [01:59.82]El incenso, la emoción del incenso
 [02:06.82]El mundo del incenso
@@ -821,7 +831,7 @@ const papuPlaylist = [
 [02:20.82]Pero sabes que dos estaría bien
 [02:24.82]Sé que me quieres tener y yo te prometo, prometa no hablarte de amor
 [02:35.70]Me quieres tener, tu cuerpo es como una de sin instrumentaria
-[02:43.88]Lo quiero con todo respeto faltar
+[02:43.88]Lo quiero con todo respeto, faltar
 [02:54.82]¡Suscríbete al canal!` },
 
     { file: 'Psycho Dreams.mp3', title: 'Psycho Dreams', artist: 'MiPlaylist',
@@ -832,10 +842,10 @@ const papuPlaylist = [
 [00:36.50]Я хочу, хочу, не слышать
 [00:38.36]Добридуманных людей
 [01:00.00]DimaTorzok
-[01:32.50]Я сражусь у моих сердца, Кровая моя звезда,
-[01:36.74]Обещать в них стена, Я исчезну навсегда.
-[01:40.08]Крики, крики, крики, крики, На виду малых людей.
-[01:43.38]Я хочу, хочу не слышать, Но приду малых людей.
+[01:32.50]Я сражусь у моих сердца, кровавая моя звезда,
+[01:36.74]Обещать в них стена, я исчезну навсегда.
+[01:40.08]Крики, крики, крики, крики, на виду малых людей.
+[01:43.38]Я хочу, хочу не слышать, но приду малых людей.
 [02:02.50]Субтитры сделал DimaTorzok` },
 
     { file: 'Puppy Princess.mp3', title: 'Puppy Princess', artist: 'MiPlaylist',
@@ -847,40 +857,43 @@ const papuPlaylist = [
 [00:43.48]I nod my head when you make a point
 [00:47.72]Oh-oh
 [00:49.38]Kiss me, kiss me with your eyes closed
-[00:56.80]Whisper that your heart shows All I want is you Yeah you Come on now hold me hold me
-[01:08.93]I'm your bunny, tell me I'm not funny
-[01:15.93]Tell me I'm legit
-[01:20.93]Because I feel weak in your hands
-[01:27.79]And your feet are precious
-[01:30.15]And I'll never feel your touch
-[01:36.19]You guys came to the restaurant where I clean
-[01:42.51]I saw you in the window, I got flushed
-[01:46.71]I rushed outside and cracked some jokes
-[01:50.61]And in a while I came and got your plates
-[01:58.41]And you guys worked on the rest of your date
-[02:02.31]I scrubbed cheese and wished I was somebody else Kiss me kiss me with your eyes closed
-[02:15.45]Whisper that your heart chose
-[02:19.23]All I want is you, yeah you
-[02:23.93]Come on now hold me, hold me I'm your bunny
-[02:30.37]Tell me I'm not funny
-[02:34.49]Tell me I'm legit
-[02:37.79]Cause I feel weak
-[02:43.67]And your hands and your feet are precious
-[02:48.87]And I'll never feel your touch
-[02:54.93]I'm a fool
-[02:57.79]I'm a fool
-[03:01.59]I'm a fool
-[03:05.49]I fall for you
-[03:27.80]Kiss me, kiss me with your eyes closed.
-[03:33.80]Whisper that your heart chose
-[03:37.90]All I want is you, yeah, you
-[03:42.72]Come on now hold me, hold me
-[03:47.12]I'm your bunny, tell me I'm not funny
-[03:53.16]Tell me I'm in jail
-[03:56.32]Kiss me, kiss me
-[04:02.80]With your eyes closed
-[04:05.50]Whisper that your heart chose
-[04:09.36]All I want is you` },
+[00:56.80]Whisper that your heart shows, all I want is you, yeah you
+[01:08.93]Come on now hold me, hold me
+[01:15.93]I'm your bunny, tell me I'm not funny
+[01:20.93]Tell me I'm legit
+[01:27.79]Because I feel weak in your hands
+[01:30.15]And your feet are precious
+[01:36.19]And I'll never feel your touch
+[01:42.51]You guys came to the restaurant where I clean
+[01:46.71]I saw you in the window, I got flushed
+[01:50.61]I rushed outside and cracked some jokes
+[01:58.41]And in a while I came and got your plates
+[02:02.31]And you guys worked on the rest of your date
+[02:15.45]I scrubbed cheese and wished I was somebody else
+[02:19.23]Kiss me, kiss me with your eyes closed
+[02:23.93]Whisper that your heart chose
+[02:30.37]All I want is you, yeah you
+[02:34.49]Come on now hold me, hold me
+[02:37.79]I'm your bunny
+[02:43.67]Tell me I'm not funny
+[02:48.87]Tell me I'm legit
+[02:54.93]Cause I feel weak
+[02:57.79]And your hands and your feet are precious
+[03:01.59]And I'll never feel your touch
+[03:05.49]I'm a fool
+[03:27.80]I'm a fool
+[03:33.80]I'm a fool
+[03:37.90]I fall for you
+[03:42.72]Kiss me, kiss me with your eyes closed
+[03:47.12]Whisper that your heart chose
+[03:53.16]All I want is you, yeah, you
+[03:56.32]Come on now hold me, hold me
+[04:02.80]I'm your bunny, tell me I'm not funny
+[04:05.50]Tell me I'm legit
+[04:09.36]Kiss me, kiss me
+[04:12.00]With your eyes closed
+[04:15.00]Whisper that your heart chose
+[04:18.00]All I want is you` },
 
     { file: 'Shakedown.mp3', title: 'Shakedown.', artist: 'MiPlaylist',
       lyrics: `[00:00.00]Music
@@ -897,31 +910,30 @@ const papuPlaylist = [
 [00:52.00]Just because I hate it, I don't mean anything to say
 [00:54.00]Or worse because you hate it, I'm not the man I could be
 [00:57.00]Nah, I'm tweaking out, quit tweaking out!
-[00:59.00]Quit drinking out, hey!
-[01:01.00]Sir, this is not a shutdown
-[01:03.00]We just got a color but I'm pursing like face down
-[01:06.00]You coming when it right now We just got a color but I hold this out and break out Son it not a shutdown We just got to come up on a pussy like face down You coming when it right now
-[01:18.46]We just got to come up on a horse and I'm blacked out
+[00:59.00]Quit tweaking out, hey!
+[01:01.00]So this is not a shutdown
+[01:03.00]We just got a color but I'm pushing like face down
+[01:06.00]You coming when it's right now
+[01:18.46]We just got a color but I'm holding out and blacked out
 [01:20.98]I don't want these problems, but they're mine
 [01:23.58]Feel like I'm two people at the same time
-[01:26.28]Popping to get rid of all the eight
+[01:26.28]Popping to get rid of all the hate
 [01:28.28]And then they're popping up with the brakes
 [01:30.74]When I don't understand my brain
 [01:32.08]Just because I have it
 [01:33.28]Don't mean anything to say
-[01:34.56]that works because I'm not the man I could pay
+[01:34.56]Or worse because I'm not the man I could be
 [01:37.30]Nah, I'm tweaking out
 [01:39.28]Quit tweaking out
 [01:42.14]So this is not a shutdown
-[01:43.80]We just got a cover but a purser late face down
-[01:47.24]You're calming when it's right now
-[01:48.90]We just got a cover but our whores out
+[01:43.80]We just got a color but I'm pushing like face down
+[01:47.24]You're coming when it's right now
+[01:48.90]We just got a color but I'm holding out
 [01:51.70]So this is not a shutdown
-[01:53.44]We just got a cover but our purser late face down
-[01:57.04]You're plumbing when it's right now
-[01:58.38]We just got a cover but our whores out
-[02:00.72]RANKED OUT
-[02:04.56]I'm going to go.` },
+[01:53.44]We just got a color but I'm pushing like face down
+[01:57.04]You're coming when it's right now
+[01:58.38]We just got a color but I'm holding out
+[02:00.72]Blacked out` },
 
     { file: 'Tu Con El.mp3', title: 'Tú Con Él', artist: 'MiPlaylist',
       lyrics: `[00:00.00]Seguro mujer
@@ -930,17 +942,18 @@ const papuPlaylist = [
 [00:47.30]Ya no recuerdas mis locuras ni el amor aquel
 [00:54.88]Estás tranquila, lo mereces, siempre fuiste bien
 [01:02.72]Tú con él
-[01:07.82]No me sorprende sospechaba terminar as Yo solamente fui la excusa para hacerle ver
+[01:07.82]No me sorprende, sospechaba terminar así, yo solamente fui la excusa para hacerle ver
 [01:22.59]Que tú podrías si querías vivir sin tu amor
 [01:30.79]Perdóname, no me di cuenta de ese juego
-[01:39.99]y me enamoré
+[01:39.99]Y me enamoré
 [01:42.77]Después fue tarde
-[01:46.31]no podía ya volver atrás
-[01:50.45]y te quería
-[01:53.75]cada día más y más
+[01:46.31]No podía ya volver atrás
+[01:50.45]Y te quería
+[01:53.75]Cada día más y más
 [02:09.99]Seguro mujer que hoy eres feliz
 [02:19.07]Que puedes hacer lo que quieras
-[02:23.73]T con Ya me han contado que est linda mucho m que ayer
+[02:23.73]Tú con él
+[02:36.17]Ya me han contado que estás linda mucho más que ayer
 [02:36.17]Que no me odias y preguntas siempre algo de mí
 [02:44.03]Al fin y al cabo un poquito yo me hice querer
 [02:50.95]Disculpame
@@ -949,17 +962,19 @@ const papuPlaylist = [
 [03:12.59]Que al poco tiempo para siempre lo perdí
 [03:18.39]Aún recuerdo el romance que viviste conmigo
 [03:31.97]Yo sé que jugaste con mis sentimientos
-[03:37.01]Todo fue un juego que tuviste conmigo Pero en ese juego yo me enamor Tu con Yo no me di cuenta escucha mujer
-[03:51.90]Tu con él
+[03:37.01]Todo fue un juego que tuviste conmigo, pero en ese juego yo me enamoré
+[03:51.90]Tú con él
+[03:51.90]Yo no me di cuenta, escucha mujer
+[03:51.90]Tú con él
 [03:53.50]Pero te lo juro mamita desperté
 [04:11.06]Música
 [04:32.06]Tú, con él
 [04:33.84]Ya no recuerdas mis locuras y el amor aquel
 [04:37.28]Tú, con él
 [04:38.76]Yo solamente fui la excusa para hacerle ver
-[04:42.32]Don con él
+[04:42.32]Tú con él
 [04:43.82]Que tú podías y tú querías vivir sin él
-[04:47.50]Don con él
+[04:47.50]Tú con él
 [04:48.86]En el juego del amor unos vienen y otros van` },
 
     { file: 'When The Devil Speaks.mp3', title: 'When The Devil Speaks…', artist: 'MiPlaylist',
@@ -976,15 +991,15 @@ const papuPlaylist = [
 [00:54.00]Go, uh
 [00:57.00]Don't care, one T, it's C'est la vie
 [01:02.00]Out here, trippin' off the shit that I don't know
-[01:05.00]Cause I don't care, hitin' off the light
+[01:05.00]Cause I don't care, hittin' off the light
 [01:07.00]If I ain't sleep, then I can hear
 [01:09.00]Stay on me, or leave me be
 [01:12.00]I don't care, cause no one hating me more than myself
 [01:16.00]And I'm aware, I don't need no counsel, bitch, I need your fucking breath
 [01:19.00]So if I can't, the devil speaks
 [01:21.90]He says to me, oh man
-[01:25.90]I feelin somethin wrong inside of your head I know we lay poor cause we not fuckin ain doing fair I know we lay poor cause we not fuckin ain doing fair I know we lay poor cause we not going wrong inside your head
-[01:53.96]y'all,
+[01:25.90]I'm feelin' something wrong inside of your head, I know we lay poor cause we not fucking ain't doing fair, I know we lay poor cause we not fucking ain't doing fair, I know we lay poor cause we not going wrong inside your head
+[01:53.96]Y'all
 [01:54.16]I'm chewing on the same old piece of gum
 [01:56.16]I know you've been moving out your mind as to and from
 [01:59.16]But when that deletes will change your colors, but
@@ -998,7 +1013,7 @@ const papuPlaylist = [
 [02:22.16]I like this step, I need to tell
 [02:24.16]I don't need no counselor, bitch, I need your fucking
 [02:26.36]The devil speaks, he says to me
-[02:31.56]Oh man, I feelin' something wrong inside of your head
+[02:31.56]Oh man, I'm feelin' something wrong inside of your head
 [02:36.96]I know we let go, cause we not talkin' at you and fair
 [02:39.86]I know we let go, cause we not blow each other
 [02:42.46]I know we don't stand, cause we stop right at us, never let go
@@ -1030,8 +1045,13 @@ const papuPlaylist = [
 [00:50.72]If I'm screaming for my life
 [00:53.00]When I'm meeting for a sight
 [00:55.50]Can you show me it's alright?
-[00:59.98]I think I make it to the top It been running through my head All the things I could said
-[01:26.75]If I did, you wouldn't listen So save me till I'm dead
+[00:59.98]I think I make it to the top
+[01:02.00]It's been running through my head
+[01:04.00]All the things I could've said
+[01:06.00]If I did, you wouldn't listen
+[01:08.00]So I'll say things till I'm dead
+[01:26.75]If I did, you wouldn't listen
+[01:28.00]So save me till I'm dead
 [01:32.03]Doesn't matter anymore
 [01:35.47]So I'm just feeling in my core
 [01:38.07]Something that I've never done before
@@ -1050,7 +1070,7 @@ const papuPlaylist = [
 [00:05.84]僕は今から笑って飛び込めるだろう
 [00:11.82]二人以外の時間を思うと
 [00:17.48]どうしようもないほど胸が痛くなるよ
-[00:23.30]ねえもそんなね強がるくせ
+[00:23.30]ねえ君もそんなに強がるくせ
 [00:25.96]抱き合う時は甘くなる
 [00:28.64]恋も全部全部もう僕だけがいい
 [00:31.58]苦しいよ
@@ -1073,12 +1093,13 @@ const papuPlaylist = [
 [01:40.28]顔を汚すとちょっと怒るところも
 [01:43.48]全部全部もう僕だけがいい苦しいよ
 [01:48.36]お願い
-[01:50.48]君はずるいずるいずるいずるいずるい人だもん大丈夫は君の中で醜く育ったんだ
+[01:50.48]君はずるいずるいずるいずるいずるい人だもん
+[01:58.36]大丈夫は君の中で醜く育ったんだ
 [02:03.41]言ってきてきてきてきてきてよ
 [02:08.59]お願い激しく泣いて
 [02:12.59]激しく泣いて
 [02:15.49]激しく泣いて
-[02:18.33]歯止めのないもんぞ
+[02:18.33]歯止めのないもんで
 [02:21.63]どうぞ言えないことも全部したいよ
 [02:29.63]可愛いその表情で僕のことを殴って
 [02:39.63]壊して
@@ -1092,7 +1113,7 @@ const papuPlaylist = [
 [03:44.63]ご視聴ありがとうございました` },
 
     { file: '505.mp3', title: '505', artist: 'Mix',
-      lyrics: `[00:00.00]I'm going back to 5.05
+      lyrics: `[00:00.00]505
 [00:15.50]If it's a 7 hour flight or a 45 minute drive
 [00:23.50]In my imagination you're waiting lying on your side
 [00:30.06]With your hands between your thighs
@@ -1100,31 +1121,28 @@ const papuPlaylist = [
 [00:43.58]When you look at me like that my darling
 [00:47.66]What did you expect?
 [00:50.46]I'd probably still adore you with your hands around my neck
-[00:57.06]Or I did last time I checked Not shy of a spark
-[01:10.98]The knife twists up the thought
-[01:14.00]That I should fall short of the mark
-[01:17.86]Frightened by the fight
-[01:20.86]Though it's no harsher than the park
-[01:24.62]The middle of adventure is such a perfect place to start
-[01:31.70]I'm going back to 5.05
-[01:37.70]If it's a seven hour flight or a 45 minute drive
-[01:45.06]In my imagination you're waiting lying on your side
-[01:52.02]With your arms between your sides
-[02:01.79]guitar solo
-[02:31.79]To cry
-[02:32.95]It seems like once again
+[00:57.06]Or I did last time I checked
+[01:10.98]Not shy of a spark
+[01:14.00]The knife twists at the thought
+[01:17.86]That I should fall short of the mark
+[01:20.86]Frightened by the fight
+[01:24.62]Though it's no harsher than before
+[01:31.70]The middle of adventure is such a perfect place to start
+[01:37.70]I'm going back to 505
+[01:45.06]If it's a 7 hour flight or a 45 minute drive
+[01:52.02]In my imagination you're waiting lying on your side
+[02:01.79]With your hands between your thighs
+[02:31.79]It seems like once again
 [02:35.97]You've had to
-[02:37.15]Read me with goodbye
-[02:39.55]I'm always just about to go
-[02:43.65]Unspoiled surprise
+[02:37.15]Greet me with goodbye
+[02:39.55]I'm always just about to go and ruins in surprise
 [02:46.41]Take my hands off of your eyes
-[02:49.99]Too soon
-[02:51.17]I'm going back to 505
-[03:00.41]If it a saddle I will fly toward a 45 drive In my imagination you waited Lying on your side With your arms
-[03:15.59]Between your thighs
-[03:17.43]And a smile
-[03:35.19]Thank you.
-[04:05.19]The End` },
+[02:51.17]Too soon
+[03:00.41]I'm going back to 505
+[03:08.59]If it's a 7 hour flight or a 45 minute drive
+[03:15.59]In my imagination you're waiting lying on your side
+[03:17.43]With your hands between your thighs
+[03:35.19]And a smile` },
 
     { file: 'An Italian Magician Be Like.mp3', title: 'An Italian Magician Be Like', artist: 'Mix',
       lyrics: `[00:00.00]I don't care for you anymore
@@ -1133,15 +1151,15 @@ const papuPlaylist = [
 [00:57.22]I feel, see your face behind closed doors
 [01:07.64]I hate your face
 [01:27.22]Please let me sleep
-[01:49.40]Cause I'm tired
-[01:57.22]Thank you.` },
+[01:49.40]'Cause I'm tired
+[01:57.22]Thank you` },
 
     { file: 'Ax and the Hatchetmen - Hotel Room (Tour Edit).mp3', title: 'Hotel Room (Tour Edit)', artist: 'Ax and the Hatchetmen',
       lyrics: `[00:00.24]So much to tell you, hold up in this hotel room
 [00:06.02]Can't do the things I want to, I've been climbing the walls
 [00:11.56]And I just can't get used to, not being right next to you
 [00:17.64]Not wearing half your perfume, while I'm singing your song
-[00:24.26]And I hate, that you're so far away
+[00:24.26]And I hate that you're so far away
 [00:28.76]And I just wanna find myself in the middle of you
 [00:33.52]I'm all tied up in the middle of you
 [00:36.44]I hate that you're so far away
@@ -1153,16 +1171,14 @@ const papuPlaylist = [
 [00:58.40]And I just can't get used to
 [01:01.58]Not being right next to you
 [01:04.48]Not wearing half your perfume
-[01:07.30]While I singing your song And I hate that you so far away And I just wanna find myself
-[01:19.13]in the middle of you
-[01:20.33]I'm all tied up in the middle of you
-[01:23.23]I hate
-[01:24.39]that you're so far away
-[01:27.21]And I just
-[01:28.83]wanna find myself
+[01:07.30]While I'm singing your song
+[01:19.13]And I hate that you're so far away
+[01:20.33]And I just wanna find myself in the middle of you
+[01:23.23]I'm all tied up in the middle of you
+[01:24.39]I hate that you're so far away
+[01:27.21]And I just wanna find myself
 [01:30.75]in the middle of you
-[01:31.93]I'm all tied up in this
-[01:38.87]And I hate that you're so far away
+[01:31.93]I'm all tied up in the middle of you
 [02:02.81]And I just wanna find myself in the middle of you
 [02:07.29]I'm all tied up in the middle of you
 [02:10.21]I hate that you're so far away
@@ -1170,29 +1186,30 @@ const papuPlaylist = [
 [02:18.97]I'm all tied up in the middle of you` },
 
     { file: 'Boys Dont Cry.mp3', title: 'Boys Don\'t Cry', artist: 'Mix',
-      lyrics: `[00:00.00]I would say I'm sorry
-[00:30.00]I know that this summer has said too much been too unkind
+      lyrics: `[00:00.00]Boys Don't Cry — The Cure
+[00:30.00]I know that this summer has said too much, been too unkind
 [00:35.00]I try to laugh about it, cover it all up with lies
 [00:40.34]I try to laugh about it, hiding my tears in my eyes
-[00:45.84]Cause boys, don't cry
-[00:49.82]Boys, don't cry
+[00:45.84]'Cause boys don't cry
+[00:49.82]Boys don't cry
 [00:56.28]I'll break down at your feet and beg forgiveness, plead with you
-[01:03.58]But I know that it's too late and now there's nothing I can't do
+[01:03.58]But I know that it's too late and now there's nothing I can do
 [01:09.28]So I try to laugh about it, cover it all up with lies
-[01:14.60]I try to laugh about it hide in the tears in my eyes Cause boys don cry Boys don cry
+[01:14.60]I try to laugh about it, hide the tears in my eyes
+[01:20.60]'Cause boys don't cry
+[01:25.60]Boys don't cry
 [01:30.56]I would tell you that I loved you if I thought that you would stay
-[01:37.86]But I know that it's no use that you already gone away
-[01:43.60]Missed out your limit, pushed you to fall
-[01:48.60]To give it granted, thought that you'd ever be my mama
+[01:37.86]But I know that it's no use, that you've already gone away
+[01:43.60]Missed out on your limit, pushed you to the wall
+[01:48.60]To be taking granted, thought that you'd always be my baby
 [01:54.60]Now I would do most anything to get you back by my side
 [01:59.60]But I just keep on laughing, hiding my tears in my eyes
-[02:05.60]Cause boys, don't cry
+[02:05.60]'Cause boys don't cry
 [02:10.60]Boys don't cry
-[02:15.60]Boys don't cry
-[02:40.60]Thank you.` },
+[02:15.60]Boys don't cry` },
 
     { file: 'CUCO - Lover Is a Day (Audio).mp3', title: 'Lover Is a Day', artist: 'CUCO',
-      lyrics: `[00:00.00]The
+      lyrics: `[00:00.00]Lover Is a Day — CUCO
 [00:30.00]Time change, we're different
 [00:45.50]But my mind still says redundant things
 [00:49.28]Can I not think?
@@ -1205,14 +1222,15 @@ const papuPlaylist = [
 [01:23.56]Straight up ahead you'll find a sign that says you can't get by with a lie
 [01:35.20]But if I stayed away by a thread from the glory path
 [01:41.00]And made my life harder lying about the stupid shit I say
-[01:46.30]Then you wouldn know a single thing about how I feel about you And those really dumb things people feel I take the puppy road it probably break my legs
+[01:46.30]Then you wouldn't know a single thing about how I feel about you and those really dumb things people feel
+[01:56.00]I take the puppy road, it'll probably break my legs
 [02:02.00]As long as I don't show you what's ruining my head
 [02:07.00]Funny thing about you is you read me pretty well
 [02:12.00]But you haven't found me yet at the bottom of the well
 [02:18.00]Annoying you with smoke signals
 [02:21.14]Asking you for help
 [02:23.20]Cause your immediate presence lifts me straight away from hell
-[02:28.44]Me and Mr. Hart
+[02:28.44]Me and my heart
 [02:31.22]We say the cutest things about you
 [02:34.56]How you seem unreal
 [02:36.40]We'd probably die so quick without you
@@ -1233,7 +1251,9 @@ const papuPlaylist = [
 [03:31.60]Family calls me crazy
 [03:35.14]And my friends say I'm degenerate
 [03:37.96]But you tell me I'm so generous
-[03:40.62]And my self isn hideous This psychedelic campus of the person I becoming Went from horror movie on TV To happy ending princess me
+[03:40.62]And my soul ain't hideous
+[03:43.00]This psychedelic campus of the person I'm becoming
+[03:48.00]Went from horror movie on TV to happy ending princess me
 [03:54.24]Processing the information
 [03:57.00]Transferred from your mind to me
 [03:59.62]At light speed like the fountain
@@ -1252,26 +1272,25 @@ const papuPlaylist = [
 [04:55.26]This emotion will be gone before you
 [04:58.48]Time change, we're different
 [05:01.48]But my mind still says redundant things
-[05:05.26]Can I not think
-[05:07.34]Will you love this part of me
+[05:05.26]Can I not think?
+[05:07.34]Will you love this part of me?
 [05:10.40]My lover is
 [05:12.74]The day I can't forget
 [05:15.24]Furthering my distance from you
 [05:23.28]Realistically I cannot leave now
 [05:27.16]But I'm okay as long as you keep me
 [05:31.96]From going crazy
-[05:34.22]Kidney from going crazy Girl time change we different But my mind still says redundant things
-[05:47.94]Can I not think
+[05:34.22]Keep me from going crazy
+[05:38.00]Girl, time change, we're different
+[05:41.94]But my mind still says redundant things
+[05:47.94]Can I not think?
 [05:50.00]Will you love this part of me?
 [05:53.66]My lover is
 [05:55.40]The day I can't forget
 [05:57.84]Furthering my distance from you
 [06:05.92]Realistically, I can't leave now
 [06:09.84]But I'm okay as long as you keep me from going crazy
-[06:16.96]Keep me from going crazy
-[06:35.92]Thank you.
-[07:05.92]Thank you.
-[07:35.92]Thank you.` },
+[06:16.96]Keep me from going crazy` },
 
     { file: 'Christmas Kids.mp3', title: 'Christmas Kids', artist: 'Mix',
       lyrics: `[00:00.66]Run up my dear, don't ever disappear
@@ -1284,24 +1303,24 @@ const papuPlaylist = [
 [00:25.86]But oh no, oh no, oh no, oh no, oh no, oh no, oh no, oh no, oh no, oh no, oh no
 [00:39.24]Appearing unsightly, with devils inside me
 [00:46.60]Don't try to leave me, I'll find you right
-[00:52.54]If you have tried to believe that I want you running I leaving feel I leaving now
+[00:52.54]If you have tried to believe that I want you running and leaving feel I leaving now
 [01:18.25]I'm going to escape but you won't know how
 [01:21.29]Or where to find me when I'm gone
 [01:24.39]I'll drink myself to death inside
 [01:28.05]This bruising sound
-[01:32.01]This frees the sound
+[01:32.01]This freezing sound
 [01:36.01]Yeah, yeah, yeah
 [01:40.01]Yeah, yeah, yeah
 [01:44.01]Yeah, yeah, yeah
 [01:48.01]You change your name, or change your mind
-[01:52.01]And leave this far-and-touch place behind
+[01:52.01]And leave this fractured place behind
 [01:56.01]But I know, I know
-[02:00.01]Oh, no.` },
+[02:00.01]Oh no.` },
 
     { file: 'Clarion - Hello Juliet (Official Music Video).mp3', title: '＂Hello Juliet＂', artist: 'Clarion',
-      lyrics: `[00:00.00]Hello, hello, Julia
+      lyrics: `[00:00.00]Hello, hello, Juliet
 [00:11.02]Hello, hello, hello
-[00:18.02]Hello, hello, Julia
+[00:18.02]Hello, hello, Juliet
 [00:24.94]I know the things I should have said
 [00:32.52]Hello, hello, Juliet
 [00:38.82]I know, I know, I know
@@ -1309,46 +1328,46 @@ const papuPlaylist = [
 [00:55.56]Let me make it right, just wait for me
 [01:02.52]We can stop this breath and then proceed
 [01:09.14]Till I lose it all, you've slipped from me
-[01:16.56]Hello, hello, Julia
-[01:20.46]I know the things that shut upside
-[01:27.76]Hello, hello, Julia
-[01:34.28]I know I know I know Let me in again I need you please
+[01:16.56]Hello, hello, Juliet
+[01:20.46]I know the things that showed inside
+[01:27.76]Hello, hello, Juliet
+[01:34.28]I know, I know, I know, let me in again, I need you please
 [01:51.63]Don't you make me beg
 [01:54.63]I'm on my knees
-[01:57.63]I'm not here to me
-[02:08.63]I'm not here to me
-[02:15.63]I'm not here to me
+[01:57.63]I'm not here to leave you
+[02:08.63]I'm not here to leave you
+[02:15.63]I'm not here to leave you
 [02:22.63]I'm ready to leave you
 [02:52.63]Hello, hello, Juliet
 [02:56.83]I know the things that show your sight
 [03:04.29]Hello, hello, Juliet
 [03:10.63]I know, I know, I know
-[03:22.63]you` },
+[03:22.63]You` },
 
     { file: 'Dominic Fike Babydoll (Official Audio).mp3', title: 'Dominic Fike ＂Babydoll＂', artist: 'Mix',
       lyrics: `[00:00.00]I can't move on, baby doll
 [00:14.00]Waitin' on the call, slippin' through stations
 [00:17.00]I'm out of class and it's outrageous
 [00:19.72]I'll take it all, baby doll
-[00:25.44]Whatever's been waitin' you down
-[00:30.00]Find me on Miami Concrete
-[00:37.48]Looking for somebody different cause my daddy was a pimp
+[00:25.44]Whatever's been weighin' you down
+[00:30.00]Find me on Miami concrete
+[00:37.48]Looking for somebody different 'cause my daddy was a pimp
 [00:40.32]My mama had issues but I miss it anyway
 [00:43.20]Oh baby, don't
 [00:45.50]Please don't call me for the wrong reason
 [00:49.18]We both know exactly what I'm thinking
 [00:51.96]Weeks pass and I never grow tired
-[00:54.64]Cause I never said never and I barely ever lie
+[00:54.64]'Cause I never said never and I barely ever lie
 [00:57.46]I'm on the road to an original place
 [00:59.72]And out of space, I didn't make it up
 [01:02.44]But you can't find it on a phone or a globe
 [01:05.48]And I can take you with me if you really wanna go
 [01:08.64]Baby doll, I can't move on
 [01:13.90]I can't move on, baby doll
-[01:16.90]Waitin' on the call, strippin' through stations
+[01:16.90]Waitin' on the call, slippin' through stations
 [01:19.88]I'm out of class, it's outrageous
 [01:22.52]I'll take it all, baby doll
-[01:28.30]Whatever's been waiting you down` },
+[01:28.30]Whatever's been weighin' you down` },
 
     { file: 'Freaks.mp3', title: 'Freaks', artist: 'Mix',
       lyrics: `[00:00.00]Don't kill me
@@ -1357,9 +1376,9 @@ const papuPlaylist = [
 [00:30.00]I need a place to stay
 [00:33.16]I can't cover up my face
 [00:38.48]Don't cry
-[00:41.12]I am just a pig
-[00:43.56]I am just a pig
-[00:48.88]I am just a pig
+[00:41.12]I am just a freak
+[00:43.56]I am just a freak
+[00:48.88]I am just a freak
 [00:55.00]I'm just a friend
 [01:08.53]My head is filled with parasites
 [01:26.57]Black holes covered up my eyes
@@ -1372,29 +1391,26 @@ const papuPlaylist = [
 [02:07.33]I'm out.` },
 
     { file: 'Hers - Harvey (Official Audio).mp3', title: 'Harvey', artist: 'Her\'s',
-      lyrics: `[00:00.00]Девочка-пай
-[00:30.00]Субтитры сделал DimaTorzok
-[01:00.00]Субтитры сделал DimaTorzok
-[01:30.00]DimaTorzok Do you wanna know who it is Or again here in the end Do you wanna see who it is
-[01:50.58]You don't know me
-[01:51.58]Nobody, nobody knows what I see
-[01:56.58]Nobody knows I'm waiting
-[01:59.58]Waiting for me to come
-[02:04.58]Nobody, nobody knows what I see
-[02:09.58]Everyone thinks I'm crazy, crazy, oh boy
-[02:16.58]I think nobody knows what I see
-[02:36.84]Everyone thinks I'm crazy, crazy to you, oh boy
-[02:43.56]Honey, nobody knows what I see
-[02:50.46]Nobody knows I'm waiting, waiting for you to come
-[02:57.30]Honey, nobody knows what I see
-[03:04.08]Everything's so crazy, crazy
-[03:08.96]Oh oh` },
+      lyrics: `[00:00.00]Harvey
+[00:30.00]You don't know me
+[00:40.00]Nobody, nobody knows what I see
+[00:45.00]Nobody knows I'm waiting
+[00:48.00]Waiting for you to come
+[00:53.00]Nobody, nobody knows what I see
+[00:58.00]Everyone thinks I'm crazy, crazy, oh boy
+[01:05.00]I think nobody knows what I see
+[01:25.00]Everyone thinks I'm crazy, crazy to you, oh boy
+[01:32.00]Honey, nobody knows what I see
+[01:39.00]Nobody knows I'm waiting, waiting for you to come
+[01:46.00]Honey, nobody knows what I see
+[01:53.00]Everything's so crazy, crazy
+[01:58.00]Oh oh` },
 
     { file: 'INOHA - Seventh Heaven (Official Tour Lyric Video).mp3', title: 'Seventh Heaven', artist: 'INOHA',
       lyrics: `[00:00.00]Oh won't you stay for the ride?
 [00:03.10]Cause all the views will be nice
-[00:05.40]Land the stories that we'll tell our friends
-[00:08.66]We'll make him laugh until the party ends
+[00:05.40]And the stories that we'll tell our friends
+[00:08.66]We'll make them laugh until the party ends
 [00:11.66]Oh won't you stay for the ride?
 [00:15.10]It's two or two
 [00:17.30]Let's turn his head into a living
@@ -1419,7 +1435,7 @@ const papuPlaylist = [
 [01:28.04]Let's turn your sanity to a level
 [01:30.26]And make a choice to serve it happy
 [01:33.82]Minimum wage put minimal effort
-[01:50.08]Could hold on for money and waste my potential Skin rotting further though I not a relic Relate with the elderly bones are upset And I try so hard and it just so much work
+[01:50.08]Could hold on for money and waste my potential, skin rotting further though I'm not a relic, relate with the elderly, bones are upset, and I try so hard and it just so much work
 [02:01.53]Hell, I've slept in my car for days and weeks
 [02:03.91]It hurts that I can do so much and never get that far
 [02:07.51]Yet still I'm pushing for something
@@ -1451,39 +1467,41 @@ const papuPlaylist = [
 [00:15.00]With types in glittery decor
 [00:19.00]Unfortunately I take
 [00:24.00]Myself out walking everyday
-[00:27.00]day and I hand my legs to the feet and I give my head to the leash.
+[00:27.00]Day and I hand my legs to the feet and I give my head to the leash
 [00:37.20]Every other day I'm wondering, what's a human being gotta be like?
 [00:45.86]What's a way to just be competent?
-[00:50.22]These sweet instincts ruin my life.
+[00:50.22]These sweet instincts ruin my life
 [00:53.30]Every other day I'm wondering
 [00:57.80]Was it a mistake to try and define
 [01:02.30]What I'm certain's mad incompetence
-[01:06.30]These sweet instincts ruin my life I can smell raw lips all the time Not K nor K For human grossly underqualified
-[01:22.33]For K-9 grossly overqualified
-[01:26.75]I don't blend in at PetSmart
-[01:30.31]And that truth remains for the Walmart
-[01:34.89]Cause in either case they say to me
+[01:06.30]These sweet instincts ruin my life, I can smell raw lips all the time
+[01:22.33]For human grossly underqualified
+[01:26.75]For K-9 grossly overqualified
+[01:30.31]I don't blend in at PetSmart
+[01:34.89]And that truth remains for the Walmart
+[01:38.73]Cause in either case they say to me
 [01:38.73]What the fuck is lost in aisle three?
 [01:44.23]Every other day I'm wondering
 [01:47.25]What's a human being gotta be like?
 [01:52.23]What's a way to just be competent?
-[01:57.01]These certain instincts ruin my life
+[01:57.01]These sweet instincts ruin my life
 [02:00.17]Every other day I'm wondering
 [02:03.89]Was it a mistake to try and define
 [02:08.03]What I'm certain's mad incompetence
 [02:12.89]These sweet instincts were mine
-[02:15.87]Ooh ooh ooh ooh ooh ooh Just watch me
-[02:52.11]I'm not fine and nobody outs behavioral Frankenstein.
-[03:07.29]Just look at Victor in LA and sit with the Y at U of A.
-[03:14.99]And all the majors at the labels Reboot as soon as I am able
-[03:23.99]Every other day I'm wondering What's a human being gotta be like?
-[03:31.99]What a way to just be competent These sweet instincts blur my life Every other day I wondering Was it a mistake to try and define
+[02:15.87]Ooh, ooh, ooh, ooh, ooh, ooh, just watch me
+[02:52.11]I'm not fine and nobody outs behavioral Frankenstein
+[03:07.29]Just look at Victor in LA and sit with the Y at U of A
+[03:14.99]And all the majors at the labels reboot as soon as I am able
+[03:23.99]Every other day I'm wondering, what's a human being gotta be like?
+[03:31.99]What a way to just be competent, these sweet instincts blur my life
+[03:49.04]Every other day I'm wondering, was it a mistake to try and define
 [03:49.04]What uncertain's mad incompetence
 [03:53.16]These sweet instincts burn my life
 [04:05.70]These sweetest things ruin my life
 [04:13.70]These sweetest things ruin my life
-[04:35.70]Attention passengers, we've now reached our destination.
-[04:41.58]We hope you enjoyed the flight and have a nice day.` },
+[04:35.70]Attention passengers, we've now reached our destination
+[04:41.58]We hope you enjoyed the flight and have a nice day` },
 
     { file: 'Jane.mp3', title: 'Jane!', artist: 'Mix',
       lyrics: `[00:00.00]Won't the devil guide your hand for good luck
@@ -1498,22 +1516,20 @@ const papuPlaylist = [
 [01:00.82]Now they'll pay what they owe you
 [01:04.42]It's only small chains red on the green, green grass
 [01:09.16]Won the devil take you back for more
-[01:17.46]To open closed doors and keep the good
-[01:22.42]from the grade
-[01:24.46]evil and equal
-[01:26.24]seeking to kill and create how grand the milk and honey land is on her tongue again Taste of the violence trying to silence her head
-[01:41.87]J, you're early
+[01:17.46]To open closed doors and keep the good from the grave
+[01:24.46]Evil and equal
+[01:26.24]Seeking to kill and create how grand the milk and honey land is on her tongue again Taste of the violence trying to silence her head
+[01:41.87]Jane, you're early
 [01:56.67]Your life's work is dirtied by the fools who adore you
 [02:03.63]Biding your time, biding your time to strike
 [02:08.41]Surely the poison makes a portrait of your face
 [02:14.83]In the mirror, smiling with fright
-[02:19.11]Jay, you're early
+[02:19.11]Jane, you're early
 [02:36.11]Your life's work is dirtied by the fools who adore you
 [02:43.07]Only to find, only to find you out
 [02:47.79]They saw you dressing in the back room
 [02:52.69]Now they'll pay what they owe you
-[02:56.25]It's only small chains right on the green, green grass
-[03:06.11]Thank you.` },
+[02:56.25]It's only small chains right on the green, green grass` },
 
     { file: 'Joy Again - Looking Out for You (Lyric Video).mp3', title: 'Looking Out for You', artist: 'Joy Again',
       lyrics: `[00:00.00]I guess I should stop
@@ -1534,10 +1550,10 @@ const papuPlaylist = [
 [01:04.82]I know it's pretty stupid
 [01:06.00]But I'm much too shy to tell her
 [01:08.58]She's screaming and I smile
-[01:12.18]I'm all the wild
+[01:12.18]I'm all the while
 [01:13.86]I'm all trapped up on my own throat
-[01:17.00]I guess there is no
-[01:25.54]Thank you When we walking out in the snow
+[01:17.00]I guess there is no hope
+[01:25.54]When we're walking out in the snow
 [01:40.69]I say I guess I should go
 [01:45.29]And we're talking about someone else
 [01:50.61]Well we should be talking about ourselves
@@ -1549,38 +1565,37 @@ const papuPlaylist = [
 [02:15.73]This is a love song, I'll break our own
 [02:18.87]I never know about her, I know it's pretty stupid
 [02:22.29]But I'm much too shy to tell her
-[02:24.89]She's beaming that smile all the while
+[02:24.89]She's beaming and I smile all the while
 [02:30.13]I'm all trapped up on my own throat
-[02:33.25]I guess there is no hope
-[02:48.87]Thank you.` },
+[02:33.25]I guess there is no hope` },
 
     { file: 'Loose Cannon.mp3', title: 'Loose Cannon', artist: 'Mix',
-      lyrics: `[00:00.00]Losing on my chest
+      lyrics: `[00:00.00]Loose Cannon
 [00:19.32]Another day passed again
 [00:21.76]I waste my energy
 [00:23.38]Looking for escape within
 [00:26.08]I thought I'd better turn out the lights here
 [00:28.38]But I still got things to do
 [00:43.38]Everybody tells me nothing
-[00:45.38]Cause I don't ask something much really of anybody
+[00:45.38]'Cause I don't ask for much really of anybody
 [00:47.38]Everybody tells me nothing
-[00:49.38]Cause I don't ask something much really of anybody
+[00:49.38]'Cause I don't ask for much really of anybody
 [00:51.38]Yeah!
 [00:54.38]Everybody tells me nothing
 [00:58.38]Everybody tells me nothing
-[01:02.66]Cause I don't ask this much for the young anybody
+[01:02.66]'Cause I don't ask for much from anybody
 [01:05.08]Everybody tells me nothing
-[01:07.00]Cause I don't ask this much for the young anybody
+[01:07.00]'Cause I don't ask for much from anybody
 [01:09.48]Okay
-[01:09.86]Look at Batman over there son He afraid of what he find Look into his eyes
+[01:09.86]Look at Batman over there, son, he afraid of what he find, look into his eyes
 [01:37.04]Can you read between the lines?
-[01:53.50]Everybody tells me nothing, cause I don't have something much really of anybody
-[02:10.94]Everybody tells me nothing, cause I don't have something much really of anybody
+[01:53.50]Everybody tells me nothing, 'cause I don't ask for much really of anybody
+[02:10.94]Everybody tells me nothing, 'cause I don't ask for much really of anybody
 [02:19.26]Okay, boy, you're coming down to me, big and scary things
 [02:21.56]I don't think I'm at a heart that you don't see me
 [02:23.52]My fucking only M-I-D-I-N-I-N-I-C-A-C-O
 [02:25.58]Think I had a loose cannon, that's the baddest you
-[02:55.58]you` },
+[02:55.58]You` },
 
     { file: 'Marino - Im Sorry Mom.mp3', title: 'Im Sorry Mom', artist: 'Marino',
       lyrics: `[00:00.00]I have no motivation, I don't even wanna try
@@ -1594,11 +1609,11 @@ const papuPlaylist = [
 [00:36.00]I told you not to go out last night
 [00:37.92]My apologies that I don't wanna be what you want me to be
 [00:41.08]I'm sorry, I'm not a prodigy
-[00:43.06]Really got good grades, no A's or B's
+[00:43.06]Really got no good grades, no A's or B's
 [00:45.12]Yeah, I'm hardly getting by on a daily basis
 [00:47.72]But I got a dream, so I gotta chase it
 [00:49.82]Never gonna be who they wanna see
-[00:51.64]On my left, I know I'll be saying
+[00:51.64]On my own, I know I'll be saying
 [00:53.90]That I know exactly what my parents want
 [00:57.18]But I don't, so I won't go get that business degree
 [01:00.92]I'm sorry mom, that I'm a deadbeat
@@ -1612,15 +1627,15 @@ const papuPlaylist = [
 [01:28.08]And I know exactly what my parents want but I don't
 [01:32.06]So I won't go get that business degree
 [01:34.92]I'm sorry mom
-[01:36.18]That I'ma dare defeat the failure of the family
+[01:36.18]That I'm a deadbeat, the failure of the family
 [01:39.56]But I didn't ask to be here so just leave me alone` },
 
     { file: 'Miraidempa - Unslept.mp3', title: 'Unslept', artist: 'Miraidempa',
       lyrics: `[00:00.00]Music
 [00:21.00]I'm going to go to the next video.
-[00:51.00]I sorry I going to go to the next video
+[00:51.00]I'm sorry, I'm going to go to the next video.
 [01:30.22]I'm going to go to the next episode.
-[02:00.22]you` },
+[02:00.22]You` },
 
     { file: 'Mystery Girl.mp3', title: 'Mystery Girl', artist: 'Mix',
       lyrics: `[00:00.00]It's so strange how much I love her But the way she is makes me wonder
@@ -1635,22 +1650,22 @@ const papuPlaylist = [
 [01:02.38]When I'm close you move further away
 [01:08.82]Give me your hands to make you happy
 [01:16.52]I promise nothing can tear us apart
-[01:23.20]Oh I know I not that special But I know I have you later on Don you worry about my mama She in lots of several she will love you
+[01:23.20]Oh I know I'm not that special But I know I'll have you later on Don't you worry about my mama She in lots of several she will love you
 [01:39.23]But you're so cold, never listen Always ignore me, leave me blue
 [01:46.15]What can I do to get you to love me? You're so damn perfect, I don't wanna lose
 [01:53.23]Yeah my mystery girl
-[02:23.23]guitar solo
-[02:53.23].` },
+[02:23.23]Guitar solo
+[02:53.23]` },
 
     { file: 'Nafeesisboujee - Stephanie (Official Music Video).mp3', title: 'Stephanie', artist: 'Nafeesisboujee',
       lyrics: `[00:00.00]She keeps on texting me
 [00:19.14]Do I like her? No, definitely
 [00:20.94]I'm just like Stephanie
-[00:23.04]Do I like her? Yes, specially
+[00:23.04]Do I like her? Yes, especially
 [00:25.14]She keeps on texting me
 [00:27.54]Do I like her? No, definitely
 [00:29.36]I'm just like Stephanie
-[00:31.44]Do I like her? Yes, specially
+[00:31.44]Do I like her? Yes, especially
 [00:33.52]I keep on dubbing and dubbing and dubbing and dubbing and dubbing
 [00:37.72]But I smell so good, dubbing and dubbing
 [00:41.88]I'm just like Stephanie
@@ -1660,11 +1675,13 @@ const papuPlaylist = [
 [00:50.32]She keeps on texting me
 [00:52.70]Do I like her? No, definitely
 [00:54.50]I'm just like Stephanie
-[00:56.58]Do I like her? Yes, specially
+[00:56.58]Do I like her? Yes, especially
 [00:58.70]She keeps on texting me
 [01:01.08]Do I like her? No, definitely
 [01:02.90]I'm just like Stephanie
-[01:05.00]Do I like her Yes especially I dubbing and loving I don even have to stay I dubbing and loving I don need affiliates
+[01:05.00]Do I like her? Yes, especially
+[01:07.00]I'm dubbing and loving, I don't even have to stay
+[01:09.00]I'm dubbing and loving, I don't need affiliates
 [01:15.94]I miss you, Stephanie
 [01:17.58]I kiss like Bethany and Devany
 [01:20.92]Bro, how many did you kiss?
@@ -1672,30 +1689,30 @@ const papuPlaylist = [
 [01:23.88]She keeps on sexting me
 [01:26.26]Do I like her? No, definitely
 [01:28.06]I'm just like Stephanie
-[01:30.16]Do I like her? Yes, specially
+[01:30.16]Do I like her? Yes, especially
 [01:32.28]She keeps on sexting me
 [01:34.66]Do I like her? No, definitely
 [01:36.66]I'm just like Stephanie
-[01:38.66]Do I like her? Yes, specially
+[01:38.66]Do I like her? Yes, especially
 [01:40.66]I keep on dubbing
 [01:42.66]and dubbing and dubbing
 [01:44.66]other D's
 [01:46.66]Don't know if I'll see you again
 [01:48.66]I can't keep playing with Sam
 [01:50.66]Don't know if I'll see you again
-[01:52.66]Do I like her? Yes, specially
-[01:54.66]Do I like her? Yes, specially
+[01:52.66]Do I like her? Yes, especially
+[01:54.66]Do I like her? Yes, especially
 [01:56.66]We should all just
 [01:58.66]Do you know what we need to show?
 [02:00.66]Put away your problems
-[02:02.66]Put away your problems.
-[02:05.06]Or whatever it is.
-[02:07.20]We just need to forget about everything.
-[02:10.30]Just have a good time here tonight.
-[02:12.70]It's really that simple.` },
+[02:02.66]Put away your problems
+[02:05.06]Or whatever it is
+[02:07.20]We just need to forget about everything
+[02:10.30]Just have a good time here tonight
+[02:12.70]It's really that simple` },
 
     { file: 'Nope your too late i already died (Extended Version).mp3', title: 'Nope your too late i already died (Extended Version)', artist: 'Mix',
-      lyrics: `[00:00.00]I'm not trying to ruin your fun You're just a little bit late, I guess you're already done
+      lyrics: `[00:00.00]I'm not trying to ruin your fun, you're just a little bit late, I guess you're already done
 [00:22.28]It's this feeling I can't shake, it's up to you
 [00:26.00]I'm never doing the right thing, so I'm so stuck
 [00:30.10]If you see me in America, I might say hi
@@ -1713,34 +1730,35 @@ const papuPlaylist = [
 [01:20.22]I smoke a cig on the porch
 [01:22.06]It doesn't hurt me at all
 [01:24.24]I wonder what's it on for
-[01:26.04]Is this the filetor?
+[01:26.04]Is this the filter?
 [01:28.28]And I know I can't afford
 [01:30.00]Watching her walk out the door
 [01:32.06]So I keep it to myself
-[01:34.02]And keep my feet on the floor I not tryna ruin your fun You just a little bit late
-[01:56.11]I guess you're already done It's this feeling I can't shake
-[02:00.65]Cause I'm too dumb
+[01:34.02]And keep my feet on the floor
+[01:36.11]I'm not trying to ruin your fun, you're just a little bit late
+[01:56.11]I guess you're already done, it's this feeling I can't shake
+[02:00.65]'Cause I'm too dumb
 [02:02.65]I'm never doing the right thing
-[02:04.65]So I'm so stoked
+[02:04.65]So I'm so stuck
 [02:06.65]If you see me in America
 [02:08.65]I might say hi
 [02:10.65]If you meet me out in here
 [02:12.65]I'm not talking in love
-[02:14.65]Maybe we'll talk no discount
-[02:16.65]Or I'm up sometimes
+[02:14.65]Maybe we'll talk no scouts
+[02:16.65]Around much sometimes
 [02:18.65]And I've never been a friend
 [02:20.65]So it might be nice
-[02:22.65]But I can't take this pop for a CG
-[02:26.65]Because there's always out
+[02:22.65]But I can't take this pop through our sea trees
+[02:26.65]'Cause there's big hands
 [02:28.65]And always staring at me
 [02:30.65]If I say they're on the payback, I want lots of it
-[02:33.81]Always looking at their pitchforks, if you try to speak
-[02:38.05]This day I'm walking the road, shaking rocks, it's my fault
-[02:44.11]I'll ask the way story talks, I'll be this way till I'm home
+[02:33.81]Always whipping out their pitchforks if you try to speak
+[02:38.05]This day I'm walking the road, kicking rocks, it's my fault
+[02:44.11]My life's the way story talks, I'll be this way till I'm home
 [02:48.07]I rip the page out the foot, I'm just on misunderstood
-[02:51.67]I always think I've ever, know when my life felt good
+[02:51.67]I always thinkin' about her, know when my life felt good
 [02:56.09]I smoke a cig on the porch, it doesn't hurt me at all
-[03:00.25]I wonder what's it on board
+[03:00.25]I wonder what's it on for
 [03:02.07]Is this the feel I adore
 [03:04.01]And I know I can't afford
 [03:05.99]Watching her walk out the door
@@ -1749,7 +1767,7 @@ const papuPlaylist = [
 
     { file: 'Perfecto Miserable - Termonuclear.mp3', title: 'Termonuclear', artist: 'Perfecto Miserable',
       lyrics: `[00:00.00]MOTARÍA MIS AMIGOS
-[00:30.00]Un ataque de monstrual, voy a estallar, voy a estallar, voy a estallar, voy a estallar
+[00:30.00]Un ataque de monstruo, voy a estallar, voy a estallar, voy a estallar, voy a estallar
 [00:39.06]Estaré triste y aburrido cuando tú ya te hayas ido
 [00:44.80]No puedo ser feliz
 [00:47.82]¿Qué harías por verme? ¿Qué harías por verme?
@@ -1758,8 +1776,8 @@ const papuPlaylist = [
 [01:01.04]Cada vez que intentamos hablar
 [01:06.20]Un ataque eterno nuclear
 [01:09.70]Voy a estallar, voy a estallar, voy a estallar, voy a estallar
-[01:26.40]y toda la ropa que llevo
-[01:40.40]y las pel que veo La m que escucho es dorada que te gusta a ti
+[01:26.40]Y toda la ropa que llevo
+[01:40.40]Y las películas que veo, la música que escucho es dorada, que te gusta a ti
 [01:57.76]Y todos mis amigos dicen que me olvide de ti
 [02:08.00]Mandaría a mis amigos por una tarde contigo
 [02:14.06]Pero no se puede
@@ -1781,9 +1799,9 @@ const papuPlaylist = [
       lyrics: `[00:00.00]Música
 [00:24.00]Donde te has ido parece que no estás
 [00:26.00]No tengas miedo es para matar
-[00:28.00]No va a dolerme, no dolerá, no va a dolerme si dolerá
-[00:33.24]Clávarás fuerte, cláverás ya, clávarás fuerte tus palabras
-[00:37.86]Vas a decirme la verdad, clávarás fuerte mi espalda
+[00:28.00]No va a dolerme, no dolerá, no va a dolerme, sí dolerá
+[00:33.24]Clavaras fuerte, clavarás ya, clavarás fuerte tus palabras
+[00:37.86]Vas a decirme la verdad, clavarás fuerte mi espalda
 [00:42.40]Mi rostro tan serio, parece un cementerio
 [00:47.04]Tu cuerpo helado, quiero estar a tu lado
 [00:51.50]Esperando a verte, esperar hasta la muerte
@@ -1796,7 +1814,9 @@ const papuPlaylist = [
 [01:33.72]Siéntate, piensarás
 [01:36.04]Dame el golpe que me rematará
 [01:38.32]Mi rostro tan serio parece un cementerio
-[01:42.68]Mi cuerpo enjado quiero estar a tu lado Esperando a verte esperaba hasta la muerte esperando a verte
+[01:42.68]Mi cuerpo enojado quiero estar a tu lado
+[01:46.04]Esperando a verte, esperar hasta la muerte
+[01:50.50]Esperando a verte
 [02:13.90]Ocupar a las noticias cinco semanas o más
 [02:19.36]El asesinato que cometerás
 [02:23.82]Cuando llene tu llamada, una noche inesperada
@@ -1805,18 +1825,18 @@ const papuPlaylist = [
 [02:37.90]Cuando vuelves el teléfono, tienes tres cuartos sobre aquello
 [02:42.32]Si digo que no te quiero, te quiero en un cuerpo nuevo, si buscas de nuevo, me dejas olvidar
 [03:01.70]Más rápido, más rápido, más rápido, más rápido, más rápido, más rápido, más rápido, más rápido, te puedo olvidar
-[03:12.32]Gracias por ver el video.` },
+[03:12.32]Gracias por ver el vídeo.` },
 
     { file: 'TU CARCEL - Enanitos Verdes.mp3', title: 'Enanitos Verdes', artist: 'TU CÁRCEL',
-      lyrics: `[00:00.00]Девочка-пай
-[00:30.00]И ты, любовь, если ты так хочешь, ты можешь сделать это?
-[00:38.66]Ты банкрот не тебя вести понимать, что в пубрице ты знаешь, что ты хочешь.
-[00:48.88]И мне не улыбается, и мне не улыбается, что ты думаешь так, и больше, что ты не будешь.
-[00:58.04]Субтитры сделал DimaTorzok
-[01:28.04]DimaTorzok Quiero llorar y me destroza que pienses as
+      lyrics: `[00:00.00]Tu cárcel — Enanitos Verdes
+[00:30.00]Y tú, amor, si es que tú así lo quieres, tú puedes hacerlo
+[00:38.66]Tú no eres un quiebra, no te voy a entender, que en público tú sabes lo que quieres
+[00:48.88]Y a mí no me sonríe, y a mí no me sonríe, que tú pienses así, y más que tú no quieras
+[00:58.04]Subtítulos hecho DimaTorzok
+[01:28.04]DimaTorzok Quiero llorar y me destroza que pienses así
 [02:00.34]Y más que ahora me quedé sin ti
 [02:04.56]Me duele lo que tú vas a sufrir
-[02:10.08]Pero recuerda, nadie es perfecto y tú lográs
+[02:10.08]Pero recuerda, nadie es perfecto y tú lo habrás
 [02:16.70]Más de mil cosas mejores tendrás
 [02:20.94]Pero cariño sincero jamás
 [02:26.78]Vete olvidando de eso que hoy dejas y que cambiarás
@@ -1825,8 +1845,8 @@ const papuPlaylist = [
 [02:43.16]Pero recuerda, nadie es perfecto y tú lo habrás
 [02:49.44]Más de mil cosas mejores tendrás
 [02:53.62]Pero cariño sincero jamás
-[02:59.56]Vente olvidando de esto que hoy dejas y que cambiarás
-[03:05.88]Por la aventura que tú ya verás, será tu cárcel y nunca saldrás.` },
+[02:59.56]Vete olvidando de esto que hoy dejas y que cambiarás
+[03:05.88]Por la aventura que tú ya verás, será tu cárcel y nunca saldrás` },
 
     { file: 'The Love I Lost.mp3', title: 'The Love I Lost', artist: 'Mix',
       lyrics: `[00:00.00]I'm feeling detached, there's no coming back
@@ -1835,12 +1855,12 @@ const papuPlaylist = [
 [00:32.28]Away from things I always knew
 [00:36.58]I miss the world that I know I lost
 [00:41.58]I miss the one that I love
-[00:45.38]Drinking the road in the parking lot
+[00:45.38]Drinking alone in the parking lot
 [00:50.84]When is it gonna stop?
 [00:55.44]You're all mannequins, you're all rolling pins
 [01:00.02]That I would strike down if life was a game
-[01:04.32]So thoughtless and cruel, you think you're so cruel
-[01:08.84]I would think you'd do another day
+[01:04.32]So thoughtless and cruel, you think you're so cool
+[01:08.84]I would think you'd do the same thing
 [01:13.14]I miss the one that I know I lost
 [01:18.16]I miss the one that I love
 [01:21.98]Drinking alone in the parking lot
@@ -1848,8 +1868,7 @@ const papuPlaylist = [
 [01:32.00]I miss the love that I know I lost
 [01:36.32]I miss the one that I love
 [01:40.12]Drinking again in the parking lot
-[01:45.72]When is it gonna stop?
-[01:51.98]Thank you.` },
+[01:45.72]When is it gonna stop?` },
 
     { file: 'The Rare Occasions Origami (Lyric Video).mp3', title: 'The Rare Occasions ｜ Origami', artist: 'Mix',
       lyrics: `[00:00.00]Take a look at me, crumpled up on the floor, feeling lonely
@@ -1860,23 +1879,23 @@ const papuPlaylist = [
 [00:50.56]Shadows unwind deep in starlight
 [01:03.56]There's another way apart from this misery
 [01:09.56]And it's got me wondering exactly what I'm missing
-[01:16.56]Take a look at me crumpled up on the floor feeling lonely Honestly something is wrong with me
-[01:35.19]I'll face the night deep in starlight.
-[01:42.59]Shadows unwind deep in starlight.
+[01:16.56]Take a look at me, crumpled up on the floor, feeling lonely
+[01:35.19]I'll face the night deep in starlight
+[01:42.59]Shadows unwind deep in starlight
 [01:52.09]I'll face the night
-[02:22.09]Thank you.
-[02:52.09]Amen.` },
+[02:22.09]Thank you
+[02:52.09]Amen` },
 
     { file: 'The Rare Occasions Notion Official Music Video.mp3', title: 'The Rare Occasions ｜ ＂Notion＂ Official Music Video', artist: 'Mix',
       lyrics: `[00:00.00]Sure it's a common ocean, perpetual emotion
 [00:17.28]But I don't need the comfort of any lies
 [00:23.72]I've seen the ending and there's no ascending rise
 [00:35.72]Oh, like when I was younger, was filled by other youngsters
-[00:41.72]And my unwielded son-in-trived beneath the earth
+[00:41.72]And my unwielded something beneath the earth
 [00:47.72]Cause I don't see what they see
 [00:50.72]Where they stare at me
 [00:53.72]I see the window, the limit's a limit, but not at all
-[01:17.72]If you could borrow a letter to carry on to that day Until I leave and I live anymore To its a common ocean A bad water ocean
+[01:17.72]If you could borrow a letter to carry on to that day until I leave and I live anymore, it's a common ocean, a bad water ocean
 [01:45.00]But it's not what you've signed up for
 [02:02.56]I'm sure there won't always be sunshine
 [02:08.22]When there's this momentary game of light
@@ -1907,13 +1926,13 @@ const papuPlaylist = [
 [01:26.26]Until the morning comes out, forget about our life
 [01:33.56]I feel so much better
 [01:41.58]Now that you're gone forever
-[01:44.46]I tell myself that I don miss you at all I not denying denying That I feel so much better now
+[01:44.46]I tell myself that I don't miss you at all, I'm not denying, denying, that I feel so much better now
 [01:57.86]That you're gone forever
 [02:02.20]First time you screamed at me
 [02:06.28]I should have made you leave
 [02:09.40]I should have known it could be so much better
 [02:15.60]I hope you're missing me
-[02:18.64]I hope I've made you say
+[02:18.64]I hope I've made you see
 [02:21.68]That I'm gone forever
 [02:26.82]And now it's coming clear
 [02:30.70]That I don't need you here
@@ -1930,21 +1949,21 @@ const papuPlaylist = [
 
     { file: 'ThxSoMch - Bad Dream (Official Lyric Video).mp3', title: 'Bad Dream', artist: 'ThxSoMch',
       lyrics: `[00:00.00]Woo!
-[00:30.00]running, oh just eyes
+[00:30.00]Running, oh just eyes
 [00:36.98]I just want something
 [00:40.12]nice
-[00:44.74]my life without you is just a real bad change
-[00:50.66]my life without you is just a real bad change
+[00:44.74]My life without you is just a real bad dream
+[00:50.66]My life without you is just a real bad dream
 [00:58.34]Drinking me, so black and sweet
 [01:00.64]Just go look at me, just go look at me
-[01:03.46]I lost no sense of time Only yeah only I Feel me you sublime
+[01:03.46]I lost no sense of time, only yeah only I feel me, you sublime
 [01:27.80]I just want your delight
 [01:33.80]I'm drunk to give up, it's a ride, it's a ride
 [01:36.80]My life without you's just a real bad dream
 [01:39.80]I'm drunk to give up, it's a ride, it's a ride
 [01:41.80]My life without you's just a real bad dream
 [01:43.80]I'm a drug, drinking man, it's a rap, can sleep
-[01:47.06]My life without you, just a real bad chain
+[01:47.06]My life without you's just a real bad dream
 [01:49.64]I'm a drug, drinking man, it's a rap, can sleep
 [01:52.26]Just go back at me, just go get me
 [01:54.92]These, the drug that I must taste
@@ -1977,7 +1996,7 @@ const papuPlaylist = [
 [00:51.88]Can't do so, but you're at me
 [00:54.60]Who knows who you're screwing by your hands clean
 [00:57.32]And if you ain't, I know
-[00:58.94]Don't talk a lot, you just opened up your mouth and I said,
+[00:58.94]Don't talk a lot, you just opened up your mouth and I said
 [01:02.18]Bear in peace, if you can't do soon, now you're in me
 [01:05.40]Now who knows who you'll be doing, now your hands clean
 [01:08.10]And if they ain't clean, just do it, just do it to me, do it
@@ -1987,8 +2006,7 @@ const papuPlaylist = [
 [01:27.02]Just do it
 [01:28.36]Just do it
 [01:31.12]Just do it
-[01:31.76]Just do it
-[01:54.54]Thank you.` },
+[01:31.76]Just do it` },
 
     { file: 'ThxSoMch - CAROLINE (Official Music Video).mp3', title: 'CAROLINE', artist: 'ThxSoMch',
       lyrics: `[00:00.00]Caroline, I'll take you to my cemetery
@@ -2009,7 +2027,7 @@ const papuPlaylist = [
 [01:15.44]Caroline, I'll take you to my cemetery
 [01:19.82]And I'll be fine, I'll work it, I'll work it out
 [01:25.80]Count your days, I'll burn myself my Mary Jane
-[01:31.00]You and I we work it we work it out Wake up promise that when I gone I still connect the dots
+[01:31.00]You and I we work it we work it out, wake up, promise that when I'm gone I still connect the dots
 [01:43.50]From hell I'll haunt you, God
 [01:45.98]Damn, I'll take these words written in vain
 [01:51.34]Cover them up in lace
@@ -2027,11 +2045,11 @@ const papuPlaylist = [
 [02:35.06]You and I, we'll work it, we'll work it out
 [02:40.82]We're working, we're working, we're working out
 [02:50.88]You and I, we're working, we're working out
-[03:10.82]you` },
+[03:10.82]You` },
 
     { file: 'ThxSoMch - Crumbled (Official Music Video).mp3', title: 'Crumbled', artist: 'ThxSoMch',
       lyrics: `[00:00.00]If I live
-[00:29.00]And I'll be like, is that your way to talk me?
+[00:29.00]And I'll be like, is that your way to talk to me?
 [00:35.42]If I do what I want, that's fine, just lay it on me
 [00:40.06]Cut me out, cuss me out, bear me down
 [00:48.58]Last night, you were so content, that's why
@@ -2045,7 +2063,7 @@ const papuPlaylist = [
 [01:05.86]It's a
 [01:06.78]It's a
 [01:07.72]What the fuck
-[01:08.44]I'm crealled
+[01:08.44]I'm crumbled
 [01:09.42]But again
 [01:10.30]It's a
 [01:11.32]It's a
@@ -2056,11 +2074,11 @@ const papuPlaylist = [
 [01:17.10]It's a
 [01:18.12]It's a
 [01:18.90]What the fuck
-[01:19.44]I'm crealled
+[01:19.44]I'm crumbled
 [01:20.30]But again
 [01:21.62]I'd cry on the boat again
 [01:27.62]I'd cry on the whole one
-[01:32.06]Can we see the women a half million They cut me open well yeah baby I don care There blood on the cell oh well It wasn for anybody out there
+[01:32.06]Can we see the women, half a million? They cut me open, well yeah baby, I don't care. There's blood on the cell, oh well, it wasn't for anybody out there.
 [01:42.71]Your hand, my hand, my hand
 [01:49.11]Oh well, oh well, oh well, oh well
 [01:54.55]Yes, no, yes, no, yes, no, yes, no
@@ -2082,17 +2100,17 @@ const papuPlaylist = [
 [02:58.31]What the fuck I care but again?` },
 
     { file: 'ThxSoMch - Cry All Month (Official Lyric Video).mp3', title: 'Cry All Month', artist: 'ThxSoMch',
-      lyrics: `[00:00.00]I'll make you cry, cry, cry, cry all along
-[00:11.28]Girl, I'm exactly what you did, you got the back you could feel, don't you fuck
-[00:18.56]I'll make you cry, cry, cry, cry all along
-[00:25.80]Find out exactly what you did
+      lyrics: `[00:00.00]I'll make you cry, cry, cry, cry all month
+[00:11.28]Girl, I'm exactly what you need, you got the bag you could feel, don't you rush
+[00:18.56]I'll make you cry, cry, cry, cry all month
+[00:25.80]Find out exactly what you need
 [00:30.42]You never thought you could feel no touch
 [00:33.18]I'll make you cry, cry, cry, cry
 [00:39.44]Oh, yeah, you can cry
 [00:43.10]Tears will come falling from your eyelids
-[00:47.00]Run down from your face to where you're smiless
+[00:47.00]Run down from your face to where you're smileless
 [00:50.74]Smile fades away, too sick of the violence
-[00:54.30]I'm in love with you, but love's not worth the size
+[00:54.30]I'm in love with you, but love's not worth the price
 [00:57.70]Tick, tick, tick, tell me what the time is
 [01:01.74]Take the pain away, back in with your vices
 [01:05.06]Take the pain away, whatever you're prescribing
@@ -2101,8 +2119,8 @@ const papuPlaylist = [
 [01:16.10]Now you're living a fallacy
 [01:18.96]Never thought you'd get back with me
 [01:23.20]So don't try and get back at me
-[01:26.32]Girl, I'm exactly what you did
-[01:28.62]And I the fact that you could feel no right I make you cry cry cry cry Turn out exactly what you need
+[01:26.32]Girl, I'm exactly what you need
+[01:28.62]And I love the fact that you could feel no right I make you cry cry cry cry Turn out exactly what you need
 [01:43.17]You never thought you could feel no touch
 [01:45.87]I'll make you cry, cry, cry, cry
 [01:52.19]Turn out love
@@ -2126,9 +2144,9 @@ const papuPlaylist = [
 [02:58.53]Thank you.` },
 
     { file: 'ThxSoMch - Everyone Dies In A Costume (Official Lyric Video).mp3', title: 'Everyone Dies In A Costume', artist: 'ThxSoMch',
-      lyrics: `[00:00.00]Hey you, I almost thought I lost you I almost got excited
-[00:09.54]I don't mean to be rude, I just can't hold my mood And it's because I hate you
-[00:18.00]I almost thought I liked you But now I first decided
+      lyrics: `[00:00.00]Hey you, I almost thought I lost you, I almost got excited
+[00:09.54]I don't mean to be rude, I just can't hold my mood, and it's because I hate you
+[00:18.00]I almost thought I liked you, but now I first decided
 [00:25.96]And now I'm back with you
 [00:29.90]And nothing but you's true
 [00:32.02]Nothing but you
@@ -2139,7 +2157,7 @@ const papuPlaylist = [
 [00:55.96]Hey you, this season you have lost it
 [01:05.04]I could try to save you, but that would be no use
 [01:11.74]So go inside your knees, but nothing but it
-[01:15.68]Save you a costume I hate you I hope you die in that costume
+[01:15.68]Save you a costume, I hate you, I hope you die in that costume
 [01:31.01]I hate you, I hate you
 [01:33.01]I, I, I hate you
 [01:35.01]When you tried to be someone you'd hide
@@ -2156,7 +2174,7 @@ const papuPlaylist = [
     { file: 'ThxSoMch - Hate. (Official Music Video).mp3', title: 'Hate.', artist: 'ThxSoMch',
       lyrics: `[00:00.00]I always hate, hate, hate When you write it hard
 [00:04.66]Not what I say, sha sha sha bitch I wanna re-shine
-[00:07.10]I won't show you hate, hate Untill your butt in court
+[00:07.10]I won't show you hate, hate Until your butt in court
 [00:09.86]I wouldn't hide, lie And tell your butt in the crowd
 [00:12.46]I always hate, hate, hate When you write it hard
 [00:14.86]Not what I say, sha sha bitch I wanna re-shine
@@ -2188,7 +2206,7 @@ const papuPlaylist = [
 [01:33.39]I'd kill myself a fall in the morning
 [01:35.45]The pill's probably gone
 [01:38.15]I hate myself, you made me want my soul
-[01:41.23]Ain't no F.O.A.Ton, Ain't no F.O.A.Ton, Ain't no F,H!I.Ton, Ain't no F.O.A.Ton!
+[01:41.23]Ain't no F.O.A.Ton, Ain't no F.O.A.Ton, Ain't no F.O.A.Ton, Ain't no F.O.A.Ton!
 [01:43.37]You always hate! Height, height,
 [01:44.75]What you wantin' a style of what?
 [01:45.89]When I shake, shake, shake,
@@ -2209,7 +2227,7 @@ const papuPlaylist = [
     { file: 'ThxSoMch - Keep It To Yourself (Official Music Video).mp3', title: 'Keep It To Yourself', artist: 'ThxSoMch',
       lyrics: `[00:00.00]In an empty hole you fell
 [00:03.60]Where every little feeling starts to swell
-[00:08.80]Now you wanna run and know what's fair well
+[00:08.80]Now you wanna run and know what's farewell
 [00:14.20]You're angry on the inside, I can tell
 [00:19.64]My life's a living hell
 [00:24.76]And you're not feeling well
@@ -2227,18 +2245,18 @@ const papuPlaylist = [
 [00:55.80]I bet nobody knows how many pills you took
 [01:01.80]Can you keep it locked down right now as you could?
 [01:07.80]Cause you don't wanna come across misunderstood
-[01:12.80]When life a living tale And you not feeling well Don cry and ask for help or keep it to yourself When life goes as it should but you not feeling good
-[01:29.98]Just ain't your mental health, or keep it to yourself
+[01:12.80]When life's a living tale and you're not feeling well, don't cry and ask for help or keep it to yourself
+[01:29.98]Just ain't your mental health or keep it to yourself
 [01:34.92]I don't care, I don't care, I don't care, I don't care
 [01:37.54]Just keep it to yourself, I don't care, I don't care, I don't care
 [01:42.08]I don't care, I keep it to myself
 [01:45.34]Keep it to yourself
 [01:55.82]Keep it to yourself
-[02:06.58]I've been living for you, and you're not feeling well
-[02:13.14]Don't cry and ask for a while, and you're meant to yourself
-[02:19.48]Your life goes as it should, but you're not feeling well
-[02:25.94]Just need your mind to come, and you're meant to yourself
-[02:36.58]you` },
+[02:06.58]I've been living for you and you're not feeling well
+[02:13.14]Don't cry and ask for a while and you're meant to yourself
+[02:19.48]Your life goes as it should but you're not feeling well
+[02:25.94]Just need your mind to come and you're meant to yourself
+[02:36.58]You` },
 
     { file: 'ThxSoMch - Keep It Tucked (Official Audio).mp3', title: 'Keep It Tucked', artist: 'ThxSoMch',
       lyrics: `[00:00.00]Music
@@ -2262,7 +2280,7 @@ const papuPlaylist = [
 [01:14.54]I had my baby veil, I would love you
 [01:17.28]Every reason it's all done
 [01:19.26]Never know how long
-[01:20.92]Had a chicken just not Wish ya good like my baby Could be your light do ya Up on the trip that just my my anxiety Whatever happens happens there no idea psychiatrist So if I owed you would I fuck you That was my son
+[01:20.92]Had a chicken just not
 [01:32.80]She called me Lovalea, I call her mama name
 [01:35.50]I wanna scream and burn it up until I fucking play
 [01:38.10]If I wasn't so, I'd give a fuck about what I do
@@ -2281,17 +2299,17 @@ const papuPlaylist = [
 [02:11.36]And a reason it's all done
 [02:13.36]Never know where I'm going
 [02:19.36]Let's go!
-[02:49.36]you` },
+[02:49.36]You` },
 
     { file: 'ThxSoMch - Knocking At My Door (Official Music Video).mp3', title: 'Knocking At My Door', artist: 'ThxSoMch',
       lyrics: `[00:00.00]I'm a little bit older
-[00:30.00]I'm gonna go get it out of here.
-[00:37.00]Look at this. Look at this.
-[00:40.00]You make it to Ohio, we're in the middle.
+[00:30.00]I'm gonna go get it out of here
+[00:37.00]Look at this, look at this
+[00:40.00]You make it to Ohio, we're in the middle
 [01:00.00]Big noise
-[01:01.00]Who said you can't get a nothing at all
-[01:03.50]Who said you can't get a nothing at all
-[01:06.00]I think the worst thing is what it's wrong
+[01:01.00]Who said you can't get nothing at all
+[01:03.50]Who said you can't get nothing at all
+[01:06.00]I think the worst thing is when it's wrong
 [01:08.50]What's your love on your birthday?
 [01:10.50]Heaven knows the stuff that you cry for
 [01:13.50]So when you're down, you reward
@@ -2307,7 +2325,7 @@ const papuPlaylist = [
 [01:37.50]Who's that, you can't, now I'm knocking on the door
 [01:43.50]Who's that, you can't, now I'm knocking on the door
 [01:45.50]Who's that, I call it, say you don't love me no more
-[01:48.50]We were sectioned now you won pick no Who that you can now I knocking on the door Who So who acting care now knocking on the door Who acting care now knocking on the door No I can know I gonna stay here
+[01:48.50]We were section now you won't pick no, who's that you can now I'm knocking on the door, who's that you can now I'm knocking on the door, who's that I call it, say you don't love me no more
 [02:00.10]And every word you say is secret law
 [02:03.22]Riding into my corpse I like to care here
 [02:05.72]So tell me what it was, feeling full
@@ -2318,7 +2336,7 @@ const papuPlaylist = [
 [02:18.60]Wasted or lower the gun to my throat and the amen let it out
 [02:24.44]Take me out of the way, I'm putting it on the floor
 [02:28.06]Who is it, you care about knocking on my door?
-[02:35.66]Say you don't love me more, Give me a section, take now your opinion
+[02:35.66]Say you don't love me more, give me a section, take now your opinion
 [02:41.70]So who is it, you care about knocking on my door?
 [02:48.60]I'm bleeding out of the sword
 [03:18.60]Can't let my knock go` },
@@ -2340,16 +2358,16 @@ const papuPlaylist = [
 [00:50.94]Taste it
 [00:52.12]Don't know what to say except you
 [00:53.56]Nah, nah, nah, nah, nah, nah
-[00:55.82]You crush my heart and say it's nothing You broke me down, I kept all cutting
-[01:00.92]I'd lay for you and now I'm gushing I'd lay for you but you'll never hear
-[01:06.14]Spinning my face my love it won change Spinning my face my love it won change Spinning my face my love I your case Spinning my face my love I talking Spinning my face my love it won change because spitting my face my love it won change me But I been slacking my face my love it won fade me
-[01:20.05]Spitting my face, my love, they won't change me
+[00:55.82]You crush my heart and say it's nothing, you broke me down, I kept on cutting
+[01:00.92]I'd lay for you and now I'm gushing, I'd lay for you but you'll never hear
+[01:06.14]Spitting my face, my love, it won't change me, spitting my face, my love, it won't change me
+[01:20.05]Spitting my face, my love, it won't change me
 [01:24.31]Spitting my face, my love, it won't change me
 [01:26.53]Spinning my face, my love, I feel mad
 [01:31.09]For sure, Tommy gave it up, I'll leave everyone in a cold
 [01:34.13]All I want to say, I'll do anything you condone
-[01:35.31]Show me hell, where I'll shoot it, through my motherfuc***** bone
-[01:37.39]She dead
+[01:35.31]Show me hell, where I'll shoot it through my motherfucking bone
+[01:37.39]She's dead
 [01:37.93]And the bitch so caught me crazy, little hoe had a sound
 [01:41.49]She got to guess her job and I was so good at the attic
 [01:44.27]You're worried, I know we learn to argue like you're that
@@ -2361,7 +2379,7 @@ const papuPlaylist = [
 [01:57.79]Spinning my face, my love, it won't face me
 [02:00.29]Spinning my face, my love, it won't change me
 [02:02.87]Spinning my face, my love, I feel crazy
-[02:05.37]Spinning my face, my love, I'm full straight
+[02:05.37]Spinning my face, my love, I'm on straight
 [02:07.87]Spinning my face, my love, it won't face me
 [02:10.45]Spinning my face, my love, it won't change me
 [02:13.05]Spinning my face, my love, I'm not crazy
@@ -2377,41 +2395,45 @@ const papuPlaylist = [
 [00:42.62]Just because I hate it, I don't mean anything to say
 [00:45.08]Or worse because you hate it, I'm not the man I could be
 [00:47.76]Nah, I'm tweaking out, quit tweaking out, hey
-[00:51.30]So this is not a shutdown
+[00:51.30]So this is not a shakedown
 [00:54.04]We just gotta call it but I'm pushing that flaked out
 [00:56.74]You're coming when it's right now
 [00:59.28]We just got a color but I hold this out and I'm blacked out
-[01:01.80]So this is not a shutdown We just got a color but I pushing my face down You coming when it right now We just got a cover but I hold a cell and break down I once promised you could save mine
+[01:01.80]So this is not a shakedown
+[01:04.54]We just got a color but I'm pushing my face down
+[01:07.24]You coming when it's right now
+[01:09.78]We just got a cover but I hold a cell and break down
+[01:12.30]I once promised you could save mine
 [01:14.52]Feel like I'm two people at the same time
-[01:17.16]Popping to get rid of all the eight
+[01:17.16]Popping to get rid of all the hate
 [01:19.20]And then they're popping up with the brakes
 [01:21.68]When I understand my brain
-[01:23.08]Just because I hate
+[01:23.08]Just because I hate it
 [01:24.04]I don't mean anything to say
 [01:25.52]I'm worried, speak up too heavy
 [01:26.56]I'm not the man I could pay
 [01:28.14]Nah, I'm tweaking out
 [01:29.86]Quit tweaking out, hey!
-[01:32.18]This is Not a CheckDown
-[01:41.18]This is Not a CheckDown
-[02:01.68]you` },
+[01:32.18]This is not a shakedown
+[01:41.18]This is not a shakedown
+[02:01.68]You` },
 
     { file: 'ThxSoMch - Sound Of You Laughing (ft. Flawed Mangoes).mp3', title: 'Sound Of You Laughing (ft. Flawed Mangoes)', artist: 'ThxSoMch',
-      lyrics: `[00:00.00]The sounds of a rap
+      lyrics: `[00:00.00]The sound of you laughing
 [00:23.72]I think I heard it in this line, but I'm happy
 [00:26.74]Can you consider me from this line, but I'm happy
 [00:29.60]Looks like a million other people in the world
 [00:32.50]I forgot, but you're the only girl
-[00:34.58]I'm laughing, think I'm addicted to the sounds of the laughing
+[00:34.58]I'm laughing, think I'm addicted to the sound of you laughing
 [00:38.40]I'm falling asleep before this nightmare
 [00:40.54]I'm laughing, looks like a million other people in the world
 [00:44.10]I forgot, but you're the only girl in this nightmare
-[00:47.12]Let me die that you could sleep beside me
-[00:50.36]Hear me now, this dream is you will never end
-[00:53.24]Hear me now, this dream is you could never end
+[00:47.12]Let me die so that you could sleep beside me
+[00:50.36]Hear me now, this dream with you will never end
+[00:53.24]Hear me now, this dream with you could never end
 [00:56.18]Coming in again, this nightmare
 [00:58.74]The only girl
-[01:28.74]The sounds of the black the sounds of a dance baby The sounds of a dance baby The sounds of a rapping
+[01:28.74]The sound of you laughing, the sound of a dance baby, the sound of a dance baby, the sound of you rapping
 [01:34.25]I think I heard it in this nightmare
 [01:36.25]I'm happy
 [01:37.25]Can you please send me from this nightmare?
@@ -2419,24 +2441,24 @@ const papuPlaylist = [
 [01:40.25]There's like a million other people in the world
 [01:42.25]I forgot but you're the only girl
 [01:44.25]I'm having
-[01:45.25]Think I'm addicted to the sounds of a laughing
+[01:45.25]Think I'm addicted to the sound of you laughing
 [01:48.25]I think you sent me from this nightmare
 [01:50.25]I'm having
 [01:51.25]There's like a million other people in the world
-[01:53.25]I'm the one I forget man
-[01:54.93]And you're only get this nightmare
+[01:53.25]I'm the one I forget, man
+[01:54.93]And you're only got this nightmare
 [01:57.83]Let me die in a look or sleep inside me
 [02:00.61]Come in how this dream is you gonna never end
 [02:03.39]Give me how this dream is you gonna never end
 [02:08.37]It's Nightman High, It's Nightman High
 [02:11.73]I'm coming to you in a girl
-[02:13.87]It's Nightman High When you're the one I remember
+[02:13.87]It's Nightman High when you're the one I remember
 [02:19.91]It's Nightman High, It's Nightman High
 [02:22.91]Nightman Heaven
 [02:52.91]Thank you.` },
 
     { file: 'ThxSoMch - Swap Places (Official Music Video).mp3', title: 'Swap Places', artist: 'ThxSoMch',
-      lyrics: `[00:00.00]I die, yeah, catch up, racist at the rip of God
+      lyrics: `[00:00.00]I die, yeah, catch up, racing at the rip of God
 [00:19.24]I swap places with you
 [00:21.86]Cause heaven don't make four feel like you
 [00:25.42]Cause heaven don't make medicine like you
@@ -2449,19 +2471,19 @@ const papuPlaylist = [
 [00:51.08]As long as I'm with you
 [00:54.22]Well, I'm sorry but
 [00:57.14]I die, yeah
-[00:58.64]Catch a racist, I can't rip off guns
+[00:58.64]Catch a racing, I can't rip off guns
 [01:02.14]I swap places with you
 [01:04.64]Cause heaven don't make Freud feel like you
 [01:08.14]Cause heaven don't make medicine like you
-[01:11.14]I had the time of my life Just thinking of you Sinking to my skin till this shit turned blue Heaven wasn made for my red dentists
+[01:11.14]I had the time of my life just thinking of you, sinking to my skin till this shit turned blue, heaven never made for my red dentists
 [01:27.07]Please don't put it out of my knife
 [01:30.07]I'm still dreaming of you
 [01:33.07]Hope I don't awake cause this life's abuse
 [01:37.07]If you lay me down, I'll stop me laying with you
 [01:40.07]I can die of this old time with you
-[01:44.07]Just come and die I'm gonna tell a story of two
+[01:44.07]Just come and die, I'm gonna tell a story of two
 [01:47.57]Before I die I'm coming over here
-[01:51.07]Cause I can die I'm his love is heaven
+[01:51.07]Cause I can die, I'm his love is heaven
 [01:54.07]I die, yeah, catch up braces at the rib of God
 [01:59.53]I swap places with you
 [02:02.07]Cause heaven don't make forfeit like you
@@ -2478,7 +2500,7 @@ const papuPlaylist = [
 [00:14.62]I'm not dressing in cars, well do it make you think you're the shit?
 [00:19.00]Well, if you plan to be a real woman that needs a real man
 [00:23.54]Then maybe I'm him
-[00:25.12]What would you do for a time?
+[00:25.12]What would you do for a dime?
 [00:28.34]I want you to fall back
 [00:31.42]I think that I'll explain
 [00:34.70]I'm just looking at me
@@ -2486,9 +2508,12 @@ const papuPlaylist = [
 [00:39.56]I liked you a little less
 [00:42.64]When you would impress anybody but me
 [00:45.94]When I took you out to dinner
-[00:48.94]You tip the waiter with a pick of your bleep
+[00:48.94]You tip the waiter with a flick of your wrist
 [00:52.38]And so you trade my heart for another man's card
-[00:56.20]I bet it makes you feel so rich Well if you plan to be a real woman that needs a real man Then maybe What would you do for a dollar What would you do for a buck
+[00:56.20]I bet it makes you feel so rich
+[00:58.86]Well if you plan to be a real woman that needs a real man
+[01:03.72]Then maybe what would you do for a dollar?
+[01:07.46]What would you do for a buck?
 [01:09.46]I think that I like to pay
 [01:12.96]I just said I'm gonna pay
 [01:14.96]I just said I'm gonna pay
@@ -2505,13 +2530,13 @@ const papuPlaylist = [
 [01:54.72]Then maybe just quit` },
 
     { file: 'ThxSoMch - When The Devil Speaks.mp3', title: 'When The Devil Speaks...', artist: 'ThxSoMch',
-      lyrics: `[00:00.00]I know we don't stop, cause we not fucking at you inside
+      lyrics: `[00:00.00]I know we don't stop, cause we're not fucking at you inside
 [00:30.00]And then we start hiding ourselves and live
 [00:31.80]Hey, hey, hey, hey, hey, hey, hey, hey, hey, hey, hey, hey
 [00:34.48]Have you ever felt like you're a dummy on the hook?
 [00:38.28]Have you been addicted to the taste of your blood?
 [00:41.06]Feel like my whole life I've just been trying to find a look
-[00:43.54]I don't stand down the barrel of a semi-alcon
+[00:43.54]I don't stand down the barrel of a semi-auto
 [00:46.24]They don't wanna quit, I take some shit and let me feel
 [00:48.76]Cause every day I wake up, it's just
 [00:50.90]I just told my family doesn't see this thing go
@@ -2556,9 +2581,9 @@ const papuPlaylist = [
 [00:48.08]That bitch I'm leaving on my name
 [00:50.12]That girl I'm leaving on my name
 [00:56.52]Love is your evening, no matter
-[01:02.06]That why I live in know my name It a girl in my machine I like you never seen it popping on your fucking shit
-[01:16.54]She's telling me to jump, jump, jump into your fucking Lego
-[01:19.68]But I don't fucking play ho, I'm not your fucking play-doh
+[01:02.06]That's why I live in know my name, it's a girl in my machine, I like you never seen it popping on your fucking shit
+[01:16.54]She's telling me to jump, jump, jump into your fucking lego
+[01:19.68]But I don't fucking play, ho, I'm not your fucking play-doh
 [01:22.86]Don't know my news, bit in your face, I'll be the fucking player
 [01:25.68]Reflection, my one's enemy infection that'll never leave
 [01:28.76]Shot all of the medicine, I'll drive into my fingers, please
@@ -2587,7 +2612,7 @@ const papuPlaylist = [
 [00:57.00]But you're a part of me
 [01:04.00]Wherever I go
 [01:07.00]You'll always be next to me
-[01:27.00]I not alone Fall into the night
+[01:27.00]I'm not alone, fall into the night
 [01:53.24]As I gaze into you
 [02:00.40]Shine so bright
 [02:05.96]It's all I do
@@ -2598,42 +2623,41 @@ const papuPlaylist = [
 [02:35.20]You'll always be next to me
 [02:46.56]You'll always be next to me
 [02:52.72]You'll always be next to me
-[02:59.18]You'll always be next to me
-[03:29.18]Thank you.` },
+[02:59.18]You'll always be next to me` },
 
     { file: 'Waiting.mp3', title: 'Waiting', artist: 'Mix',
       lyrics: `[00:00.00]I'm going to go.
 [00:30.00]Thank you.
-[01:00.00]you` },
+[01:00.00]You` },
 
     { file: 'WesGhost - DARK (Official Music Video).mp3', title: 'DARK', artist: 'WesGhost',
       lyrics: `[00:00.00]I'm a, I'm a motherfucking star
 [00:02.16]I'm a motherfucking star
 [00:08.28]I'm a motherfucking star
-[00:30.00]What's good, you just my type I'm bad, that's what you like
-[00:45.78]You crazy, you toxic But baby, so am I
-[00:50.34]Tattoos all on your chest Those scars when you undress
+[00:30.00]What's good, you just my type, I'm bad, that's what you like
+[00:45.78]You crazy, you toxic, but baby, so am I
+[00:50.34]Tattoos all on your chest, those scars when you undress
 [00:54.80]You like the pain, you like the way I kiss you on your neck
 [00:59.24]You tell me I can't hurt you, your heart got nothing left
 [01:03.78]But I see the way you look at me, pretend you need success
-[01:08.02]You crazy, you toxic, but baby so am I?
+[01:08.02]You crazy, you toxic, but baby, so am I
 [01:13.08]You crazy, you toxic, I'm a motherfucking star
 [01:17.20]I'm missing me when it's done
 [01:21.72]I'm a motherfucking star
 [01:26.20]Black hole in my heart
-[01:30.68]We can fake it for tonight We don have to think about it Keep it locked in my mind
+[01:30.68]We can fake it for tonight, we don't have to think about it, keep it locked in my mind
 [01:50.59]Put these feelings to the side
 [01:53.33]Keep pretending you don't miss me
 [01:57.75]Baby, that's just a lie
 [01:59.75]You tell me I can't hurt you
 [02:04.53]Your heart got nothing left
 [02:06.57]But I see the way you look at me
-[02:09.25]You send me what she says
+[02:09.25]Pretend you need success
 [02:11.25]You crazy, you toxic
-[02:13.25]But baby, show me more
+[02:13.25]But baby, so am I
 [02:15.25]You crazy, you toxic
 [02:17.25]I'm a motherfucking star
-[02:21.25]Help me see me when it's done
+[02:21.25]I'm missing me when it's done
 [02:25.25]I'm a motherfucking star
 [02:29.25]Black hole in my heart
 [02:33.25]Don't fall in love
@@ -2648,21 +2672,21 @@ const papuPlaylist = [
 [00:30.06]Hold me tight, can't you be home?
 [00:36.46]I know this way you like, you know I hit it right
 [00:42.96]And every time you send them shivers down your spine
-[00:46.14]Attention all you like Adirond, no parachute so I had to fall
+[00:46.14]Attention all you like a dope one, no parachute so I had to fall
 [00:49.62]You and me, we compatible, we tryna keep it real casual
-[00:52.70]I don't know if you're the one All I know is how to ride
-[00:58.92]I don't know if you're the one All I know is you're
-[01:04.18]Always in my mind, can't see you tonight I'll meet you anywhere you like, I'll be over at five
+[00:52.70]I don't know if you're the one, all I know is how to ride
+[00:58.92]I don't know if you're the one, all I know is you're
+[01:04.18]Always in my mind, can't see you tonight, I'll meet you anywhere you like, I'll be over at five
 [01:10.04]If it's only for tonight, baby, is it alright? If I present it, you're mine
 [01:14.94]Such a pretty little lie, such a pretty little lie
 [01:17.76]Twist my spine till I'm paralyzed
 [01:21.36]Hold me tight, can't make it hard
-[01:27.64]It's a freedom, life, freedom, life
+[01:27.64]It's a freedom life, freedom life
 [01:30.00]Now I can't focus on anything except for you
 [01:32.48]Hands on your neck and it feel like a noose
-[01:34.12]Better you over, I better the truth
+[01:34.12]Better you over, I'd better the truth
 [01:35.72]You know that I'm sober but I'm in the mood
-[01:37.36]Talk to you like everyday, but you ain't mine, that's okay
+[01:37.36]Talk to you like every day, but you ain't mine, that's okay
 [01:40.76]You look good, now I'm on the way
 [01:42.34]Can't wait to make them life shape
 [01:44.04]I don't know if you're the one
@@ -2690,17 +2714,17 @@ const papuPlaylist = [
 [00:48.22]I see couples around me and I want her to mess up
 [00:52.62]Why my life can't just be like hers
 [00:55.28]I am a loser and I'm always by myself I lost all the things that I can't live without
-[01:04.56]She's here, says hard, then she leaves, says goodbye It's the same every time that she finds someone else
+[01:04.56]She's here, says heart, then she leaves, says goodbye It's the same every time that she finds someone else
 [01:13.40]You don't know how much I hate it She's torturing me and my own complications
 [01:21.24]I see couples around me and I wonder to myself
-[01:26.66]Why my life can't just be like birds` },
+[01:26.66]Why my life can't just be like this` },
 
     { file: 'be ur man.mp3', title: 'be ur man', artist: 'Mix',
-      lyrics: `[00:00.00]Very sorrow days.
+      lyrics: `[00:00.00]Very sorry days.
 [00:07.64]I fall in love too easy.
 [00:10.66]You don't understand.
 [00:12.94]And if you would deceive me,
-[00:15.32]I still would be a man.
+[00:15.32]I still would be your man.
 [00:17.70]And I know you are talking
 [00:19.86]to 50 other guys.
 [00:22.54]Most of them are better.
@@ -2713,7 +2737,7 @@ const papuPlaylist = [
 [00:47.70]Falling love too easy
 [00:58.14]You don't understand
 [01:00.20]And if you would deceive me
-[01:02.92]I still would be a man
+[01:02.92]I still would be your man
 [01:05.00]And I know you are talking
 [01:07.62]To 50 other guys
 [01:09.88]Most of them are better
@@ -2726,12 +2750,12 @@ const papuPlaylist = [
 [01:28.14]Bye.` },
 
     { file: 'bedrott (slowed).mp3', title: 'bedrott (slowed)', artist: 'Mix',
-      lyrics: `[00:00.00]DOS KEEP
+      lyrics: `[00:00.00]BEDROTT (SLOWED)
 [00:00.66]I've been here for days
 [00:24.72]They tell me I'm a bad ride
 [00:26.26]My mind's out of place
 [00:27.58]Been thinking about what I'm not
-[00:29.10]But is there a safe event?
+[00:29.10]But is there a safe place?
 [00:30.86]Like I can't talk
 [00:31.86]I'm going to stay with a song
 [00:34.34]I don't care about the fun
@@ -2746,7 +2770,7 @@ const papuPlaylist = [
 [00:49.66]When will it all pass?
 [00:51.50]Cause I ain't been happy
 [00:55.10]I'm so stuck on your face
-[00:59.10]Outro Music I lost my chance a while ago
+[00:59.10]I lost my chance a while ago
 [01:11.68]Let my thoughts all overflow
 [01:14.00]I let my hands freeze in the snow
 [01:17.44]Holding on to come
@@ -2754,11 +2778,11 @@ const papuPlaylist = [
 [01:26.00]And you're dying to see me
 [01:29.32]Can someone tell me
 [01:34.78]When will it all pass?
-[01:37.38]Cause I've been having me
+[01:37.38]Cause I ain't been happy
 [01:40.62]I'm so stuck in the past
 [01:44.38]And I just can't get it back
-[01:45.94]I'm time to relax
-[01:47.12]I'm more on the desk
+[01:45.94]I'm tryna relax
+[01:47.12]I'm more on the edge
 [01:48.64]And you know what I like
 [01:49.98]Cause I lose my track
 [01:51.76]All I do is run
@@ -2766,7 +2790,7 @@ const papuPlaylist = [
 
     { file: 'cannot get over you.mp3', title: 'cannot get over you', artist: 'Mix',
       lyrics: `[00:00.00]I'm a big fan of the show.
-[00:30.00]It's the pattern, it's the wise we need to go
+[00:30.00]It's the pattern, it's the way we need to go
 [00:35.00]Cause we're just around there
 [00:38.00]Nobody can get out there
 [00:41.00]I know it happened, I won't remember that
@@ -2780,7 +2804,7 @@ const papuPlaylist = [
 [01:09.52]I went to your house, my sleep
 [01:12.00]Doing the desk, my house
 [01:14.30]I was waiting for you
-[01:16.88]So I did it was such a wild And I don know I just was so grounded Don bring me out there I gonna have your heart
+[01:16.88]So I did it was such a wild, and I don't know, I just was so grounded. Don't bring me out there, I'm gonna have your heart.
 [01:27.95]Whatever that's me
 [01:30.95]I know that I know that
 [01:34.95]That's mine to have
@@ -2800,7 +2824,7 @@ const papuPlaylist = [
 [00:46.12]Even if you gave me a chance
 [00:49.36]We'll probably stop talking after a couple of weeks
 [00:52.86]We'll move on, go find a new guy
-[00:56.36]And then you will date him And then I wonder why that wasn me And then I go insane Question what I did wrong Question all my mistakes
+[00:56.36]And then you will date him and then I wonder why that wasn't me and then I go insane question what I did wrong question all my mistakes
 [01:07.13]I made none
 [01:08.73]And then I'll realize that
 [01:10.89]She doesn't want me back
@@ -2810,29 +2834,32 @@ const papuPlaylist = [
 [01:23.69]And I can't get out this cycle, I'm losing my mind, oh
 [01:28.73]I'm losing my mind, my mind, my mind
 [01:32.15]Close my eyes and I'm holding your hand
-[01:35.27]And now I'm holding my eyes and I'm alone in bed
+[01:35.27]And I'll open my eyes and I'm alone in bed
 [01:39.05]And I can't get out this cycle, I'm losing my mind, oh
-[01:44.09]I'm losing my mind, my mind, my mind
-[01:53.69]Thank you.` },
+[01:44.09]I'm losing my mind, my mind, my mind` },
 
     { file: 'dopamina.mp3', title: 'dopamina', artist: 'Mix',
       lyrics: `[00:00.00]Quero logo chegar na escola pra poder te ver
-[00:17.06]Você teu sina bate forte quando eu vejo você
+[00:17.06]Você teu sangue bate forte quando eu vejo você
 [00:19.72]Escrevi no meu caderno mil motivos pra te ver
 [00:22.76]Isso parece tão bobo, talvez eu seja clichê
-[00:25.54]A bichinência bate forte quando tô longe de tu
-[00:28.40]Você tá tipo em SPI, eu tô tipo no piru Mas não esqueça, baby girl, eu gosto muito de tu
-[00:34.04]Você tá tipo videogame, eu sempre volto pra mim
-[00:36.66]Ficar sabendo que eu quero você Acho que não dá mais pra esconder
-[00:42.12]E toda noite eu quero te ver Mas por favor, não pergunte o porquê
-[00:48.00]Eu falo girl, e cê fala o quê? E mesmo quieta cê me faz tremer
+[00:25.54]A adrenalina bate forte quando tô longe de tu
+[00:28.40]Você tá tipo em SPI, eu tô tipo no piru
+[00:31.26]Mas não esqueça, baby girl, eu gosto muito de tu
+[00:34.04]Você tá tipo videogame, eu sempre volto pra ti
+[00:36.66]Ficar sabendo que eu quero você
+[00:39.52]Acho que não dá mais pra esconder
+[00:42.12]E toda noite eu quero te ver
+[00:44.98]Mas por favor, não pergunte o porquê
+[00:48.00]Eu falo girl, e cê fala o quê?
+[00:50.68]E mesmo quieta cê me faz tremer
 [00:53.48]E com você esqueci o ABC
 [00:56.18]Fica sabendo que eu quero você
 [00:59.22]Quero logo chegar da escola pra poder te ver
 [01:02.24]Chego e jogo minha mochila, até deixo de comer
 [01:05.06]Foi daí que escrevi os meus motivos pra te ver
 [01:07.92]Minha mochila é importante, o que importa é você
-[01:10.70]Seu cabelo me alacina, sua boca me domina
+[01:10.70]Seu cabelo me alucina, sua boca me domina
 [01:13.60]E o seu beijo me alucina, se me injeta dopamina
 [01:16.40]Dopamina me deixa forte, é como fazer esporte
 [01:19.30]Tô lutando contra a sorte, mas eu já venci a morte
@@ -2840,20 +2867,20 @@ const papuPlaylist = [
 [01:24.72]Acho que não dá mais pra me esconder
 [01:27.30]Toda noite eu quero te ver
 [01:30.24]Mas por favor, não pergunte o porquê
-[01:33.44]Eu falo girl, e se eu falo o quê?
+[01:33.44]Eu falo girl, e cê fala o quê?
 [01:36.80]E mesmo quieto você me faz tremer
-[01:38.66]E com você, se isso ABC
+[01:38.66]E com você esqueci o ABC
 [01:41.36]Ficar sabendo que eu quero você` },
 
     { file: 'east coast.mp3', title: 'east coast', artist: 'Mix',
-      lyrics: `[00:00.00]I
-[00:30.00]Let's dispel it out, baby
+      lyrics: `[00:00.00]East Coast
+[00:30.00]Let's spell it out, baby
 [00:32.16]I want you to hurt my brain, baby
 [00:35.82]When you go, where you go
 [00:43.96]I don't wanna know
 [00:46.38]When you go, where you go
 [00:58.48]Don't tell me so
-[01:00.96]And I lost hope on the East Coast And I lost hope on the East Coast And I lost hope on the East Coast And I lost hope on the East Coast
+[01:00.96]And I lost hope on the East Coast
 [01:22.10]I'm a big fan
 [01:38.50]Of a rock band
 [01:41.98]You'll never understand
@@ -2876,7 +2903,7 @@ const papuPlaylist = [
 [00:55.96]La la la, why can't you just be yourself and not fake?
 [01:01.52]You're always driving me really insane
 [01:05.18]You move on way too fast, oh girl you move on way too fast
-[01:08.96]You've had 50 exes, well I can't even get one to last
+[01:08.96]You've had fifty exes, well I can't even get one to last
 [01:13.02]Tell me that you love me but I know you don't want me back
 [01:17.02]You've said it to a million other boys so we get attached
 [01:21.16]You wear your makeup to feel like there's no mistakes
@@ -2921,10 +2948,10 @@ const papuPlaylist = [
 [01:25.44]Pass her in the hall, but she won't ever glance
 [01:33.90]Pass her to the ball, but she won't even dance
 [01:37.14]I try to call, but she won't give me a chance
-[01:40.36]I sit in silence, cause I know that I'll get fanned` },
+[01:40.36]I sit in silence, cause I know that I'll get fans` },
 
     { file: 'give me hints.mp3', title: 'give me hints', artist: 'Mix',
-      lyrics: `[00:00.00]Can you give me hits or I will lose my mind?
+      lyrics: `[00:00.00]Can you give me hints or I will lose my mind?
 [00:05.14]Do you really even like me or is it another guy?
 [00:09.18]Then I'll see you walking with him, why the hell you walking with him?
 [00:12.80]You don't even realize that you made me cry
@@ -2950,15 +2977,15 @@ const papuPlaylist = [
     { file: 'glaive - the prom (official lyric video).mp3', title: 'the prom', artist: 'glaive',
       lyrics: `[00:00.00]I skipped my high school prom
 [00:02.48]Now that part of me is gone
-[00:05.18]So I don't pick up my clothes
-[00:08.02]At all, at all
+[00:05.18]So I don't pick up my phone at all
+[00:08.02]At all
 [00:10.12]And maybe just maybe I'm wrong
 [00:13.08]Or maybe I'm right
 [00:14.72]And I won't see them for the rest of my life
 [00:17.32]Remember that night when things were alright
 [00:19.84]And I wasn't there and y'all didn't care
 [00:22.60]To text or call or anything in this
-[00:25.48]Slide it
+[00:25.48]Light
 [00:26.56]I told you that I don't mind it
 [00:29.30]The look of her face said I'm lying, I'm lying like
 [00:33.44]Oh, oh, why do I do that?
@@ -2970,13 +2997,15 @@ const papuPlaylist = [
 [00:49.30]Oh, oh, why do I do that?
 [00:52.12]It's complicated, yeah, I know
 [00:54.66]It's complicated, yeah, I know
-[00:57.32]One day I be the king of something One day I be the queen of something Right now I just the king of nothing Right now I just the queen of nothing Hurt my face get me seen in public
-[01:11.29]Hurt my face cause I know I'm blushin'
+[00:57.32]One day I be the king of something, one day I be the queen of something
+[01:02.74]Right now I just the king of nothing, right now I just the queen of nothing
+[01:08.33]Hurt my face, get me seen in public
+[01:11.29]Hurt my face cause I know I'm blushing
 [01:13.73]I'm embarrassed, so I just stay in my parents' house
 [01:18.63]I'm terrified in my hometown
 [01:21.53]I'm petrified, I let them down
 [01:24.23]I didn't want to go, I just feel
-[01:27.09]Slided
+[01:27.09]Slighted
 [01:28.09]I told you that I don't mind it
 [01:31.09]But look on my face and I'm lying, I'm lying like
 [01:35.23]Oh, oh, why do I do that?
@@ -2987,7 +3016,7 @@ const papuPlaylist = [
 [01:48.35]Oh, oh, why do I do that?
 [01:50.99]Oh, oh, why do I do that?
 [01:53.67]It's complicated, yeah, I know
-[01:56.41]It's complicated, yeah I know` },
+[01:56.41]It's complicated, yeah, I know` },
 
     { file: 'i have no friends.mp3', title: 'i have no friends', artist: 'Mix',
       lyrics: `[00:00.00]Today I realize that I have no friends and I'm so alone
@@ -3006,10 +3035,9 @@ const papuPlaylist = [
 [00:58.48]Everyone is so fake, I wanna hide away
 [01:02.52]Cause no one cares about me, all they do is laugh in my face
 [01:06.98]Today I realize that I have no friends and I'm so alone
-[01:11.04]I feel so isolated, no one's ever texting my phone
+[01:11.04]I feel so isolated, no one's ever texted my phone
 [01:15.18]Everyone is so fake, I wanna hide away
-[01:19.22]Cause no one cares about me, all they do is laugh in my face
-[01:28.48]Thank you.` },
+[01:19.22]Cause no one cares about me, all they do is laugh in my face` },
 
     { file: 'i love u so much.mp3', title: 'i love u so much', artist: 'Mix',
       lyrics: `[00:00.00]I love you so much it makes me wanna commit suicide
@@ -3020,8 +3048,8 @@ const papuPlaylist = [
 [00:41.86]I've been struggling to trust anybody, anything
 [00:46.14]I'm so sorry for this song and all my negativity
 [00:50.32]When I leave this earth, I just hope that you will remember me
-[00:58.58]When I leave this earth I just hope that you will remember me
-[01:17.38]When I leave this earth I just hope that you will remember me
+[00:58.58]When I leave this earth, I just hope that you will remember me
+[01:17.38]When I leave this earth, I just hope that you will remember me
 [01:28.58]Thank you.` },
 
     { file: 'im not alright.mp3', title: 'im not alright', artist: 'Mix',
@@ -3029,13 +3057,12 @@ const papuPlaylist = [
 [00:20.72]You wouldn't even notice me, maybe I'm an ugly guy
 [00:27.94]No one's ever texting me, my phone is really dry
 [00:35.38]I think about you way too much, but you'll never be mine
-[00:57.94]No one understands my life No one knows what's in my mind
-[01:05.82]I keep telling her that I'm okay But I'm not alright
-[01:12.18]I'm happy in the morning But I'm really sad at night
-[01:19.78]You wouldn't even notice me Maybe I'm an ugly guy
+[00:57.94]No one understands my life, no one knows what's in my mind
+[01:05.82]I keep telling her that I'm okay, but I'm not alright
+[01:12.18]I'm happy in the morning, but I'm really sad at night
+[01:19.78]You wouldn't even notice me, maybe I'm an ugly guy
 [01:27.00]No one's ever texting me, my phone is really dry
-[01:34.42]I think about you way too much, when you kiss him I cry
-[01:57.00]you` },
+[01:34.42]I think about you way too much, when you kiss him I cry` },
 
     { file: 'im so blue for you (remix).mp3', title: 'im so blue for you (remix)', artist: 'Mix',
       lyrics: `[00:00.00]I want you inside my room, but I'm just too scared to make a move
@@ -3049,11 +3076,11 @@ const papuPlaylist = [
 [00:41.30]Missing you such a damn long time, your love always got me feeling blue
 [00:46.34]Wait away while in my prime, avoid me like you always do
 [00:51.52]In my room making all these rhymes I only wrote these songs for you
-[00:56.76]I just wanna see you tonight Wanna be with you all the time
-[01:02.06]Don't ask me, I'm not really fine Mental health, I'm going to die
-[01:07.30]Tengo frío y te quiero acá Sin ti no puedo descansar
-[01:12.62]Ya no me sirve ni llorar Porque se es que no me va mal
-[01:17.70]This drug me is bad the cigar me will kill I tired of thinking about it I don believe you Sometimes I feel very bad because I don know where you are Estoy cansado de sobrepensar Ya no creo en tus mentiras A veces me siento muy mal Porque yo ya no s d est t
+[00:56.76]I just wanna see you tonight, wanna be with you all the time
+[01:02.06]Don't ask me, I'm not really fine, mental health, I'm going to die
+[01:07.30]Tengo frío y te quiero acá, sin ti no puedo descansar
+[01:12.62]Ya no me sirve ni llorar, porque sé es que no me va mal
+[01:17.70]This drug me is bad, the cigar me will kill, I'm tired of thinking about it, I don't believe you, sometimes I feel very bad because I don't know where you are, estoy cansado de sobrepensar, ya no creo en tus mentiras, a veces me siento muy mal, porque yo ya no sé dónde estás tú
 [01:32.93]Yo solo te quiero abrazar
 [01:35.37]Pero es que con tu amor me siento zoom
 [01:38.13]Yo no sé qué me va a pasar
@@ -3073,7 +3100,7 @@ const papuPlaylist = [
 [02:14.35]Missing you such a damn long time
 [02:16.83]Your love always got me feeling blue
 [02:18.95]¡Suscríbete al canal!
-[02:48.95]Es lo bien en la tarde` },
+[02:48.95]Eso estuvo bien en la tarde` },
 
     { file: 'it be okay.mp3', title: 'it be okay', artist: 'Mix',
       lyrics: `[00:00.00]Sarni, you're a bitch!
@@ -3094,19 +3121,17 @@ const papuPlaylist = [
 [01:35.00]I know it's fake
 [01:36.26]Cope with the game that I'll play now
 [01:40.26]Every week's the same
-[01:42.46]Friday to Sunday I keep on telling myself that it be okay Will I ever fall in love probably someday I don wanna be in love doesn feel okay
+[01:42.46]Friday to Sunday
 [01:57.01]Every week's the same, Friday to Sunday
 [02:00.83]I keep on telling myself that it'll be okay
 [02:05.33]Will I ever fall in love, probably someday
 [02:09.21]I don't wanna be in love, doesn't feel okay
-[02:13.55]I'm going to go to the next one.
 [02:43.55]It doesn't feel enough to be alone
 [02:50.49]I know it's soft with this and trust
 [02:54.69]Wanna spill but you never call my phone
 [02:58.91]Cause I'm fighting all alone
 [03:01.91]Oh-oh-oh
-[03:03.59]Zarny, you're a bitch!
-[03:13.55]We'll see you next time.` },
+[03:03.59]Sarni, you're a bitch!` },
 
     { file: 'late night drive home - Stress Relief (Official Video).mp3', title: '＂Stress Relief＂', artist: 'late night drive home',
       lyrics: `[00:00.00]I never thought you were
@@ -3119,25 +3144,25 @@ const papuPlaylist = [
 [01:05.86]Tell me, tell me you love me
 [01:11.90]Come back, come back to haunt me
 [01:15.24]Oh, won't you let me be myself?
-[01:21.88]I was holding on, but you didn't see my shots, baby
+[01:21.88]I was holding on, but you didn't see my thoughts, baby
 [01:28.84]All the times that I couldn't speak
-[01:33.20]My thoughts were made me
-[01:36.14]Well this is what I wanted please don feel so bad In love with the ghost please don you come back Well this is what I wanted please don feel so bad In love with the ghost please don come back If this is what I wanted please don feel so right In love with the ghost please don come back
+[01:33.20]My thoughts were made of me
+[01:36.14]Well this is what I wanted, please don't feel so bad, in love with the ghost, please don't you come back
 [01:56.42]It's best you're letting from everything
 [02:02.42]Tell me, tell me you love me
-[02:06.42]Come back, come back to only will you, only let me be myself
+[02:06.42]Come back, come back to me, only will you let me be myself
 [02:16.42]That's difficult, I never done a lot of this, it got easier to turn, but
 [02:23.52]If you can come with me, love
-[02:27.56]I teach you everything that I have
+[02:27.56]I'll teach you everything that I have
 [02:31.20]Why do you treat me like this?
 [02:34.66]How do you do it?
 [02:36.80]Tell me you love me
 [02:54.84]Come back to harm me
 [02:58.30]Won't you just let me be myself
-[03:06.80]Tell me Tell me Tell me
+[03:06.80]Tell me, tell me, tell me
 [03:10.18]Come back to me
 [03:13.58]I won't want you
-[03:15.76]Can we let me
+[03:15.76]Can you let me
 [03:16.84]Me
 [03:17.80]Myself` },
 
@@ -3168,13 +3193,12 @@ const papuPlaylist = [
 [01:17.96]Now I'm worried you'll just leave me up in here
 [01:24.34]Thought I was just all invincible
 [01:27.34]But everyone's treated me like a funny joke
-[01:30.34]I'm so tired of the intro
-[01:33.34]Ignored one day you'll find me on the bathroom floor
+[01:30.34]I'm so tired of being so ignored
+[01:33.34]One day you'll find me on the bathroom floor
 [01:36.34]In the future will I still be loved?
 [01:39.34]Seems like now I don't know anymore
 [01:42.34]When I feel your touch can't get enough
-[01:45.34]We still got all our stories to explore
-[01:51.34]Zombie webs` },
+[01:45.34]We still got all our stories to explore` },
 
     { file: 'loser club.mp3', title: 'loser club', artist: 'Mix',
       lyrics: `[00:00.00]Totally better than fucking nobody
@@ -3192,15 +3216,15 @@ const papuPlaylist = [
 [01:00.40]Don't talk, don't talk, don't talk, don't think away
 [01:05.16]Lose that
 [01:06.06]I don't know what to say
-[01:07.82]You'll probably leave my head a straight
+[01:07.82]You'll probably leave my head straight
 [01:10.42]Don't talk, don't think away
 [01:13.04]Don't talk, don't talk, don't think away
 [01:15.72]I don't know what to say
-[01:18.38]You'll probably leave my dad a-` },
+[01:18.38]You'll probably leave my head a-` },
 
     { file: 'lucy.mp3', title: 'lucy~', artist: 'Mix',
       lyrics: `[00:00.00]We are now at the University of Minnesota
-[00:30.00]Spine off the track Laying still on the grass
+[00:30.00]Spine off the track laying still on the grass
 [00:37.00]When did things move so damn fast?
 [00:41.00]We are now at the University of Minnesota
 [01:11.00]Is there a difference?
@@ -3226,13 +3250,12 @@ const papuPlaylist = [
 [00:46.60]Girl, I'm a loser
 [00:48.38]And you knew I was here
 [00:51.60]Making all these songs that somebody will hear
-[00:55.16]Cause I'm not good at anything, I always fall short
+[00:55.16]'Cause I'm not good at anything, I always fall short
 [00:59.30]Always bullshit, always gifted in some way or some sort
 [01:03.30]I'm so fucking depressed, I feel like I'm a waste
-[01:07.48]And my mental fucked up, all I really wanted was space
-[01:11.56]And don't talk to me cause I don't ever know what to say
-[01:15.60]A cigarette for me, a lighter for my mistakes
-[01:25.16]so` },
+[01:07.48]And my mental's fucked up, all I really wanted was space
+[01:11.56]And don't talk to me 'cause I don't ever know what to say
+[01:15.60]A cigarette for me, a lighter for my mistakes` },
 
     { file: 'not anywhere.mp3', title: 'not anywhere', artist: 'Mix',
       lyrics: `[00:00.00]I wanna meet him, can't wait to see him
@@ -3240,12 +3263,12 @@ const papuPlaylist = [
 [00:27.22]His thoughts are empty
 [00:29.16]He's looking dirty
 [00:31.02]And I could hurt him
-[00:32.82]Cause I know he wouldn't stop me
+[00:32.82]'Cause I know he wouldn't stop me
 [00:34.80]But you don't need to feel so upset
 [00:41.12]Don't talk to me and pretend you care
 [00:46.48]He's not here, he's not there
 [00:48.30]He's not anywhere
-[00:57.22]I going to go to the next one I got a notion
+[00:57.22]I'm going to go to the next one, I got a notion
 [01:09.91]There's no emotion
 [01:11.63]He's just an auto-response
 [01:14.15]To the commotion
@@ -3255,11 +3278,10 @@ const papuPlaylist = [
 [01:20.71]So pull his head out of his stupor
 [01:23.07]You got his number
 [01:24.65]He's like a sunburn
-[01:26.65]He'll always hit you till you scratch, you never lurker
+[01:26.65]He'll always hit you till you scratch, you never lurk
 [01:30.19]Don't forget that it's all in your head
 [01:37.49]Don't look at me and pretend you care
-[01:41.85]I'm not here, I'm not there, I'm not anywhere
-[01:56.65]Thank you.` },
+[01:41.85]I'm not here, I'm not there, I'm not anywhere` },
 
     { file: 'overtonight - comfort song 4 u (official visualizer).mp3', title: 'comfort song 4 u', artist: 'overtonight',
       lyrics: `[00:00.00]Nothing but a heartbreak, causes some real change
@@ -3286,15 +3308,18 @@ const papuPlaylist = [
 [00:50.50]Spent my whole life on me lonely, so I don't care
 [00:53.14]Nothing but a heartbreak causes some real change
 [00:56.02]You'll feel down, you'll be stuck in the dark days
-[00:58.56]But it turn around I remember all my worst days birthdays Sitting inside inside of my room I won shake the evil thoughts Cause the evil thoughts That we always away
+[00:58.56]But it'll turn around, I remember all my worst days, birthdays
+[01:01.86]Sitting inside of my room
+[01:03.66]I won't shake the evil thoughts
+[01:05.50]Cause the evil thoughts that we always had away
 [01:09.79]I'm tired of evil
-[01:11.47]Trying to save me change
+[01:11.47]Trying to save me, change
 [01:13.25]When I was this way
 [01:15.11]This way
 [01:15.73]Just running away
 [01:17.05]In my bed I'll stay
 [01:18.85]For the rest of my day
-[01:20.05]Oh, I got the house on my chest
+[01:20.05]Oh, I got the weight on my chest
 [01:21.59]Please, since today
 [01:22.79]I got played
 [01:23.49]I would never be the same
@@ -3313,8 +3338,7 @@ const papuPlaylist = [
 [01:55.05]Suddenly a limousine crashes fucking into me
 [01:58.63]I can't feel as dead than I do
 [02:01.13]I can't fall in love with you, no
-[02:03.13]I don't know what you want to do
-[02:05.69]Me` },
+[02:03.13]I don't know what you want to do` },
 
     { file: 'overtonight - elephant cage (official video).mp3', title: 'elephant cage', artist: 'overtonight',
       lyrics: `[00:00.00]Oh, you can't run but you can't hide, you know you can't get away
@@ -3324,7 +3348,7 @@ const papuPlaylist = [
 [00:20.34]I lost my job cause I would never do shit at all
 [00:24.46]I'm not that handsome, but they think I am cause I'm tall
 [00:28.40]I need her number, I think that we will get along
-[00:32.48]And it's December, consider this your new Christmas
+[00:32.48]And it's December, consider this your new Christmas song
 [00:36.40]Oh, you can't run but you can't hide, you know you can't get away
 [00:40.64]I'll just be lurking out your building every goddamn day
 [00:44.80]If I could tell you what my purpose is, I'd probably say
@@ -3333,23 +3357,22 @@ const papuPlaylist = [
 [00:56.40]Okay, it's not a worry but at least I am not in a grave
 [01:01.34]If I could get a gun I'd use it in a bag
 [01:04.48]It's my aim I would go point that shit in my head and I'd blow my brain
-[01:09.34]I don wanna ruin her night but I might go Inside the party with a knife like a psycho I know it gets hard to sleep inside the stronghold You saving the battles from that rose
+[01:09.34]I don't wanna ruin her night but I might go inside the party with a knife like a psycho I know it gets hard to sleep inside the stronghold you saving the battles from that rose
 [01:25.51]I gave you, I cannot escape you
 [01:28.51]I found some different holes but not a different place
 [01:32.51]It's you
-[01:33.51]Oh, you can run but you can't hide, you know you can't get away
+[01:33.51]Oh, you can't run but you can't hide, you know you can't get away
 [01:52.87]I'll just be lurking out your building every goddamn day
 [01:56.15]If I could tell you what my purpose is, I'd probably say
-[01:59.47]I'm meant to be inside a circus in the hell of a cage
+[01:59.47]I'm meant to be inside a circus in the elephant cage
 [02:02.73]I lost my job cause I would never do shit at all
 [02:06.03]I'm not that handsome, but they think I am cause I'm tall
 [02:09.25]I need her number, I think that we will get along
-[02:12.53]And it's December, consider this your new Christmas
-[02:15.53]Oh, you can run but you can't hide, you know you can't get away
+[02:12.53]And it's December, consider this your new Christmas song
+[02:15.53]Oh, you can't run but you can't hide, you know you can't get away
 [02:18.91]I'll just be lurking out your building every goddamn day
-[02:22.27]If I can tell you what my purpose is, I'd probably say
-[02:25.51]I'm meant to be inside a circus in the hell of a cage
-[02:29.47]Thank you.` },
+[02:22.27]If I could tell you what my purpose is, I'd probably say
+[02:25.51]I'm meant to be inside a circus in the elephant cage` },
 
     { file: 'overtonight - mirrors demo (official video).mp3', title: 'mirrors demo', artist: 'overtonight',
       lyrics: `[00:00.00]Take down all the mirrors in my house
@@ -3377,14 +3400,14 @@ const papuPlaylist = [
 [01:00.92]She calls up my phone
 [01:02.78]Ringin', ringin', ringin', ringin', baby, just leave me alone
 [01:04.96]She saw all my flaws, baby, won't you tell me what the fuck I'm doing
-[01:08.78]And I'll rule, I hate the feeling I'm eyeing out
+[01:08.78]And I rule, I hate the feeling I'm hiding out
 [01:11.30]So I wanna die on top of my couch
 [01:13.56]Oh, oh, oh, oh, oh, oh
 [01:17.30]What do you want from me?
 [01:19.04]I'm never, ever good for anything
 [01:21.28]Why do you talk to me?
 [01:23.06]Under every everybody
-[01:24.68]You're on all the mirrors in my house
+[01:24.68]Take down all the mirrors in my house
 [01:27.76]I hate my nose, eyes in my mouth
 [01:30.16]I hate the jokes I laugh about
 [01:32.54]I hate the hoes I'm sad about
@@ -3415,28 +3438,29 @@ const papuPlaylist = [
 [00:47.28]If maybe I look different, I'll slip and fall on my head
 [00:50.06]To start my reminiscing, all I have is regret
 [00:52.76]I'm never fucking winning, I'm so glued to my bed
-[00:55.82]Then I have hollow vision, all my life is pretend
+[00:55.82]And I have all the vision, all my life is pretend
 [00:58.70]It's like there's something missing, she just wants to be friends
 [01:01.58]It's such a bad decision, when does it all ever end?
-[01:04.54]I'm on endless mission, I hate everything
-[01:07.18]This life is one big business One big business Who would you want me instead
-[01:35.89]If maybe I look different, I'll slip and fall on my head
-[01:39.07]To start my reminiscing, all I have is regret
-[01:42.05]I'm never fucking winning, I'm so glued to my bed
-[01:45.47]And I have all the vision, all my life is pretend
-[01:48.53]It's like there's something missing, she just wants to be friends
-[01:51.85]It's such a bad decision, when does it all ever end?
-[01:55.15]I'm on an endless mission, I hate everything
-[01:58.17]It's like there's one big prison, my eyes out of my skull
-[02:01.99]Gonna beat myself all night long
-[02:05.17]I will be unhealthy until I'm gone
-[02:08.31]I like to think of people who will never return to my life
-[02:11.79]Face around my room and tell myself I'll be alright
-[02:14.99]I will not kill myself unless I have a real bad night
-[02:18.15]God damn, recently I'm having some bad nights` },
+[01:04.54]I'm on an endless mission, I hate everything
+[01:07.18]This life is one big prison, one big prison
+[01:35.89]Who would you want me instead?
+[01:39.07]If maybe I look different, I'll slip and fall on my head
+[01:42.05]To start my reminiscing, all I have is regret
+[01:45.47]I'm never fucking winning, I'm so glued to my bed
+[01:48.53]And I have all the vision, all my life is pretend
+[01:51.85]It's like there's something missing, she just wants to be friends
+[01:55.15]It's such a bad decision, when does it all ever end?
+[01:58.17]I'm on an endless mission, I hate everything
+[02:01.99]It's like there's one big prison, my eyes out of my skull
+[02:05.17]Gonna beat myself up all night long
+[02:08.31]I will be unhealthy until I'm gone
+[02:11.79]I like to think of people who will never return to my life
+[02:14.99]Face around my room and tell myself I'll be alright
+[02:18.15]I will not kill myself unless I have a real bad night
+[02:21.31]Goddamn, recently I'm having some bad nights` },
 
     { file: 'overtonight - trick or treat (official video).mp3', title: 'trick or treat', artist: 'overtonight',
-      lyrics: `[00:00.00]I really wanna beat someone, put the gun to his mouth, make sure he never speak again
+      lyrics: `[00:00.00]I really wanna beat someone, put the gun to his mouth, make sure he never speaks again
 [00:04.40]I'm walking down the street on Halloween
 [00:07.90]I see some ghosts and they're looking at me
 [00:12.56]One of them rode on the side of a tree
@@ -3448,19 +3472,21 @@ const papuPlaylist = [
 [00:39.62]Oh God, you're so damn pretty
 [00:43.54]I get so fucked in my head whenever you're not with me
 [00:47.96]I smell your scent in my bed from the last time you kissed me
-[00:52.34]She smokes some cigarettes, it helps her not miss
+[00:52.34]She smokes some cigarettes, it helps her not miss me
 [00:56.64]I'm walking down the street on Halloween
 [01:00.26]I see some ghosts and they're looking at me
 [01:04.90]One of them rode on the side of a tree
 [01:09.22]Over tonight, you're so fucking ugly
 [01:13.34]I wanna rip off all the skin that's on your face, girl
-[01:18.36]I wanna kill you so that I can be replaced Your ex is gone I had to cut his head off You don belong With anybody but
+[01:18.36]I wanna kill you so that I can't be replaced, girl
+[01:23.44]Your ex is gone, I had to cut his head off
+[01:28.28]You don't belong with anybody but me
 [01:31.42]Rain is pouring, I fucking throw it off
 [01:33.70]Smoked a packet, I fucked up my lungs
-[01:35.94]Thought I'll fucking eat
+[01:35.94]Thought I'd fucking eat
 [01:38.10]Some fucking sleep
 [01:39.84]Dirty dishes and dirty room
-[01:42.20]Mix the up with thoughts
+[01:42.20]Mix them up with thoughts
 [01:43.94]So you all fuck up everything I do
 [01:46.70]Makes me gain an attitude
 [01:51.24]Oh, I'll be blind to me, you'll betray me
@@ -3469,7 +3495,7 @@ const papuPlaylist = [
 [02:16.62]I'm gonna make you bow with me
 [02:19.60]Trick or treat, it's the last thing that you'll hear
 [02:23.34]Before I am in your home and I'm sawing off your ears
-[02:49.60]you so that i can't be replaced` },
+[02:49.60]You so that I can't be replaced` },
 
     { file: 'pupsies- misery. (Official Visualizer).mp3', title: 'pupsies- misery.', artist: 'Mix',
       lyrics: `[00:00.00]I miss the kind of misery, the kind where you were nice to me, but only in the evening, so I ask am I just dreaming?
@@ -3489,7 +3515,7 @@ const papuPlaylist = [
 [01:08.00]But only in the evening, so I ask if I'm just dreaming
 [01:12.00]But it's real, the kind of misery
 [01:14.00]The kind where you were nice to me, but only in the evening
-[01:18.00]So I ask if I just dreaming It still the kind of misery I feel like hungry or icy But only in my feelings And I ask if I just dreaming But you must feel the kind of misery The kind where you were nice to me But only in my fim So I ask if I just dreaming
+[01:18.00]So I ask if I'm just dreaming, it's still the kind of misery I feel like hungry or icy, but only in my feelings, and I ask if I'm just dreaming, but you must feel the kind of misery, the kind where you were nice to me, but only in my fim, so I ask if I'm just dreaming
 [01:28.25]But you must feel the kind of misery
 [01:30.59]The kind where you were nice to me
 [01:32.63]But only in the evening
@@ -3521,14 +3547,13 @@ const papuPlaylist = [
 [02:33.33]But only in the evening
 [02:36.21]In the evening
 [02:37.29]God, I wish that I was dreaming
-[02:39.51]I miss that kind of misery
-[02:44.97]Thank you.` },
+[02:39.51]I miss that kind of misery` },
 
     { file: 'reject.mp3', title: 'reject', artist: 'Mix',
       lyrics: `[00:00.00]I know I'll never be what you want
-[00:17.42]The redies are on the walls
+[00:17.42]The readies are on the walls
 [00:19.20]That I will never be perfect like him
-[00:22.06]I hate the way you point out my files
+[00:22.06]I hate the way you point out my flaws
 [00:24.62]If I can hide my face
 [00:26.40]Then maybe I would be lost
 [00:28.28]I'm so sick
@@ -3541,7 +3566,7 @@ const papuPlaylist = [
 [00:47.28]I'm going nowhere, stuck up, I know I'm screwed
 [00:50.92]I feel ashamed every time I look at your face
 [00:54.44]Cause I know that I'm worth it but it makes my heart bleed
-[00:58.24]You just like I trapped in this Look at you can be anything To the world where everybody just so fake Everything that I do is you the fucking mistake
+[00:58.24]You just like I trapped in this look at you can be anything to the world where everybody just so fake everything that I do is you the fucking mistake
 [01:12.91]I'm still in my first place
 [01:28.95]But you never care
 [01:30.95]Just wanna be somebody I swear
@@ -3552,11 +3577,10 @@ const papuPlaylist = [
 [01:45.41]Just wanna be somebody I swear
 [01:49.07]How can I face all this pain?
 [01:51.63]I can't bear you walk out you
-[01:53.87]But you know it's not me
-[02:00.95]Thank you.` },
+[01:53.87]But you know it's not me` },
 
     { file: 'rhetorical.mp3', title: 'rhetorical', artist: 'Mix',
-      lyrics: `[00:00.00]Afterdome
+      lyrics: `[00:00.00]Rhetorical
 [00:00.84]Angel
 [00:05.62]Why are they wasting time?
 [00:30.62]Trying to make you mine
@@ -3564,30 +3588,30 @@ const papuPlaylist = [
 [00:38.28]I see it all pass by, and I question myself why
 [00:43.84]Why can't I just get through, my heart's not spinning too
 [00:49.06]Cause I'm still searching for myself, I wanna run away from everybody else
-[00:59.72]Because in a loop, I'm so damn long
+[00:59.72]Been trapped in a loop, I've been here for so damn long
 [01:02.30]I wish that I could move on
-[01:04.64]I don wanna ask for help I wanna go somewhere that they could never die Singing the same that stupid song can fix it all I so done
-[01:15.36]I can't make a move, I got something to prove, but I don't know what to do
-[01:19.82]Every time you talk, I just start to lose my code, but I know that I can have you, but it means that you're fine
-[01:25.98]Got nothing to say, I just want a way that I can do it all I can
-[01:31.50]I heard it never end, every day's getting worse
-[01:34.36]I think I'm just playing pretend
-[01:36.06]I'm still searching for myself
-[01:38.98]I wanna run away from everybody else
-[01:42.54]Been trapped in a loop for so damn long
-[01:45.12]I wish that I could move on
-[01:47.48]I don't wanna ask for help
-[01:49.72]I wanna go somewhere that they could never tell
-[01:53.24]Singing the same damn stupid songs
-[01:55.88]Can't fix it all, I'm so done
-[01:58.20]I was keeping up` },
+[01:04.64]I don't wanna ask for help, I wanna go somewhere that they could never tell
+[01:15.36]Singing the same damn stupid songs, can't fix it all, I'm so done
+[01:19.82]I can't make a move, I got something to prove, but I don't know what to do
+[01:25.98]Every time you talk, I just start to lose my code, but I know that I can have you, but it means that you're fine
+[01:31.50]Got nothing to say, I just want a way that I can do it all I can
+[01:34.36]I heard it never end, every day's getting worse
+[01:36.06]I think I'm just playing pretend
+[01:38.98]I'm still searching for myself
+[01:42.54]I wanna run away from everybody else
+[01:45.12]Been trapped in a loop for so damn long
+[01:47.48]I wish that I could move on
+[01:49.72]I don't wanna ask for help
+[01:53.24]I wanna go somewhere that they could never tell
+[01:55.88]Singing the same damn stupid songs
+[01:58.20]Can't fix it all, I'm so done` },
 
     { file: 'shotgun.mp3', title: 'shotgun.', artist: 'Mix',
       lyrics: `[00:00.00]I'm gonna blow my brain with a shotgun
 [00:02.10]It's been six months since the last time we talked
-[00:04.64]And I'ma fall off stage when I preform in Boston
+[00:04.64]And I'ma fall off stage when I perform in Boston
 [00:07.30]Cause I'm so outraged by the way that I lost her
-[00:10.02]Woke up this morning to my girl, gone
+[00:10.02]Woke up this morning to my girl gone
 [00:12.40]I'm trying to figure out what I did so wrong
 [00:15.02]Was it something I said or maybe something I did
 [00:17.62]And I just wanna be dead whenever I'm in my crib
@@ -3603,13 +3627,13 @@ const papuPlaylist = [
 [00:54.36]It's kinda problematic when I'm chasing peace
 [00:57.04]I'm gonna blow my brain with a shotgun
 [01:10.70]It's been six months since the last time we talked
-[01:13.24]And I'ma fall off stage when I play for him in Boston
+[01:13.24]And I'ma fall off stage when I perform in Boston
 [01:15.88]Cause I'm so outraged by the way that I lost her
-[01:18.60]Woke up this morning till my girl gone
+[01:18.60]Woke up this morning to my girl gone
 [01:21.02]I'm trying to figure out what I did so wrong
 [01:23.66]Was it something I said or maybe something I did
 [01:26.20]And I just wanna be dead whenever I'm in my crib
-[01:28.76]I got my headphones on, bumping over to night songs
+[01:28.76]I got my headphones on, bumping over tonight songs
 [01:31.52]I've been so sober that I can't keep composure
 [01:34.06]When my bitch start acting stupid and claiming that I owe her
 [01:36.70]And blaming me for hours, telling me that we are over again
@@ -3630,7 +3654,7 @@ const papuPlaylist = [
 [00:30.12]Seeing you so happy, kissing someone else, it makes me so lonely
 [00:36.52]Why is it so hard to look into the mirror?
 [00:41.38]All you're looking at is a reflective picture
-[00:44.24]I'll stock your socials till my eyes are numb
+[00:44.24]I'll stalk your socials till my eyes are numb
 [00:49.50]You don't even know how much I need your heart
 [00:53.38]I'll see all your reposts and what's on your mind
 [00:56.98]Because I cannot date you, you want another guy
@@ -3654,8 +3678,8 @@ const papuPlaylist = [
 [00:44.88]I'm feeling awful when I'm talking do I always waste her time?
 [00:49.38]I hate the internet and awful places do some digital crimes
 [00:53.76]I hate the devil on my shoulder who be telling me how to live life
-[00:58.20]Too many people don't deserve to God
-[01:00.44]R&D juice and red Wi-Fi
+[00:58.20]Too many people on the verge of God
+[01:00.44]Riding juice and red Wi-Fi
 [01:02.68]Struck by death but still inspire
 [01:04.84]All the people sick and tired
 [01:07.08]Today I kill myself, I'll scream myself
@@ -3685,13 +3709,16 @@ const papuPlaylist = [
 [00:49.28]What do you even want me to be?
 [00:52.50]You never ever pay attention to me
 [00:56.64]So I'll close my blinds in misery
-[01:00.64]And I wait for you for a couple of weeks Ya no tengo la se tu mensaje no me llega Siento que estoy perdiendo la cabeza Lo pienso me pesa estoy encerrado en mi pieza
+[01:00.64]And I wait for you for a couple of weeks
+[01:04.64]Ya no tengo la fe, tu mensaje no me llega
+[01:08.80]Siento que estoy perdiendo la cabeza
+[01:10.88]Lo pienso, me pesa, estoy encerrado en mi pieza
 [01:14.11]Mi calor, tus ojos y tus labios de cereza
 [01:18.13]Me convierten en un loco que ya no tiene certeza
 [01:22.09]El tiempo me deja botado, con el corazón olvidado
 [01:26.25]Siempre mira y va a ir a un lado
-[01:28.25]Me siento loca, habré cruzado
-[01:30.33]Arrancándome de ti, si me equivaste la mirada
+[01:28.25]Me siento loco, habré cruzado
+[01:30.33]Arrancándome de ti, si me equivocaste la mirada
 [01:34.49]Tu perfume tengo aquí, pegado a la camiseta
 [01:38.31]You are, you are very pretty, I'm so very ugly
 [01:43.05]Will you even love me anymore?
@@ -3731,16 +3758,16 @@ const papuPlaylist = [
       lyrics: `[00:00.00]I'm trying to sleep
 [00:28.00]It must be my dream
 [00:33.00]The thought of you
-[00:39.00]Keeps me away
+[00:39.00]Keeps me awake
 [00:44.00]I wish you were
-[00:51.00]That I must have
-[00:56.00]Don't get in so bad
+[00:51.00]Here with me now
+[00:56.00]Don't get so mad
 [01:02.00]When I have a dream
 [01:06.00]I know you're gone
-[01:22.00]But I still lost I don know where
+[01:22.00]But I'm still lost and I don't know where
 [01:33.83]I'll go today
 [01:39.41]I wish you were
-[01:47.15]Without my side
+[01:47.15]By my side
 [01:52.81]Don't be so mad
 [01:57.81]When I'm back here
 [02:01.81]I wish I could
@@ -3748,7 +3775,7 @@ const papuPlaylist = [
 [02:14.81]Through this number still
 [02:18.81]In my head
 [02:20.81]I'm out of time
-[02:50.81]you` },
+[02:50.81]You` },
 
     { file: 'vodka kisses.mp3', title: 'vodka kisses', artist: 'Mix',
       lyrics: `[00:00.00]Every day I feel so wrong
@@ -3757,8 +3784,8 @@ const papuPlaylist = [
 [00:07.64]Knowing that I'm never strong
 [00:10.18]Wake up in the morning so wasted
 [00:12.56]Drinking booze I feel so amazing
-[00:14.98]Every day I'm feeling so made
-[00:17.40]Bungie's that's a pantry I rate it
+[00:14.98]Every day I'm feeling so jaded
+[00:17.40]Bunny's that's a pantry I rate it
 [00:20.06]Feeling like you cast a spell
 [00:22.38]Loving you no one can tell
 [00:24.80]Mixing all my drinks with the vodka
@@ -3769,13 +3796,12 @@ const papuPlaylist = [
 [00:44.22]And I'm so alone, cause no one listens, missing her, I'm with vodka kisses
 [00:49.26]I know I never wanna be sober, smoke a drink, my life is over
 [00:54.16]Sixteen and drunk, such a stupid bummer, can't ever stop having love for her
-[00:59.00]I can't handle all of this scrutiny, no one ever said the epitome,
-[01:04.34]Tionus don't have any energy, drink alcohol, that's how I'm pleased.
-[01:09.20]Wake up in the morning, so wasted, drinking booze, I feel so amazing.
-[01:14.16]Every day I'm feeling so baited, bunnies, that's a pantry I rated.
-[01:19.04]Feeling like you cast a smell, loving you, no one can tell.
-[01:23.94]Mixing all my drinks with the vodka, I'm still stuck living in this hell.
-[01:29.00]zombie webs.` },
+[00:59.00]I can't handle all of this scrutiny, no one ever said the epitome
+[01:04.34]Tionus don't have any energy, drink alcohol, that's how I'm pleased
+[01:09.20]Wake up in the morning, so wasted, drinking booze, I feel so amazing
+[01:14.16]Every day I'm feeling so jaded, bunnies, that's a pantry I rated
+[01:19.04]Feeling like you cast a spell, loving you, no one can tell
+[01:23.94]Mixing all my drinks with the vodka, I'm still stuck living in this hell` },
 
     { file: 'zombiwebz - im so blue for you.mp3', title: 'im so blue for you', artist: 'zombiwebz',
       lyrics: `[00:00.00]I want you inside my room, but I'm just too scared to make a move
@@ -3791,7 +3817,9 @@ const papuPlaylist = [
 [00:52.04]In my room making all these rhymes
 [00:54.46]I only wrote these songs for you
 [00:57.10]I just wanna see you tonight
-[00:59.84]Wanna be with you all the time Don ask me I not really fine Mental health I going to die I don know it just depends It feels like I don get no rest
+[00:59.84]Wanna be with you all the time, don't ask me I'm not really fine
+[01:05.00]Mental health, I'm going to die, I don't know it just depends
+[01:08.00]It feels like I don't get no rest
 [01:12.64]I'm thinking you were always the best
 [01:15.26]Wish I could go back into my nest
 [01:18.02]Why can't I be as good as the other guys?
@@ -3802,16 +3830,16 @@ const papuPlaylist = [
 [01:30.76]Cause I can't ever seem to get to you
 [01:33.52]Missing you such a damn long time
 [01:36.04]Your love always got me feeling blue
-[01:38.74]Waste away while in my grime
+[01:38.74]Waste away while in my prime
 [01:41.32]Avoid me like you always do
 [01:43.94]In my room making all these rhymes
 [01:46.48]I only wrote these songs for you
 [01:49.32]Hey mister, where'd you get those drugs?
 [01:52.00]Smoking seems like a lot of fun
 [01:54.40]In my youth it was all the love
-[01:57.00]Nowadays I'm smoking toast
-[01:59.54]Hell, your hair can't get enough, I'm doing stuff you can't dream up
-[02:04.86]Mischief always on the run, spend your days so good in the sun` }
+[01:57.00]Nowadays I'm smoking tons
+[01:59.54]Smell your hair, can't get enough, I'm doing stuff you can't dream up
+[02:04.86]Mischief always on the run, spend your days hoping in the sun` }
 ];
 
 let curPapuTrack  = 0;
