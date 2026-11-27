@@ -104,7 +104,6 @@ const BANNERS = [
     { id: 'redeyes', label: 'Red Eyes', file: 'assets/banners/ban_redeyes.jpg' },
     { id: 'bluegirl', label: 'Blue Girl', file: 'assets/banners/ban_bluegirl.jpg' },
     { id: 'mushoku', label: 'Isekai Party', file: 'assets/banners/ban_mushoku.jpg' },
-    { id: 'deathnote', label: 'Death Note', file: 'assets/banners/ban_deathnote.jpg' },
     { id: 'tanya', label: 'Tanya The Evil', file: 'assets/banners/ban_tanya.jpg' },
     { id: 'konata_b', label: 'Konata Star', file: 'assets/banners/ban_konata.jpg' },
     { id: 'tomoko_b', label: 'Tomoko Vibe', file: 'assets/banners/ban_tomoko.webp' }

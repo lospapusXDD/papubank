@@ -58,10 +58,10 @@ function applyTheme(themeKey) {
     document.documentElement.style.setProperty('--primary-glow', theme.primary + '40');
     document.documentElement.style.setProperty('--secondary-glow', theme.secondary + '30');
     
-    // Apply wallpaper
+    // Apply wallpaper with dark readability scrim
     const body = document.body;
     if (theme.wallpaper) {
-        body.style.backgroundImage = `url('${theme.wallpaper}')`;
+        body.style.backgroundImage = `linear-gradient(rgba(4, 10, 22, 0.78), rgba(4, 10, 22, 0.78)), url('${theme.wallpaper}')`;
         body.style.backgroundSize = 'cover';
         body.style.backgroundPosition = 'center';
         body.style.backgroundAttachment = 'fixed';
@@ -77,7 +77,7 @@ function loadSavedTheme() {
     // Restore custom wallpaper first
     const customWp = localStorage.getItem('papubank_custom_wallpaper');
     if (customWp) {
-        document.body.style.backgroundImage = `url('${customWp}')`;
+        document.body.style.backgroundImage = `linear-gradient(rgba(4, 10, 22, 0.78), rgba(4, 10, 22, 0.78)), url('${customWp}')`;
         document.body.style.backgroundSize = 'cover';
         document.body.style.backgroundPosition = 'center';
         document.body.style.backgroundAttachment = 'fixed';
@@ -95,7 +95,7 @@ function loadSavedTheme() {
             document.documentElement.style.setProperty('--secondary-glow', theme.secondary + '30');
             // Apply wallpaper only if no custom wallpaper
             if (!customWp && theme.wallpaper) {
-                document.body.style.backgroundImage = `url('${theme.wallpaper}')`;
+                document.body.style.backgroundImage = `linear-gradient(rgba(4, 10, 22, 0.78), rgba(4, 10, 22, 0.78)), url('${theme.wallpaper}')`;
                 document.body.style.backgroundSize = 'cover';
                 document.body.style.backgroundPosition = 'center';
                 document.body.style.backgroundAttachment = 'fixed';
@@ -161,7 +161,7 @@ function uploadCustomWallpaper(input) {
         try {
             const dataUrl = e.target.result;
             localStorage.setItem('papubank_custom_wallpaper', dataUrl);
-            document.body.style.backgroundImage = `url('${dataUrl}')`;
+            document.body.style.backgroundImage = `linear-gradient(rgba(4, 10, 22, 0.78), rgba(4, 10, 22, 0.78)), url('${dataUrl}')`;
             document.body.style.backgroundSize = 'cover';
             document.body.style.backgroundPosition = 'center';
             document.body.style.backgroundAttachment = 'fixed';

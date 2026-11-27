@@ -18,7 +18,7 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
 <!-- Main Styles -->
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=2">
 
 <!-- Manifest (PWA) -->
 <link rel="manifest" href="manifest.json">
@@ -988,7 +988,7 @@
               </button>
             </div>
             <div id="avatar-url-preview" style="display:none; justify-content:center;">
-              <img id="avatar-url-preview-img" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);">
+              <img id="avatar-url-preview-img" src="assets/avatars/avt_gojo.jpg" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);">
             </div>
             <span style="font-size:10px; color:var(--text-muted); text-align:center;">Cualquier link de imagen de internet funciona.</span>
             <div style="border-top:1px solid rgba(255,255,255,0.05); padding-top:10px; text-align:center;">
@@ -1842,7 +1842,7 @@
     </div>
   </div>
 </div>
-<div id="chat-panel" style="position:fixed;bottom:70px;right:16px;z-index:3000;width:320px;height:400px;background:rgba(6,14,32,0.97);border:1px solid var(--dark-border);border-radius:16px;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.6);backdrop-filter:blur(10px);overflow:hidden;">
+<div id="chat-panel" style="position:fixed;bottom:70px;right:16px;z-index:3000;width:320px;max-width:calc(100vw - 24px);height:400px;max-height:calc(100vh - 100px);background:rgba(6,14,32,0.97);border:1px solid var(--dark-border);border-radius:16px;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.6);backdrop-filter:blur(10px);overflow:hidden;">
   <div style="padding:14px 16px;border-bottom:1px solid var(--dark-border);display:flex;justify-content:space-between;align-items:center;background:rgba(0,212,255,0.05);">
     <span style="font-family:'Orbitron',sans-serif;font-weight:700;color:var(--primary);font-size:13px;"><i class="fa-solid fa-comments"></i> Chat del Clan</span>
     <div style="display:flex;gap:4px;align-items:center;"><button class="btn-icon" onclick="loadChat()" title="Actualizar" aria-label="Actualizar"><i class="fa-solid fa-rotate-right"></i></button><button class="btn-icon" onclick="toggleChatPanel()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button></div>
@@ -2063,8 +2063,8 @@ window.resolveAvatar = function(av) {
   <script src="js/core/exchange.js?v=23"></script>
   <script src="js/social/birthdays.js?v=18"></script>
   <script src="js/core/economy.js?v=19"></script>
-  <script src="js/social/extras.js?v=21"></script>
-  <script src="js/social/minigames.js?v=19"></script>
+  <script src="js/social/extras.js?v=22"></script>
+  <script src="js/social/minigames.js?v=20"></script>
 <script src="js/social/media-player.js?v=22"></script>
 <script src="js/core/app.js?v=23"></script>
 
