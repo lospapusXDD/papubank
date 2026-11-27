@@ -236,7 +236,7 @@ async function loadPerfiles() {
             card.style.cssText = 'display:flex;align-items:center;gap:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s;';
             card.onclick = () => viewUserProfile(p.nick);
             card.innerHTML = `
-                <img src="${escHTML(p.resolveAvatar(u.avatar))}" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--dark-border);flex-shrink:0;">
+                <img src="${escHTML(resolveAvatar(p.u.avatar))}" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--dark-border);flex-shrink:0;">
                 <div style="flex:1;min-width:0;">
                     <div style="font-family:'Orbitron',sans-serif;font-weight:700;color:var(--primary);font-size:14px;">${escHTML(p.nick)}</div>
                     <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">
