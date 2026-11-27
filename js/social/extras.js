@@ -279,6 +279,7 @@ async function loadInventorySettings() {
     const activeNick = inv.find(i => i.item_id && i.item_id.startsWith('nick_') && i.active);
     if (activeNick) {
         const color = activeNick.item_id.replace('nick_', '');
+        const changed = currentUser.nickColor !== color;
         currentUser.nickColor = color;
         const classMap = { rainbow:'nick-rainbow', fire:'nick-fire', ice:'nick-ice', neon:'nick-neon', gold:'nick-gold' };
         const cls = classMap[color] || '';
@@ -286,21 +287,29 @@ async function loadInventorySettings() {
             const el = document.getElementById(id);
             if (el && cls) { el.className = el.className.replace(/nick-(rainbow|fire|ice|neon|gold)/g,'').trim(); el.classList.add(cls); }
         });
-        try { await apiFetch('PUT', '/users/' + currentUser.nick, { nick_color: color }); } catch(e) {}
+        if (changed) {
+            try { await apiFetch('PUT', '/users/' + currentUser.nick, { nick_color: color }); } catch(e) {}
+        }
     }
     
     const activeRing = inv.find(i => i.item_type === 'ring' && i.active);
     if (activeRing) {
         const ringName = activeRing.item_id.replace('ring_', '');
+        const changed = currentUser.profileRing !== ringName;
         currentUser.profileRing = ringName;
-        try { await apiFetch('PUT', '/users/' + currentUser.nick, { profileRing: ringName }); } catch(e) {}
+        if (changed) {
+            try { await apiFetch('PUT', '/users/' + currentUser.nick, { profileRing: ringName }); } catch(e) {}
+        }
     }
     
     const activeTitle = inv.find(i => i.item_type === 'title' && i.active);
     if (activeTitle) {
         const title = activeTitle.item_id.replace('title_', '');
+        const changed = currentUser.active_title !== title;
         currentUser.active_title = title;
-        try { await apiFetch('PUT', '/users/' + currentUser.nick, { active_title: title }); } catch(e) {}
+        if (changed) {
+            try { await apiFetch('PUT', '/users/' + currentUser.nick, { active_title: title }); } catch(e) {}
+        }
     }
 }
 

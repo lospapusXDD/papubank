@@ -216,7 +216,7 @@ function showPage(pageId) {
         case 'deudas':      refreshBankAccount().then(loadDebts);         break;
         case 'vault':       refreshBankAccount().then(loadVaultPage);     break;
         case 'verificacion': loadVerificacionPage(); break;
-        case 'board':       loadBoard();         break;
+        case 'board':       loadBoardPage();     break;
         case 'mensajes':    loadInbox();         break;
         case 'encuestas':
             loadPolls();
@@ -757,7 +757,7 @@ function updateNavUI() {
 
     // Update avatar in sidebar
     const avatarEl = document.getElementById('sidebar-user-avatar');
-    if (avatarEl && currentUser.avatar) avatarEl.src = currentUser.avatar;
+    if (avatarEl && currentUser.avatar) avatarEl.src = resolveAvatar(currentUser.avatar);
     const sidebarNickEl = document.getElementById('sidebar-user-nick');
     if (sidebarNickEl) sidebarNickEl.textContent = currentUser.nick;
 }
@@ -809,7 +809,7 @@ async function loadProfile() {
             }
             vid.src = currentUser.avatar;
         } else {
-            avatarEl.src = currentUser.avatar;
+            avatarEl.src = resolveAvatar(currentUser.avatar);
         }
     }
 

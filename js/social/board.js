@@ -32,6 +32,10 @@ async function loadPosts() {
     return loadBoardPage();
 }
 
+function loadBoard() {
+    return loadBoardPage();
+}
+
 function postToBoard() {
     return createPost();
 }
