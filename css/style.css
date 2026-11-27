@@ -34,7 +34,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--dark-bg);
-    background-image: linear-gradient(rgba(4, 10, 22, 0.82), rgba(4, 10, 22, 0.82)), url('background.jpg');
+    background-image: linear-gradient(rgba(4, 10, 22, 0.82), rgba(4, 10, 22, 0.82)), url('../assets/wallpapers/background.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;

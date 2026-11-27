@@ -431,8 +431,8 @@ async function loadTopSemanal() {
             if (idx === 0) posLabel = '👑 #1';
             else if (idx === 1) posLabel = '🥈 #2';
             else if (idx === 2) posLabel = '🥉 #3';
-            const rawAvatar = u.avatar || 'avt_gojo.jpg';
-            const safeAvatar = (rawAvatar.startsWith('http') && !rawAvatar.startsWith('https://')) ? 'avt_gojo.jpg' : escHTML(rawAvatar);
+            const rawAvatar = resolveAvatar(u.avatar);
+            const safeAvatar = (rawAvatar.startsWith('http') && !rawAvatar.startsWith('https://')) ? 'assets/avatars/avt_gojo.jpg' : escHTML(rawAvatar);
             const el = document.createElement('div');
             el.className = 'glass-card';
             el.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:8px;' + (isMine ? 'border-color:var(--primary);' : '');

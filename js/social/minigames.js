@@ -93,36 +93,36 @@ const BATTLE_ENEMIES = [
 ];
 
 const BANNERS = [
-    { id: 'shiroko', label: 'Shiroko', file: '2026-04-09_08-35-30.png' },
-    { id: 'disarm', label: 'Disarm', file: '2026-04-09_08-37-01.png' },
-    { id: 'neon', label: 'Neon City', file: '2026-04-09_08-37-06.webp' },
-    { id: 'zodiac', label: 'Zodiac', file: '2026-04-09_08-37-25.webp' },
-    { id: 'eyes', label: 'Blue Eyes', file: 'b1db1d27-7ecd-4ed0-ba02-106fb1c7dea9.jpeg' },
-    { id: 'clouds', label: 'Pixel Sky', file: 'b3102e96-5369-4d2f-b3bf-a64d4f48e897.jpeg' },
-    { id: 'kny', label: 'Demon Slayer', file: 'ban_kny.jpg' },
-    { id: 'deku', label: 'Deku Smash', file: 'ban_deku.jpg' },
-    { id: 'redeyes', label: 'Red Eyes', file: 'ban_redeyes.jpg' },
-    { id: 'bluegirl', label: 'Blue Girl', file: 'ban_bluegirl.jpg' },
-    { id: 'mushoku', label: 'Isekai Party', file: 'ban_mushoku.jpg' },
-    { id: 'deathnote', label: 'Death Note', file: 'ban_deathnote.jpg' },
-    { id: 'tanya', label: 'Tanya The Evil', file: 'ban_tanya.jpg' },
-    { id: 'konata_b', label: 'Konata Star', file: 'ban_konata.jpg' },
-    { id: 'tomoko_b', label: 'Tomoko Vibe', file: 'ban_tomoko.webp' }
+    { id: 'shiroko', label: 'Shiroko', file: 'assets/banners/2026-04-09_08-35-30.png' },
+    { id: 'disarm', label: 'Disarm', file: 'assets/banners/2026-04-09_08-37-01.png' },
+    { id: 'neon', label: 'Neon City', file: 'assets/banners/2026-04-09_08-37-06.webp' },
+    { id: 'zodiac', label: 'Zodiac', file: 'assets/banners/2026-04-09_08-37-25.webp' },
+    { id: 'eyes', label: 'Blue Eyes', file: 'assets/banners/b1db1d27-7ecd-4ed0-ba02-106fb1c7dea9.jpeg' },
+    { id: 'clouds', label: 'Pixel Sky', file: 'assets/banners/b3102e96-5369-4d2f-b3bf-a64d4f48e897.jpeg' },
+    { id: 'kny', label: 'Demon Slayer', file: 'assets/banners/ban_kny.jpg' },
+    { id: 'deku', label: 'Deku Smash', file: 'assets/banners/ban_deku.jpg' },
+    { id: 'redeyes', label: 'Red Eyes', file: 'assets/banners/ban_redeyes.jpg' },
+    { id: 'bluegirl', label: 'Blue Girl', file: 'assets/banners/ban_bluegirl.jpg' },
+    { id: 'mushoku', label: 'Isekai Party', file: 'assets/banners/ban_mushoku.jpg' },
+    { id: 'deathnote', label: 'Death Note', file: 'assets/banners/ban_deathnote.jpg' },
+    { id: 'tanya', label: 'Tanya The Evil', file: 'assets/banners/ban_tanya.jpg' },
+    { id: 'konata_b', label: 'Konata Star', file: 'assets/banners/ban_konata.jpg' },
+    { id: 'tomoko_b', label: 'Tomoko Vibe', file: 'assets/banners/ban_tomoko.webp' }
 ];
 
 const AVATARS = [
-    { id: 'gojo', file: 'avt_gojo.jpg' },
-    { id: 'lucy', file: 'avt_lucy.jpg' },
-    { id: 'rimuru', file: 'avt_rimuru.jpg' },
-    { id: 'llawliet', file: 'avt_l.jpg' },
-    { id: 'guts', file: 'avt_guts.jpg' },
-    { id: 'sukuna', file: 'avt_sukuna.jpg' },
-    { id: 'roxy', file: 'avt_roxy.jpg' },
-    { id: 'tomoko', file: 'avt_tomoko.jpg' },
-    { id: 'konata', file: 'avt_konata.jpg' },
-    { id: 'kira', file: 'avt_kira.jpg' },
-    { id: 'kuroki', file: 'avt_kuroki.jpg' },
-    { id: 'chito', file: 'avt_chito.jpg' }
+    { id: 'gojo', file: 'assets/avatars/avt_gojo.jpg' },
+    { id: 'lucy', file: 'assets/avatars/avt_lucy.jpg' },
+    { id: 'rimuru', file: 'assets/avatars/avt_rimuru.jpg' },
+    { id: 'llawliet', file: 'assets/avatars/avt_l.jpg' },
+    { id: 'guts', file: 'assets/avatars/avt_guts.jpg' },
+    { id: 'sukuna', file: 'assets/avatars/avt_sukuna.jpg' },
+    { id: 'roxy', file: 'assets/avatars/avt_roxy.jpg' },
+    { id: 'tomoko', file: 'assets/avatars/avt_tomoko.jpg' },
+    { id: 'konata', file: 'assets/avatars/avt_konata.jpg' },
+    { id: 'kira', file: 'assets/avatars/avt_kira.jpg' },
+    { id: 'kuroki', file: 'assets/avatars/avt_kuroki.jpg' },
+    { id: 'chito', file: 'assets/avatars/avt_chito.jpg' }
 ];
 
 window.BANNERS = BANNERS;

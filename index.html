@@ -18,7 +18,7 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
 <!-- Main Styles -->
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 
 <!-- Manifest (PWA) -->
 <link rel="manifest" href="manifest.json">
@@ -144,7 +144,7 @@
 
     <!-- User mini-card in sidebar -->
     <div class="sidebar-user">
-      <img id="sidebar-user-avatar" src="avt_gojo.jpg" alt="Avatar" class="sidebar-avatar">
+      <img id="sidebar-user-avatar" src="assets/avatars/avt_gojo.jpg" alt="Avatar" class="sidebar-avatar">
       <div class="sidebar-user-info">
         <strong id="sidebar-user-nick">—</strong>
         <span data-balance style="font-size:10px;color:var(--primary);">0 PPC</span>
@@ -486,7 +486,7 @@
           <!-- Selected recipient banner -->
           <div id="transfer-recipient-banner" style="display:none;background:rgba(0,212,255,0.06);border-color:var(--primary);padding:12px;margin-bottom:15px;" class="glass-card">
             <div style="display:flex;align-items:center;gap:10px;">
-              <img id="transfer-recipient-avatar" src="avt_gojo.jpg" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);">
+              <img id="transfer-recipient-avatar" src="assets/avatars/avt_gojo.jpg" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);">
               <div>
                 <div style="font-weight:700;font-size:14px;" id="transfer-recipient-name">—</div>
                 <div style="font-size:11px;color:var(--text-muted);" id="transfer-recipient-bal">—</div>
@@ -905,7 +905,7 @@
       <div class="page-inner">
         <div class="profile-hero glass-card" style="position: relative; display:flex; align-items:center; flex-wrap:wrap; gap:20px;">
           <div class="profile-avatar-wrap" style="flex-shrink:0; z-index:2;">
-            <img id="profile-avatar" src="avt_gojo.jpg" alt="Avatar" class="profile-avatar-img">
+            <img id="profile-avatar" src="assets/avatars/avt_gojo.jpg" alt="Avatar" class="profile-avatar-img">
             <div class="profile-avatar-ring"></div>
           </div>
 
@@ -944,28 +944,28 @@
         <div class="glass-card" style="margin-bottom: 20px;">
           <h3 class="section-title" style="font-size:14px;"><i class="fa-solid fa-user-gear" style="color:var(--primary);"></i> Cambiar Avatar</h3>
           <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(60px, 1fr));gap:10px;margin-bottom:15px;" id="avatar-selection-grid">
-            <img src="avt_gojo.jpg" class="avatar-option" onclick="saveAvatar('avt_gojo.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_sukuna.jpg" class="avatar-option" onclick="saveAvatar('avt_sukuna.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_guts.jpg" class="avatar-option" onclick="saveAvatar('avt_guts.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_rimuru.jpg" class="avatar-option" onclick="saveAvatar('avt_rimuru.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_lucy.jpg" class="avatar-option" onclick="saveAvatar('avt_lucy.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_tomoko.jpg" class="avatar-option" onclick="saveAvatar('avt_tomoko.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_konata.jpg" class="avatar-option" onclick="saveAvatar('avt_konata.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_roxy.jpg" class="avatar-option" onclick="saveAvatar('avt_roxy.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_kuroki.jpg" class="avatar-option" onclick="saveAvatar('avt_kuroki.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_l.jpg" class="avatar-option" onclick="saveAvatar('avt_l.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_kira.jpg" class="avatar-option" onclick="saveAvatar('avt_kira.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_chito.jpg" class="avatar-option" onclick="saveAvatar('avt_chito.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_ben10.jpg" class="avatar-option" onclick="saveAvatar('avt_ben10.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_frieren_icon.jpg" class="avatar-option" onclick="saveAvatar('avt_frieren_icon.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_frieren_extra.jpg" class="avatar-option" onclick="saveAvatar('avt_frieren_extra.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_kasane_teto.jpg" class="avatar-option" onclick="saveAvatar('avt_kasane_teto.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_miku_nakano.jpg" class="avatar-option" onclick="saveAvatar('avt_miku_nakano.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_mikuu.jpg" class="avatar-option" onclick="saveAvatar('avt_mikuu.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_neru.jpg" class="avatar-option" onclick="saveAvatar('avt_neru.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_roxy2.jpg" class="avatar-option" onclick="saveAvatar('avt_roxy2.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_teto.jpg" class="avatar-option" onclick="saveAvatar('avt_teto.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
-            <img src="avt_misterio.jpg" class="avatar-option" onclick="saveAvatar('avt_misterio.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_gojo.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_gojo.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_sukuna.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_sukuna.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_guts.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_guts.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_rimuru.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_rimuru.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_lucy.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_lucy.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_tomoko.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_tomoko.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_konata.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_konata.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_roxy.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_roxy.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_kuroki.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_kuroki.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_l.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_l.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_kira.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_kira.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_chito.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_chito.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_ben10.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_ben10.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_frieren_icon.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_frieren_icon.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_frieren_extra.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_frieren_extra.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_kasane_teto.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_kasane_teto.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_miku_nakano.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_miku_nakano.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_mikuu.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_mikuu.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_neru.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_neru.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_roxy2.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_roxy2.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_teto.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_teto.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
+            <img src="assets/avatars/avt_misterio.jpg" class="avatar-option" onclick="saveAvatar('assets/avatars/avt_misterio.jpg')" style="width:60px;height:60px;border-radius:50%;cursor:pointer;border:2px solid transparent;object-fit:cover;">
           </div>
           <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; margin-top: 15px;">
             <h4 style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--text-muted);margin-bottom:10px;"><i class="fa-solid fa-palette" style="color:var(--gold);"></i> Avatares Anime <span style="font-size:9px;">(100)</span></h4>
@@ -1788,7 +1788,7 @@
     </div>
     <div class="modal-body" style="max-height:70vh;overflow-y:auto;">
       <div id="profile-view-header" style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
-        <img id="profile-view-avatar" src="avt_gojo.jpg" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--dark-border);">
+        <img id="profile-view-avatar" src="assets/avatars/avt_gojo.jpg" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--dark-border);">
         <div style="flex:1;">
           <div id="profile-view-nick" style="font-family:'Orbitron',sans-serif;font-weight:700;color:var(--primary);font-size:15px;"></div>
           <div id="profile-view-rank" style="font-size:11px;color:var(--text-muted);margin-top:2px;"></div>
@@ -2027,37 +2027,45 @@
 <!-- ════════════════════════════════════════════════════════════
      APP SCRIPTS (load order matters)
 ════════════════════════════════════════════════════════════ -->
-<script src="clan-features.js?v=18"></script>
-<script src="banking.js?v=20"></script>
-<script src="market.js?v=22"></script>
-<script src="vault.js?v=19"></script>
-<script src="verificacion.js?v=18"></script>
-<script src="chat.js?v=22"></script>
-  <script src="board.js?v=18"></script>
-  <script src="comments.js?v=23"></script>
-  <script src="social.js?v=22"></script>
-  <script src="logros.js?v=18"></script>
-  <script src="ben10.js?v=18"></script>
-  <script src="mha.js?v=18"></script>
-<script src="godzilla.js?v=18"></script>
-  <script src="chainsaw.js?v=18"></script>
-  <script src="mushoku.js?v=18"></script>
-  <script src="deathnote.js?v=18"></script>
-  <script src="berserk.js?v=18"></script>
-  <script src="elfen.js?v=18"></script>
-  <script src="rezero.js?v=18"></script>
-  <script src="rimuru.js?v=18"></script>
-  <script src="bocchi.js?v=18"></script>
-  <script src="vocaloid.js?v=18"></script>
-  <script src="nanatsu.js?v=19"></script>
-  <script src="flores.js?v=23"></script>
-  <script src="exchange.js?v=23"></script>
-  <script src="birthdays.js?v=18"></script>
-  <script src="economy.js?v=19"></script>
-  <script src="extras.js?v=20"></script>
-  <script src="minigames.js?v=19"></script>
-<script src="media-player.js?v=22"></script>
-<script src="app.js?v=22"></script>
+<script>
+window.resolveAvatar = function(av) {
+  if (!av) return 'assets/avatars/avt_gojo.jpg';
+  if (av.startsWith('http') || av.startsWith('data:') || av.includes('/')) return av;
+  if (av.startsWith('avt_')) return 'assets/avatars/' + av;
+  return av;
+};
+</script>
+<script src="js/core/clan-features.js?v=18"></script>
+<script src="js/core/banking.js?v=20"></script>
+<script src="js/core/market.js?v=22"></script>
+<script src="js/core/vault.js?v=19"></script>
+<script src="js/core/verificacion.js?v=18"></script>
+<script src="js/social/chat.js?v=22"></script>
+  <script src="js/social/board.js?v=18"></script>
+  <script src="js/social/comments.js?v=23"></script>
+  <script src="js/social/social.js?v=22"></script>
+  <script src="js/social/logros.js?v=18"></script>
+  <script src="js/fandoms/ben10.js?v=18"></script>
+  <script src="js/fandoms/mha.js?v=18"></script>
+<script src="js/fandoms/godzilla.js?v=18"></script>
+  <script src="js/fandoms/chainsaw.js?v=18"></script>
+  <script src="js/fandoms/mushoku.js?v=18"></script>
+  <script src="js/fandoms/deathnote.js?v=18"></script>
+  <script src="js/fandoms/berserk.js?v=18"></script>
+  <script src="js/fandoms/elfen.js?v=18"></script>
+  <script src="js/fandoms/rezero.js?v=18"></script>
+  <script src="js/fandoms/rimuru.js?v=18"></script>
+  <script src="js/fandoms/bocchi.js?v=18"></script>
+  <script src="js/fandoms/vocaloid.js?v=18"></script>
+  <script src="js/fandoms/nanatsu.js?v=19"></script>
+  <script src="js/social/flores.js?v=23"></script>
+  <script src="js/core/exchange.js?v=23"></script>
+  <script src="js/social/birthdays.js?v=18"></script>
+  <script src="js/core/economy.js?v=19"></script>
+  <script src="js/social/extras.js?v=20"></script>
+  <script src="js/social/minigames.js?v=19"></script>
+<script src="js/social/media-player.js?v=22"></script>
+<script src="js/core/app.js?v=22"></script>
 
 <!-- ════════════════════════════════════════════════════════════
      INLINE HELPERS (small things that need DOM)

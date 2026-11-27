@@ -85,7 +85,7 @@ async function loadTransferUsers() {
             card.onclick = () => selectTransferRecipient(nick, card);
             
             // Check avatar
-            const avatarSrc = user.avatar ? user.avatar : 'avt_gojo.jpg';
+            const avatarSrc = resolveAvatar(user.avatar);
             card.innerHTML = `
                 <img class="user-select-avatar" src="${esc(avatarSrc)}" alt="${esc(nick)}">
                 <div class="user-select-name">${esc(nick)}</div>
@@ -277,7 +277,7 @@ async function loadLeaderboard(filter) {
             const rKey        = getRankKey(entry);
             const rankInfo    = RANKS[rKey] || RANKS.user;
 
-            const avatarSrc = entry.avatar || 'avt_gojo.jpg';
+            const avatarSrc = resolveAvatar(entry.avatar);
             const nickSafe = esc(nick);
 
             const nickColor = entry.nick_color || entry.nickColor || '';
@@ -910,7 +910,7 @@ async function loadSplitUsers() {
             card.className = `user-select-card ${isAdded ? 'selected' : ''}`;
             card.onclick = () => toggleSplitParticipant(nick, card);
             
-            const avatarSrc = doc.data().avatar ? doc.data().avatar : 'avt_gojo.jpg';
+            const avatarSrc = resolveAvatar(doc.data().avatar);
             card.innerHTML = `
                 <img class="user-select-avatar" src="${esc(avatarSrc)}" alt="${esc(nick)}">
                 <div class="user-select-name">${esc(nick)}</div>

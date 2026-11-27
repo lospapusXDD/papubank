@@ -1,6 +1,0 @@
-¡Espera! El cursor se volvió loco rebotando de lado a lado porque hay dos programas corriendo a la vez:
-1. Haz un `pkill lan-mouse` o el proceso que acabas de lanzar.
-2. Decide cuál de los dos usar:
-   - Si usamos Deskflow / Input Leap (que ya está conectado por el puerto 24800 al server de Windows).
-   - O si prefieres lan-mouse (pero tendríamos que instalar lan-mouse también en Windows).
-Mata los procesos duplicados y quédate solo con el cliente de Deskflow/Input Leap.

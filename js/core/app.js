@@ -444,7 +444,7 @@ window.doRegister = async function() {
         if (res.accessToken) localStorage.setItem('papubank_jwt', res.accessToken);
         if (res.refreshToken) localStorage.setItem('papubank_refresh', res.refreshToken);
 
-        currentUser = { nick, hash, jjkRank: null, avatar: 'avt_gojo.jpg' };
+        currentUser = { nick, hash, jjkRank: null, avatar: 'assets/avatars/avt_gojo.jpg' };
         Object.assign(currentUser, Object.fromEntries(Object.entries(res || {}).filter(([, v]) => v != null)));
         localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash }));
         localStorage.setItem('papus_session_v2', JSON.stringify({ nick, hash }));
@@ -1173,7 +1173,7 @@ function renderAdminAccounts(accSnap, usersMap) {
 
         const row = document.createElement('tr');
         const safeNick = escHTML(nick);
-        const safeAvatar = escHTML(user.avatar || 'avt_gojo.jpg');
+        const safeAvatar = escHTML(resolveAvatar(user.avatar));
         row.innerHTML = `
             <td>
                 <div style="display:flex;align-items:center;gap:8px;">
@@ -2702,18 +2702,18 @@ async function godRepairDatabase() {
 async function godChangeAvatar(nick) {
     if (!checkAdminPermission()) return;
     const avatarOptions = [
-        { value: 'avt_gojo.jpg',   label: 'Gojo',   img: 'avt_gojo.jpg',   round: true },
-        { value: 'avt_sukuna.jpg', label: 'Sukuna', img: 'avt_sukuna.jpg', round: true },
-        { value: 'avt_guts.jpg',   label: 'Guts',   img: 'avt_guts.jpg',   round: true },
-        { value: 'avt_rimuru.jpg', label: 'Rimuru', img: 'avt_rimuru.jpg', round: true },
-        { value: 'avt_lucy.jpg',   label: 'Lucy',   img: 'avt_lucy.jpg',   round: true },
-        { value: 'avt_tomoko.jpg', label: 'Tomoko', img: 'avt_tomoko.jpg', round: true },
-        { value: 'avt_konata.jpg', label: 'Konata', img: 'avt_konata.jpg', round: true },
-        { value: 'avt_roxy.jpg',   label: 'Roxy',   img: 'avt_roxy.jpg',   round: true },
-        { value: 'avt_kuroki.jpg', label: 'Kuroki', img: 'avt_kuroki.jpg', round: true },
-        { value: 'avt_l.jpg',      label: 'L',      img: 'avt_l.jpg',      round: true },
-        { value: 'avt_kira.jpg',   label: 'Kira',   img: 'avt_kira.jpg',   round: true },
-        { value: 'avt_chito.jpg',  label: 'Chito',  img: 'avt_chito.jpg',  round: true },
+        { value: 'assets/avatars/avt_gojo.jpg',   label: 'Gojo',   img: 'assets/avatars/avt_gojo.jpg',   round: true },
+        { value: 'assets/avatars/avt_sukuna.jpg', label: 'Sukuna', img: 'assets/avatars/avt_sukuna.jpg', round: true },
+        { value: 'assets/avatars/avt_guts.jpg',   label: 'Guts',   img: 'assets/avatars/avt_guts.jpg',   round: true },
+        { value: 'assets/avatars/avt_rimuru.jpg', label: 'Rimuru', img: 'assets/avatars/avt_rimuru.jpg', round: true },
+        { value: 'assets/avatars/avt_lucy.jpg',   label: 'Lucy',   img: 'assets/avatars/avt_lucy.jpg',   round: true },
+        { value: 'assets/avatars/avt_tomoko.jpg', label: 'Tomoko', img: 'assets/avatars/avt_tomoko.jpg', round: true },
+        { value: 'assets/avatars/avt_konata.jpg', label: 'Konata', img: 'assets/avatars/avt_konata.jpg', round: true },
+        { value: 'assets/avatars/avt_roxy.jpg',   label: 'Roxy',   img: 'assets/avatars/avt_roxy.jpg',   round: true },
+        { value: 'assets/avatars/avt_kuroki.jpg', label: 'Kuroki', img: 'assets/avatars/avt_kuroki.jpg', round: true },
+        { value: 'assets/avatars/avt_l.jpg',      label: 'L',      img: 'assets/avatars/avt_l.jpg',      round: true },
+        { value: 'assets/avatars/avt_kira.jpg',   label: 'Kira',   img: 'assets/avatars/avt_kira.jpg',   round: true },
+        { value: 'assets/avatars/avt_chito.jpg',  label: 'Chito',  img: 'assets/avatars/avt_chito.jpg',  round: true },
     ];
     const filename = await showPickerModal(`Elegir Avatar para ${nick}`, avatarOptions);
     if (!filename) return;

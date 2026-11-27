@@ -55,24 +55,19 @@ Cuntsniffer
 ## Estructura del proyecto
 
 - `index.html` — HTML principal (auth, dashboard, todas las páginas)
-- `style.css` — Estilos globales
-- `app.js` — Lógica principal (auth, routing, admin, dashboard)
-- `banking.js` — Lógica bancaria (transacciones, préstamos, hashing)
-- `market.js` — Tienda del clan
-- `vault.js` — Bóvedas de ahorro
-- `media-player.js` — Reproductor de música (playlist, mini-player, full player, visualizador)
-- `chat.js` — Chat en vivo
-- `board.js` — Tablón de anuncios
-- `comments.js` — Comentarios de perfil
-- `social.js` — Sistema social
-- `logros.js` — Logros y trofeos
-- `clan-features.js` — Rangos, sistema de ranks, funciones del clan
-- `ben10.js`, `mha.js`, `godzilla.js`, `nanatsu.js` — Módulos de anime/theming
-- `minigames.js` — Minijuegos (slots, finger hunt, etc.)
-- `verificacion.js` — Verificación de 2 pasos
-- `server_papubank.ps1` — Server localhost:8080 (PowerShell)
-- `server_papubank_ps1_8081.ps1` — Server localhost:8081 (verificación)
-- `Actualizacion/` — Carpeta temporal para mostrar cambios al usuario
+- `manifest.json`, `papu_apps.json` — Manifiesto PWA y apps del clan
+- `css/style.css` — Estilos globales
+- `js/core/` — Núcleo (`app.js`, `banking.js`, `clan-features.js`, `economy.js`, `exchange.js`, `market.js`, `vault.js`, `verificacion.js`)
+- `js/social/` — Social y extras (`birthdays.js`, `board.js`, `chat.js`, `comments.js`, `extras.js`, `flores.js`, `logros.js`, `media-player.js`, `minigames.js`, `social.js`)
+- `js/fandoms/` — Módulos de anime/theming (`ben10.js`, `berserk.js`, `bocchi.js`, `chainsaw.js`, `deathnote.js`, `elfen.js`, `godzilla.js`, `mha.js`, `mushoku.js`, `nanatsu.js`, `rezero.js`, `rimuru.js`, `vocaloid.js`)
+- `assets/audio/` — Canciones MP3 del reproductor
+- `assets/avatars/` — Avatares de perfil (`avt_*.jpg`)
+- `assets/banners/` — Banners de perfil y minijuegos
+- `assets/wallpapers/` — Fondos de temas y `background.jpg`
+- `assets/images/` — Otras imágenes y multimedia
+- `scripts/` — Servers PowerShell (`server_papubank.ps1`, `server_papubank_ps1_8081.ps1`) y utilidades (`check_*.ps1`)
+- `verificacion/` — Sub-app de verificación 2FA
+- `Actualizacion/` — Carpeta temporal (ya no se usa en el flujo normal)
 - `AGENTS.md` — Este archivo (contexto del agente)
 
 ---

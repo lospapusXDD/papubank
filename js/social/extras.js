@@ -28,24 +28,24 @@ const SECRET_ACHIEVEMENTS = [
 /* ─────────── TEMAS PERSONALIZABLES ─────────── */
 
 const THEMES = [
-    { key: 'cyber',     label: 'Cyber default',  primary: '#00d4ff', secondary: '#00ffaa', bg: '#030914', wallpaper: 'Anime Wallpaper CyberDream.jpg' },
-    { key: 'violet',    label: 'Violet Dream',   primary: '#d946ef', secondary: '#f472b6', bg: '#0f0520', wallpaper: 'anime wallpaper violetdream.jpg' },
-    { key: 'fire',      label: 'Fire Red',        primary: '#ff4444', secondary: '#ff8800', bg: '#1a0505', wallpaper: 'anime wallpaper red fire.jpg' },
-    { key: 'forest',    label: 'Forest Green',    primary: '#22c55e', secondary: '#4ade80', bg: '#051a0a', wallpaper: 'Anime wallpaper forest green.jpg' },
-    { key: 'ocean',     label: 'Ocean Blue',      primary: '#3b82f6', secondary: '#60a5fa', bg: '#050f1a', wallpaper: 'Anime Wallpaper Ocean blue.jpg' },
-    { key: 'gold',      label: 'Golden Luxury',   primary: '#fbbf24', secondary: '#f59e0b', bg: '#1a1505', wallpaper: 'Anime wallpape dorado.jpg' },
-    { key: 'dark',      label: 'Pure Darkness',   primary: '#6b7280', secondary: '#9ca3af', bg: '#000000', wallpaper: 'Anime wallpaper Pure darkness.jpg' },
-    { key: 'neon',      label: 'Neon Pink',       primary: '#ec4899', secondary: '#f472b6', bg: '#0a0510', wallpaper: 'Anime Wallpaper rosa.jpg' },
-    { key: 'blood',     label: 'Blood Moon',      primary: '#dc143c', secondary: '#ff4444', bg: '#0a0005', wallpaper: 'Anime Wallpaper Blood.jpg' },
-    { key: 'phantom',   label: 'Phantom',         primary: '#7b2ff7', secondary: '#c084fc', bg: '#0d0015', wallpaper: 'Anime Wallpaper Ghost.jpg' },
-    { key: 'toxic',     label: 'Toxic',           primary: '#39ff14', secondary: '#b5ff2b', bg: '#000a00', wallpaper: 'Anime Wallpaper Toxic.jpg' },
-    { key: 'sakura',    label: 'Sakura',          primary: '#ff69b4', secondary: '#ffb7d5', bg: '#0f000a', wallpaper: 'Anime Wallpaper Sakura.jpg' },
-    { key: 'abyss',     label: 'Abyss',           primary: '#00d4ff', secondary: '#0ff',    bg: '#000510', wallpaper: 'Anime Wallpaper Abyss.jpg' },
-    { key: 'ember',     label: 'Ember',           primary: '#ff6600', secondary: '#ffaa00', bg: '#0a0500', wallpaper: 'Anime Wallpaper Ember.jpg' },
-    { key: 'royal',     label: 'Royal',           primary: '#ffd700', secondary: '#fff',    bg: '#0a0800', wallpaper: 'Anime Wallpaper Royal.jpg' },
-    { key: 'ice',       label: 'Ice',             primary: '#b0e0e6', secondary: '#e0f7ff', bg: '#000a0f', wallpaper: 'Anime Wallpaper Ice.jpg' },
-    { key: 'sunset',    label: 'Sunset',          primary: '#ff8c00', secondary: '#ff4500', bg: '#0f0500', wallpaper: 'Anime Naranja Wallpaper.jpg' },
-    { key: 'miku',      label: 'Hatsune Miku',    primary: '#39C5BB', secondary: '#00e5cc', bg: '#000a08', wallpaper: 'Miku Verde.jpg' }
+    { key: 'cyber',     label: 'Cyber default',  primary: '#00d4ff', secondary: '#00ffaa', bg: '#030914', wallpaper: 'assets/wallpapers/Anime Wallpaper CyberDream.jpg' },
+    { key: 'violet',    label: 'Violet Dream',   primary: '#d946ef', secondary: '#f472b6', bg: '#0f0520', wallpaper: 'assets/wallpapers/anime wallpaper violetdream.jpg' },
+    { key: 'fire',      label: 'Fire Red',        primary: '#ff4444', secondary: '#ff8800', bg: '#1a0505', wallpaper: 'assets/wallpapers/anime wallpaper red fire.jpg' },
+    { key: 'forest',    label: 'Forest Green',    primary: '#22c55e', secondary: '#4ade80', bg: '#051a0a', wallpaper: 'assets/wallpapers/Anime wallpaper forest green.jpg' },
+    { key: 'ocean',     label: 'Ocean Blue',      primary: '#3b82f6', secondary: '#60a5fa', bg: '#050f1a', wallpaper: 'assets/wallpapers/Anime Wallpaper Ocean blue.jpg' },
+    { key: 'gold',      label: 'Golden Luxury',   primary: '#fbbf24', secondary: '#f59e0b', bg: '#1a1505', wallpaper: 'assets/wallpapers/Anime wallpape dorado.jpg' },
+    { key: 'dark',      label: 'Pure Darkness',   primary: '#6b7280', secondary: '#9ca3af', bg: '#000000', wallpaper: 'assets/wallpapers/Anime wallpaper Pure darkness.jpg' },
+    { key: 'neon',      label: 'Neon Pink',       primary: '#ec4899', secondary: '#f472b6', bg: '#0a0510', wallpaper: 'assets/wallpapers/Anime Wallpaper rosa.jpg' },
+    { key: 'blood',     label: 'Blood Moon',      primary: '#dc143c', secondary: '#ff4444', bg: '#0a0005', wallpaper: 'assets/wallpapers/Anime Wallpaper Blood.jpg' },
+    { key: 'phantom',   label: 'Phantom',         primary: '#7b2ff7', secondary: '#c084fc', bg: '#0d0015', wallpaper: 'assets/wallpapers/Anime Wallpaper Ghost.jpg' },
+    { key: 'toxic',     label: 'Toxic',           primary: '#39ff14', secondary: '#b5ff2b', bg: '#000a00', wallpaper: 'assets/wallpapers/Anime Wallpaper Toxic.jpg' },
+    { key: 'sakura',    label: 'Sakura',          primary: '#ff69b4', secondary: '#ffb7d5', bg: '#0f000a', wallpaper: 'assets/wallpapers/Anime Wallpaper Sakura.jpg' },
+    { key: 'abyss',     label: 'Abyss',           primary: '#00d4ff', secondary: '#0ff',    bg: '#000510', wallpaper: 'assets/wallpapers/Anime Wallpaper Abyss.jpg' },
+    { key: 'ember',     label: 'Ember',           primary: '#ff6600', secondary: '#ffaa00', bg: '#0a0500', wallpaper: 'assets/wallpapers/Anime Wallpaper Ember.jpg' },
+    { key: 'royal',     label: 'Royal',           primary: '#ffd700', secondary: '#fff',    bg: '#0a0800', wallpaper: 'assets/wallpapers/Anime Wallpaper Royal.jpg' },
+    { key: 'ice',       label: 'Ice',             primary: '#b0e0e6', secondary: '#e0f7ff', bg: '#000a0f', wallpaper: 'assets/wallpapers/Anime Wallpaper Ice.jpg' },
+    { key: 'sunset',    label: 'Sunset',          primary: '#ff8c00', secondary: '#ff4500', bg: '#0f0500', wallpaper: 'assets/wallpapers/Anime Naranja Wallpaper.jpg' },
+    { key: 'miku',      label: 'Hatsune Miku',    primary: '#39C5BB', secondary: '#00e5cc', bg: '#000a08', wallpaper: 'assets/wallpapers/Miku Verde.jpg' }
 ];
 
 function applyTheme(themeKey) {

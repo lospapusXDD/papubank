@@ -346,7 +346,7 @@ function loadPapuTrack(idx) {
     const track = papuPlaylist[idx];
     if (!pAudio) return;
 
-    pAudio.src = track.file;
+    pAudio.src = 'assets/audio/' + track.file;
     pAudio.load();
 
     // Update mini-player title
