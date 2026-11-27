@@ -1,0 +1,12 @@
+# PapusBank — Clan Papus
+
+> PapusBank es la plataforma social y banco virtual oficial del Clan Papus.
+
+## Características principales
+- Banco virtual con PapuCoins (PPC) y P-USD, transferencias, préstamos y bóveda.
+- Reproductor de música integrado con más de 100 canciones y letras sincronizadas (LRC).
+- Sistema de rangos de anime y fandoms (Nanatsu no Taizai, My Hero Academia, Chainsaw Man, Berserk, Death Note, Re:Zero, Godzilla, Ben 10, Vocaloid, etc.).
+- Chat del clan en tiempo real, muro social, minijuegos, tienda de avatares/banners y PapuBot IA.
+
+## Enlaces
+- Web oficial: https://lospapusxdd.github.io/papubank/
