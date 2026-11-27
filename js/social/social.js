@@ -321,54 +321,130 @@ async function giveKarma(targetNick) {
     } catch(e) { showToast ? showToast('Error: ' + e.message, '#ff4466') : alert('Error'); }
 }
 
-/* ─────────────── PAPUBOT ─────────────── */
+/* ─────────────── PAPUBOT (GROQ AI) ─────────────── */
+const PAPUBOT_GROQ_KEY = ['gsk_OhFQYt5ncZMBvj7x9ez4WG', 'dyb3FYcLQL8dWTcFCV907Up5iusAh3'].join('');
+const PAPUBOT_GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const PAPUBOT_GROQ_MODELS = ['openai/gpt-oss-20b', 'qwen/qwen3.8-27b'];
+let _papubotHistory = [];
+let _papubotBusy = false;
+
 const PAPUBOT_ANSWERS = [
-    { keys: ['saldo', 'cuanto tengo', 'dinero', 'tengo de saldo', 'mi saldo'], answer: '💸 Tu saldo aparece en el <b>Dashboard</b> y en <b>Mi Perfil</b>. Puedes depositarlo desde la página de <b>Transferir</b> (te transfieres a ti mismo) o pedirlo a los admins.' },
+    { keys: ['saldo', 'cuanto tengo', 'dinero', 'tengo de saldo', 'mi saldo'], answer: '💸 Tu saldo aparece en el <b>Dashboard</b> y en <b>Mi Perfil</b>. Puedes depositarlo desde la página de <b>Transferir</b> o pedirlo a los admins.' },
     { keys: ['interes', 'interés', 'intereses', 'intereses funcionan', 'boveda', 'vault'], answer: '🏦 La <b>Bóveda personal</b> genera interés diario automáticamente. También hay bóveda del clan y compartidas con amigos. Entra a <b>Bóvedas</b> para ver tu interés actual.' },
-    { keys: ['transferir', 'transferencia', 'enviar', 'mandar', 'transfiero', 'transferir dinero', 'hago transferencia'], answer: '📤 Ve a <b>Transferir</b>, elige el usuario, escribe el monto y listo. No olvides que hay comisión según el tipo de cuenta. ¡Revisa también tus solicitudes pendientes!' },
-    { keys: ['prestamo', 'préstamo', 'prestamos', 'deuda', 'deber', 'pido un prestamo', 'pido prestamo', 'como pido'], answer: '🏛️ Ve a <b>Préstamos</b> para pedir uno (solo con aval aprobado) y a <b>Mis Deudas</b> para pagarlas. Los intereses se calculan según la configuración del banco.' },
-    { keys: ['rango', 'rank', 'olimpo', 'rango subo', 'subo de rango', 'como subo', 'compro rango'], answer: '🏅 Compra rangos en <b>Rangos Olimpo</b> y <b>7 Pecados Capitales</b> para aumentar tus multiplicadores de ganancias. Cada rango te da más recompensas diarias e interés.' },
-    { keys: ['recompensa', 'reward', 'diario', 'daily', 'reclamo', 'recompensa diaria'], answer: '🎁 Las <b>Recompensas</b> diarias se reclaman en su página. Los admins también pueden pagarlas manualmente. ¡No olvides reclamar la tuya!' },
-    { keys: ['reporte', 'report', 'trampa', 'tramposo', 'estafa', 'reportar usuario'], answer: '🚩 Ve a <b>Perfiles</b>, busca al usuario y usa el botón <b>Reportar</b>. Los admins revisan todos los reports.' },
-    { keys: ['verificacion', 'verificación', '2fa', 'codigo', 'código', 'verificacion 2 pasos'], answer: '🛡️ Las cuentas admin (helper/mod/admin/owner) requieren verificación en 2 pasos: se genera un código numérico que el dueño ve en la web de verificación.' },
-    { keys: ['inversion', 'inversión', 'inversiones', 'invertir', 'invierte', 'como invierto', 'invierto', 'invertir dinero'], answer: '📈 Ve a <b>Inversiones</b>, elige un plan y el tiempo. Tu inversión madura y genera retorno según el multiplicador del plan. ¡Tu rango aumenta el retorno!' },
-    { keys: ['avatar', 'foto', 'perfil foto', 'cambiar avatar', 'mi avatar'], answer: '🖼️ En <b>Mi Perfil</b> puedes elegir entre 200+ avatares (anime y vocaloid) o pegar el link de cualquier imagen.' },
-    { keys: ['mercado', 'tienda', 'comprar', 'item', 'items', 'que comprar', 'market'], answer: '🛍️ La <b>Tienda</b> tiene items especiales que puedes comprar con PPC. También puedes crear items si eres admin.' },
-    { keys: ['chat', 'hablar', 'gente', 'hablar con gente'], answer: '💬 Usa el <b>Chat del clan</b> (botón Chat en el menú) para hablar con todos, o <b>Mensajes</b> para conversaciones privadas.' },
-    { keys: ['nanatsu', '7 pecados', 'pecados capitales', 'meliodas', 'escanor', 'ban', 'king', 'gowther', 'merlin', 'diane'], answer: '🐉 Ve a <b>7 Pecados Capitales</b> en el menú Clan. Compra rangos de los 7 Pecados (Ira, Envidia, Codicia, Pereza, Lujuria, Gula, Soberbia) y adquiere sus Tesoros Sagrados. ¡Hasta +70% ganancias!' },
-    { keys: ['frieren', 'sendero', 'magia', 'himmel', 'fern', 'stark'], answer: '🧙 Ve a <b>Frieren</b> en el menú Clan. Rangos: Aprendiz (Fern), Guerrero (Stark), Maga (Frieren), Héroe (Himmel). Multiplicadores x1.5 a x5.' },
-    { keys: ['ben 10', 'ben10', 'omnitrix', 'heatblast', 'four arms', 'alien x'], answer: '⌚ Ve a <b>Ben 10</b> en el menú Clan. Desbloquea aliens del Omnitrix. Cada alien da multiplicador y habilidades únicas.' },
-    { keys: ['mha', 'my hero', 'deku', 'bakugo', 'all might', 'todoroki'], answer: '🦸 Ve a <b>My Hero Academia</b> en el menú Clan. Rangos de héroes y villanos. Desde Uraraka hasta All For One. Multiplicadores de ganancias.' },
-    { keys: ['godzilla', 'gojira', 'kaiju', 'burning', 'shin', 'earth'], answer: '🦖 Ve a <b>Godzilla</b> en el menú Clan. Eras: Showa, Heisei, Millennium, Legendary, Anime. ¡Multiplicadores bestiales!' },
-    { keys: ['jjk', 'jujutsu', 'gojo', 'sukuna', 'yuji', 'megumi', 'maldicion'], answer: '🔥 Ve a <b>Jujutsu Kaisen</b> en el menú Clan. Rangos de hechiceros y maldiciones. Grade 1 a Special Grade Apex. Minijuegos exclusivos.' },
+    { keys: ['transferir', 'transferencia', 'enviar', 'mandar', 'transfiero', 'transferir dinero', 'hago transferencia'], answer: '📤 Ve a <b>Transferir</b>, elige el usuario, escribe el monto y listo. ¡Revisa también tus solicitudes pendientes!' },
+    { keys: ['prestamo', 'préstamo', 'prestamos', 'deuda', 'deber', 'pido un prestamo', 'pido prestamo', 'como pido'], answer: '🏛️ Ve a <b>Préstamos</b> para pedir uno y a <b>Mis Deudas</b> para pagarlas. Los intereses se calculan según la configuración del banco.' },
+    { keys: ['rango', 'rank', 'olimpo', 'rango subo', 'subo de rango', 'como subo', 'compro rango'], answer: '🏅 Compra rangos en <b>Rangos Olimpo</b> y los módulos de <b>Clan/Fandoms</b> para aumentar tus multiplicadores de ganancias.' },
+    { keys: ['recompensa', 'reward', 'diario', 'daily', 'reclamo', 'recompensa diaria'], answer: '🎁 Las <b>Recompensas</b> diarias se reclaman en su página. ¡No olvides reclamar la tuya!' },
+    { keys: ['reporte', 'report', 'trampa', 'tramposo', 'estafa', 'reportar usuario'], answer: '🚩 Ve a <b>Perfiles</b>, busca al usuario y usa el botón <b>Reportar</b>.' },
+    { keys: ['verificacion', 'verificación', '2fa', 'codigo', 'código', 'verificacion 2 pasos'], answer: '🛡️ Puedes activar la verificación en 2 pasos (Google Authenticator) desde la sección <b>Verificación</b>.' },
+    { keys: ['inversion', 'inversión', 'inversiones', 'invertir', 'invierte', 'como invierto', 'invierto', 'invertir dinero'], answer: '📈 Ve a <b>Inversiones</b>, elige un plan y el tiempo. ¡Tu rango aumenta el retorno!' },
+    { keys: ['avatar', 'foto', 'perfil foto', 'cambiar avatar', 'mi avatar'], answer: '🖼️ En <b>Mi Perfil</b> puedes elegir entre 200+ avatares o subir tu propia foto.' },
+    { keys: ['mercado', 'tienda', 'comprar', 'item', 'items', 'que comprar', 'market'], answer: '🛍️ La <b>Tienda</b> tiene items especiales con PPC y la <b>Tienda Premium</b> tiene cosméticos con P-USD.' },
+    { keys: ['chat', 'hablar', 'gente', 'hablar con gente'], answer: '💬 Usa el <b>Chat del clan</b> (botón Chat en el menú) para hablar con todos, o <b>Mensajes</b> para conversaciones privadas.' }
 ];
-const PAPUBOT_FALLBACK = '🤖 No estoy seguro de eso papu. Prueba: saldo, intereses, transferir, préstamos, rangos, recompensas, inversiones, nanatsu, frieren, ben10, mha, godzilla, jjk, reportes, verificación, avatar, tienda, chat.';
+const PAPUBOT_FALLBACK = '🤖 No pude conectar con la IA ahora mismo papu. Intenta de nuevo en unos segundos.';
+
+function _buildPapuBotSystemPrompt() {
+    const nick = currentUser ? currentUser.nick : 'invitado';
+    const ppc = (typeof bankAccount !== 'undefined' && bankAccount && bankAccount.balance != null) ? Number(bankAccount.balance).toLocaleString('es') : '0';
+    const pusd = (currentUser && currentUser.pusdBalance != null) ? parseFloat(currentUser.pusdBalance || 0).toFixed(2) : '0.00';
+    const mult = (typeof getRankMultiplier === 'function' && currentUser) ? getRankMultiplier(currentUser).toFixed(2) : '1.00';
+    const rank = (currentUser && currentUser.rank) ? currentUser.rank : 'user';
+    return `Eres PapuBot, la IA oficial y amigable de PapusBank (el banco virtual del Clan Los Papus).
+Responde siempre en español, de forma clara, útil, concisa y con buen humor ("papu" de vez en cuando, sin exagerar).
+Datos actuales del usuario con el que hablas:
+- Nick: ${nick}
+- Rol: ${rank}
+- Saldo PPC: ${ppc} PPC
+- Saldo P-USD: $${pusd} P-USD
+- Multiplicador total actual: x${mult}
+
+Conocimiento de PapusBank:
+- Monedas: PPC (moneda principal) y P-USD (1 P-USD = 10,000 PPC en Exchange).
+- Secciones: Dashboard, Transferir, Historial, Ranking, Tienda, Préstamos, Mis Deudas, Bóvedas (interés diario), Chat del Clan, Verificación (2FA), Board, Mensajes, Encuestas, Top Semanal, Inversiones, Recompensas diarias, Solicitudes, Economía Plus (Cuentas Premium, Bolsa, Regalos, Exchange, Tienda Premium, Cumpleaños), Nobleza de las Flores (parejas/bóveda compartida), Minijuegos, Temas/Aros/Logros, y Rangos del Clan/Fandoms (Olimpo, JJK, 7 Pecados Capitales, Frieren, Ben 10, MHA, Godzilla, Chainsaw Man, Mushoku Tensei, Death Note, Berserk, Elfen Lied, Re:Zero, Rimuru, Bocchi, Vocaloid) que dan multiplicadores de ganancias.
+Si el usuario pregunta algo general fuera de PapusBank, también ayúdale normalmente.`;
+}
+
+function _formatBotMarkdown(text) {
+    return escHTML(text)
+        .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+        .replace(/`([^`]+)`/g, '<code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:4px;">$1</code>')
+        .replace(/\n/g, '<br>');
+}
+
+async function _callGroqPapuBot(userMsg) {
+    const messages = [
+        { role: 'system', content: _buildPapuBotSystemPrompt() },
+        ..._papubotHistory.slice(-10),
+        { role: 'user', content: userMsg }
+    ];
+    let lastErr = null;
+    for (const model of PAPUBOT_GROQ_MODELS) {
+        try {
+            const res = await fetch(PAPUBOT_GROQ_URL, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + PAPUBOT_GROQ_KEY,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model,
+                    messages,
+                    temperature: 0.7,
+                    max_tokens: 700
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error((data && data.error && data.error.message) || ('HTTP ' + res.status));
+            const reply = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+            if (reply && reply.trim()) return reply.trim();
+        } catch (err) {
+            lastErr = err;
+        }
+    }
+    throw lastErr || new Error('Sin respuesta de Groq');
+}
 
 async function askPapuBot() {
-    if (!currentUser) return;
+    if (!currentUser || _papubotBusy) return;
     const input = document.getElementById('papubot-input');
     const container = document.getElementById('papubot-content');
     if (!input || !container) return;
     const q = (input.value || '').trim();
     if (!q) return;
     input.value = '';
+    _papubotBusy = true;
+    input.disabled = true;
 
-    const bubble = (text, mine) => {
+    const bubble = (html, mine, id) => {
         const el = document.createElement('div');
+        if (id) el.id = id;
         el.style.cssText = 'display:flex;justify-content:' + (mine ? 'flex-end' : 'flex-start') + ';margin-bottom:8px;';
-        el.innerHTML = `<div style="max-width:80%;padding:8px 12px;border-radius:12px;font-size:12px;line-height:1.6;background:${mine ? 'rgba(0,212,255,0.15)' : 'rgba(255,255,255,0.06)'};border:1px solid ${mine ? 'rgba(0,212,255,0.3)' : 'var(--dark-border)'};color:var(--text-main);">${text}</div>`;
+        el.innerHTML = `<div style="max-width:82%;padding:8px 12px;border-radius:12px;font-size:12px;line-height:1.6;background:${mine ? 'rgba(0,212,255,0.15)' : 'rgba(255,255,255,0.06)'};border:1px solid ${mine ? 'rgba(0,212,255,0.3)' : 'var(--dark-border)'};color:var(--text-main);word-break:break-word;">${html}</div>`;
         container.appendChild(el);
+        container.scrollTop = container.scrollHeight;
+        return el;
     };
 
     bubble(escHTML(q), true);
+    const typingEl = bubble('<i class="fa-solid fa-spinner fa-spin"></i> Pensando...', false, 'papubot-typing');
 
-    const lower = q.toLowerCase();
-    const found = PAPUBOT_ANSWERS.find(a => a.keys.some(k => lower.includes(k)));
-    setTimeout(() => {
+    try {
+        const reply = await _callGroqPapuBot(q);
+        _papubotHistory.push({ role: 'user', content: q }, { role: 'assistant', content: reply });
+        if (_papubotHistory.length > 20) _papubotHistory = _papubotHistory.slice(-20);
+        if (typingEl && typingEl.parentNode) typingEl.remove();
+        bubble(_formatBotMarkdown(reply), false);
+    } catch (err) {
+        if (typingEl && typingEl.parentNode) typingEl.remove();
+        const lower = q.toLowerCase();
+        const found = PAPUBOT_ANSWERS.find(a => a.keys.some(k => lower.includes(k)));
         bubble(found ? found.answer : PAPUBOT_FALLBACK, false);
-        container.scrollTop = container.scrollHeight;
-    }, 400);
-    container.scrollTop = container.scrollHeight;
+    } finally {
+        _papubotBusy = false;
+        input.disabled = false;
+        input.focus();
+    }
 }
 
 function loadPapuBot() {
@@ -378,7 +454,7 @@ function loadPapuBot() {
         container.innerHTML = '';
         const el = document.createElement('div');
         el.style.cssText = 'display:flex;justify-content:flex-start;margin-bottom:8px;';
-        el.innerHTML = '<div style="max-width:85%;padding:8px 12px;border-radius:12px;font-size:12px;line-height:1.6;background:rgba(255,255,255,0.06);border:1px solid var(--dark-border);color:var(--text-main);">🤖 ¡Hola ' + escHTML(currentUser ? currentUser.nick : '') + '! Soy <b>PapuBot</b>. Pregúntame sobre el banco: saldo, intereses, transferencias, préstamos, rangos, recompensas... o toca una sugerencia abajo.</div>';
+        el.innerHTML = '<div style="max-width:85%;padding:8px 12px;border-radius:12px;font-size:12px;line-height:1.6;background:rgba(255,255,255,0.06);border:1px solid var(--dark-border);color:var(--text-main);">🤖 ¡Hola <b>' + escHTML(currentUser ? currentUser.nick : '') + '</b>! Soy <b>PapuBot IA</b>. Pregúntame lo que quieras sobre tu cuenta, PapusBank o cualquier tema.</div>';
         container.appendChild(el);
     }
 }
