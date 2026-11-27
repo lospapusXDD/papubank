@@ -44,15 +44,30 @@ const MARKET_ITEMS = [
     { id:'curtain_item', name:'Cortina Maldita', icon:'fa-solid fa-mask', price:2000, desc:'Oculta tu saldo del leaderboard por 48 horas. Nadie sabrá cuánto tienes.', type:'utility' }
 ];
 
-function renderMarket() {
+let _marketCategoryFilter = '';
+
+function filterMarket(category) {
+    _marketCategoryFilter = category || '';
+    renderMarket(_marketCategoryFilter);
+}
+
+function renderMarket(category) {
     const marketGrid = document.getElementById('market-items-grid');
     if (!marketGrid) return;
+
+    const cat = category !== undefined ? category : _marketCategoryFilter;
+    const catMap = {
+        roles: ['cosmetic'],
+        gifts: ['instant', 'gamble'],
+        special: ['protection', 'boost', 'utility']
+    };
+    const allowedTypes = cat && catMap[cat] ? catMap[cat] : null;
 
     renderFlashSaleBanner();
     const sale = isFlashSaleActive();
 
     marketGrid.innerHTML = '';
-    MARKET_ITEMS.forEach(item => {
+    MARKET_ITEMS.filter(item => !allowedTypes || allowedTypes.includes(item.type)).forEach(item => {
         const price = getMarketPrice(item);
         const card = document.createElement('div');
         card.className = 'glass-card text-center';

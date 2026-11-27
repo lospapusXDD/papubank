@@ -143,10 +143,10 @@ const RANK_LOAN_MAX = {
 
 // ═══════════════════════════ SENDA FRIEREN ═══════════════════════════
 const FRIEREN_RANKS = [
-    { key:'frieren_fern', label:'Aprendiz de Magia (Fern)', icon:'fa-solid fa-wand-magic', price:1000000, price_usd:50, gradeTier:1, mult:1.5, img:'frieren_fern_img.jpg' },
-    { key:'frieren_stark', label:'Guerrero Heroico (Stark)', icon:'fa-solid fa-axe', price:3500000, price_usd:150, gradeTier:1, mult:2, img:'frieren_stark_img.jpg' },
-    { key:'frieren_frieren', label:'Maga de Primera Clase (Frieren)', icon:'fa-solid fa-hat-wizard', price:15000000, price_usd:500, gradeTier:2, mult:3, img:'frieren_frieren_img.jpg' },
-    { key:'frieren_himmel', label:'Héroe de Leyenda (Himmel)', icon:'fa-solid fa-sword', price:50000000, price_usd:1700, gradeTier:3, mult:5, img:'frieren_himmel_img.jpg' }
+    { key:'frieren_fern', label:'Aprendiz de Magia (Fern)', icon:'fa-solid fa-wand-magic', price:1000000, price_usd:50, gradeTier:1, mult:1.5, img:'assets/images/frieren_fern_img.jpg' },
+    { key:'frieren_stark', label:'Guerrero Heroico (Stark)', icon:'fa-solid fa-axe', price:3500000, price_usd:150, gradeTier:1, mult:2, img:'assets/images/frieren_stark_img.jpg' },
+    { key:'frieren_frieren', label:'Maga de Primera Clase (Frieren)', icon:'fa-solid fa-hat-wizard', price:15000000, price_usd:500, gradeTier:2, mult:3, img:'assets/images/frieren_frieren_img.jpg' },
+    { key:'frieren_himmel', label:'Héroe de Leyenda (Himmel)', icon:'fa-solid fa-sword', price:50000000, price_usd:1700, gradeTier:3, mult:5, img:'assets/images/frieren_himmel_img.jpg' }
 ];
 
 const FRIEREN_RELICS = [

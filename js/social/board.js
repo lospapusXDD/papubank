@@ -32,6 +32,10 @@ async function loadPosts() {
     return loadBoardPage();
 }
 
+function postToBoard() {
+    return createPost();
+}
+
 async function createPost() {
     if (!currentUser || !window._db) return;
     const titleInput = document.getElementById('board-input');
