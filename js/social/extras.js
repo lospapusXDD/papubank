@@ -394,7 +394,8 @@ function getRingHTML(user) {
 /* ─────────── CHECK SECRET ACHIEVEMENTS ─────────── */
 
 async function checkSecretAchievements() {
-    if (!currentUser || !window._db) return;
+    if (!currentUser || !window._db || window._checkingSecrets) return;
+    window._checkingSecrets = true;
 
     try {
         const db = window._db;
@@ -405,7 +406,14 @@ async function checkSecretAchievements() {
         ]);
         const u = userSnap.exists() ? userSnap.data() : {};
         const a = accSnap.exists() ? accSnap.data() : {};
-        const earned = u.secretAchievements || [];
+        let localEarned = [];
+        try { localEarned = JSON.parse(localStorage.getItem('papu_secrets_' + nick) || '[]'); } catch(e) {}
+        const earned = Array.from(new Set([
+            ...(u.secretAchievements || []),
+            ...(u.secret_achievements || []),
+            ...(currentUser.secretAchievements || []),
+            ...localEarned
+        ]));
 
         let investments = 0;
         try {
@@ -450,11 +458,15 @@ async function checkSecretAchievements() {
         const mult = (typeof getRankMultiplier === 'function') ? getRankMultiplier(u) : 1;
         const finalReward = Math.round(totalReward * mult);
 
+        const updatedSecrets = Array.from(new Set([...earned, ...newly.map(x => x.id)]));
+        currentUser.secretAchievements = updatedSecrets;
+        try { localStorage.setItem('papu_secrets_' + nick, JSON.stringify(updatedSecrets)); } catch(e) {}
+
         await window._fbUpdateDoc(window._fbDoc(db, 'bank_accounts', nick), { balance: window._fbIncrement(finalReward) });
         await window._fbUpdateDoc(window._fbDoc(db, 'users', nick), {
-            secretAchievements: window._fbArrayUnion(...newly.map(x => x.id))
+            secretAchievements: updatedSecrets,
+            secret_achievements: updatedSecrets
         });
-        currentUser.secretAchievements = [...earned, ...newly.map(x => x.id)];
         try {
             await window._fbAddDoc(window._fbCollection(db, 'transactions'), {
                 from: 'Sistema', to: nick, amount: finalReward,
@@ -467,6 +479,8 @@ async function checkSecretAchievements() {
         loadSecretsPage();
     } catch(e) {
         console.error('Error checking secret achievements:', e);
+    } finally {
+        window._checkingSecrets = false;
     }
 }
 
@@ -550,7 +564,10 @@ async function loadSecretsPage() {
     try {
         if (currentUser && window._db) {
             const snap = await window._fbGetDoc(window._fbDoc(window._db, 'users', currentUser.nick));
-            if (snap.exists()) unlocked = snap.data().secretAchievements || [];
+            if (snap.exists()) {
+                const d = snap.data();
+                unlocked = Array.from(new Set([...(d.secretAchievements || []), ...(d.secret_achievements || []), ...unlocked]));
+            }
         }
     } catch(e) {}
     const unlockedSet = new Set(unlocked);
